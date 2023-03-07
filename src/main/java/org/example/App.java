@@ -6,8 +6,12 @@ package org.example;
  */
 public class App 
 {
-    public static void main( String[] args )
-    {
+    public static void main( String[] args ) {
         System.out.println( "Hello World!" );
+        Change change = new Change(1);
+        change.printChange("Cambiato da Jonel");
+
     }
+
+
 }
