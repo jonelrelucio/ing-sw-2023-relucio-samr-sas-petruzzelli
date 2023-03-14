@@ -5,8 +5,11 @@ public class GameModel {
     private CircularArrayList<Player> playerList;
     private CommonGoalCard commonGoalCard;
     private Board board;
-    pritate State state;
+    private State state;
     private Round round;
 
+    public void init() {}
+    public void start() {}
+    public void setNumOfPlayer() {}
 
 }
