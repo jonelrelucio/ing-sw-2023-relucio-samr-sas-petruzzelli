@@ -1,4 +1,4 @@
-package org.example.models;
+package model;
 
 import java.util.ArrayList;
 
@@ -9,25 +9,25 @@ public class Player {
     private PersonalGoalCard personalGoalCard;
     private ArrayList<CommonGoalCard> obtainedCommonGoalCards;
 
-    public void setPersonalGoalCard(PersonalGoalCard personalGoalCard){
+    public void setPersonalGoalCard(PersonalGoalCard personalGoalCard) {
         this.personalGoalCard = personalGoalCard;
     }
-    public void setScore(int score){
+
+    public void setScore(int score) {
         this.score = score;
     }
-    public int getScore(){
+
+    public int getScore() {
         return this.score;
     }
 
-    public void selectTiles(){
+    public void selectTiles() {
         //?????
     }
 
-    public void getEndGameToken(){
+    public void getEndGameToken() {
         //????
     }
-
-
 
 
 }
