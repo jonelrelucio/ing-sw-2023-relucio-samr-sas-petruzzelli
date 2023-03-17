@@ -18,12 +18,11 @@ public class GameModel {
 
     }
     public Player checkWinner() {
-        return new Player();
+        return new Player("string");
     }
     public Player getNextPlayer() {
-        return new Player();
+        return new Player("string");
     }
-
     public int getNumOfPlayer() {
         return numOfPlayer;
     }

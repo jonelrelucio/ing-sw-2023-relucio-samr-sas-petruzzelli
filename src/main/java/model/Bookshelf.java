@@ -1,9 +1,8 @@
 package model;
 
 public class Bookshelf {
-    //TODO cambiare questi valori
-    private final int ROW = 10;
-    private final int COL = 10;
+    private final int ROW = 6;
+    private final int COL = 5;
     private ItemTile[][] bookshelf;
     private int selectedColumn;
 

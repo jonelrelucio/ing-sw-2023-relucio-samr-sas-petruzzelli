@@ -9,6 +9,14 @@ public class Player {
     private PersonalGoalCard personalGoalCard;
     private ArrayList<CommonGoalCard> obtainedCommonGoalCards;
 
+    public Player(String nickname){
+        this.nickname = nickname;
+    }
+
+    public String getNickname() {
+        return nickname;
+    }
+
     public void setPersonalGoalCard(PersonalGoalCard personalGoalCard) {
         this.personalGoalCard = personalGoalCard;
     }

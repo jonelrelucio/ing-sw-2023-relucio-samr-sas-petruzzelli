@@ -2,7 +2,10 @@ package model;
 
 import java.util.ArrayList;
 
-public class CircularArrayList<T> extends ArrayList<T> {
-
-
+public class CircularArrayList<E> extends ArrayList<E> {
+    @Override
+    public E get(int index) {
+        return super.get(index % size());
+    }
 }
+
