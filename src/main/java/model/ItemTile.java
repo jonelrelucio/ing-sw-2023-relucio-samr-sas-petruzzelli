@@ -13,6 +13,7 @@ enum ItemTileType {
 
 public class ItemTile {
     private ItemTileType itemTileType;
+    private boolean isEmpty;
 
     public ItemTile(){
         setItemTileType(EMPTY);
@@ -26,5 +27,6 @@ public class ItemTile {
     public void setItemTileType(ItemTileType itemTileType) {
         this.itemTileType = itemTileType;
     }
+    public boolean isEmpty() { return itemTileType == EMPTY; }
 
 }
