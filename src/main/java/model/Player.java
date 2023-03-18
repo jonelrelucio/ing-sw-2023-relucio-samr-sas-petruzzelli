@@ -3,6 +3,14 @@ package model;
 import java.util.ArrayList;
 import java.util.Stack;
 
+enum PlayerState {
+    WAITING, PLAYING;
+    @Override
+    public String toString() {
+        return super.toString();
+    }
+}
+
 public class Player {
     private String nickname;
     private int score;
@@ -11,13 +19,26 @@ public class Player {
     private ArrayList<CommonGoalCard> obtainedCommonGoalCards;
     private Stack<ItemTile> selectedTiles;
     private static final int ENDTOKENSCORE = 1;
+    private int numOfRounds;
+    private PlayerState playerState;
 
     public Player(String nickname){
         setNickname(nickname);
         setPersonalGoalCard(new PersonalGoalCard());
         setBookshelf();
         setSelectedTiles();
+        setScore();
+        setNumOfRounds();
     }
+
+    public PlayerState getPlayerState() {return playerState;}
+
+    public void setPlayerState(PlayerState playerState) {this.playerState = playerState; }
+
+    public void setNumOfRounds() { this.numOfRounds = 0; }
+    public int getNumOfRounds() { return numOfRounds; }
+    public void updateNumOfRounds() { this.numOfRounds += 1; }
+
     public void setObtainedCommonGoalCards(ArrayList<CommonGoalCard> obtainedCommonGoalCards){
         this.obtainedCommonGoalCards = obtainedCommonGoalCards;
     }
