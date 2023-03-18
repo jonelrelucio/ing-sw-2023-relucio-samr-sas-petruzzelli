@@ -7,7 +7,7 @@ import java.util.Stack;
 public class Board {
 
     private final int ROW = 11, COL = 11;
-    private final ItemTile[][] itemTileMatrix = new ItemTile[ROW][COL];
+    private final ItemTile[][] boardMatrix = new ItemTile[ROW][COL];
     private Bag bag;
     private int numOfPlayers;
 
@@ -27,31 +27,33 @@ public class Board {
             {1, 5}, {2, 6}, {4, 2}, {4, 2}, {5, 1}, {5, 9}, {6, 8}, {8, 4}, {9, 4}
     };
 
-    public void setItemTileMatrix() {
-        for (int i = 0; i < ROW; i++ ){
-            for (int j = 0; j < COL; j++){
-                itemTileMatrix[i][j] = new ItemTile();
-            }
-        }
-    }
-    public ItemTile[][] getItemTileMatrix(){ return itemTileMatrix; }
-    public void setBag() { bag = new Bag(); }
-    public Bag getBag() { return bag; }
-    public void setNumOfPlayers(int numOfPlayers) { this.numOfPlayers = numOfPlayers; }
-    public int getNumOfPlayers() {return numOfPlayers; }
-
     public Board(int numOfPlayers){
         setNumOfPlayers(numOfPlayers);
         setBag();
-        setItemTileMatrix();
+        initItemTileMatrix();
         fillBoard(COORDINATES);
         if (numOfPlayers == 3) fillBoard(COORDINATES3PLAYERS);
         else if (numOfPlayers == 4) fillBoard(COORDINATES4PLAYERS);
     }
 
+    public ItemTile[][] getBoardMatrix(){ return boardMatrix; }
+    public void setBag() { bag = new Bag(); }
+    public Bag getBag() { return bag; }
+    public void setNumOfPlayers(int numOfPlayers) { this.numOfPlayers = numOfPlayers; }
+    public int getNumOfPlayers() {return numOfPlayers; }
+    public void setMatrixTile(int x, int y, ItemTile itemTile) { boardMatrix[x][y] = itemTile; }
+    public ItemTile getMatrixTile(int x, int y) { return boardMatrix[x][y]; }
+
+    public void initItemTileMatrix() {
+        for (int i = 0; i < ROW; i++ ){
+            for (int j = 0; j < COL; j++){
+                setMatrixTile(i, j, new ItemTile());
+            }
+        }
+    }
     public void fillBoard(int[][] indices) {
         for (int[] index : indices) {
-            itemTileMatrix[index[0]][index[1]] = bag.drawItemTile();
+            setMatrixTile(index[0], index[1], bag.drawItemTile());
         }
     }
     public void refillBoard(){
@@ -60,21 +62,21 @@ public class Board {
         else if (numOfPlayers == 4) fillBoard(COORDINATES4PLAYERS);
     }
     public void printBoard() {
-        for (int j = 0; j < getItemTileMatrix().length; j++) {
-            for (int k = 0; k < getItemTileMatrix()[0].length; k++) {
-                System.out.printf("%10s", getItemTileMatrix()[j][k].getItemTileType().toString());
+        for (int j = 0; j < getBoardMatrix().length; j++) {
+            for (int k = 0; k < getBoardMatrix()[0].length; k++) {
+                System.out.printf("%10s", getMatrixTile(j,k).getItemTileType().toString());
             }
             System.out.println(" ");
         }
     }
 
     // Il controller garantisce che le itemTile con coordinate selectedTile non siano empty e cha siano adiacenti a una cella empty
-    // Codice for loop potrebbe essere sbagliato. da testare
+    // TODO: Codice for loop potrebbe essere sbagliato. da testare
     public Stack<ItemTile> getSelectedTile(@NotNull Stack<int[]> coordinates) {
         Stack<ItemTile> selectedItemTiles = new Stack<>();
         for (int[] indices : coordinates) {
-            selectedItemTiles.push(getItemTileMatrix()[indices[0]][indices[1]]);
-            getItemTileMatrix()[indices[0]][indices[1]] = new ItemTile();
+            selectedItemTiles.push(getBoardMatrix()[indices[0]][indices[1]]);
+            getBoardMatrix()[indices[0]][indices[1]] = new ItemTile();
         }
         return selectedItemTiles;
     }

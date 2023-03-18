@@ -1,27 +1,39 @@
 package model;
 
+import java.util.Stack;
+
 public class Bookshelf {
     private final int ROW = 6;
     private final int COL = 5;
-    private ItemTile[][] bookshelf;
+    private ItemTile[][] bookshelfMatrix;
     private int selectedColumn;
 
-    public void updateTiles(){
-
+    public Bookshelf() {
+        setBookshelfMatrix();
+        initBookshelfMatrix();
     }
-    public ItemTile[][] getBookshelf() {
-        return bookshelf;
-    }
-
-    public void setBookshelf(ItemTile[][] bookshelf) {
-        this.bookshelf = bookshelf;
-    }
-
-    public void setSelectedColumn(int selectedColumn) {
-        this.selectedColumn = selectedColumn;
+    private void initBookshelfMatrix() {
+        for (int i = 0; i < ROW; i++ ){
+            for (int j = 0; j < COL; j++){
+                setMatrixTile(i, j, new ItemTile());
+            }
+        }
     }
 
-    public int getSelectedColumn() {
-        return selectedColumn;
+    // TODO: TESTARE SE FUNZIONA
+    public void updateTiles(Stack<ItemTile> selectedTiles){
+        int col = getSelectedColumn();
+        for (int i = ROW-1; i>=0; i--) {
+            if (!selectedTiles.isEmpty() && getMatrixTile(i,col).getItemTileType() != ItemTileType.EMPTY ){
+                setMatrixTile(i, col, selectedTiles.pop());
+            }
+        }
     }
+    public ItemTile[][] getBookshelfMatrix() { return bookshelfMatrix;}
+    public ItemTile getMatrixTile(int x, int y) { return bookshelfMatrix[x][y]; }
+    public void setMatrixTile(int x, int y, ItemTile itemTile) { bookshelfMatrix[x][y] = itemTile; }
+    public void setBookshelfMatrix() { this.bookshelfMatrix = new ItemTile[ROW][COL]; }
+    public void setBookshelfMatrix(ItemTile[][] bookshelfMatrix) { this.bookshelfMatrix = bookshelfMatrix;}
+    public void setSelectedColumn(int selectedColumn) {this.selectedColumn = selectedColumn; }
+    public int getSelectedColumn() { return selectedColumn; }
 }

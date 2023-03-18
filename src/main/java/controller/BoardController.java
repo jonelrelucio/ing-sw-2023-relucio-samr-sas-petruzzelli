@@ -27,10 +27,10 @@ public class BoardController {
     public Stack<int[]> getCanBeSelectedTiles() { return canBeSelectedTiles; }
 
     public boolean isAdjacentEmpty(int x, int y){
-        if (board.getItemTileMatrix()[x+1][y].isEmpty()) return true;
-        else if (board.getItemTileMatrix()[x-1][y].isEmpty()) return true;
-        else if (board.getItemTileMatrix()[x][y+1].isEmpty()) return true;
-        else if (board.getItemTileMatrix()[x][y-1].isEmpty()) return true;
+        if (board.getBoardMatrix()[x+1][y].isEmpty()) return true;
+        else if (board.getBoardMatrix()[x-1][y].isEmpty()) return true;
+        else if (board.getBoardMatrix()[x][y+1].isEmpty()) return true;
+        else if (board.getBoardMatrix()[x][y-1].isEmpty()) return true;
         else return false;
     }
 
@@ -40,7 +40,7 @@ public class BoardController {
         if (selectedTile.isEmpty()) {
             for (int i = 1; i < ROW - 1; i++) {
                 for (int j = 1; j < COL - 1; j++) {
-                    if (!board.getItemTileMatrix()[i][j].isEmpty() && isAdjacentEmpty(i, j))
+                    if (!board.getBoardMatrix()[i][j].isEmpty() && isAdjacentEmpty(i, j))
                         canBeSelectedTiles.push(new int[]{i, j});
                 }
             }
