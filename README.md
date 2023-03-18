@@ -1,6 +1,6 @@
 
 # Progetto INGSW 2022-2023
-![last updated](https://img.shields.io/github/last-commit/jonelrelucio/ing-sw-2023-relucio-samr-sas-petruzzelli)
+![last updated](https://img.shields.io/github/last-commit/jonelrelucio/ing-sw-2023-relucio-samr-sas-petruzzelli?access_token=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)
 
 Implementazione del Gioco [My Shelfie](https://www.craniocreations.it/prodotto/my-shelfie/).
 
