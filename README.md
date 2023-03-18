@@ -1,10 +1,9 @@
 
 # Progetto INGSW 2022-2023
-![last updated](https://img.shields.io/github/last-commit/jonelrelucio/ing-sw-2023-relucio-samr-sas-petruzzelli?access_token=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)
 
 Implementazione del Gioco [My Shelfie](https://www.craniocreations.it/prodotto/my-shelfie/).
 
-<img src="src/main/resources/Publisher material/Box noshadow 280x280.png" align="right" width="200" >
+<img src="src/main/resources/publisher_material/box_noShadow.png" align="right" width="200" alt="My Shelfie" >
 
 ### Componenti del Gruppo GC25:
 - [Jonel Relucio](https://github.com/jonelrelucio)
