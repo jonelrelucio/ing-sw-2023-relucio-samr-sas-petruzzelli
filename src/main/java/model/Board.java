@@ -2,15 +2,12 @@ package model;
 
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Scanner;
 import java.util.Stack;
 
 public class Board {
 
     private final int ROW = 11, COL = 11;
-    private ItemTile[][] itemTileMatrix = new ItemTile[ROW][COL];
+    private final ItemTile[][] itemTileMatrix = new ItemTile[ROW][COL];
     private Bag bag;
     private int numOfPlayers;
 
@@ -71,13 +68,11 @@ public class Board {
         }
     }
 
-// Il controller garantisce che le itemTile con coordinate selectedTile non siano empty e cha siano adiacenti
-// a una cella empty
+    // Il controller garantisce che le itemTile con coordinate selectedTile non siano empty e cha siano adiacenti a una cella empty
+    // Codice for loop potrebbe essere sbagliato. da testare
     public Stack<ItemTile> getSelectedTile(@NotNull Stack<int[]> coordinates) {
         Stack<ItemTile> selectedItemTiles = new Stack<>();
-        Iterator<int[]> it = coordinates.iterator();
-        while (it.hasNext()) {
-            int[] indices = it.next();
+        for (int[] indices : coordinates) {
             selectedItemTiles.push(getItemTileMatrix()[indices[0]][indices[1]]);
             getItemTileMatrix()[indices[0]][indices[1]] = new ItemTile();
         }

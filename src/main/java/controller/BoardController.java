@@ -34,6 +34,8 @@ public class BoardController {
         else return false;
     }
 
+
+    //TODO: implement updateCanbeSelectedTiles case when selectedTile.size() == 1 || 2 || 3
     public void updateCanBeSelectedTiles(){
         if (selectedTile.isEmpty()) {
             for (int i = 1; i < ROW - 1; i++) {
@@ -73,7 +75,6 @@ public class BoardController {
             System.out.print(Arrays.toString(element) +"  ");
         }
     }
-
 
 
 

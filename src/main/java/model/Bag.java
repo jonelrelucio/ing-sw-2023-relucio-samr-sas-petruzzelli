@@ -8,7 +8,11 @@ import static model.ItemTileType.*;
 public class Bag {
     Stack<ItemTile> availableItemTiles = new Stack<ItemTile>();
 
-    public Bag(){
+    public Bag(){ bagCreate();}
+    public ItemTile drawItemTile() {
+        return availableItemTiles.pop();
+    }
+    public void bagCreate(){
         for (int i = 0; i < 22; i++){
             availableItemTiles.push(new ItemTile(CAT));
             availableItemTiles.push(new ItemTile(BOOK));
@@ -18,9 +22,5 @@ public class Bag {
             availableItemTiles.push(new ItemTile(PLANT));
         }
         Collections.shuffle(availableItemTiles);
-    }
-
-    public ItemTile drawItemTile() {
-        return availableItemTiles.pop();
     }
 }
