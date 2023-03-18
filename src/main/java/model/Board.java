@@ -31,10 +31,9 @@ public class Board {
         setNumOfPlayers(numOfPlayers);
         setBag();
         initItemTileMatrix();
-        fillBoard(COORDINATES);
-        if (numOfPlayers == 3) fillBoard(COORDINATES3PLAYERS);
-        else if (numOfPlayers == 4) fillBoard(COORDINATES4PLAYERS);
+        fillBoard();
     }
+    public Board() { this(2); }
 
     public ItemTile[][] getBoardMatrix(){ return boardMatrix; }
     public void setBag() { bag = new Bag(); }
@@ -51,15 +50,15 @@ public class Board {
             }
         }
     }
-    public void fillBoard(int[][] indices) {
+    public void setItemsInCoordinates(int[][] indices) {
         for (int[] index : indices) {
             setMatrixTile(index[0], index[1], bag.drawItemTile());
         }
     }
-    public void refillBoard(){
-        fillBoard(COORDINATES);
-        if (numOfPlayers == 3) fillBoard(COORDINATES3PLAYERS);
-        else if (numOfPlayers == 4) fillBoard(COORDINATES4PLAYERS);
+    public void fillBoard(){
+        setItemsInCoordinates(COORDINATES);
+        if (numOfPlayers == 3) setItemsInCoordinates(COORDINATES3PLAYERS);
+        else if (numOfPlayers == 4) setItemsInCoordinates(COORDINATES4PLAYERS);
     }
     public void printBoard() {
         for (int j = 0; j < getBoardMatrix().length; j++) {

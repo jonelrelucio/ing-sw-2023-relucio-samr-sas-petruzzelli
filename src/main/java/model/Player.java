@@ -12,6 +12,7 @@ enum PlayerState {
 }
 
 public class Player {
+
     private String nickname;
     private int score;
     private Bookshelf bookshelf;
@@ -24,7 +25,7 @@ public class Player {
 
     public Player(String nickname){
         setNickname(nickname);
-        setPersonalGoalCard(new PersonalGoalCard());
+        setPersonalGoalCard();
         setBookshelf();
         setSelectedTiles();
         setScore();
@@ -48,9 +49,10 @@ public class Player {
     public String getNickname() {
         return nickname;
     }
-    public void setBookshelf() { bookshelf = new Bookshelf(); }
+    public void setBookshelf() { setBookshelf(new Bookshelf() );}
+    public void setBookshelf(Bookshelf bookshelf) { this.bookshelf = bookshelf; }
     public Bookshelf getBookshelf() { return bookshelf; }
-
+    public void setPersonalGoalCard() { setPersonalGoalCard(new PersonalGoalCard());}
     public void setPersonalGoalCard(PersonalGoalCard personalGoalCard) {
         this.personalGoalCard = personalGoalCard;
     }

@@ -10,12 +10,18 @@ public class GameModel {
     private CommonGoalCardDeck commonGoalCardDeck;
     private Board board;
     private State state;
-    private int getNumOfRounds;
+    private int numOfRounds;
     private Player currentPlayer;
 
-    public void init() {}
-    public void start() {
-
+    public GameModel() {
+        setPlayerList();
+        setCommonGoalCardDeck();
+        setBoard();
+    }
+    public void setPersonalGoalCards() {
+        for (int i = 0; i < numOfPlayer; i++ ){
+            playerList.get(i).setPersonalGoalCard();
+        }
     }
     public Player checkWinner() {
         return new Player("string");
@@ -34,7 +40,7 @@ public class GameModel {
     public CircularArrayList<Player> getPlayerList() {
         return playerList;
     }
-
+    public void setPlayerList() { setPlayerList(new CircularArrayList<>());}
     public void setPlayerList(CircularArrayList<Player> playerList) {
         this.playerList = playerList;
     }
@@ -43,14 +49,14 @@ public class GameModel {
         return commonGoalCardDeck;
     }
 
+    public void setCommonGoalCardDeck() { setCommonGoalCardDeck(new CommonGoalCardDeck());}
     public void setCommonGoalCardDeck(CommonGoalCardDeck commonGoalCardDeck) {
         this.commonGoalCardDeck = commonGoalCardDeck;
     }
-
     public Board getBoard() {
         return board;
     }
-
+    public void setBoard() { setBoard(new Board()); }
     public void setBoard(Board board) {
         this.board = board;
     }
@@ -63,12 +69,12 @@ public class GameModel {
         this.state = state;
     }
 
-    public int getGetNumOfRounds() {
-        return getNumOfRounds;
+    public int getNumOfRounds() {
+        return numOfRounds;
     }
 
-    public void setGetNumOfRounds(int getNumOfRounds) {
-        this.getNumOfRounds = getNumOfRounds;
+    public void setNumOfRounds(int numOfRounds) {
+        this.numOfRounds = numOfRounds;
     }
 
     public Player getCurrentPlayer() {
