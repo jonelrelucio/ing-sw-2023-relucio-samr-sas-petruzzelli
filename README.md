@@ -16,16 +16,19 @@ I diagrammi UML sono stato sviluppati nel sito di [diagrams](https://www.diagram
 Il diagramma principale: [UML Diagram](src/main/umlDiagram/myShelfieUmlDiagram.png)
 
 ### Functionality
-| Functionality    |                       State                        |
-|:-----------------|:--------------------------------------------------:|
-| Basic rules      | 🟡 |
-| Complete rules   | 🟡 |
-| Socket           | 🔴 |
-| GUI              | 🔴 |
-| CLI              | 🔴 |
-| 4 players game   | 🔴 |
-| 12 characters    | 🔴 |
-| Multiple games   | 🔴 |
+| Functionality                |                       State                        |
+|:-----------------------------|:--------------------------------------------------:|
+| Basic rules                  | 🟡 |
+| Complete rules               | 🟡 |
+| Socket                       | 🔴 |
+| RMI                          | 🔴 |
+| CLI                          | 🔴 |
+| GLI                          | 🔴 |
+| Multiple games               | 🔴 |
+| Persistence                  | 🔴 |
+| Resilience to disconnections | 🔴 |
+| Chat                         | 🔴 |
+
 
 ##### Legenda
 🔴 Non Implementato | 🟢 Implementato |🟡 Implementazione in corso...
