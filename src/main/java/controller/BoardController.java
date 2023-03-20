@@ -36,8 +36,37 @@ public class BoardController {
         else return false;
     }
 
+    public ArrayList<int[]> getAdjacentCoordinates(int[] coordinates) {
+        ArrayList<int[]> adjacentCoordinates = new ArrayList<>();
+        int x = coordinates[0];
+        int y = coordinates[1];
+        if (!board.getBoardMatrix()[x-1][y].isEmpty()  && isAdjacentEmpty(x-1, y)){
+            adjacentCoordinates.add(new int[] {x-1, y});
+            if (!board.getBoardMatrix()[x-2][y].isEmpty()  && isAdjacentEmpty(x-2, y)) {
+                adjacentCoordinates.add(new int[] {x-2, y});
+            }
+        }
+        if (!board.getBoardMatrix()[x+1][y].isEmpty()  && isAdjacentEmpty(x+1, y)) {
+            adjacentCoordinates.add(new int[] {x+1, y });
+            if (!board.getBoardMatrix()[x-2][y].isEmpty()  && isAdjacentEmpty(x+2, y)) {
+                adjacentCoordinates.add(new int[] {x+2, y});
+            }
+        }
+        if (!board.getBoardMatrix()[x][y-1].isEmpty()  && isAdjacentEmpty(x, y-1)) {
+            adjacentCoordinates.add(new int[] {x, y-1 });
+            if (!board.getBoardMatrix()[x][y-2].isEmpty()  && isAdjacentEmpty(x, y-2) ) {
+                adjacentCoordinates.add(new int[] {x, y-2});
+            }
+        }
+        if (!board.getBoardMatrix()[x][y+1].isEmpty()  && isAdjacentEmpty(x, y+1)) {
+            adjacentCoordinates.add(new int[] {x, y+1});
+            if (!board.getBoardMatrix()[x][y+2].isEmpty()  && isAdjacentEmpty(x, y+2)) {
+                adjacentCoordinates.add(new int[] {x, y+2});
+            }
+        }
+            return adjacentCoordinates;
+    }
 
-    //TODO: implement updateCanbeSelectedTiles case when selectedTile.size() == 1 || 2 || 3
     public void updateCanBeSelectedTiles(){
         if (selectedTile.isEmpty()) {
             for (int i = 1; i < ROW - 1; i++) {
@@ -46,13 +75,29 @@ public class BoardController {
                         canBeSelectedTiles.add(new int[]{i, j});
                 }
             }
-        }
-        else if (selectedTile.size() == 1){
-
+        } else if (selectedTile.size() == 1 ) {
+            canBeSelectedTiles = getAdjacentCoordinates(selectedTile.get(0));
+        } else if (selectedTile.size() == 2) {
+            canBeSelectedTiles = getTilesIntersection(selectedTile.get(0), selectedTile.get(1));
         }
     }
 
+    public ArrayList<int[]> getTilesIntersection(int[] coordinate1, int[] coordinate2) {
+        ArrayList<int[]> canBeSelected1 = getAdjacentCoordinates(coordinate1);
+        ArrayList<int[]> canBeSelected2 = getAdjacentCoordinates(coordinate2);
+        ArrayList<int[]> intersection = new ArrayList<>();
+        for (int[] tile1 : canBeSelected1) {
+            for (int[] tile2 : canBeSelected2) {
+                if (Arrays.equals(tile1, tile2)) {
+                    intersection.add(new int[]{tile1[0], tile1[1]});
+                }
+            }
+        }
+        return intersection;
+    }
+
     public void printCanBeSelectedTiles() {
+        if (canBeSelectedTiles.isEmpty()) System.out.println("No more tiles can be selected.");
         for (int[] element : canBeSelectedTiles) {
             System.out.printf(Arrays.toString(element) +"  ");
         }
@@ -69,7 +114,6 @@ public class BoardController {
     }
 
     public void popSelectedTile(int[] coordinates ){
-
         if (!selectedTile.isEmpty()) {
             selectedTile.remove(coordinates);
         }
@@ -110,13 +154,11 @@ public class BoardController {
         }
         System.out.print("\n\n");
 
-
+        ArrayList<ItemTile> selectedItemTile = bc.board.getSelectedTile(bc.selectedTile); //parte importante gestita poi dal player
         System.out.println("Updated board: ");
         board.printBoard();
 
 
-
-        ArrayList<ItemTile> selectedItemTile = bc.board.getSelectedTile(bc.selectedTile); //parte importante gestita poi dal player
         sc.close();
     }
 
