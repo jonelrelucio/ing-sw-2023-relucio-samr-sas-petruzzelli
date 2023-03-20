@@ -1,4 +1,4 @@
-package model;
+package model.commonGoalCard;
 
 import java.util.HashMap;
 import java.util.Stack;

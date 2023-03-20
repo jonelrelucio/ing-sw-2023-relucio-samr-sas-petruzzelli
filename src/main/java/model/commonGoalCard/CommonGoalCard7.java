@@ -1,3 +1,5 @@
+package model.commonGoalCard;
+
 public class CommonGoalCard7 implements CommonGoalCard {
     @Override
     public boolean checkPattern(ItemTile[][] bookshelf) {

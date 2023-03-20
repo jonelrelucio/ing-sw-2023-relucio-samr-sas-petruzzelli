@@ -6,7 +6,7 @@ public class Board {
 
     private final int ROW = 11, COL = 11;
     private final ItemTile[][] boardMatrix = new ItemTile[ROW][COL];
-    private Bag bag;
+    private ItemTileBag bag;
     private int numOfPlayers;
 
     private final int[][] COORDINATES = {
@@ -33,8 +33,8 @@ public class Board {
     }
     public Board() { this(2); }
     public ItemTile[][] getBoardMatrix(){ return boardMatrix; }
-    public void setBag() { bag = new Bag(); }
-    public Bag getBag() { return bag; }
+    public void setBag() { bag = new ItemTileBag(); }
+    public ItemTileBag getBag() { return bag; }
     public void setNumOfPlayers(int numOfPlayers) { this.numOfPlayers = numOfPlayers; }
     public int getNumOfPlayers() {return numOfPlayers; }
     public void setMatrixTile(int x, int y, ItemTile itemTile) { boardMatrix[x][y] = itemTile; }

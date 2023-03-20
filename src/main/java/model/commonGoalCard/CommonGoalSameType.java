@@ -1,3 +1,8 @@
+package model.commonGoalCard;
+
+import model.ItemTile;
+import model.ItemTileType;
+
 import java.util.HashMap;
 import java.util.Objects;
 
@@ -68,7 +73,7 @@ public abstract class CommonGoalSameType implements CommonGoalCard{
                             }
 
                             // given the current tile's type (!= Empty) as key to the patternControl HashMap, if the related value is equal to the occurrence field then the commonGoalCard is obtained and return true
-                            if (Objects.equals(patternControl.get(bookshelf[displayRow][displayCol].getItemTileType()), occurrence) && bookshelf[displayRow][displayCol].getItemTileType() != ItemTileType.Empty) {
+                            if (Objects.equals(patternControl.get(bookshelf[displayRow][displayCol].getItemTileType()), occurrence) && bookshelf[displayRow][displayCol].getItemTileType() != ItemTileType.EMPTY) {
                                 return true;
                             }
                         }

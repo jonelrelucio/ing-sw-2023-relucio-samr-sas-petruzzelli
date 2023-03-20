@@ -1,8 +1,6 @@
 package model;
 
-import java.util.HashMap;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 import static model.ItemTileType.*;
 
@@ -10,7 +8,7 @@ public class PersonalGoalCard {
 
     private static int ROW = 6, COL = 5;
     private static HashMap<Integer, Integer> pointsMapping;
-    private ItemTile[][] personalGoal;
+    private ItemTile[][] personalGoalMatrix;
     private HashMap<Integer, int[][]> coordinatesMapping;
     private HashMap<Integer, ItemTileType[]> itemCoordinatesMapping;
 
@@ -45,6 +43,21 @@ public class PersonalGoalCard {
             {BOOK, PLANT, FRAME, TROPHY, GAME, CAT}
     };
 
+    public PersonalGoalCard() {
+        createPointsMapping();
+        initBoard();
+        initCoordinatesMapping();
+        initItemCoordinatesMapping();
+        buildPersonalGoalCard(PersonalGoalCardBag.getRandomPersonalCardNum());
+    }
+    public void initBoard() {
+        personalGoalMatrix = new ItemTile[ROW][COL];
+        for (int i = 0; i < ROW; i++){
+            for (int j = 0; j < COL; j++ ){
+                personalGoalMatrix[i][j] = new ItemTile(EMPTY);
+            }
+        }
+    }
     public void initCoordinatesMapping() {
         coordinatesMapping = new HashMap<>();
         for (int i = 0; i < COORDINATES.length; i++) {
@@ -63,27 +76,18 @@ public class PersonalGoalCard {
 
         for (int i = 0; i < indices.length; i++) {
             int[] index = indices[i];
-            if (personalGoal[index[0]][index[1]].isEmpty()) {
-                personalGoal[index[0]][index[1]] = new ItemTile(itemTileType[i]);
+            if (personalGoalMatrix[index[0]][index[1]].isEmpty()) {
+                personalGoalMatrix[index[0]][index[1]] = new ItemTile(itemTileType[i]);
             }
         }
     }
     public void setItemsInCoordinates(int[][] indices, ItemTileType itemTileType) {
         for (int[] index : indices) {
-            if (personalGoal[index[0]][index[1]].isEmpty()) {
-                personalGoal[index[0]][index[1]] = new ItemTile(itemTileType);
+            if (personalGoalMatrix[index[0]][index[1]].isEmpty()) {
+                personalGoalMatrix[index[0]][index[1]] = new ItemTile(itemTileType);
             }
         }
     }
-
-    public PersonalGoalCard(int key) {
-        createPointsMapping();
-        initBoard();
-        initCoordinatesMapping();
-        initItemCoordinatesMapping();
-        buildPersonalGoalCard(key);
-    }
-
     public void createPointsMapping() {
         pointsMapping = new HashMap<>();
         pointsMapping.put(1, 1);
@@ -94,18 +98,11 @@ public class PersonalGoalCard {
         pointsMapping.put(6, 12);
     }
 
-    public void initBoard() {
-        personalGoal = new ItemTile[ROW][COL];
-        for (int i = 0; i < ROW; i++){
-            for (int j = 0; j < COL; j++ ){
-                personalGoal[i][j] = new ItemTile(EMPTY);
-            }
-        }
-    }
+    public ItemTile[][] getPersonalGoalCardMatrix() { return personalGoalMatrix; }
 
     public void printPersonalGoal() {
-        for (ItemTile[] itemTiles : personalGoal) {
-            for (int k = 0; k < personalGoal[0].length; k++) {
+        for (ItemTile[] itemTiles : personalGoalMatrix) {
+            for (int k = 0; k < personalGoalMatrix[0].length; k++) {
                 System.out.printf("%10s", itemTiles[k].getItemTileType().toString());
             }
             System.out.println(" ");
@@ -113,13 +110,8 @@ public class PersonalGoalCard {
     }
 
 
-
     public static void main(String[] args){
-        Random r = new Random();
-        int randomNumber = r.nextInt(12) + 1;
-        System.out.println("\n\nChosen random number: "+randomNumber);
-        System.out.println("Building card: PersonalGoalCard"+randomNumber);
-        PersonalGoalCard personalGoalCard = new PersonalGoalCard(randomNumber);
+        PersonalGoalCard personalGoalCard = new PersonalGoalCard();
         System.out.print("\nPersonal Goal Card: \n");
         personalGoalCard.printPersonalGoal();
 

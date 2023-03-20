@@ -5,13 +5,19 @@ import java.util.Stack;
 
 import static model.ItemTileType.*;
 
-public class Bag {
-    Stack<ItemTile> availableItemTiles = new Stack<ItemTile>();
+public class ItemTileBag {
+    private Stack<ItemTile> availableItemTiles;
 
-    public Bag(){ bagCreate();}
+
+    public ItemTileBag(){
+        availableItemTiles = new Stack<>();
+        bagCreate();
+    }
+
     public ItemTile drawItemTile() {
         return availableItemTiles.pop();
     }
+
     public void bagCreate(){
         for (int i = 0; i < 22; i++){
             availableItemTiles.push(new ItemTile(CAT));

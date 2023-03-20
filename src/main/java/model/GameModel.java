@@ -1,5 +1,7 @@
 package model;
 
+import model.commonGoalCard.CommonGoalCardDeck;
+
 enum State {
     INIT, MID, END
 }
@@ -14,13 +16,13 @@ public class GameModel {
     private Player currentPlayer;
 
     public GameModel() {
-        setPlayerList();
-        setCommonGoalCardDeck();
-        setBoard();
+        this.playerList = new CircularArrayList<>();
+        this.commonGoalCardDeck = new CommonGoalCardDeck();
+        this.board = new Board();
     }
     public void setPersonalGoalCards() {
         for (int i = 0; i < numOfPlayer; i++ ){
-            //TODO playerList.get(i).setPersonalGoalCard();
+            playerList.get(i).setPersonalGoalCard(new PersonalGoalCard());
         }
     }
     public Player checkWinner() {
@@ -40,7 +42,6 @@ public class GameModel {
     public CircularArrayList<Player> getPlayerList() {
         return playerList;
     }
-    public void setPlayerList() { setPlayerList(new CircularArrayList<>());}
     public void setPlayerList(CircularArrayList<Player> playerList) {
         this.playerList = playerList;
     }
@@ -49,14 +50,12 @@ public class GameModel {
         return commonGoalCardDeck;
     }
 
-    public void setCommonGoalCardDeck() { setCommonGoalCardDeck(new CommonGoalCardDeck());}
     public void setCommonGoalCardDeck(CommonGoalCardDeck commonGoalCardDeck) {
         this.commonGoalCardDeck = commonGoalCardDeck;
     }
     public Board getBoard() {
         return board;
     }
-    public void setBoard() { setBoard(new Board()); }
     public void setBoard(Board board) {
         this.board = board;
     }

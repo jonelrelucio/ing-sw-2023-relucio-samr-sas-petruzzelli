@@ -1,3 +1,8 @@
+package model.commonGoalCard;
+
+import model.ItemTileType;
+import model.ItemTile;
+
 import java.util.HashMap;
 
 public abstract class CommonGoalDifferentType implements CommonGoalCard{
