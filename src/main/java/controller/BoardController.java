@@ -40,32 +40,20 @@ public class BoardController {
         ArrayList<int[]> adjacentCoordinates = new ArrayList<>();
         int x = coordinates[0];
         int y = coordinates[1];
-        if (!board.getBoardMatrix()[x-1][y].isEmpty()  && isAdjacentEmpty(x-1, y)){
-            adjacentCoordinates.add(new int[] {x-1, y});
-            if (!board.getBoardMatrix()[x-2][y].isEmpty()  && isAdjacentEmpty(x-2, y)) {
-                adjacentCoordinates.add(new int[] {x-2, y});
+        int[][] directions = new int[][] {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+        for (int[] direction : directions) {
+            int x2 = x + direction[0];
+            int y2 = y + direction[1];
+            if (x2 >= 0 && x2 < board.getBoardMatrix().length && y2 >= 0 && y2 < board.getBoardMatrix()[0].length) {
+                if (!board.getBoardMatrix()[x2][y2].isEmpty() && isAdjacentEmpty(x2, y2)) {
+                    adjacentCoordinates.add(new int[] {x2, y2});
+                }
             }
         }
-        if (!board.getBoardMatrix()[x+1][y].isEmpty()  && isAdjacentEmpty(x+1, y)) {
-            adjacentCoordinates.add(new int[] {x+1, y });
-            if (!board.getBoardMatrix()[x-2][y].isEmpty()  && isAdjacentEmpty(x+2, y)) {
-                adjacentCoordinates.add(new int[] {x+2, y});
-            }
-        }
-        if (!board.getBoardMatrix()[x][y-1].isEmpty()  && isAdjacentEmpty(x, y-1)) {
-            adjacentCoordinates.add(new int[] {x, y-1 });
-            if (!board.getBoardMatrix()[x][y-2].isEmpty()  && isAdjacentEmpty(x, y-2) ) {
-                adjacentCoordinates.add(new int[] {x, y-2});
-            }
-        }
-        if (!board.getBoardMatrix()[x][y+1].isEmpty()  && isAdjacentEmpty(x, y+1)) {
-            adjacentCoordinates.add(new int[] {x, y+1});
-            if (!board.getBoardMatrix()[x][y+2].isEmpty()  && isAdjacentEmpty(x, y+2)) {
-                adjacentCoordinates.add(new int[] {x, y+2});
-            }
-        }
-            return adjacentCoordinates;
+        return adjacentCoordinates;
     }
+
 
     public void updateCanBeSelectedTiles(){
         if (selectedTile.isEmpty()) {
@@ -102,7 +90,6 @@ public class BoardController {
             System.out.printf(Arrays.toString(element) +"  ");
         }
     }
-
     public void selectTile(int x, int y) {
         for (int[] tile : canBeSelectedTiles) {
             if (Arrays.equals(tile, new int[] {x, y})) {
