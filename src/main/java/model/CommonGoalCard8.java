@@ -1,3 +1,4 @@
+package model;
 public class CommonGoalCard8 implements CommonGoalCard{
     @Override
     public boolean checkPattern(ItemTile[][] bookshelf) {
@@ -18,7 +19,7 @@ public class CommonGoalCard8 implements CommonGoalCard{
                     for (int j = col; j < col + diagonalSize; j++) {
 
                         // in the principal diagonal: set principalDiagonal to false just it finds a tile of a different type
-                        if (bookshelf[row][col].getItemTileType() != ItemTileType.Empty && x == y && principalDiagonal) {
+                        if (bookshelf[row][col].getItemTileType() != ItemTileType.EMPTY && x == y && principalDiagonal) {
                             principalDiagonal = bookshelf[row][col].getItemTileType() == bookshelf[i][j].getItemTileType();
 
                             // if the last item tile in the principal diagonal is correct then the diagonal is complete
@@ -28,7 +29,7 @@ public class CommonGoalCard8 implements CommonGoalCard{
                         }
 
                         // in the secondary diagonal: set secondaryDiagonal to false just it finds a tile of a different type
-                        if (bookshelf[row][col + diagonalSize - 1].getItemTileType() != ItemTileType.Empty && x + y == diagonalSize - 1 && secondaryDiagonal) {
+                        if (bookshelf[row][col + diagonalSize - 1].getItemTileType() != ItemTileType.EMPTY && x + y == diagonalSize - 1 && secondaryDiagonal) {
                             secondaryDiagonal = bookshelf[row][col + diagonalSize - 1].getItemTileType() == bookshelf[i][j].getItemTileType();
 
                             // if the last item tile in the secondary diagonal is correct then the diagonal is complete

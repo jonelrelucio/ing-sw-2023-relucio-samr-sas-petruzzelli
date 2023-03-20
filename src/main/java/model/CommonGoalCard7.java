@@ -1,3 +1,4 @@
+package model;
 public class CommonGoalCard7 implements CommonGoalCard {
     @Override
     public boolean checkPattern(ItemTile[][] bookshelf) {
@@ -14,8 +15,8 @@ public class CommonGoalCard7 implements CommonGoalCard {
                 for (int j = col; j < col + height; j++) {
 
                     // if the item tiles in the secondary diagonal are not empty then control if the tiles just above are empty, if so the scheme (increasing) is found
-                    if (bookshelf[i][j].getItemTileType() != ItemTileType.Empty && x + y == height - 1 && increasing) {
-                        increasing = i != 0 && bookshelf[i - 1][j].getItemTileType() == ItemTileType.Empty;
+                    if (bookshelf[i][j].getItemTileType() != ItemTileType.EMPTY && x + y == height - 1 && increasing) {
+                        increasing = i != 0 && bookshelf[i - 1][j].getItemTileType() == ItemTileType.EMPTY;
 
                         // if the last item tile in the secondary diagonal is correct then the diagonal is complete
                         if (i == bookshelf.length - height && j == col + height - 1 && increasing) {
@@ -24,8 +25,8 @@ public class CommonGoalCard7 implements CommonGoalCard {
                     }
 
                     // if the item tiles in the principal diagonal are not empty then control if the tiles just above are empty, if so the scheme (decreasing) is found
-                    if (bookshelf[i][j].getItemTileType() != ItemTileType.Empty && x == y && decreasing) {
-                        decreasing = i != 0 && bookshelf[i - 1][j].getItemTileType() == ItemTileType.Empty;
+                    if (bookshelf[i][j].getItemTileType() != ItemTileType.EMPTY && x == y && decreasing) {
+                        decreasing = i != 0 && bookshelf[i - 1][j].getItemTileType() == ItemTileType.EMPTY;
 
                         // if the last item tile in the secondary diagonal is correct then the diagonal is complete
                         if (i == bookshelf.length - height && j == col && decreasing) {
