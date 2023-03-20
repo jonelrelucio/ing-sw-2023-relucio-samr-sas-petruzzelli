@@ -3,6 +3,8 @@ package controller;
 import model.Board;
 import model.ItemTile;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 import java.util.Stack;
@@ -10,8 +12,8 @@ import java.util.Stack;
 public class BoardController {
     private final int ROW = 11, COL = 11;
     private Board board;
-    private Stack<int[]> selectedTile;
-    private Stack<int[]> canBeSelectedTiles;
+    private ArrayList<int[]> selectedTile;
+    private ArrayList<int[]> canBeSelectedTiles;
 
     public BoardController(Board board) {
         setBoard(board);
@@ -21,10 +23,10 @@ public class BoardController {
 
     public void setBoard(Board board) { this.board = board; }
     public Board getBoard() { return board; }
-    public void setSelectedTile() { selectedTile = new Stack<>(); }
-    public Stack<int[]> getSelectedTile() { return selectedTile; }
-    public void setCanBeSelectedTiles() { canBeSelectedTiles = new Stack<>(); }
-    public Stack<int[]> getCanBeSelectedTiles() { return canBeSelectedTiles; }
+    public void setSelectedTile() { selectedTile = new ArrayList<>(); }
+    public ArrayList<int[]> getSelectedTile() { return selectedTile; }
+    public void setCanBeSelectedTiles() { canBeSelectedTiles = new ArrayList<>(); }
+    public ArrayList<int[]> getCanBeSelectedTiles() { return canBeSelectedTiles; }
 
     public boolean isAdjacentEmpty(int x, int y){
         if (board.getBoardMatrix()[x+1][y].isEmpty()) return true;
@@ -41,7 +43,7 @@ public class BoardController {
             for (int i = 1; i < ROW - 1; i++) {
                 for (int j = 1; j < COL - 1; j++) {
                     if (!board.getBoardMatrix()[i][j].isEmpty() && isAdjacentEmpty(i, j))
-                        canBeSelectedTiles.push(new int[]{i, j});
+                        canBeSelectedTiles.add(new int[]{i, j});
                 }
             }
         }
@@ -59,15 +61,18 @@ public class BoardController {
     public void selectTile(int x, int y) {
         for (int[] tile : canBeSelectedTiles) {
             if (Arrays.equals(tile, new int[] {x, y})) {
-                selectedTile.push(new int[]{x, y});
+                selectedTile.add(new int[]{x, y});
                 return;
             }
         }
         System.out.println("Error to be handled.!");
     }
 
-    public void popSelectedTile(){
-        if (!selectedTile.isEmpty()) selectedTile.pop();
+    public void popSelectedTile(int[] coordinates ){
+
+        if (!selectedTile.isEmpty()) {
+            selectedTile.remove(coordinates);
+        }
         else System.out.println("Error to be handled");
     }
     public void printSelectedTile() {
@@ -111,7 +116,7 @@ public class BoardController {
 
 
 
-        Stack<ItemTile> selectedItemTile = bc.board.getSelectedTile(bc.selectedTile); //parte importante gestita poi dal player
+        ArrayList<ItemTile> selectedItemTile = bc.board.getSelectedTile(bc.selectedTile); //parte importante gestita poi dal player
         sc.close();
     }
 

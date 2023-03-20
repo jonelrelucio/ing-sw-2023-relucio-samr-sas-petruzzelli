@@ -18,7 +18,7 @@ public class Player {
     private Bookshelf bookshelf;
     private PersonalGoalCard personalGoalCard;
     private ArrayList<CommonGoalCard> obtainedCommonGoalCards;
-    private Stack<ItemTile> selectedTiles;
+    private ArrayList<ItemTile> selectedTiles;
     private static final int ENDTOKENSCORE = 1;
     private int numOfRounds;
     private PlayerState playerState;
@@ -66,11 +66,11 @@ public class Player {
     public int getScore() {
         return this.score;
     }
-    public void setSelectedTiles() { this.selectedTiles = new Stack<>(); }
-    public void setSelectedTiles(Stack<ItemTile> selectedTiles) { this.selectedTiles = selectedTiles; }
-    public Stack<ItemTile> getSelectedTiles() { return selectedTiles; }
+    public void setSelectedTiles() { this.selectedTiles = new ArrayList<>(); }
+    public void setSelectedTiles(ArrayList<ItemTile> selectedTiles) { this.selectedTiles = selectedTiles; }
+    public ArrayList<ItemTile> getSelectedTiles() { return selectedTiles; }
 
-    public void updateSelectedTiles(Stack<ItemTile> selectedTiles) { this.selectedTiles = selectedTiles; }
+    public void updateSelectedTiles(ArrayList<ItemTile> selectedTiles) { this.selectedTiles = selectedTiles; }
 
     public void getEndGameToken() { this.score += ENDTOKENSCORE; }
 

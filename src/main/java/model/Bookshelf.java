@@ -22,10 +22,9 @@ public class Bookshelf {
 
     // TODO: TESTARE SE FUNZIONA
     public void updateTiles(Stack<ItemTile> selectedTiles){
-        int col = getSelectedColumn();
         for (int i = ROW-1; i>=0; i--) {
-            if (!selectedTiles.isEmpty() && getMatrixTile(i,col).getItemTileType() != ItemTileType.EMPTY ){
-                setMatrixTile(i, col, selectedTiles.pop());
+            if (!selectedTiles.isEmpty() && !getMatrixTile(i,selectedColumn).isEmpty() ){
+                setMatrixTile(i, selectedColumn, selectedTiles.pop());
             }
         }
     }

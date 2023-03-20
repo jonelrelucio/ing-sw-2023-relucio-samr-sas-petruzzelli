@@ -1,8 +1,6 @@
 package model;
 
-import org.jetbrains.annotations.NotNull;
-
-import java.util.Stack;
+import java.util.ArrayList;
 
 public class Board {
 
@@ -46,13 +44,13 @@ public class Board {
     public void initItemTileMatrix() {
         for (int i = 0; i < ROW; i++ ){
             for (int j = 0; j < COL; j++){
-                setMatrixTile(i, j, new ItemTile());
+                setMatrixTile(i, j, new ItemTile(ItemTileType.EMPTY));
             }
         }
     }
     public void setItemsInCoordinates(int[][] indices) {
         for (int[] index : indices) {
-            setMatrixTile(index[0], index[1], bag.drawItemTile());
+            if (boardMatrix[index[0]][index[1]].isEmpty()) setMatrixTile(index[0], index[1], bag.drawItemTile());
         }
     }
     public void fillBoard(){
@@ -61,8 +59,8 @@ public class Board {
         else if (numOfPlayers == 4) setItemsInCoordinates(COORDINATES4PLAYERS);
     }
     public void printBoard() {
-        for (int j = 0; j < getBoardMatrix().length; j++) {
-            for (int k = 0; k < getBoardMatrix()[0].length; k++) {
+        for (int j = 1; j < getBoardMatrix().length-1; j++) {
+            for (int k = 1; k < getBoardMatrix()[0].length-1; k++) {
                 System.out.printf("%10s", getMatrixTile(j,k).getItemTileType().toString());
             }
             System.out.println(" ");
@@ -71,11 +69,11 @@ public class Board {
 
     // Il controller garantisce che le itemTile con coordinate selectedTile non siano empty e cha siano adiacenti a una cella empty
     // TODO: Codice for loop potrebbe essere sbagliato. da testare
-    public Stack<ItemTile> getSelectedTile(@NotNull Stack<int[]> coordinates) {
-        Stack<ItemTile> selectedItemTiles = new Stack<>();
+    public ArrayList<ItemTile> getSelectedTile(ArrayList<int[]> coordinates) {
+        ArrayList<ItemTile> selectedItemTiles = new ArrayList<>();
         for (int[] indices : coordinates) {
-            selectedItemTiles.push(getBoardMatrix()[indices[0]][indices[1]]);
-            getBoardMatrix()[indices[0]][indices[1]] = new ItemTile();
+            selectedItemTiles.add(boardMatrix[indices[0]][indices[1]]);
+            boardMatrix[indices[0]][indices[1]] = new ItemTile(ItemTileType.EMPTY);
         }
         return selectedItemTiles;
     }
