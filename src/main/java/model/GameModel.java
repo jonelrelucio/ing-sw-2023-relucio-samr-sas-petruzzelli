@@ -20,7 +20,7 @@ public class GameModel {
     }
     public void setPersonalGoalCards() {
         for (int i = 0; i < numOfPlayer; i++ ){
-            playerList.get(i).setPersonalGoalCard();
+            //TODO playerList.get(i).setPersonalGoalCard();
         }
     }
     public Player checkWinner() {

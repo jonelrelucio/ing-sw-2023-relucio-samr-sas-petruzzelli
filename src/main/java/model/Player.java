@@ -25,7 +25,7 @@ public class Player {
 
     public Player(String nickname){
         setNickname(nickname);
-        setPersonalGoalCard();
+        //TODO setPersonalGoalCard();
         setBookshelf();
         setSelectedTiles();
         setScore();
@@ -52,7 +52,7 @@ public class Player {
     public void setBookshelf() { setBookshelf(new Bookshelf() );}
     public void setBookshelf(Bookshelf bookshelf) { this.bookshelf = bookshelf; }
     public Bookshelf getBookshelf() { return bookshelf; }
-    public void setPersonalGoalCard() { setPersonalGoalCard(new PersonalGoalCard());}
+    //public void setPersonalGoalCard() { setPersonalGoalCard(new PersonalGoalCard());}
     public void setPersonalGoalCard(PersonalGoalCard personalGoalCard) {
         this.personalGoalCard = personalGoalCard;
     }
