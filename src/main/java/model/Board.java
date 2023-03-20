@@ -32,7 +32,6 @@ public class Board {
         fillBoard();
     }
     public Board() { this(2); }
-
     public ItemTile[][] getBoardMatrix(){ return boardMatrix; }
     public void setBag() { bag = new Bag(); }
     public Bag getBag() { return bag; }
