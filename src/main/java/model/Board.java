@@ -1,12 +1,13 @@
 package model;
 
+import java.security.InvalidParameterException;
 import java.util.ArrayList;
 
 public class Board {
 
     private final int ROW = 11, COL = 11;
-    private final ItemTile[][] boardMatrix = new ItemTile[ROW][COL];
-    private ItemTileBag bag;
+    private ItemTile[][] boardMatrix = new ItemTile[ROW][COL];
+    private static ItemTileBag bag;
     private int numOfPlayers;
 
     private final int[][] COORDINATES = {
@@ -31,11 +32,17 @@ public class Board {
         initItemTileMatrix();
         fillBoard();
     }
-    public Board() { this(2); }
     public ItemTile[][] getBoardMatrix(){ return boardMatrix; }
+    public void setBoardMatrix(ItemTile[][] boardMatrix ) {
+        this.boardMatrix = boardMatrix;
+    }
     public void setBag() { bag = new ItemTileBag(); }
     public ItemTileBag getBag() { return bag; }
-    public void setNumOfPlayers(int numOfPlayers) { this.numOfPlayers = numOfPlayers; }
+    public void setNumOfPlayers(int numOfPlayers) {
+        if (numOfPlayers >= 2 && numOfPlayers <= 4) {
+            this.numOfPlayers = numOfPlayers;
+        } else throw new InvalidParameterException();
+    }
     public int getNumOfPlayers() {return numOfPlayers; }
     public void setMatrixTile(int x, int y, ItemTile itemTile) { boardMatrix[x][y] = itemTile; }
     public ItemTile getMatrixTile(int x, int y) { return boardMatrix[x][y]; }
@@ -49,7 +56,7 @@ public class Board {
     }
     public void setItemsInCoordinates(int[][] indices) {
         for (int[] index : indices) {
-            if (boardMatrix[index[0]][index[1]].isEmpty()) setMatrixTile(index[0], index[1], bag.drawItemTile());
+            if (boardMatrix[index[0]][index[1]].isEmpty()) boardMatrix[index[0]][index[1]] = bag.drawItemTile();
         }
     }
     public void fillBoard(){
@@ -58,8 +65,8 @@ public class Board {
         else if (numOfPlayers == 4) setItemsInCoordinates(COORDINATES4PLAYERS);
     }
     public void printBoard() {
-        for (int j = 1; j < getBoardMatrix().length-1; j++) {
-            for (int k = 1; k < getBoardMatrix()[0].length-1; k++) {
+        for (int j = 0; j < getBoardMatrix().length; j++) {
+            for (int k = 0; k < getBoardMatrix()[0].length; k++) {
                 System.out.printf("%10s", getMatrixTile(j,k).getItemTileType().toString());
             }
             System.out.println(" ");

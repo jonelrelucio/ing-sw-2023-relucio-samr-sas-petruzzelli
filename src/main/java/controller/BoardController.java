@@ -28,7 +28,7 @@ public class BoardController {
     public void setCanBeSelectedTiles() { canBeSelectedTiles = new ArrayList<>(); }
     public ArrayList<int[]> getCanBeSelectedTiles() { return canBeSelectedTiles; }
 
-    public boolean isAdjacentEmpty(int x, int y){
+    public boolean isAdjacentEmpty(int x, int y)  {
         if (board.getBoardMatrix()[x+1][y].isEmpty()) return true;
         else if (board.getBoardMatrix()[x-1][y].isEmpty()) return true;
         else if (board.getBoardMatrix()[x][y+1].isEmpty()) return true;
@@ -118,36 +118,36 @@ public class BoardController {
     /********************************************************************************************
      * Board creation testing
      **************************************************************/
-
-    public static void main(String[] args ){
-        Board board = new Board(2);
-        BoardController bc = new BoardController(board);
-        Scanner sc = new Scanner(System.in);
-
-        System.out.println(" ");
-        board.printBoard();
-        for (int i = 0; i < 3; i++) {
-            bc.updateCanBeSelectedTiles();
-            System.out.print("\nCan be selected tiles at coordinates: ");
-            bc.printCanBeSelectedTiles();
-            System.out.print("\nSelect tile: ");
-            String input = sc.nextLine();
-            String[] parts = input.split(" ");
-            int a = Integer.parseInt(parts[0]);
-            int b = Integer.parseInt(parts[1]);
-            bc.selectTile(a,b);
-            System.out.print("SelectedTiles: ");
-            bc.printSelectedTile();
-        }
-        System.out.print("\n\n");
-
-        ArrayList<ItemTile> selectedItemTile = bc.board.getSelectedTile(bc.selectedTile); //parte importante gestita poi dal player
-        System.out.println("Updated board: ");
-        board.printBoard();
-
-
-        sc.close();
-    }
+//
+//    public static void main(String[] args ){
+//        Board board = new Board(2);
+//        BoardController bc = new BoardController(board);
+//        Scanner sc = new Scanner(System.in);
+//
+//        System.out.println(" ");
+//        board.printBoard();
+//        for (int i = 0; i < 3; i++) {
+//            bc.updateCanBeSelectedTiles();
+//            System.out.print("\nCan be selected tiles at coordinates: ");
+//            bc.printCanBeSelectedTiles();
+//            System.out.print("\nSelect tile: ");
+//            String input = sc.nextLine();
+//            String[] parts = input.split(" ");
+//            int a = Integer.parseInt(parts[0]);
+//            int b = Integer.parseInt(parts[1]);
+//            bc.selectTile(a,b);
+//            System.out.print("SelectedTiles: ");
+//            bc.printSelectedTile();
+//        }
+//        System.out.print("\n\n");
+//
+//        ArrayList<ItemTile> selectedItemTile = bc.board.getSelectedTile(bc.selectedTile); //parte importante gestita poi dal player
+//        System.out.println("Updated board: ");
+//        board.printBoard();
+//
+//
+//        sc.close();
+//    }
 
 
 

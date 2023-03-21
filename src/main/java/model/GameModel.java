@@ -18,7 +18,8 @@ public class GameModel {
     public GameModel() {
         this.playerList = new CircularArrayList<>();
         this.commonGoalCardDeck = new CommonGoalCardDeck();
-        this.board = new Board();
+        this.board = new Board(numOfPlayer);
+        PersonalGoalCardBag.refill();
     }
     public void setPersonalGoalCards() {
         for (int i = 0; i < numOfPlayer; i++ ){
