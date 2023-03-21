@@ -1,10 +1,15 @@
-package model;
-public class CommonGoalCard6 implements CommonGoalCard{
+package model.commonGoalCard;
+
+import model.ItemTile;
+import model.ItemTileType;
+
+public class CommonGoalCard8 implements CommonGoalCard{
     @Override
     public boolean checkPattern(ItemTile[][] bookshelf) {
-        boolean principalDiagonal;
-        boolean secondaryDiagonal;
-        int diagonalSize = 5;
+        boolean principalDiagonal, secondaryDiagonal;
+        boolean principalFound = false;
+        boolean secondaryFound = false;
+        int diagonalSize = 3;
 
         for (int row = 0; row + diagonalSize <= bookshelf.length; row++) {
             for (int col = 0; col + diagonalSize <= bookshelf[0].length; col++) {
@@ -12,9 +17,9 @@ public class CommonGoalCard6 implements CommonGoalCard{
                 secondaryDiagonal = true;
 
                 // search the diagonal with the same item tile type as a principal and secondary diagonal
-                int y = 0;
+                int x = 0;
                 for (int i = row; i < row + diagonalSize; i++) {
-                    int x = 0;
+                    int y = 0;
                     for (int j = col; j < col + diagonalSize; j++) {
 
                         // in the principal diagonal: set principalDiagonal to false just it finds a tile of a different type
@@ -23,7 +28,7 @@ public class CommonGoalCard6 implements CommonGoalCard{
 
                             // if the last item tile in the principal diagonal is correct then the diagonal is complete
                             if (i == row + diagonalSize - 1 && j == col + diagonalSize - 1 && principalDiagonal) {
-                                return true;
+                                principalFound = true;
                             }
                         }
 
@@ -33,12 +38,15 @@ public class CommonGoalCard6 implements CommonGoalCard{
 
                             // if the last item tile in the secondary diagonal is correct then the diagonal is complete
                             if (i == row + diagonalSize - 1 && j == col && secondaryDiagonal) {
-                                return true;
+                                secondaryFound = true;
                             }
                         }
-                        x++;
+
+                        // if both the diagonals are found then return true;
+                        if (principalFound && secondaryFound) return true;
+                        y++;
                     }
-                    y++;
+                    x++;
                 }
             }
         }

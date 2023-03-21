@@ -1,5 +1,6 @@
 package model;
 
+import model.commonGoalCard.*;
 import org.junit.Test;
 
 import static org.junit.Assert.*;
