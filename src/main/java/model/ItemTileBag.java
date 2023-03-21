@@ -7,8 +7,7 @@ import static model.ItemTileType.*;
 
 public class ItemTileBag {
     private Stack<ItemTile> availableItemTiles;
-
-
+    
     public ItemTileBag(){
         availableItemTiles = new Stack<>();
         bagCreate();
