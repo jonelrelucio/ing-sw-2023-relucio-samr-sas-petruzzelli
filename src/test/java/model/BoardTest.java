@@ -61,6 +61,7 @@ public class BoardTest{
                 {new ItemTile(ItemTileType.TROPHY), new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.BOOK)}
         };
         b.setBoardMatrix(board);
+        System.out.println("\nInit Board:");
         b.printBoard();
         ArrayList<int[]> coordinates = new ArrayList<>();
         coordinates.add(new int[]{0, 0});
@@ -70,11 +71,12 @@ public class BoardTest{
         expected.add(board[0][0]);
         expected.add(board[0][1]);
         expected.add(board[0][2]);
-        System.out.println(expected);
-        System.out.println(b.getSelectedTile(coordinates));
-
+        ArrayList<ItemTile> selectedTile = b.getSelectedTile(coordinates);
+        for (int i = 0; i < expected.size(); i++) {
+            assertTrue(expected.get(i) == selectedTile.get(i));
+        }
+        System.out.println("\nUpdated board");
         b.printBoard();
-
     }
 
 }
