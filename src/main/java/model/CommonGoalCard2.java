@@ -1,6 +1,6 @@
 package model;
-public class CommonGoalCard2 extends CommonGoalSameType{
+public class CommonGoalCard2 extends CommonGoalSameTypeIrregular{
     public CommonGoalCard2() {
-        super(4, 1, 4, false);
+        super(4, 4);
     }
 }
