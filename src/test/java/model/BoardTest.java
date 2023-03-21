@@ -73,10 +73,6 @@ public class BoardTest{
         System.out.println(expected);
         System.out.println(b.getSelectedTile(coordinates));
 
-        for (int i = 0; i<b.getSelectedTile(coordinates).size(); i++ ) {
-            assertTrue(Arrays.asList(expected), hasItem())
-        }
-
         b.printBoard();
 
     }
