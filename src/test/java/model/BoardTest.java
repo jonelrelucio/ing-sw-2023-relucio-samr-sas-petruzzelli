@@ -1,13 +1,12 @@
 package model;
 
 
-import org.junit.Assert;
+import model.ItemTile.ItemTile;
+import model.ItemTile.ItemTileType;
 import org.junit.Test;
 
-import java.lang.reflect.Array;
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static org.junit.jupiter.api.Assertions.*;
 

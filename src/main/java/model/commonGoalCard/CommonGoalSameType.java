@@ -1,7 +1,7 @@
 package model.commonGoalCard;
 
-import model.ItemTile;
-import model.ItemTileType;
+import model.ItemTile.ItemTile;
+import model.ItemTile.ItemTileType;
 
 import java.util.HashMap;
 import java.util.Objects;

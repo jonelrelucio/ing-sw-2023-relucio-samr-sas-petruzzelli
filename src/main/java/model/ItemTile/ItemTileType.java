@@ -1,4 +1,4 @@
-package model;
+package model.ItemTile;
 
 public enum ItemTileType {
     CAT, BOOK, GAME, FRAME, TROPHY, PLANT, EMPTY;

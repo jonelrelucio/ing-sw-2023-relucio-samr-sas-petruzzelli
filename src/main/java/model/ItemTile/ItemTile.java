@@ -1,6 +1,6 @@
-package model;
+package model.ItemTile;
 
-import static model.ItemTileType.EMPTY;
+import static model.ItemTile.ItemTileType.EMPTY;
 
 public class ItemTile {
     private ItemTileType itemTileType;

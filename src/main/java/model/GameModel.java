@@ -1,6 +1,8 @@
 package model;
 
 import model.commonGoalCard.CommonGoalCardDeck;
+import model.personalGoalCard.PersonalGoalCard;
+import model.personalGoalCard.PersonalGoalCardBag;
 
 enum State {
     INIT, MID, END

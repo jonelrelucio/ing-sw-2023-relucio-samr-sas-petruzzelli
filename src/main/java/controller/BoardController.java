@@ -1,13 +1,9 @@
 package controller;
 
 import model.Board;
-import model.ItemTile;
 
-import java.lang.reflect.Array;
 import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.Scanner;
-import java.util.Stack;
 
 public class BoardController {
     private Board board;

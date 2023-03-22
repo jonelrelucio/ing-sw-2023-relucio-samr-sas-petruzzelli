@@ -1,7 +1,10 @@
 package model;
 
 import java.util.ArrayList;
+
+import model.ItemTile.ItemTile;
 import model.commonGoalCard.*;
+import model.personalGoalCard.PersonalGoalCard;
 
 enum PlayerState {
     WAITING, PLAYING;

@@ -1,5 +1,9 @@
 package model;
 
+import model.ItemTile.ItemTile;
+import model.ItemTile.ItemTileBag;
+import model.ItemTile.ItemTileType;
+
 import java.security.InvalidParameterException;
 import java.util.ArrayList;
 

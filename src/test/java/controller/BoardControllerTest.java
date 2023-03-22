@@ -2,12 +2,12 @@ package controller;
 
 import junit.framework.TestCase;
 import model.Board;
-import model.ItemTile;
+import model.ItemTile.ItemTile;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
-import static model.ItemTileType.*;
+import static model.ItemTile.ItemTileType.*;
 
 
 public class BoardControllerTest extends TestCase {

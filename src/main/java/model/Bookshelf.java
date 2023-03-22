@@ -1,5 +1,7 @@
 package model;
 
+import model.ItemTile.ItemTile;
+
 import java.util.Stack;
 
 public class Bookshelf {

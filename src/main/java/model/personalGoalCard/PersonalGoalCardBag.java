@@ -1,4 +1,4 @@
-package model;
+package model.personalGoalCard;
 
 import java.util.Arrays;
 import java.util.Collections;

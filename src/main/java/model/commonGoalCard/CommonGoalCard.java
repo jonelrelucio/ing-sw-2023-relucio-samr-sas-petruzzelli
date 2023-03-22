@@ -1,6 +1,6 @@
 package model.commonGoalCard;
 
-import model.ItemTile;
+import model.ItemTile.ItemTile;
 
 public interface CommonGoalCard {
     boolean checkPattern(ItemTile[][] bookshelf) ;

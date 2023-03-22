@@ -1,5 +1,7 @@
 package model;
 
+import model.ItemTile.ItemTile;
+import model.ItemTile.ItemTileType;
 import model.commonGoalCard.*;
 import org.junit.Test;
 

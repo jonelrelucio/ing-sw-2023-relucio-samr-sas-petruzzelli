@@ -1,9 +1,9 @@
-package model;
+package model.ItemTile;
 
 import java.util.Collections;
 import java.util.Stack;
 
-import static model.ItemTileType.*;
+import static model.ItemTile.ItemTileType.*;
 
 public class ItemTileBag {
     private Stack<ItemTile> availableItemTiles;
