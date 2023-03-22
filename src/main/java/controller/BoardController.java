@@ -1,33 +1,35 @@
 package controller;
 
 import model.Board;
+import model.ItemTile.ItemTile;
+import model.ItemTile.ItemTileType;
 
 import java.util.ArrayList;
 import java.util.Arrays;
 
 public class BoardController {
-    private Board board;
+    private ItemTile[][] boardMatrix;
     private ArrayList<int[]> selectedTile;
     private ArrayList<int[]> canBeSelectedTiles;
 
-    public BoardController(Board board) {
-        setBoard(board);
-        setSelectedTile();
-        setCanBeSelectedTiles();
+    public BoardController(ItemTile[][] boardMatrix) {
+        this.boardMatrix = boardMatrix;
+        this.selectedTile = new ArrayList<>();
+        this.canBeSelectedTiles = new ArrayList<>();
+        updateCanBeSelectedTiles();
+    }
+    public ArrayList<int[]> getSelectedTile() {
+        return selectedTile;
+    }
+    public ArrayList<int[]> getCanBeSelectedTiles() {
+        return canBeSelectedTiles;
     }
 
-    public void setBoard(Board board) { this.board = board; }
-    public Board getBoard() { return board; }
-    public void setSelectedTile() { selectedTile = new ArrayList<>(); }
-    public ArrayList<int[]> getSelectedTile() { return selectedTile; }
-    public void setCanBeSelectedTiles() { canBeSelectedTiles = new ArrayList<>(); }
-    public ArrayList<int[]> getCanBeSelectedTiles() { return canBeSelectedTiles; }
-
     public boolean isAdjacentEmpty(int x, int y)  {
-        if (board.getBoardMatrix()[x+1][y].isEmpty()) return true;
-        else if (board.getBoardMatrix()[x-1][y].isEmpty()) return true;
-        else if (board.getBoardMatrix()[x][y+1].isEmpty()) return true;
-        else if (board.getBoardMatrix()[x][y-1].isEmpty()) return true;
+        if (boardMatrix[x+1][y].isEmpty()) return true;
+        else if (boardMatrix[x-1][y].isEmpty()) return true;
+        else if (boardMatrix[x][y+1].isEmpty()) return true;
+        else if (boardMatrix[x][y-1].isEmpty()) return true;
         else return false;
     }
 
@@ -40,8 +42,8 @@ public class BoardController {
         for (int[] direction : directions) {
             int x2 = x + direction[0];
             int y2 = y + direction[1];
-            if (x2 >= 0 && x2 < board.getBoardMatrix().length && y2 >= 0 && y2 < board.getBoardMatrix()[0].length) {
-                if (!board.getBoardMatrix()[x2][y2].isEmpty() && isAdjacentEmpty(x2, y2)) {
+            if (x2 >= 0 && x2 < boardMatrix.length && y2 >= 0 && y2 < boardMatrix[0].length) {
+                if (!boardMatrix[x2][y2].isEmpty() && isAdjacentEmpty(x2, y2)) {
                     adjacentCoordinates.add(new int[] {x2, y2});
                 }
             }
@@ -52,9 +54,9 @@ public class BoardController {
 
     public void updateCanBeSelectedTiles(){
         if (selectedTile.isEmpty()) {
-            for (int i = 1; i < board.getBoardMatrix().length-1; i++) {
-                for (int j = 1; j < board.getBoardMatrix()[0].length- 1; j++) {
-                    if (!board.getBoardMatrix()[i][j].isEmpty() && isAdjacentEmpty(i, j))
+            for (int i = 1; i < boardMatrix.length-1; i++) {
+                for (int j = 1; j < boardMatrix[0].length- 1; j++) {
+                    if (!boardMatrix[i][j].isEmpty() && isAdjacentEmpty(i, j))
                         canBeSelectedTiles.add(new int[]{i, j});
                 }
             }

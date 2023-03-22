@@ -27,8 +27,9 @@ public class PersonalGoalCard {
             }
         }
     }
-    public void buildPersonalGoalCard(int key) {
 
+
+    public void buildPersonalGoalCard(int key) {
         int[][] coordinates = PersonalGoalCardCoordinates.getCoordinates()[key-1];
         ItemTileType[] itemCoordinates = PersonalGoalCardCoordinates.getItemcoordinates()[key-1];
 
@@ -39,6 +40,8 @@ public class PersonalGoalCard {
             }
         }
     }
+
+
     public void setItemsInCoordinates(int[][] indices, ItemTileType itemTileType) {
         for (int[] index : indices) {
             if (personalGoalMatrix[index[0]][index[1]].isEmpty()) {
@@ -46,6 +49,8 @@ public class PersonalGoalCard {
             }
         }
     }
+
+
     public void createPointsMapping() {
         pointsMapping = new HashMap<>();
         pointsMapping.put(1, 1);
@@ -66,7 +71,6 @@ public class PersonalGoalCard {
             System.out.println(" ");
         }
     }
-
 
     public static void main(String[] args){
         PersonalGoalCard personalGoalCard = new PersonalGoalCard();
