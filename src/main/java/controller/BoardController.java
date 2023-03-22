@@ -10,7 +10,6 @@ import java.util.Scanner;
 import java.util.Stack;
 
 public class BoardController {
-    private final int ROW = 11, COL = 11;
     private Board board;
     private ArrayList<int[]> selectedTile;
     private ArrayList<int[]> canBeSelectedTiles;
@@ -57,8 +56,8 @@ public class BoardController {
 
     public void updateCanBeSelectedTiles(){
         if (selectedTile.isEmpty()) {
-            for (int i = 1; i < ROW - 1; i++) {
-                for (int j = 1; j < COL - 1; j++) {
+            for (int i = 1; i < board.getBoardMatrix().length-1; i++) {
+                for (int j = 1; j < board.getBoardMatrix()[0].length- 1; j++) {
                     if (!board.getBoardMatrix()[i][j].isEmpty() && isAdjacentEmpty(i, j))
                         canBeSelectedTiles.add(new int[]{i, j});
                 }
@@ -84,71 +83,45 @@ public class BoardController {
         return intersection;
     }
 
-    public void printCanBeSelectedTiles() {
-        if (canBeSelectedTiles.isEmpty()) System.out.println("No more tiles can be selected.");
-        for (int[] element : canBeSelectedTiles) {
-            System.out.printf(Arrays.toString(element) +"  ");
-        }
-    }
     public void selectTile(int x, int y) {
         for (int[] tile : canBeSelectedTiles) {
             if (Arrays.equals(tile, new int[] {x, y})) {
                 selectedTile.add(new int[]{x, y});
+                updateCanBeSelectedTiles();
                 return;
             }
         }
-        System.out.println("Error to be handled.!");
+        System.out.println("item in given coordinates can't be selected");
     }
 
     public void popSelectedTile(int[] coordinates ){
-        if (!selectedTile.isEmpty()) {
-            selectedTile.remove(coordinates);
+        for (int i = 0; i < selectedTile.size(); i++){
+            if (coordinates[0] == selectedTile.get(i)[0] && coordinates[1] == selectedTile.get(i)[1]) {
+                selectedTile.remove(i);
+                updateCanBeSelectedTiles();
+                return;
+            }
         }
-        else System.out.println("Error to be handled");
-    }
-    public void printSelectedTile() {
-        for (int[] element : selectedTile ){
-            System.out.print(Arrays.toString(element) +"  ");
-        }
+        System.out.println("No coordinates in selectedTiles.");
+
     }
 
 
 
 
-    /********************************************************************************************
-     * Board creation testing
-     **************************************************************/
-//
-//    public static void main(String[] args ){
-//        Board board = new Board(2);
-//        BoardController bc = new BoardController(board);
-//        Scanner sc = new Scanner(System.in);
-//
-//        System.out.println(" ");
-//        board.printBoard();
-//        for (int i = 0; i < 3; i++) {
-//            bc.updateCanBeSelectedTiles();
-//            System.out.print("\nCan be selected tiles at coordinates: ");
-//            bc.printCanBeSelectedTiles();
-//            System.out.print("\nSelect tile: ");
-//            String input = sc.nextLine();
-//            String[] parts = input.split(" ");
-//            int a = Integer.parseInt(parts[0]);
-//            int b = Integer.parseInt(parts[1]);
-//            bc.selectTile(a,b);
-//            System.out.print("SelectedTiles: ");
-//            bc.printSelectedTile();
+//    public void printCanBeSelectedTiles() {
+//        updateCanBeSelectedTiles();
+//        if (canBeSelectedTiles.isEmpty()) System.out.print("No more tiles can be selected.");
+//        for (int[] element : canBeSelectedTiles) {
+//            System.out.printf(Arrays.toString(element) +"  ");
 //        }
-//        System.out.print("\n\n");
-//
-//        ArrayList<ItemTile> selectedItemTile = bc.board.getSelectedTile(bc.selectedTile); //parte importante gestita poi dal player
-//        System.out.println("Updated board: ");
-//        board.printBoard();
-//
-//
-//        sc.close();
+//        System.out.println(" ");
 //    }
-
+//    public void printSelectedTile() {
+//        for (int[] element : selectedTile ){
+//            System.out.print(Arrays.toString(element) +"  ");
+//        }
+//    }
 
 
 }

@@ -6,58 +6,111 @@ import model.ItemTile;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
-import java.util.Collections;
 
 import static model.ItemTileType.*;
 
 
 public class BoardControllerTest extends TestCase {
 
-    ItemTile[][] matrix = {
-            {new ItemTile(EMPTY), new ItemTile(EMPTY), new ItemTile(PLANT), new ItemTile(GAME)},
-            {new ItemTile(GAME), new ItemTile(PLANT), new ItemTile(FRAME), new ItemTile(EMPTY)},
-            {new ItemTile(EMPTY), new ItemTile(TROPHY), new ItemTile(EMPTY), new ItemTile(EMPTY)},
-            {new ItemTile(BOOK), new ItemTile(CAT), new ItemTile(TROPHY), new ItemTile(GAME)},
+    private ItemTile[][][] matrix = {
+            {
+                    {new ItemTile(EMPTY), new ItemTile(EMPTY), new ItemTile(EMPTY), new ItemTile(EMPTY)},
+                    {new ItemTile(EMPTY), new ItemTile(PLANT), new ItemTile(FRAME), new ItemTile(EMPTY)},
+                    {new ItemTile(EMPTY), new ItemTile(TROPHY), new ItemTile(EMPTY), new ItemTile(EMPTY)},
+                    {new ItemTile(BOOK), new ItemTile(CAT), new ItemTile(TROPHY), new ItemTile(EMPTY)},
+            },
+            {
+                    {new ItemTile(EMPTY), new ItemTile(EMPTY), new ItemTile(EMPTY)},
+                    {new ItemTile(EMPTY), new ItemTile(PLANT), new ItemTile(EMPTY)},
+                    {new ItemTile(EMPTY), new ItemTile(TROPHY), new ItemTile(EMPTY)}
+            }
+
     };
-    ArrayList<int[]> expected = new ArrayList<>();
+    private int[][][] expected = {
+            {
+                    {1, 1}, {1,2}, {2, 1}
+            },
+            {
+                    {1, 1},
+            },
+            {
+                    {2, 1}, {1, 2}
+            },
+            {
 
+            }
+    };
 
-    private Board board = new Board(2);
-    private BoardController bc = new BoardController(board);
+    private BoardController bc = new BoardController(new Board(2));
+
 
     @Test
     public void testCanBeSelectedTiles() {
-        bc.getBoard().setBoardMatrix(matrix);
-        Collections.addAll(expected, new int[][]{{0, 2}, {0, 3}, {1, 0}, {1, 1}, {1, 2},{2, 1}, {2, 1}, {3, 0}, {3, 1}, {3, 2}, {3, 3}});
-        System.out.print(expected);
-        ArrayList<int[]> canBeSelected = new ArrayList<int[]>();
-        canBeSelected = bc.getCanBeSelectedTiles();
-        System.out.println(canBeSelected);
+        bc.getBoard().setBoardMatrix(matrix[0]);
+        bc.updateCanBeSelectedTiles();
+        for (int i = 0; i < expected[0].length; i++){
+            for (int j = 0; j < 2; j++) {
+                assertEquals(expected[0][i][j], bc.getCanBeSelectedTiles().get(i)[j]);
+            }
+        }
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-    private BoardController bc1 = new BoardController(new Board(1) );
     @Test
-    public void testIsAdjacentEmpty(){
-        assertTrue(bc1.isAdjacentEmpty(0, 1));
+    public void testCanBeSelectedTiles1() {
+        bc.getBoard().setBoardMatrix(matrix[1]);
+        bc.updateCanBeSelectedTiles();
+        for (int i = 0; i < expected[1].length; i++){
+            for (int j = 0; j < 2; j++) {
+                assertEquals(expected[1][i][j], bc.getCanBeSelectedTiles().get(i)[j]);
+            }
+        }
+    }
+    @Test
+    public void testCanBeSelectedTiles2() {
+        ArrayList<ItemTile> selectedTiles = new ArrayList<>();
+        bc.getBoard().setBoardMatrix(matrix[0]);
+        bc.updateCanBeSelectedTiles();
+        bc.selectTile(1, 1);
+        for (int i = 0; i < expected[2].length; i++){
+            for (int j = 0; j < 2; j++) {
+                assertEquals(expected[2][i][j], bc.getCanBeSelectedTiles().get(i)[j]);
+            }
+        }
+    }
+    @Test
+    public void testCanBeSelectedTiles3() {
+        ArrayList<ItemTile> selectedTiles = new ArrayList<>();
+        bc.getBoard().setBoardMatrix(matrix[0]);
+        bc.updateCanBeSelectedTiles();
+        bc.selectTile(1, 1);
+        bc.selectTile(1, 2);
+        for (int i = 0; i < expected[3].length; i++){
+            for (int j = 0; j < 2; j++) {
+                assertEquals(expected[3][i][j], bc.getCanBeSelectedTiles().get(i)[j]);
+            }
+        }
+    }
+    @Test
+    public void testPopSelectedTile() {
+        ArrayList<ItemTile> selectedTiles = new ArrayList<>();
+        bc.getBoard().setBoardMatrix(matrix[0]);
+        bc.updateCanBeSelectedTiles();
+        bc.selectTile(1, 1);
+        bc.selectTile(1, 2);
+        assertEquals(1, bc.getSelectedTile().get(0)[0]);
+        assertEquals(1, bc.getSelectedTile().get(0)[1]);
+        assertEquals(1, bc.getSelectedTile().get(1)[0]);
+        assertEquals(2, bc.getSelectedTile().get(1)[1]);
+        bc.popSelectedTile(new int[] {1, 2});
     }
 
-    @Test
-    public void testIsAdjacentEmptyOutOfBounds(){
-        try {assertTrue(bc1.isAdjacentEmpty(-1, -1));}
-        catch (IndexOutOfBoundsException ex ) {}
-    }
+
+
+
+
+
+
+
+
 
 
 
