@@ -13,7 +13,7 @@ Implementazione del Gioco [My Shelfie](https://www.craniocreations.it/prodotto/m
 
 ### Diagramma UML
 I diagrammi UML sono stato sviluppati nel sito di [diagrams](https://www.diagrams.net/).  
-Il diagramma principale: [UML Diagram](src/main/umlDiagram/myShelfieUmlDiagram.png)
+Il diagramma principale: [UML Diagram](src/main/umlDiagram/ClassDiagram_Model.png)
 
 ### Functionality
 | Functionality                | State |
