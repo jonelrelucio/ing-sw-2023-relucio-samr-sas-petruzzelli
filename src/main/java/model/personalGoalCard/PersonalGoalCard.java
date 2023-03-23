@@ -15,7 +15,7 @@ public class PersonalGoalCard {
 
 
     public PersonalGoalCard() {
-        createPointsMapping();
+        buildPointsMapping();
         initBoard();
         buildPersonalGoalCard(PersonalGoalCardBag.getRandomPersonalCardNum());
     }
@@ -51,7 +51,7 @@ public class PersonalGoalCard {
     }
 
 
-    public void createPointsMapping() {
+    public void buildPointsMapping() {
         pointsMapping = new HashMap<>();
         pointsMapping.put(1, 1);
         pointsMapping.put(2, 2);
