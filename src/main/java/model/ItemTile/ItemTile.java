@@ -9,10 +9,8 @@ public class ItemTile {
 
     // CONSTRUCTOR
     public ItemTile(ItemTileType itemTileType){
-        Random r = new Random();
         this.itemTileType = itemTileType;
-        if (itemTileType != EMPTY) this.id = r.nextInt(3);
-        else this.id = 0;
+        this.id = newId(itemTileType);
     }
 
     // Setter
@@ -24,6 +22,13 @@ public class ItemTile {
         return itemTileType;
     }
     public int getId() {return id;}
+
+    // Creates new id
+    private int newId(ItemTileType itemTileType){
+        Random r = new Random();
+        if (itemTileType != EMPTY) return r.nextInt(3);
+        else return 0;
+    }
 
     // returns if itemTileType is empty
     public boolean isEmpty() { return itemTileType == EMPTY; }
