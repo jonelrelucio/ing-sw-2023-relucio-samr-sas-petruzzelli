@@ -1,7 +1,9 @@
 
 # Progetto INGSW 2022-2023
 
-Implementazione del Gioco [My Shelfie](https://www.craniocreations.it/prodotto/my-shelfie/).
+Implementazione del Gioco [My Shelfie](https://www.craniocreations.it/prodotto/my-shelfie/). 
+
+Todo List for Model: [TODO](src/main/java/model/README.md)
 
 <img src="src/main/resources/publisher_material/box_noShadow.png" align="right" width="200" alt="My Shelfie" >
 
@@ -31,7 +33,7 @@ Il diagramma principale: [UML Diagram](src/main/umlDiagram/ClassDiagram_Model.pn
 
 
 ##### Legenda
-🔴 Non Implementato | 🟢 Implementato |🟡 Implementazione in corso...
+🔴 Non Implementata | 🟢 Implementata |🟡 Implementazione in corso...
 
 
 
