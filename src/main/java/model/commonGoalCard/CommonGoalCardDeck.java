@@ -4,9 +4,9 @@ import java.util.HashMap;
 import java.util.Stack;
 
 public class CommonGoalCardDeck {
-    private HashMap<CommonGoalCard, Stack<Integer>> deck;
+    private final HashMap<CommonGoalCard, Stack<Integer>> deck = new HashMap<>();
 
-    private static int[][] scoringTokenArray = {
+    private static final int[][] scoringTokenArray = {
             {4, 8},
             {4, 6, 8},
             {2, 4, 6, 8}
