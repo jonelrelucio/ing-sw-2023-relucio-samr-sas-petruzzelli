@@ -1,12 +1,12 @@
 package model.personalGoalCard;
 
-import model.ItemTile.ItemTile;
 import model.ItemTile.ItemTileType;
 
 import static model.ItemTile.ItemTileType.*;
 
 public class PersonalGoalCardCoordinates {
-    static final int[][][] COORDINATES = {
+
+    private static final int[][][] COORDINATES = {
             { {0,0}, {0,2}, {1,4}, {2,3}, {1,3}, {5,2} },
             { {1,1}, {2,0}, {2,2}, {3,4}, {4,3}, {5,4} },
             { {1,0}, {1,3}, {2,2}, {3,1}, {3,4}, {5,0} },
@@ -20,7 +20,7 @@ public class PersonalGoalCardCoordinates {
             { {0,2}, {1,1}, {0,2}, {3,2}, {4,4}, {5,3} },
             { {0,2}, {1,1}, {2,2}, {3,3}, {4,4}, {5,0} }
     };
-    static final ItemTileType[][] ITEMCOORDINATES = {
+    private static final ItemTileType[][] ITEMCOORDINATES = {
             {PLANT, FRAME, CAT, BOOK, GAME, TROPHY},
             {PLANT, CAT, GAME, BOOK, TROPHY, FRAME},
             {FRAME, GAME, PLANT, CAT, TROPHY, BOOK},
@@ -35,11 +35,11 @@ public class PersonalGoalCardCoordinates {
             {BOOK, PLANT, FRAME, TROPHY, GAME, CAT}
     };
 
-    static public int[][][] getCoordinates() {
-        return COORDINATES;
-    }
 
-    static public ItemTileType[][] getItemcoordinates() {
-        return ITEMCOORDINATES;
+    static public int[][] getCoordinates(int key) {
+        return COORDINATES[key-1];
+    }
+    static public ItemTileType[] getItemCoordinates(int key) {
+        return ITEMCOORDINATES[key-1];
     }
 }

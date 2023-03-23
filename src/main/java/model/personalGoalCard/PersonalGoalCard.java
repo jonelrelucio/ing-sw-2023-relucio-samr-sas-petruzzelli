@@ -28,10 +28,9 @@ public class PersonalGoalCard {
         }
     }
 
-
     public void buildPersonalGoalCard(int key) {
-        int[][] coordinates = PersonalGoalCardCoordinates.getCoordinates()[key-1];
-        ItemTileType[] itemCoordinates = PersonalGoalCardCoordinates.getItemcoordinates()[key-1];
+        int[][] coordinates = PersonalGoalCardCoordinates.getCoordinates(key);
+        ItemTileType[] itemCoordinates = PersonalGoalCardCoordinates.getItemCoordinates(key);
 
         for (int i = 0; i < coordinates.length; i++) {
             int[] index = coordinates[i];

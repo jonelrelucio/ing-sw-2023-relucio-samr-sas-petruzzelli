@@ -11,26 +11,28 @@ public class Board {
 
     private final int ROW = 11, COL = 11;
     private ItemTile[][] boardMatrix = new ItemTile[ROW][COL];
-    private static ItemTileBag bag;
     private int numOfPlayers;
 
+    // CONSTRUCTOR
     public Board(int numOfPlayers){
         setNumOfPlayers(numOfPlayers);
-        setBag();
         initItemTileMatrix();
         setItemsInCoordinates(BoardCoordinates.getCoordinates(numOfPlayers));
     }
+
+    // Getters
     public ItemTile[][] getBoardMatrix(){ return boardMatrix; }
+    public ItemTile getMatrixTile(int x, int y) { return boardMatrix[x][y]; }
+    public int getNumOfPlayers() {return numOfPlayers; }
+
+    // Setters
     public void setBoardMatrix(ItemTile[][] boardMatrix ) {
         this.boardMatrix = boardMatrix;
     }
-    public void setBag() { bag = new ItemTileBag(); }
-    public ItemTileBag getBag() { return bag; }
     public void setNumOfPlayers(int numOfPlayers) { this.numOfPlayers = numOfPlayers; }
-    public int getNumOfPlayers() {return numOfPlayers; }
     public void setMatrixTile(int x, int y, ItemTile itemTile) { boardMatrix[x][y] = itemTile; }
-    public ItemTile getMatrixTile(int x, int y) { return boardMatrix[x][y]; }
 
+    // Fills the board with empty tiles
     public void initItemTileMatrix() {
         for (int i = 0; i < ROW; i++ ){
             for (int j = 0; j < COL; j++){
@@ -38,11 +40,15 @@ public class Board {
             }
         }
     }
+
+    // sets the Items in board
     public void setItemsInCoordinates(int[][] indices) {
         for (int[] index : indices) {
-            if (boardMatrix[index[0]][index[1]].isEmpty()) boardMatrix[index[0]][index[1]] = bag.drawItemTile();
+            if (boardMatrix[index[0]][index[1]].isEmpty()) boardMatrix[index[0]][index[1]] = ItemTileBag.getInstance().drawItemTile();
         }
     }
+
+    // TODO: Remove this method
     public void printBoard() {
         for (int j = 0; j < getBoardMatrix().length; j++) {
             for (int k = 0; k < getBoardMatrix()[0].length; k++) {

@@ -5,12 +5,20 @@ import java.util.Stack;
 
 import static model.ItemTile.ItemTileType.*;
 
+// May break
 public class ItemTileBag {
-    private Stack<ItemTile> availableItemTiles;
-    
-    public ItemTileBag(){
+    private static ItemTileBag instance;
+    private final Stack<ItemTile> availableItemTiles;
+
+    // SINGLETON PATTERN
+    private ItemTileBag(){
         availableItemTiles = new Stack<>();
         bagCreate();
+    }
+
+    public static ItemTileBag getInstance() {
+        if (instance == null) { instance = new ItemTileBag(); }
+        return instance;
     }
 
     public ItemTile drawItemTile() {

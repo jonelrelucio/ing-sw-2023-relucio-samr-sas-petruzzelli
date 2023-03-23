@@ -1,8 +1,8 @@
 # To Do List
 ### Board
-- move printboard method to the BoardViewer
+- move printBoard method to the BoardViewer
 - finish tests of Board and BoardCoordinates
-- May have to move other methods gtom Board to BoardView
+- May have to move other methods from Board to BoardView
 
 ### Common Goal Cards
 - Test CommonGoalCardDeck
