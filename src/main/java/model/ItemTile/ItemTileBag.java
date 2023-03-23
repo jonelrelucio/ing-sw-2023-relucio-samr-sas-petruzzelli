@@ -5,7 +5,7 @@ import java.util.Stack;
 
 import static model.ItemTile.ItemTileType.*;
 
-// May break
+// May break if a new game is created (maybe)
 public class ItemTileBag {
     private static ItemTileBag instance;
     private final Stack<ItemTile> availableItemTiles;

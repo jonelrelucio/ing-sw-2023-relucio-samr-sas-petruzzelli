@@ -10,7 +10,7 @@
 
 ### Item Tile
 
-- Add attribute for the 3 different types of images of each ItemTileType
+- Add attribute for the 3 different types of images of each ItemTileType: DONE
 
 ### Personal Goal Cards
 - Test Personal Goal Cards

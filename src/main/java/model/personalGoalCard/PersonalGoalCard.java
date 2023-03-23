@@ -10,16 +10,16 @@ import static model.ItemTile.ItemTileType.*;
 public class PersonalGoalCard {
 
     private static int ROW = 6, COL = 5;
-    private static HashMap<Integer, Integer> pointsMapping;
     private ItemTile[][] personalGoalMatrix;
 
-
+    // CONSTRUCTOR
     public PersonalGoalCard() {
-        buildPointsMapping();
-        initBoard();
+        initCard();
         buildPersonalGoalCard(PersonalGoalCardBag.getRandomPersonalCardNum());
     }
-    public void initBoard() {
+
+    // fills card matrix with empty tiles
+    public void initCard() {
         personalGoalMatrix = new ItemTile[ROW][COL];
         for (int i = 0; i < ROW; i++){
             for (int j = 0; j < COL; j++ ){
@@ -28,6 +28,7 @@ public class PersonalGoalCard {
         }
     }
 
+    // fills card matrix with tiles according to number of players
     public void buildPersonalGoalCard(int key) {
         int[][] coordinates = PersonalGoalCardCoordinates.getCoordinates(key);
         ItemTileType[] itemCoordinates = PersonalGoalCardCoordinates.getItemCoordinates(key);
@@ -40,7 +41,7 @@ public class PersonalGoalCard {
         }
     }
 
-
+    // puts given items in given coordinates
     public void setItemsInCoordinates(int[][] indices, ItemTileType itemTileType) {
         for (int[] index : indices) {
             if (personalGoalMatrix[index[0]][index[1]].isEmpty()) {
@@ -49,19 +50,9 @@ public class PersonalGoalCard {
         }
     }
 
-
-    public void buildPointsMapping() {
-        pointsMapping = new HashMap<>();
-        pointsMapping.put(1, 1);
-        pointsMapping.put(2, 2);
-        pointsMapping.put(3, 4);
-        pointsMapping.put(4, 6);
-        pointsMapping.put(5, 9);
-        pointsMapping.put(6, 12);
-    }
-
     public ItemTile[][] getPersonalGoalCardMatrix() { return personalGoalMatrix; }
 
+    // TODO: remove print personal goal
     public void printPersonalGoal() {
         for (ItemTile[] itemTiles : personalGoalMatrix) {
             for (int k = 0; k < personalGoalMatrix[0].length; k++) {
@@ -70,15 +61,6 @@ public class PersonalGoalCard {
             System.out.println(" ");
         }
     }
-
-    public static void main(String[] args){
-        PersonalGoalCard personalGoalCard = new PersonalGoalCard();
-        System.out.print("\nPersonal Goal Card: \n");
-        personalGoalCard.printPersonalGoal();
-
-    }
-
-
 
 
 }
