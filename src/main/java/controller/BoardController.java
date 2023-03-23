@@ -11,6 +11,7 @@ public class BoardController {
     private ItemTile[][] boardMatrix;
     private ArrayList<int[]> selectedTile;
     private ArrayList<int[]> canBeSelectedTiles;
+    private ArrayList<ItemTile> selectedItemTiles = new ArrayList<>();
 
     public BoardController(ItemTile[][] boardMatrix) {
         this.boardMatrix = boardMatrix;
@@ -24,13 +25,13 @@ public class BoardController {
     public ArrayList<int[]> getCanBeSelectedTiles() {
         return canBeSelectedTiles;
     }
+    public ItemTile[][] getBoardMatrix() { return boardMatrix; }
 
     public boolean isAdjacentEmpty(int x, int y)  {
         if (boardMatrix[x+1][y].isEmpty()) return true;
         else if (boardMatrix[x-1][y].isEmpty()) return true;
         else if (boardMatrix[x][y+1].isEmpty()) return true;
-        else if (boardMatrix[x][y-1].isEmpty()) return true;
-        else return false;
+        else return boardMatrix[x][y - 1].isEmpty();
     }
 
     public ArrayList<int[]> getAdjacentCoordinates(int[] coordinates) {
@@ -104,22 +105,15 @@ public class BoardController {
 
     }
 
+    public ArrayList<ItemTile> getSelectedItemTiles(ArrayList<int[]> coordinates) {
+        for (int[] indices : coordinates) {
+            selectedItemTiles.add(boardMatrix[indices[0]][indices[1]]);
+            boardMatrix[indices[0]][indices[1]] = new ItemTile(ItemTileType.EMPTY);
+        }
+        return selectedItemTiles;
+    }
 
 
-
-//    public void printCanBeSelectedTiles() {
-//        updateCanBeSelectedTiles();
-//        if (canBeSelectedTiles.isEmpty()) System.out.print("No more tiles can be selected.");
-//        for (int[] element : canBeSelectedTiles) {
-//            System.out.printf(Arrays.toString(element) +"  ");
-//        }
-//        System.out.println(" ");
-//    }
-//    public void printSelectedTile() {
-//        for (int[] element : selectedTile ){
-//            System.out.print(Arrays.toString(element) +"  ");
-//        }
-//    }
 
 
 }

@@ -3,11 +3,13 @@ package controller;
 import junit.framework.TestCase;
 import model.Board;
 import model.ItemTile.ItemTile;
+import model.ItemTile.ItemTileType;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
 import static model.ItemTile.ItemTileType.*;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 
 public class BoardControllerTest extends TestCase {
@@ -98,6 +100,19 @@ public class BoardControllerTest extends TestCase {
     }
 
 
+    @Test
+    public void testGetSelectedTile() {
+        BoardController bc = new BoardController(matrix[0]);
+        bc.selectTile(1, 1);
+        bc.selectTile(1, 2);
+        ArrayList<ItemTile> expected = new ArrayList<>();
+        expected.add(bc.getBoardMatrix()[1][1]);
+        expected.add(bc.getBoardMatrix()[1][2]);
+        ArrayList<ItemTile> selectedTile = bc.getSelectedItemTiles(bc.getSelectedTile());
+        for (int i = 0; i < expected.size(); i++) {
+            assertTrue(expected.get(i) == selectedTile.get(i));
+        }
+    }
 
 
 

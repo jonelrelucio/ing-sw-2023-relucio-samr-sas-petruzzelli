@@ -77,15 +77,4 @@ public class Board {
         }
     }
 
-    // Il controller garantisce che le itemTile con coordinate selectedTile non siano empty e cha siano adiacenti a una cella empty
-    // TODO: Codice for loop potrebbe essere sbagliato. da testare
-    public ArrayList<ItemTile> getSelectedTile(ArrayList<int[]> coordinates) {
-        ArrayList<ItemTile> selectedItemTiles = new ArrayList<>();
-        for (int[] indices : coordinates) {
-            selectedItemTiles.add(boardMatrix[indices[0]][indices[1]]);
-            boardMatrix[indices[0]][indices[1]] = new ItemTile(ItemTileType.EMPTY);
-        }
-        return selectedItemTiles;
-    }
-
 }
