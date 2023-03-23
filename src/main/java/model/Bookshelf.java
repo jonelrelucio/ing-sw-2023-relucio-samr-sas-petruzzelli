@@ -1,6 +1,7 @@
 package model;
 
 import model.ItemTile.ItemTile;
+import model.ItemTile.ItemTileType;
 
 import java.util.Stack;
 
@@ -17,7 +18,7 @@ public class Bookshelf {
     private void initBookshelfMatrix() {
         for (int i = 0; i < ROW; i++ ){
             for (int j = 0; j < COL; j++){
-                setMatrixTile(i, j, new ItemTile());
+                setMatrixTile(i, j, new ItemTile(ItemTileType.EMPTY));
             }
         }
     }
