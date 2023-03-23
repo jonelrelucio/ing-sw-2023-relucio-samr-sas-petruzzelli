@@ -7,24 +7,20 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class BoardController {
-    private ItemTile[][] boardMatrix;
-    private ArrayList<int[]> selectedCoordinates;
-    private ArrayList<int[]> canBeSelectedCoordinates;
-    private ArrayList<ItemTile> selectedItemTiles = new ArrayList<>();
 
+    // Attributes
+    private final ItemTile[][] boardMatrix;
+    private final ArrayList<int[]> selectedCoordinates;
+    private ArrayList<int[]> canBeSelectedCoordinates;
+    private final ArrayList<ItemTile> selectedItemTiles = new ArrayList<>();
+
+    // CONSTRUCTOR
     public BoardController(ItemTile[][] boardMatrix) {
         this.boardMatrix = boardMatrix;
         this.selectedCoordinates = new ArrayList<>();
         this.canBeSelectedCoordinates = new ArrayList<>();
         updateCanBeSelectedTiles();
     }
-    public ArrayList<int[]> getSelectedCoordinates() {
-        return selectedCoordinates;
-    }
-    public ArrayList<int[]> getCanBeSelectedCoordinates() {
-        return canBeSelectedCoordinates;
-    }
-    public ItemTile[][] getBoardMatrix() { return boardMatrix; }
 
     // Checks if the tile in position (x,y) is adjacent to an empty tile
     public boolean isAdjacentEmpty(int x, int y)  {
@@ -118,8 +114,6 @@ public class BoardController {
         selectedCoordinates.clear();
         return selectedItemTiles;
     }
-
-
 
 
 }

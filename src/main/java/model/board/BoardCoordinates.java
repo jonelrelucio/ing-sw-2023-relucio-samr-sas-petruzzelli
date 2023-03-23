@@ -1,7 +1,5 @@
 package model.board;
 
-import java.util.HashMap;
-
 public class BoardCoordinates {
 
     private static final int[][][] COORDINATES = {
