@@ -6,13 +6,14 @@
 
 ### Common Goal Cards
 - Test CommonGoalCardDeck
-- Add CommonGoalCardBuilder (maybe)
+- Add CommonGoalCardDeckBuilder (maybe)
 
 ### Item Tile
 
 - Add attribute for the 3 different types of images of each ItemTileType: DONE
 
 ### Personal Goal Cards
+- Create Personal Goal Card Controller: DONE
 - Test Personal Goal Cards
 - Test PersonaPersonalCardBag 
 
