@@ -1,25 +1,14 @@
 package model;
 
 
-import model.ItemTile.ItemTile;
-import model.ItemTile.ItemTileType;
+import model.board.Board;
 import org.junit.Test;
 
 import java.security.InvalidParameterException;
-import java.util.ArrayList;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class BoardTest{
     private Board board;
 
-    @Test
-    public void test1PlayerBoard(){
-        try {
-            board = new Board(1);
-            board.printBoard();
-        } catch (InvalidParameterException ignored) {};
-    }
     @Test
     public void test2PlayersBoard(){
         try {
@@ -43,13 +32,5 @@ public class BoardTest{
 
         } catch (InvalidParameterException ignored) {};
     }
-    @Test
-    public void test5PlayersBoard(){
-        try {
-            board = new Board(5);
-            board.printBoard();
-        } catch (InvalidParameterException ignored) {};
-    }
-
 
 }

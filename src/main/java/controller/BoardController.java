@@ -1,6 +1,5 @@
 package controller;
 
-import model.Board;
 import model.ItemTile.ItemTile;
 import model.ItemTile.ItemTileType;
 

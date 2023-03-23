@@ -1,9 +1,7 @@
 package controller;
 
 import junit.framework.TestCase;
-import model.Board;
 import model.ItemTile.ItemTile;
-import model.ItemTile.ItemTileType;
 import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;

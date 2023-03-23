@@ -1,5 +1,6 @@
 package model;
 
+import model.board.Board;
 import model.commonGoalCard.CommonGoalCardDeck;
 import model.personalGoalCard.PersonalGoalCard;
 import model.personalGoalCard.PersonalGoalCardBag;
