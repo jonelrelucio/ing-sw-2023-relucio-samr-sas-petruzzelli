@@ -26,7 +26,7 @@
 - Fix CommonGoalCardDeck
 
 ### Player
-- Add to controller Points calculator for Player
+- Add to controller a Points calculator for Player
 
 
 
