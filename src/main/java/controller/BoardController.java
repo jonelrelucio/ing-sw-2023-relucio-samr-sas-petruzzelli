@@ -19,8 +19,13 @@ public class BoardController {
         this.boardMatrix = boardMatrix;
         this.selectedCoordinates = new ArrayList<>();
         this.canBeSelectedCoordinates = new ArrayList<>();
-        updateCanBeSelectedTiles();
+        updateCanBeSelectedCoordinates();
     }
+
+    // Getters
+    public ItemTile[][] getBoardMatrix() { return boardMatrix; }
+    public ArrayList<int[]> getSelectedCoordinates() { return selectedCoordinates; }
+    public ArrayList<int[]> getCanBeSelectedCoordinates() {return canBeSelectedCoordinates;}
 
     // Checks if the tile in position (x,y) is adjacent to an empty tile
     public boolean isAdjacentEmpty(int x, int y)  {
@@ -50,7 +55,7 @@ public class BoardController {
     }
 
     // Updates the Arraylist of the can be selected Tiles
-    public void updateCanBeSelectedTiles(){
+    public void updateCanBeSelectedCoordinates(){
         if (selectedCoordinates.isEmpty()) {
             for (int i = 1; i < boardMatrix.length-1; i++) {
                 for (int j = 1; j < boardMatrix[0].length- 1; j++) {
@@ -85,7 +90,7 @@ public class BoardController {
         for (int[] tile : canBeSelectedCoordinates) {
             if (Arrays.equals(tile, new int[] {x, y})) {
                 selectedCoordinates.add(new int[]{x, y});
-                updateCanBeSelectedTiles();
+                updateCanBeSelectedCoordinates();
                 return;
             }
         }
@@ -97,7 +102,7 @@ public class BoardController {
         for (int i = 0; i < selectedCoordinates.size(); i++){
             if (coordinates[0] == selectedCoordinates.get(i)[0] && coordinates[1] == selectedCoordinates.get(i)[1]) {
                 selectedCoordinates.remove(i);
-                updateCanBeSelectedTiles();
+                updateCanBeSelectedCoordinates();
                 return;
             }
         }

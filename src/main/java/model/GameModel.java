@@ -20,7 +20,7 @@ public class GameModel {
 
     public GameModel() {
         this.playerList = new CircularArrayList<>();
-        this.commonGoalCardDeck = new CommonGoalCardDeck();
+        // this.commonGoalCardDeck = new CommonGoalCardDeck();
         this.board = new Board(numOfPlayer);
         PersonalGoalCardBag.refill();
     }
