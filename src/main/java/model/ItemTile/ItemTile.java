@@ -23,7 +23,7 @@ public class ItemTile {
     }
     public int getId() {return id;}
 
-    // Creates new id
+    // TODO: CREATE ID FOR ITEMTILE: code below is wrong
     private int newId(ItemTileType itemTileType){
         Random r = new Random();
         if (itemTileType != EMPTY) return r.nextInt(3);
