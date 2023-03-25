@@ -1,13 +1,13 @@
 package controller;
 
-import junit.framework.TestCase;
-import model.ItemTile.ItemTile;
 import org.junit.jupiter.api.Test;
-import java.util.ArrayList;
 import static model.ItemTile.ItemTileType.*;
+import static org.junit.jupiter.api.Assertions.*;
 
+import model.ItemTile.ItemTile;
+import java.util.ArrayList;
 
-public class BoardControllerTest extends TestCase {
+public class BoardControllerTest {
 
     private ItemTile[][][] matrix = {
             {
@@ -105,7 +105,7 @@ public class BoardControllerTest extends TestCase {
         expected.add(bc.getBoardMatrix()[1][2]);
         ArrayList<ItemTile> selectedTile = bc.getSelectedItemTiles();
         for (int i = 0; i < expected.size(); i++) {
-            assertTrue(expected.get(i) == selectedTile.get(i));
+            assertSame(expected.get(i), selectedTile.get(i));
         }
     }
 
