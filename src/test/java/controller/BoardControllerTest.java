@@ -1,10 +1,11 @@
 package controller;
 
+import it.polimi.ingsw.controller.BoardController;
 import org.junit.jupiter.api.Test;
-import static model.ItemTile.ItemTileType.*;
+
 import static org.junit.jupiter.api.Assertions.*;
 
-import model.ItemTile.ItemTile;
+import it.polimi.ingsw.model.ItemTile.ItemTile;
 import java.util.ArrayList;
 
 public class BoardControllerTest {

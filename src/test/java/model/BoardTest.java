@@ -1,7 +1,7 @@
 package model;
 
 
-import model.board.Board;
+import it.polimi.ingsw.model.board.Board;
 import org.junit.jupiter.api.Test;
 
 import java.security.InvalidParameterException;
@@ -14,6 +14,7 @@ public class BoardTest{
         try {
             board = new Board(2);
             board.printBoard();
+            System.out.println("");
         } catch (InvalidParameterException ignored) {};
 
     }
@@ -22,6 +23,7 @@ public class BoardTest{
         try {
             board = new Board(3);
             board.printBoard();
+            System.out.println("");
         } catch (InvalidParameterException ignored) {};
     }
     @Test
@@ -29,7 +31,7 @@ public class BoardTest{
         try {
             board = new Board(4);
             board.printBoard();
-
+            System.out.println("");
         } catch (InvalidParameterException ignored) {};
     }
 

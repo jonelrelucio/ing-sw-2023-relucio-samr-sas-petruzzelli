@@ -1,8 +1,8 @@
 package model;
 
-import model.ItemTile.ItemTile;
-import model.ItemTile.ItemTileType;
-import model.commonGoalCard.*;
+import it.polimi.ingsw.model.ItemTile.ItemTile;
+import it.polimi.ingsw.model.ItemTile.ItemTileType;
+import it.polimi.ingsw.model.commonGoalCard.*;
 
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertFalse;

@@ -5,6 +5,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import it.polimi.ingsw.controller.BookshelfPointsCalculator;
 import org.junit.jupiter.api.Test;
 
 class BookshelfPointsCalculatorTest {

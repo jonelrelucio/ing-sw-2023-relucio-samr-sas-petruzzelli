@@ -3,7 +3,7 @@
 
 Implementazione del Gioco [My Shelfie](https://www.craniocreations.it/prodotto/my-shelfie/). 
 
-Todo List for Model: [TODO](src/main/java/model/README.md)
+Todo List for Model: [TODO](src/main/java/it/polimi/ingsw/model/README.md)
 
 <img src="src/main/resources/publisher_material/box_noShadow.png" align="right" width="200" alt="My Shelfie" >
 

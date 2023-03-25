@@ -2,6 +2,8 @@ package model.ItemTile;
 
 import java.util.Stack;
 
+import it.polimi.ingsw.model.ItemTile.ItemTile;
+import it.polimi.ingsw.model.ItemTile.ItemTileBag;
 import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.assertEquals;
 
