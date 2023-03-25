@@ -2,7 +2,6 @@ package model.ItemTile;
 
 import org.junit.Test;
 import java.util.Stack;
-import static org.junit.jupiter.api.Assertions.*;
 
 public class ItemTileBagTest {
 
