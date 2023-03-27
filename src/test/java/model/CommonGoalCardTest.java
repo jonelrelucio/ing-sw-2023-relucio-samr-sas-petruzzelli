@@ -1,8 +1,12 @@
 package model;
 
-import org.junit.Test;
+import it.polimi.ingsw.model.ItemTile.ItemTile;
+import it.polimi.ingsw.model.ItemTile.ItemTileType;
+import it.polimi.ingsw.model.commonGoalCard.*;
 
-import static org.junit.Assert.*;
+import org.junit.jupiter.api.Test;
+import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 public class CommonGoalCardTest {
     private final ItemTile[][] bookshelf1 =

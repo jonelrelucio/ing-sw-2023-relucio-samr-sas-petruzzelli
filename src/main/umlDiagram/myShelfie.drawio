@@ -7,7 +7,7 @@
         <mxCell id="HeNyDOu_JDfbKaOdh0E8-0" value="Player" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="440" y="-600" width="340" height="285" as="geometry" />
         </mxCell>
-        <mxCell id="HeNyDOu_JDfbKaOdh0E8-1" value="- nickname : String&#xa;- score: int&#xa;- bookshelf : Bookshelf&#xa;- personalGoalCard : PersonalGoalCard&#xa;- board : Board&#xa;- obtainedCommonGoalCard : ArrayList&lt;CommonGoalCard&gt;&#xa;- numOfRounds : int&#xa;- playerState : PlayerState&#xa;- selectedTiles : ItemTile[]&#xa;" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="HeNyDOu_JDfbKaOdh0E8-0" vertex="1">
+        <mxCell id="HeNyDOu_JDfbKaOdh0E8-1" value="- nickname : String&#xa;- score: int&#xa;- bookshelf : Bookshelf&#xa;- personalGoalCard : PersonalGoalCard&#xa;- board : Board&#xa;- obtainedCommonGoalCard : ArrayList&lt;it.polimi.ingsw.model.commonGoalCard.model.CommonGoalCard&gt;&#xa;- numOfRounds : int&#xa;- playerState : PlayerState&#xa;- selectedTiles : ItemTile[]&#xa;" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="HeNyDOu_JDfbKaOdh0E8-0" vertex="1">
           <mxGeometry y="26" width="340" height="137" as="geometry" />
         </mxCell>
         <mxCell id="HeNyDOu_JDfbKaOdh0E8-3" value="+ setPersonaGoalCard()&#xa;+ setScore()&#xa;+ getScore() : int&#xa;+ selectTiles()&#xa;+ getEndGameToken()&#xa;+ setNumOfRound()&#xa;+ getNumOfRounds() : int&#xa;+ setPlayerState&#xa;" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="HeNyDOu_JDfbKaOdh0E8-0" vertex="1">
@@ -46,7 +46,7 @@
         <mxCell id="HeNyDOu_JDfbKaOdh0E8-17" value="CATS&#xa;BOOKS&#xa;GAMES&#xa;FRAMES&#xa;TROPHIES&#xa;PLANTS&#xa;EMPTY" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="HeNyDOu_JDfbKaOdh0E8-16" vertex="1">
           <mxGeometry y="43" width="165" height="121" as="geometry" />
         </mxCell>
-        <mxCell id="HeNyDOu_JDfbKaOdh0E8-39" value="&lt;&lt;interface&gt;&gt;&#xa;CommonGoalCard" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;labelBackgroundColor=none;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="HeNyDOu_JDfbKaOdh0E8-39" value="&lt;&lt;interface&gt;&gt;&#xa;it.polimi.ingsw.model.commonGoalCard.model.CommonGoalCard" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=30;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;labelBackgroundColor=none;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="-581.49" y="-340" width="280" height="90" as="geometry" />
         </mxCell>
         <mxCell id="HeNyDOu_JDfbKaOdh0E8-42" value="+ checkPattern() : boolean" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="HeNyDOu_JDfbKaOdh0E8-39" vertex="1">
@@ -67,7 +67,7 @@
         <mxCell id="dTjtzGn-DZdnPieQcymC-1" value="- numOfPlayer : int&#xa;- playerList : CircularArrayList&lt;Player&gt;&#xa;- commonGoalCardDeck : CommonGoalCardDeck&#xa;- board : Board&#xa;- state : State&#xa;- numOfRounds : int&#xa;- currentPlayer : Player" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="dTjtzGn-DZdnPieQcymC-0" vertex="1">
           <mxGeometry y="40" width="360" height="120" as="geometry" />
         </mxCell>
-        <mxCell id="dTjtzGn-DZdnPieQcymC-3" value="+ init() : void&#xa;+ start() : void&#xa;+ setNumOfPlayer() &#xa;+ setPlayerList()&#xa;+ setCommonGoalCards()&#xa;+ addCommonGoalCards()&#xa;+ setBoard()&#xa;+ setState()&#xa;+ getNumPlayer() : Player&#xa;+ getPlayerList() : CircularArrayList&lt;Player&gt;&#xa;+ getCommonGoalCards() : ArrayList&lt;CommonGoalCard&gt;&#xa;+ getBoard() : Board&#xa;+ getState() : State&#xa;+ getCurrentPlayer() : Player&#xa;+ addPlayer()&#xa;+ checkWinner() : Player+ randomStartingPlayer() : &#xa;+ getNextPlayer(): Player&#xa;+ getCurrentPlayer : Player" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="dTjtzGn-DZdnPieQcymC-0" vertex="1">
+        <mxCell id="dTjtzGn-DZdnPieQcymC-3" value="+ init() : void&#xa;+ start() : void&#xa;+ setNumOfPlayer() &#xa;+ setPlayerList()&#xa;+ setCommonGoalCards()&#xa;+ addCommonGoalCards()&#xa;+ setBoard()&#xa;+ setState()&#xa;+ getNumPlayer() : Player&#xa;+ getPlayerList() : CircularArrayList&lt;Player&gt;&#xa;+ getCommonGoalCards() : ArrayList&lt;it.polimi.ingsw.model.commonGoalCard.model.CommonGoalCard&gt;&#xa;+ getBoard() : Board&#xa;+ getState() : State&#xa;+ getCurrentPlayer() : Player&#xa;+ addPlayer()&#xa;+ checkWinner() : Player+ randomStartingPlayer() : &#xa;+ getNextPlayer(): Player&#xa;+ getCurrentPlayer : Player" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="dTjtzGn-DZdnPieQcymC-0" vertex="1">
           <mxGeometry y="160" width="360" height="292" as="geometry" />
         </mxCell>
         <mxCell id="dTjtzGn-DZdnPieQcymC-8" value="&lt;&lt;Enumeration&gt;&gt;&#xa;State" style="swimlane;fontStyle=0;childLayout=stackLayout;horizontal=1;startSize=43;fillColor=#f5f5f5;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
@@ -176,7 +176,7 @@
         <mxCell id="AF8taGSQTb52YkFh4nOF-46" value="WAITING&#xa;PLAYING" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-45" vertex="1">
           <mxGeometry y="43" width="160" height="77" as="geometry" />
         </mxCell>
-        <mxCell id="AF8taGSQTb52YkFh4nOF-93" value="CommonGoalCard3" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="AF8taGSQTb52YkFh4nOF-93" value="it.polimi.ingsw.model.commonGoalCard.model.CommonGoalCard3" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="-827.49" y="110.25" width="245" height="101" as="geometry" />
         </mxCell>
         <mxCell id="AF8taGSQTb52YkFh4nOF-94" value="" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-93" vertex="1">
@@ -185,7 +185,7 @@
         <mxCell id="AF8taGSQTb52YkFh4nOF-95" value="+ checkPattern() : boolean" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-93" vertex="1">
           <mxGeometry y="59" width="245" height="42" as="geometry" />
         </mxCell>
-        <mxCell id="AF8taGSQTb52YkFh4nOF-97" value="CommonGoalCard4" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="AF8taGSQTb52YkFh4nOF-97" value="it.polimi.ingsw.model.commonGoalCard.model.CommonGoalCard4" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="-827.49" y="230.25" width="245" height="101" as="geometry" />
         </mxCell>
         <mxCell id="AF8taGSQTb52YkFh4nOF-98" value="" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-97" vertex="1">
@@ -194,7 +194,7 @@
         <mxCell id="AF8taGSQTb52YkFh4nOF-99" value="+ checkPattern() : boolean" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-97" vertex="1">
           <mxGeometry y="59" width="245" height="42" as="geometry" />
         </mxCell>
-        <mxCell id="AF8taGSQTb52YkFh4nOF-101" value="CommonGoalCard1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="AF8taGSQTb52YkFh4nOF-101" value="it.polimi.ingsw.model.commonGoalCard.model.CommonGoalCard1" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="-827.49" y="-129.75" width="245" height="101" as="geometry" />
         </mxCell>
         <mxCell id="AF8taGSQTb52YkFh4nOF-102" value="" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-101" vertex="1">
@@ -203,13 +203,13 @@
         <mxCell id="AF8taGSQTb52YkFh4nOF-103" value="+ checkPattern() : boolean" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-101" vertex="1">
           <mxGeometry y="59" width="245" height="42" as="geometry" />
         </mxCell>
-        <mxCell id="AF8taGSQTb52YkFh4nOF-104" value="CommonGoalCard2" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="AF8taGSQTb52YkFh4nOF-104" value="it.polimi.ingsw.model.commonGoalCard.model.CommonGoalCard2" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="-827.49" y="-9.75" width="245" height="59" as="geometry" />
         </mxCell>
         <mxCell id="AF8taGSQTb52YkFh4nOF-105" value="" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-104" vertex="1">
           <mxGeometry y="26" width="245" height="33" as="geometry" />
         </mxCell>
-        <mxCell id="AF8taGSQTb52YkFh4nOF-108" value="CommonGoalCard9" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="AF8taGSQTb52YkFh4nOF-108" value="it.polimi.ingsw.model.commonGoalCard.model.CommonGoalCard9" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="-303.98" y="110.25" width="245" height="101" as="geometry" />
         </mxCell>
         <mxCell id="AF8taGSQTb52YkFh4nOF-109" value="" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-108" vertex="1">
@@ -218,7 +218,7 @@
         <mxCell id="AF8taGSQTb52YkFh4nOF-110" value="+ checkPattern() : boolean" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-108" vertex="1">
           <mxGeometry y="59" width="245" height="42" as="geometry" />
         </mxCell>
-        <mxCell id="AF8taGSQTb52YkFh4nOF-111" value="CommonGoalCard10" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="AF8taGSQTb52YkFh4nOF-111" value="it.polimi.ingsw.model.commonGoalCard.model.CommonGoalCard10" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="-303.98" y="230.25" width="245" height="101" as="geometry" />
         </mxCell>
         <mxCell id="AF8taGSQTb52YkFh4nOF-112" value="" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-111" vertex="1">
@@ -227,7 +227,7 @@
         <mxCell id="AF8taGSQTb52YkFh4nOF-113" value="+ checkPattern() : boolean" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-111" vertex="1">
           <mxGeometry y="59" width="245" height="42" as="geometry" />
         </mxCell>
-        <mxCell id="AF8taGSQTb52YkFh4nOF-115" value="CommonGoalCard7" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="AF8taGSQTb52YkFh4nOF-115" value="it.polimi.ingsw.model.commonGoalCard.model.CommonGoalCard7" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;strokeColor=#666666;fontColor=#333333;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="-301.49" y="-129.75" width="245" height="101" as="geometry" />
         </mxCell>
         <mxCell id="AF8taGSQTb52YkFh4nOF-116" value="" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-115" vertex="1">
@@ -236,7 +236,7 @@
         <mxCell id="AF8taGSQTb52YkFh4nOF-117" value="+ checkPattern() : boolean" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-115" vertex="1">
           <mxGeometry y="59" width="245" height="42" as="geometry" />
         </mxCell>
-        <mxCell id="AF8taGSQTb52YkFh4nOF-118" value="CommonGoalCard8" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="AF8taGSQTb52YkFh4nOF-118" value="it.polimi.ingsw.model.commonGoalCard.model.CommonGoalCard8" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="-303.98" y="-9.75" width="245" height="101" as="geometry" />
         </mxCell>
         <mxCell id="AF8taGSQTb52YkFh4nOF-119" value="" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-118" vertex="1">
@@ -245,7 +245,7 @@
         <mxCell id="AF8taGSQTb52YkFh4nOF-120" value="+ checkPattern() : boolean" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-118" vertex="1">
           <mxGeometry y="59" width="245" height="42" as="geometry" />
         </mxCell>
-        <mxCell id="AF8taGSQTb52YkFh4nOF-122" value="CommonGoalCard5" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="AF8taGSQTb52YkFh4nOF-122" value="it.polimi.ingsw.model.commonGoalCard.model.CommonGoalCard5" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="-827.49" y="350.25" width="245" height="101" as="geometry" />
         </mxCell>
         <mxCell id="AF8taGSQTb52YkFh4nOF-123" value="" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-122" vertex="1">
@@ -254,7 +254,7 @@
         <mxCell id="AF8taGSQTb52YkFh4nOF-124" value="+ checkPattern() : boolean" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-122" vertex="1">
           <mxGeometry y="59" width="245" height="42" as="geometry" />
         </mxCell>
-        <mxCell id="AF8taGSQTb52YkFh4nOF-125" value="CommonGoalCard6" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="AF8taGSQTb52YkFh4nOF-125" value="it.polimi.ingsw.model.commonGoalCard.model.CommonGoalCard6" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="-827.49" y="470.25" width="245" height="101" as="geometry" />
         </mxCell>
         <mxCell id="AF8taGSQTb52YkFh4nOF-126" value="" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-125" vertex="1">
@@ -263,7 +263,7 @@
         <mxCell id="AF8taGSQTb52YkFh4nOF-127" value="+ checkPattern() : boolean" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-125" vertex="1">
           <mxGeometry y="59" width="245" height="42" as="geometry" />
         </mxCell>
-        <mxCell id="AF8taGSQTb52YkFh4nOF-129" value="CommonGoalCard9" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="AF8taGSQTb52YkFh4nOF-129" value="it.polimi.ingsw.model.commonGoalCard.model.CommonGoalCard9" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="-303.98" y="350.25" width="245" height="101" as="geometry" />
         </mxCell>
         <mxCell id="AF8taGSQTb52YkFh4nOF-130" value="" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-129" vertex="1">
@@ -272,7 +272,7 @@
         <mxCell id="AF8taGSQTb52YkFh4nOF-131" value="+ checkPattern() : boolean" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-129" vertex="1">
           <mxGeometry y="59" width="245" height="42" as="geometry" />
         </mxCell>
-        <mxCell id="AF8taGSQTb52YkFh4nOF-132" value="CommonGoalCard10" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
+        <mxCell id="AF8taGSQTb52YkFh4nOF-132" value="it.polimi.ingsw.model.commonGoalCard.model.CommonGoalCard10" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="-303.98" y="470.25" width="245" height="101" as="geometry" />
         </mxCell>
         <mxCell id="AF8taGSQTb52YkFh4nOF-133" value="" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" parent="AF8taGSQTb52YkFh4nOF-132" vertex="1">
@@ -431,7 +431,7 @@
         <mxCell id="Bc4TnsWlUAblkgccjZVZ-6" value="CommonGoalCardDeck" style="swimlane;fontStyle=1;align=center;verticalAlign=top;childLayout=stackLayout;horizontal=1;startSize=26;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;whiteSpace=wrap;html=1;fillColor=#f5f5f5;fontColor=#333333;strokeColor=#666666;" parent="WIyWlLk6GJQsqaUBKTNV-1" vertex="1">
           <mxGeometry x="-601.99" y="-510" width="320" height="78" as="geometry" />
         </mxCell>
-        <mxCell id="Bc4TnsWlUAblkgccjZVZ-7" value="- deck : HashMap&amp;lt;CommonGoalCard, Stack&amp;lt;Integer&amp;gt;&amp;gt;" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#333333;" parent="Bc4TnsWlUAblkgccjZVZ-6" vertex="1">
+        <mxCell id="Bc4TnsWlUAblkgccjZVZ-7" value="- deck : HashMap&amp;lt;it.polimi.ingsw.model.commonGoalCard.model.CommonGoalCard, Stack&amp;lt;Integer&amp;gt;&amp;gt;" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#333333;" parent="Bc4TnsWlUAblkgccjZVZ-6" vertex="1">
           <mxGeometry y="26" width="320" height="26" as="geometry" />
         </mxCell>
         <mxCell id="Bc4TnsWlUAblkgccjZVZ-9" value="+ draw() : int" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=top;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;whiteSpace=wrap;html=1;fontColor=#333333;" parent="Bc4TnsWlUAblkgccjZVZ-6" vertex="1">

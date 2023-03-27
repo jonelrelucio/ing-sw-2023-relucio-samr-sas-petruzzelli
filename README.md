@@ -1,7 +1,9 @@
 
 # Progetto INGSW 2022-2023
 
-Implementazione del Gioco [My Shelfie](https://www.craniocreations.it/prodotto/my-shelfie/).
+Implementazione del Gioco [My Shelfie](https://www.craniocreations.it/prodotto/my-shelfie/). 
+
+Todo List for Model: [TODO](src/main/java/it/polimi/ingsw/model/README.md)
 
 <img src="src/main/resources/publisher_material/box_noShadow.png" align="right" width="200" alt="My Shelfie" >
 
@@ -13,25 +15,25 @@ Implementazione del Gioco [My Shelfie](https://www.craniocreations.it/prodotto/m
 
 ### Diagramma UML
 I diagrammi UML sono stato sviluppati nel sito di [diagrams](https://www.diagrams.net/).  
-Il diagramma principale: [UML Diagram](src/main/umlDiagram/myShelfieUmlDiagram.png)
+Il diagramma principale: [UML Diagram](src/main/umlDiagram/ClassDiagram_Model.png)
 
 ### Functionality
-| Functionality                |                       State                        |
-|:-----------------------------|:--------------------------------------------------:|
-| Basic rules                  | 🟡 |
-| Complete rules               | 🟡 |
-| Socket                       | 🔴 |
-| RMI                          | 🔴 |
-| CLI                          | 🔴 |
-| GLI                          | 🔴 |
-| Multiple games               | 🔴 |
-| Persistence                  | 🔴 |
-| Resilience to disconnections | 🔴 |
-| Chat                         | 🔴 |
+| Functionality                | State |
+|:-----------------------------|:-----:|
+| Basic rules                  |  🟡   |
+| Complete rules               |  🟡   |
+| Socket                       |  🔴   |
+| RMI                          |  🔴   |
+| CLI                          |  🔴   |
+| GLI                          |  🔴   |
+| Multiple games               |  🔴   |
+| Persistence                  |  🔴   |
+| Resilience to disconnections |  🔴   |
+| Chat                         |  🔴   |
 
 
 ##### Legenda
-🔴 Non Implementato | 🟢 Implementato |🟡 Implementazione in corso...
+🔴 Non Implementata | 🟢 Implementata |🟡 Implementazione in corso...
 
 
 
