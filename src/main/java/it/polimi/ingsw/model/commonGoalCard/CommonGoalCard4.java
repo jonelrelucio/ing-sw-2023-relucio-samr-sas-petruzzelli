@@ -1,6 +1,10 @@
 package it.polimi.ingsw.model.commonGoalCard;
-public class CommonGoalCard4 extends CommonGoalSameType{
-    public CommonGoalCard4() {
-        super(1, 1, 8, true);
+
+import it.polimi.ingsw.model.ItemTile.ItemTile;
+
+public class CommonGoalCard4 implements CommonGoalCard {
+    @Override
+    public boolean checkPattern(ItemTile[][] bookshelf) {
+        return false;
     }
 }
