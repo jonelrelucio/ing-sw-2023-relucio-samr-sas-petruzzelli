@@ -29,6 +29,8 @@ public class CommonGoalCardDeck {
         return deck;
     }
 
-
+    public int getScoringToken(CommonGoalCard card) {
+        return deck.get(card).pop();
+    }
 
 }

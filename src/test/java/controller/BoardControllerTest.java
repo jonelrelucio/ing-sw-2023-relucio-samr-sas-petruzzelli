@@ -1,6 +1,7 @@
 package controller;
 
 import it.polimi.ingsw.controller.BoardController;
+import it.polimi.ingsw.model.ItemTile.ItemTileType;
 import org.junit.jupiter.api.Test;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -12,15 +13,15 @@ public class BoardControllerTest {
 
     private ItemTile[][][] matrix = {
             {
-                    {new ItemTile(EMPTY), new ItemTile(EMPTY), new ItemTile(EMPTY), new ItemTile(EMPTY)},
-                    {new ItemTile(EMPTY), new ItemTile(PLANT), new ItemTile(FRAME), new ItemTile(EMPTY)},
-                    {new ItemTile(EMPTY), new ItemTile(TROPHY), new ItemTile(EMPTY), new ItemTile(EMPTY)},
-                    {new ItemTile(BOOK), new ItemTile(CAT), new ItemTile(TROPHY), new ItemTile(EMPTY)},
+                    {new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.EMPTY)},
+                    {new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.PLANT), new ItemTile(ItemTileType.FRAME), new ItemTile(ItemTileType.EMPTY)},
+                    {new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.TROPHY), new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.EMPTY)},
+                    {new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.CAT), new ItemTile(ItemTileType.TROPHY), new ItemTile(ItemTileType.EMPTY)},
             },
             {
-                    {new ItemTile(EMPTY), new ItemTile(EMPTY), new ItemTile(EMPTY)},
-                    {new ItemTile(EMPTY), new ItemTile(PLANT), new ItemTile(EMPTY)},
-                    {new ItemTile(EMPTY), new ItemTile(TROPHY), new ItemTile(EMPTY)}
+                    {new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.EMPTY)},
+                    {new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.PLANT), new ItemTile(ItemTileType.EMPTY)},
+                    {new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.TROPHY), new ItemTile(ItemTileType.EMPTY)}
             }
 
     };
