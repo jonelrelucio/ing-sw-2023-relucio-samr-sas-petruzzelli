@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCard;
 import it.polimi.ingsw.model.personalGoalCard.PersonalGoalCard;
 import it.polimi.ingsw.model.ItemTile.ItemTile;
-import model.commonGoalCard.*;
 
 enum PlayerState {
     WAITING, PLAYING;

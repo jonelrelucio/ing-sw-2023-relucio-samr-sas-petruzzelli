@@ -1,0 +1,14 @@
+{
+  "PersonalGoalCoordinates" : [
+    {
+      "id": 1,
+      "coordinates": [[0,0], [0,2], [1,4], [2,3], [1,3], [5,2]],
+      "itemCoordinates": ["PLANT", "FRAME", "CAT", "BOOK", "GAME", "TROPHY"]
+    },
+    {
+      "id": 2,
+      "coordinates": [[1,1], [2,0], [2,2], [3,4], [4,3], [5,4]],
+      "itemCoordinates": ["PLANT", "CAT", "GAME", "BOOK", "TROPHY", "FRAME"]
+    }
+]
+}

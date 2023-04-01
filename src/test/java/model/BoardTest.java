@@ -35,4 +35,9 @@ public class BoardTest{
         } catch (InvalidParameterException ignored) {};
     }
 
+    @Test
+    public void testInitCoordinates(){
+
+    }
+
 }

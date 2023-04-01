@@ -3,18 +3,25 @@ package it.polimi.ingsw.model.board;
 import it.polimi.ingsw.model.ItemTile.ItemTile;
 import it.polimi.ingsw.model.ItemTile.ItemTileBag;
 import it.polimi.ingsw.model.ItemTile.ItemTileType;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
+import java.util.List;
+import java.util.Map;
+import com.google.gson.Gson;
 
 public class Board {
 
     private final int ROW = 11, COL = 11;
     private ItemTile[][] boardMatrix = new ItemTile[ROW][COL];
     private int numOfPlayers;
+    private int[][] boardCoordinates;
 
     // CONSTRUCTOR
     public Board(int numOfPlayers){
         setNumOfPlayers(numOfPlayers);
         initItemTileMatrix();
-        setItemsInCoordinates(BoardCoordinates.getCoordinates(numOfPlayers));
+        initBoardCoordinates(numOfPlayers);
+        setItemsInCoordinates(boardCoordinates);
     }
 
     // Getters
@@ -38,6 +45,31 @@ public class Board {
         }
     }
 
+    // Initializes the board coordinates given the number of players
+    public void initBoardCoordinates(int key) {
+        // saves the path of the json file
+        InputStream inputStream = getClass().getResourceAsStream("/json/BoardCoordinates.json");
+        String json = null;
+        try {
+            assert inputStream != null;
+            // Converts the content of the path into a json string
+            json = new String(inputStream.readAllBytes(), StandardCharsets.UTF_8);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        Gson gson = new Gson();
+        // Deserializes json string to a BoardCoordinates Object
+        BoardCoordinates boardCoordinates = gson.fromJson(json, BoardCoordinates.class);
+        List<List<Integer>> list = boardCoordinates.getBoardCoordinatesMap().get(Integer.toString(key));
+        // Converts List<List<Integer>> to an int[][]
+        int[][] arr = new int[list.size()][];
+        for (int i = 0; i < list.size(); i++) {
+            List<Integer> innerList = list.get(i);
+            arr[i] = innerList.stream().mapToInt(Integer::intValue).toArray();
+        }
+        this.boardCoordinates = arr;
+    }
+
     // sets the Items in board
     public void setItemsInCoordinates(int[][] indices) {
         for (int[] index : indices) {
@@ -56,3 +88,16 @@ public class Board {
     }
 
 }
+
+class BoardCoordinates {
+    private Map<String, List<List<Integer>>> BoardCoordinatesMap;
+
+    public Map<String, List<List<Integer>>> getBoardCoordinatesMap() {
+        return BoardCoordinatesMap;
+    }
+
+    public void setBoardCoordinatesMap(Map<String, List<List<Integer>>> boardCoordinatesMap) {
+        BoardCoordinatesMap = boardCoordinatesMap;
+    }
+}
+
