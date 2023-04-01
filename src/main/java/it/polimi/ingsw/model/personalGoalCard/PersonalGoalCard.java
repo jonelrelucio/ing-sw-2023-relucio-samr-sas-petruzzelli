@@ -1,7 +1,10 @@
 package it.polimi.ingsw.model.personalGoalCard;
 
+import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.model.ItemTile.ItemTile;
 import it.polimi.ingsw.model.ItemTile.ItemTileType;
+import it.polimi.ingsw.model.bag.PersonalGoalCardBag;
+import it.polimi.ingsw.model.util.Utility;
 
 import static it.polimi.ingsw.model.ItemTile.ItemTileType.*;
 
@@ -9,11 +12,13 @@ public class PersonalGoalCard {
 
     private static int ROW = 6, COL = 5;
     private ItemTile[][] personalGoalMatrix;
+    private PersonalGoalCardBag bag;
 
     // CONSTRUCTOR
-    public PersonalGoalCard() {
+    public PersonalGoalCard(PersonalGoalCardBag bag) {
+        this.bag = bag;
         initCard();
-        buildPersonalGoalCard(PersonalGoalCardBag.getRandomPersonalCardNum());
+        buildPersonalGoalCard();
     }
 
     // fills card matrix with empty tiles
@@ -27,27 +32,24 @@ public class PersonalGoalCard {
     }
 
     // Builds a Personal card, given a random number from the bag
-    public void buildPersonalGoalCard(int key) {
-        int[][] coordinates = PersonalGoalCardCoordinates.getCoordinates(key);
-        ItemTileType[] itemCoordinates = PersonalGoalCardCoordinates.getItemCoordinates(key);
-
-        for (int i = 0; i < coordinates.length; i++) {
-            int[] index = coordinates[i];
-            if (personalGoalMatrix[index[0]][index[1]].isEmpty()) {
-                personalGoalMatrix[index[0]][index[1]] = new ItemTile(itemCoordinates[i]);
-            }
-        }
+    public void buildPersonalGoalCard() {
+        int key = bag.drawPersonalCardNum();
+        String path = "json/PersonalGoalCoordinates";
+        PersonalGoalCardCoordinates pgc = (PersonalGoalCardCoordinates) Utility.deserializeJsonToObject(path, PersonalGoalCardCoordinates.class);
+        int[][] matrixCoordinates = pgc.getMatrixCoordinates(key);
+        ItemTileType[] itemCoordinates = pgc.getItemCoordinates(key);
+        updateItemsInCoordinates(matrixCoordinates, itemCoordinates);
     }
 
     // puts given items in given coordinates
-    public void setItemsInCoordinates(int[][] indices, ItemTileType itemTileType) {
-        for (int[] index : indices) {
+    public void updateItemsInCoordinates(int[][] matrixCoordinates, ItemTileType[] itemTileType) {
+        for (int i = 0; i < matrixCoordinates.length; i++) {
+            int[] index = matrixCoordinates[i];
             if (personalGoalMatrix[index[0]][index[1]].isEmpty()) {
-                personalGoalMatrix[index[0]][index[1]] = new ItemTile(itemTileType);
+                personalGoalMatrix[index[0]][index[1]] = new ItemTile(itemTileType[i]);
             }
         }
     }
-
 
 
     public ItemTile[][] getPersonalGoalCardMatrix() { return personalGoalMatrix; }
@@ -64,3 +66,21 @@ public class PersonalGoalCard {
 
 
 }
+
+class PersonalGoalCardCoordinates {
+
+    @SerializedName("coordinates")
+    private int[][][] matrixCoordinates;
+
+    @SerializedName("itemCoordinates")
+    private ItemTileType[][] itemCoordinates;
+
+
+    public int[][] getMatrixCoordinates(int key) {
+        return matrixCoordinates[key-1];
+    }
+    public ItemTileType[] getItemCoordinates(int key) {
+        return itemCoordinates[key-1];
+    }
+}
+

@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 import java.util.ArrayList;
 
+import it.polimi.ingsw.model.bag.PersonalGoalCardBag;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCard;
 import it.polimi.ingsw.model.personalGoalCard.PersonalGoalCard;
 import it.polimi.ingsw.model.ItemTile.ItemTile;
@@ -26,9 +27,9 @@ public class Player {
     private int numOfRounds;
     private PlayerState playerState;
 
-    public Player(String nickname){
+    public Player(String nickname, PersonalGoalCardBag bag){
         this.nickname = nickname;
-        this.personalGoalCard = new PersonalGoalCard();
+        this.personalGoalCard = new PersonalGoalCard(bag);
         this.bookshelf = new Bookshelf();
         selectedTiles = new ArrayList<>();
     }

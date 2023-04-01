@@ -1,7 +1,7 @@
 package model;
 
 
-import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.Board;
 import org.junit.jupiter.api.Test;
 
 import java.security.InvalidParameterException;

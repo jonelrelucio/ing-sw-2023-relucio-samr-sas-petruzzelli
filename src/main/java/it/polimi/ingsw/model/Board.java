@@ -1,10 +1,11 @@
-package it.polimi.ingsw.model.board;
+package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.ItemTile.ItemTile;
-import it.polimi.ingsw.model.ItemTile.ItemTileBag;
 import it.polimi.ingsw.model.ItemTile.ItemTileType;
 import java.util.List;
 import java.util.Map;
+
+import it.polimi.ingsw.model.bag.ItemTileBag;
 import it.polimi.ingsw.model.util.Utility;
 
 public class Board {
@@ -13,10 +14,12 @@ public class Board {
     private ItemTile[][] boardMatrix = new ItemTile[ROW][COL];
     private int numOfPlayers;
     private int[][] boardCoordinates;
+    private final ItemTileBag bag;
 
     // CONSTRUCTOR
     public Board(int numOfPlayers){
-        setNumOfPlayers(numOfPlayers);
+        this.numOfPlayers = numOfPlayers;
+        this.bag = new ItemTileBag();
         initItemTileMatrix();
         initBoardCoordinates(numOfPlayers);
         setItemsInCoordinates(boardCoordinates);
@@ -54,7 +57,7 @@ public class Board {
     // sets the Items in board
     public void setItemsInCoordinates(int[][] indices) {
         for (int[] index : indices) {
-            if (boardMatrix[index[0]][index[1]].isEmpty()) boardMatrix[index[0]][index[1]] = ItemTileBag.getInstance().drawItemTile();
+            if (boardMatrix[index[0]][index[1]].isEmpty()) boardMatrix[index[0]][index[1]] = bag.drawItemTile();
         }
     }
 

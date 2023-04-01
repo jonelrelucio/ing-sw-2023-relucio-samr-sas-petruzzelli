@@ -1,9 +1,8 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.board.Board;
+import it.polimi.ingsw.model.bag.PersonalGoalCardBag;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCardDeck;
 import it.polimi.ingsw.model.personalGoalCard.PersonalGoalCard;
-import it.polimi.ingsw.model.personalGoalCard.PersonalGoalCardBag;
 import it.polimi.ingsw.model.util.CircularArrayList;
 
 enum State {
@@ -21,9 +20,9 @@ public class GameModel {
 
     public GameModel() {
         this.playerList = new CircularArrayList<>();
+
         // this.commonGoalCardDeck = new CommonGoalCardDeck();
         this.board = new Board(numOfPlayer);
-        PersonalGoalCardBag.refill();
     }
     public void setPersonalGoalCards() {
         for (int i = 0; i < numOfPlayer; i++ ){
