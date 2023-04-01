@@ -13,7 +13,6 @@ public class Board {
     private ItemTile[][] boardMatrix = new ItemTile[ROW][COL];
     private int numOfPlayers;
     private int[][] boardCoordinates;
-    private final String PATH = "/json/BoardCoordinates.json";
 
     // CONSTRUCTOR
     public Board(int numOfPlayers){
@@ -46,6 +45,7 @@ public class Board {
 
     // Initializes the board coordinates given the number of players
     public void initBoardCoordinates(int key) {
+        String PATH = "/json/BoardCoordinates.json";
         BoardCoordinates boardCoordinates = (BoardCoordinates) Utility.deserializeJsonToObject(PATH, BoardCoordinates.class );
         List<List<Integer>> list = boardCoordinates.getBoardCoordinatesMap().get(Integer.toString(key));
         this.boardCoordinates = Utility.convertListListToArrayArray(list);

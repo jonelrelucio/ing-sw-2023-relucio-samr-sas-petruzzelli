@@ -11,7 +11,7 @@ public class Utility {
 
     // Gets the json path and returns the json file content
     public static String getJsonFromPath(String path){
-        InputStream is = Utility.class.getClassLoader().getResourceAsStream(path);
+        InputStream is = Utility.class.getResourceAsStream(path);
         String json = null;
         if (is == null) throw new IllegalArgumentException("File not Found: "+path);
         // Converts the content of the path into a json string
