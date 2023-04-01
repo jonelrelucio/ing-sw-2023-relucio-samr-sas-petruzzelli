@@ -4,6 +4,7 @@ import it.polimi.ingsw.model.board.Board;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCardDeck;
 import it.polimi.ingsw.model.personalGoalCard.PersonalGoalCard;
 import it.polimi.ingsw.model.personalGoalCard.PersonalGoalCardBag;
+import it.polimi.ingsw.model.util.CircularArrayList;
 
 enum State {
     INIT, MID, END
