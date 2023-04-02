@@ -45,8 +45,9 @@ public class Player {
         return score;
     }
 
+    // add the value of the parameter to the current player score
     public void setScore(int score) {
-        this.score = score;
+        this.score = this.score + score;
     }
 
     public Bookshelf getBookshelf() {
@@ -69,8 +70,9 @@ public class Player {
         return obtainedCommonGoalCards;
     }
 
-    public void setObtainedCommonGoalCards(ArrayList<CommonGoalCard> obtainedCommonGoalCards) {
-        this.obtainedCommonGoalCards = obtainedCommonGoalCards;
+    // add the common goal card obtained
+    public void setObtainedCommonGoalCards(CommonGoalCard card) {
+        this.obtainedCommonGoalCards.add(card);
     }
 
     public ArrayList<ItemTile> getSelectedTiles() {
