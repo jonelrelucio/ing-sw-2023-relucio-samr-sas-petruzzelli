@@ -37,7 +37,9 @@ public class Board {
     public void setNumOfPlayers(int numOfPlayers) { this.numOfPlayers = numOfPlayers; }
     public void setMatrixTile(int x, int y, ItemTile itemTile) { boardMatrix[x][y] = itemTile; }
 
-    // Fills the board with empty tiles
+    /**
+     * Initializes the matrix of itemTile to empty type
+     */
     public void initItemTileMatrix() {
         for (int i = 0; i < ROW; i++ ){
             for (int j = 0; j < COL; j++){
@@ -46,7 +48,10 @@ public class Board {
         }
     }
 
-    // Initializes the board coordinates given the number of players
+    /**
+     * Initializes the board given the number of players
+     * @param key   the number of players
+     */
     public void initBoardCoordinates(int key) {
         String PATH = "/json/BoardCoordinates.json";
         BoardCoordinates boardCoordinates = (BoardCoordinates) Utility.deserializeJsonToObject(PATH, BoardCoordinates.class );
@@ -54,8 +59,11 @@ public class Board {
         this.boardCoordinates = Utility.convertListListToArrayArray(list);
     }
 
-    // sets the Items in board
-    public void setItemsInCoordinates(int[][] indices) {
+    /**
+     * sets the items in given coordinates
+     * @param indices   array of coordinates which empty tiles will be changed to an item tile drawn from the bag
+     */
+    private void setItemsInCoordinates(int[][] indices) {
         for (int[] index : indices) {
             if (boardMatrix[index[0]][index[1]].isEmpty()) boardMatrix[index[0]][index[1]] = bag.drawItemTile();
         }

@@ -15,6 +15,10 @@ public class Bookshelf {
         setBookshelfMatrix();
         initBookshelfMatrix();
     }
+
+    /**
+     * Initializes bookshelf
+     */
     private void initBookshelfMatrix() {
         for (int i = 0; i < ROW; i++ ){
             for (int j = 0; j < COL; j++){

@@ -25,6 +25,9 @@ public class ItemTileBag {
         Collections.shuffle(itemTilesBag);
     }
 
+    /**
+     * @param id    indicates the value of the image
+     */
     private void pushBag(int id){
         itemTilesBag.push(new ItemTile(CAT, id));
         itemTilesBag.push(new ItemTile(BOOK, id));

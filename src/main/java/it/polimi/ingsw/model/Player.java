@@ -27,9 +27,8 @@ public class Player {
     private int numOfRounds;
     private PlayerState playerState;
 
-    public Player(String nickname, PersonalGoalCardBag bag){
+    public Player(String nickname){
         this.nickname = nickname;
-        this.personalGoalCard = new PersonalGoalCard(bag);
         this.bookshelf = new Bookshelf();
         selectedTiles = new ArrayList<>();
     }

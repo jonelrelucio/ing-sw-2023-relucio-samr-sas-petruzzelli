@@ -20,16 +20,31 @@ public class ItemTile {
     public void setItemTileType(ItemTileType itemTileType) { this.itemTileType = itemTileType; }
     public void setId(int id) { this.id = id; }
 
-    // Getter
+    /**
+     *
+     * @return  item tile type of the item instance
+     */
     public ItemTileType getItemTileType() {
         return itemTileType;
     }
+
+    /**
+     *
+     * @return  image id of the item instance
+     */
     public int getId() {return id;}
 
-    // returns if itemTileType is empty
+    /**
+     *
+     * @return  true if item tile instante is empty
+     */
     public boolean isEmpty() { return itemTileType == EMPTY; }
 
-    // overrides equals method
+    /**
+     *
+     * @param obj   ItemTile Object
+     * @return      true if obj and instance caller are equal
+     */
     @Override
     public boolean equals(Object obj){
         if (obj == null) return false;

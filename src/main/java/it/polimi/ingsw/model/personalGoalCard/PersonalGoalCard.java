@@ -21,7 +21,9 @@ public class PersonalGoalCard {
         buildPersonalGoalCard();
     }
 
-    // fills card matrix with empty tiles
+    /**
+     * Fills Personal goal card with empty item tiles
+     */
     public void initCard() {
         personalGoalMatrix = new ItemTile[ROW][COL];
         for (int i = 0; i < ROW; i++){
@@ -31,7 +33,11 @@ public class PersonalGoalCard {
         }
     }
 
-    // Builds a Personal card, given a random number from the bag
+    /**
+     * Builds a personalGoalCard
+     * the path string contains the json file path from the resources folder
+     * deserializes given path to an PersonalGoalCardCoordinates object
+     */
     public void buildPersonalGoalCard() {
         int key = bag.drawPersonalCardNum();
         String path = "json/PersonalGoalCoordinates";
@@ -41,8 +47,12 @@ public class PersonalGoalCard {
         updateItemsInCoordinates(matrixCoordinates, itemCoordinates);
     }
 
-    // puts given items in given coordinates
-    public void updateItemsInCoordinates(int[][] matrixCoordinates, ItemTileType[] itemTileType) {
+    /**
+     *
+     * @param matrixCoordinates coordinates which will be filled with itemTiles
+     * @param itemTileType      the types of the itemTiles which will be used to fill the matrixCoordinates
+     */
+    private void updateItemsInCoordinates(int[][] matrixCoordinates, ItemTileType[] itemTileType) {
         for (int i = 0; i < matrixCoordinates.length; i++) {
             int[] index = matrixCoordinates[i];
             if (personalGoalMatrix[index[0]][index[1]].isEmpty()) {
@@ -51,7 +61,10 @@ public class PersonalGoalCard {
         }
     }
 
-
+    /**
+     *
+     * @return  personalGoalMatrix which is a matrix of ItemTile
+     */
     public ItemTile[][] getPersonalGoalCardMatrix() { return personalGoalMatrix; }
 
     // TODO: remove print personal goal

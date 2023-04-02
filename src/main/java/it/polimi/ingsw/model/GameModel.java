@@ -24,11 +24,6 @@ public class GameModel {
         // this.commonGoalCardDeck = new CommonGoalCardDeck();
         this.board = new Board(numOfPlayer);
     }
-    public void setPersonalGoalCards() {
-        for (int i = 0; i < numOfPlayer; i++ ){
-            playerList.get(i).setPersonalGoalCard(new PersonalGoalCard());
-        }
-    }
     public Player checkWinner() {
         return new Player("string");
     }
