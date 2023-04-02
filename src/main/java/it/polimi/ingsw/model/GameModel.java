@@ -24,6 +24,26 @@ public class GameModel {
         // this.commonGoalCardDeck = new CommonGoalCardDeck();
         this.board = new Board(numOfPlayer);
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
     public Player checkWinner() {
         return new Player("string");
     }
