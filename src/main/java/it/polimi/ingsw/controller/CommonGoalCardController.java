@@ -31,7 +31,7 @@ public class CommonGoalCardController {
         return found;
     }
 
-    public CommonGoalCardDeck commonGoalCardDeckBuilder(int numOfPlayer) {
+    public CommonGoalCardDeck commonGoalCardDeckBuilder() {
         Stack<CommonGoalCard> completeDeck = new Stack<>();
 
         completeDeck.push(new CommonGoalCard1());
@@ -53,7 +53,7 @@ public class CommonGoalCardController {
         Collections.shuffle(completeDeck);
         CommonGoalCard card2 = completeDeck.pop();
 
-        return new CommonGoalCardDeck(numOfPlayer, card1, card2);
+        return new CommonGoalCardDeck(model.getNumOfPlayer(), card1, card2);
     }
 
 }
