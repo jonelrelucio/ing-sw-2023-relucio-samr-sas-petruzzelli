@@ -1,4 +1,4 @@
-package it.polimi.ingsw.controller;
+package it.polimi.ingsw.controller.pointsCalculator;
 
 import it.polimi.ingsw.model.Bookshelf;
 import it.polimi.ingsw.model.ItemTile.ItemTile;
@@ -10,17 +10,8 @@ import java.util.HashMap;
 import java.util.Map.Entry;
 
 public class BookshelfPointsCalculator {
-    private HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap;
-    //private String[][] board;
-    private Bookshelf bookshelf;
 
-    //mettere gli attributi static, cos� facendo non devo sempre passare adjacencyMap come parametro
-    public BookshelfPointsCalculator(HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap, Bookshelf bookshelf){
-        this.adjacencyMap = adjacencyMap;
-        this.bookshelf = bookshelf;
-    }
-
-    public void buildAdjacencyMap(){
+    private static void buildAdjacencyMap(Bookshelf bookshelf, HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap){
         ItemTile[][] itemTileMatrix = bookshelf.getBookshelfMatrix();
         int numOfRows = itemTileMatrix.length;
         int numOfCols = itemTileMatrix[0].length;
@@ -45,7 +36,7 @@ public class BookshelfPointsCalculator {
         }
     }
 
-    private void addToAdjacencyGroup(ItemTileType cellValue, int r, int c,Bookshelf bookshelf,
+    private static void addToAdjacencyGroup(ItemTileType cellValue, int r, int c,Bookshelf bookshelf,
                                             HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap) {
 
         //int lastCol = board[0].length-1;
@@ -98,7 +89,7 @@ public class BookshelfPointsCalculator {
 
     }
 
-    private ArrayList<int[]> getCellAdjacencyGroup(int r, int c, ItemTileType cellValue,
+    private static ArrayList<int[]> getCellAdjacencyGroup(int r, int c, ItemTileType cellValue,
                                                           HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap){
 
         ArrayList<int[]> toReturn = new ArrayList<int[]>();
@@ -119,7 +110,10 @@ public class BookshelfPointsCalculator {
 
     //dopo eliminare il printAdjacencyMap
     
-    private static void printAdjacencyMap(HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap) {
+    private static void printAdjacencyMap(Bookshelf bookshelf) {
+        HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap = new HashMap<>();
+        buildAdjacencyMap(bookshelf, adjacencyMap);
+
         // TODO Auto-generated method stub
         for(Entry<ItemTileType, ArrayList<ArrayList<int[]>>> mapEntry: adjacencyMap.entrySet()) {
             System.out.println(mapEntry.getKey()+"=>[");
@@ -135,7 +129,10 @@ public class BookshelfPointsCalculator {
     }
     
 
-    public int calculatePoints(HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap){
+    public static int getScore(Bookshelf bookshelf){
+        HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap = new HashMap<>();
+        buildAdjacencyMap(bookshelf, adjacencyMap);
+
         int points = 0;
         for(Entry<ItemTileType, ArrayList<ArrayList<int[]>>> entry : adjacencyMap.entrySet()) {
             for(ArrayList<int[]> adjacencyGroup : entry.getValue()) {
@@ -163,10 +160,8 @@ public class BookshelfPointsCalculator {
                 {"R","","B"}
         };
         Bookshelf bookshelf = new Bookshelf();
-        BookshelfPointsCalculator pointsCalculator = new BookshelfPointsCalculator(adjacencyMap, bookshelf);
-        pointsCalculator.buildAdjacencyMap();
-        printAdjacencyMap(adjacencyMap);
-        System.out.println(pointsCalculator.calculatePoints(adjacencyMap));
+        printAdjacencyMap(bookshelf);
+        System.out.println(BookshelfPointsCalculator.getScore(bookshelf));
     }
     
 
