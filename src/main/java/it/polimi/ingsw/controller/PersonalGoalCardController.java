@@ -14,7 +14,7 @@ public class PersonalGoalCardController {
      * constructor of the PersonalGoalCardController
      * first line checks if card and bookshelf matrices have same dimensions
      * @param card      matrix of ItemTile
-     * @param bookshelf matric of ItemTile
+     * @param bookshelf matrix of ItemTile
      */
     public PersonalGoalCardController(ItemTile[][] card, ItemTile[][] bookshelf){
         if (card.length != bookshelf.length || card[0].length != bookshelf[0].length) {
