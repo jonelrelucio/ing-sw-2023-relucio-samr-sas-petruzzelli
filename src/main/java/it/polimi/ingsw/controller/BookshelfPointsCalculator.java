@@ -1,25 +1,34 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.model.Bookshelf;
+import it.polimi.ingsw.model.ItemTile.ItemTile;
+import it.polimi.ingsw.model.ItemTile.ItemTileType;
+
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Map.Entry;
 
 public class BookshelfPointsCalculator {
-    private HashMap<String, ArrayList<ArrayList<int[]>>> adjacencyMap;
-    private String[][] board;
+    private HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap;
+    //private String[][] board;
+    private Bookshelf bookshelf;
 
     //mettere gli attributi static, cos� facendo non devo sempre passare adjacencyMap come parametro
-    public BookshelfPointsCalculator(HashMap<String, ArrayList<ArrayList<int[]>>> adjacencyMap, String[][] board){
+    public BookshelfPointsCalculator(HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap, Bookshelf bookshelf){
         this.adjacencyMap = adjacencyMap;
-        this.board = board;
+        this.bookshelf = bookshelf;
     }
 
     public void buildAdjacencyMap(){
-        for(int r=0;r<board.length;r++) {
-            for(int c=0;c<board[0].length;c++) {
-                String cellValue = board[r][c];
-                if(!cellValue.equals("")) {
+        ItemTile[][] itemTileMatrix = bookshelf.getBookshelfMatrix();
+        int numOfRows = itemTileMatrix.length;
+        int numOfCols = itemTileMatrix[0].length;
+        for(int r=0;r<numOfRows;r++) {
+            for(int c=0;c<numOfCols;c++) {
+                //String cellValue = board[r][c];
+                ItemTileType cellValue = bookshelf.getMatrixTile(r,c).getItemTileType();
+                if(!cellValue.equals(ItemTileType.EMPTY)) {
                     //fai un nuovo gruppo di adiacenza e una nuova chiave
                     if(!adjacencyMap.containsKey(cellValue)) {
                         ArrayList<ArrayList<int[]>> adjacencyLists = new ArrayList<>();
@@ -28,7 +37,7 @@ public class BookshelfPointsCalculator {
                         adjacencyLists.add(adjacencyGroup);
                         adjacencyMap.put(cellValue, adjacencyLists);
                     }else {
-                        addToAdjacencyGroup(cellValue, r, c, board, adjacencyMap);
+                        addToAdjacencyGroup(cellValue, r, c, bookshelf, adjacencyMap);
                     }
 
                 }
@@ -36,10 +45,11 @@ public class BookshelfPointsCalculator {
         }
     }
 
-    private void addToAdjacencyGroup(String cellValue, int r, int c,String[][] board,
-                                            HashMap<String, ArrayList<ArrayList<int[]>>> adjacencyMap) {
+    private void addToAdjacencyGroup(ItemTileType cellValue, int r, int c,Bookshelf bookshelf,
+                                            HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap) {
 
-        int lastCol = board[0].length-1;
+        //int lastCol = board[0].length-1;
+        int lastCol = bookshelf.getBookshelfMatrix()[0].length-1;
         ArrayList<ArrayList<int[]>> adjacencyLists = adjacencyMap.get(cellValue);
         ArrayList<int[]> cellAboveRightAdjacencyGroup = new ArrayList<>();
         boolean backwardsLShapeFound = false;
@@ -51,8 +61,10 @@ public class BookshelfPointsCalculator {
                 if(r!=0 && c!= lastCol) {
                     int cellAboveRightRow = r-1;
                     int cellAboveRightCol = c+1;
-                    String cellAboveRightValue = board[cellAboveRightRow][cellAboveRightCol];
-                    String cellRightValue = board[r][c+1];
+                    //String cellAboveRightValue = board[cellAboveRightRow][cellAboveRightCol];
+                    ItemTileType cellAboveRightValue = bookshelf.getMatrixTile(cellAboveRightRow, cellAboveRightCol).getItemTileType();
+                    //String cellRightValue = board[r][c+1];
+                    ItemTileType cellRightValue = bookshelf.getMatrixTile(r,c+1).getItemTileType();
                     if(cellValue.equals(cellAboveRightValue) && cellValue.equals(cellRightValue)) {
                         backwardsLShapeFound = true;
                         adjacentToNothing = false;
@@ -86,8 +98,8 @@ public class BookshelfPointsCalculator {
 
     }
 
-    private ArrayList<int[]> getCellAdjacencyGroup(int r, int c, String cellValue,
-                                                          HashMap<String, ArrayList<ArrayList<int[]>>> adjacencyMap){
+    private ArrayList<int[]> getCellAdjacencyGroup(int r, int c, ItemTileType cellValue,
+                                                          HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap){
 
         ArrayList<int[]> toReturn = new ArrayList<int[]>();
 
@@ -107,9 +119,9 @@ public class BookshelfPointsCalculator {
 
     //dopo eliminare il printAdjacencyMap
     
-    private static void printAdjacencyMap(HashMap<String, ArrayList<ArrayList<int[]>>> adjacencyMap) {
+    private static void printAdjacencyMap(HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap) {
         // TODO Auto-generated method stub
-        for(Entry<String, ArrayList<ArrayList<int[]>>> mapEntry: adjacencyMap.entrySet()) {
+        for(Entry<ItemTileType, ArrayList<ArrayList<int[]>>> mapEntry: adjacencyMap.entrySet()) {
             System.out.println(mapEntry.getKey()+"=>[");
             for(ArrayList<int[]> adjGrp : mapEntry.getValue()) {
                 System.out.println(" [");
@@ -123,9 +135,9 @@ public class BookshelfPointsCalculator {
     }
     
 
-    public int calculatePoints(HashMap<String, ArrayList<ArrayList<int[]>>> adjacencyMap){
+    public int calculatePoints(HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap){
         int points = 0;
-        for(Entry<String, ArrayList<ArrayList<int[]>>> entry : adjacencyMap.entrySet()) {
+        for(Entry<ItemTileType, ArrayList<ArrayList<int[]>>> entry : adjacencyMap.entrySet()) {
             for(ArrayList<int[]> adjacencyGroup : entry.getValue()) {
                 int adjacencyGroupSize = adjacencyGroup.size();
                 if(adjacencyGroupSize==3) {
@@ -144,13 +156,14 @@ public class BookshelfPointsCalculator {
 
     
     public static void main(String[] args){
-        HashMap<String, ArrayList<ArrayList<int[]>>> adjacencyMap = new HashMap<>();
+        HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap = new HashMap<>();
         String[][] board = {
                 {"R","R","B"},
                 {"","B","B"},
                 {"R","","B"}
         };
-        BookshelfPointsCalculator pointsCalculator = new BookshelfPointsCalculator(adjacencyMap, board);
+        Bookshelf bookshelf = new Bookshelf();
+        BookshelfPointsCalculator pointsCalculator = new BookshelfPointsCalculator(adjacencyMap, bookshelf);
         pointsCalculator.buildAdjacencyMap();
         printAdjacencyMap(adjacencyMap);
         System.out.println(pointsCalculator.calculatePoints(adjacencyMap));
