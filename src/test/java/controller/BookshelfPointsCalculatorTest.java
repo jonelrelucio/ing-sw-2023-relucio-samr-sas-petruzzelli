@@ -6,19 +6,31 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import it.polimi.ingsw.controller.BookshelfPointsCalculator;
+import it.polimi.ingsw.model.Bookshelf;
+import it.polimi.ingsw.model.ItemTile.ItemTile;
+import it.polimi.ingsw.model.ItemTile.ItemTileType;
 import org.junit.jupiter.api.Test;
 
 class BookshelfPointsCalculatorTest {
 
 	@Test
 	void backwardsLShapeTest() {
-		HashMap<String, ArrayList<ArrayList<int[]>>> adjacencyMap = new HashMap<>();
+		HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap = new HashMap<>();
+        /*
         String[][] board = {
                 {"R","R","B"},
                 {"R","B","B"},
                 {"R","","B"}
         };
-        BookshelfPointsCalculator pointsCalculator = new BookshelfPointsCalculator(adjacencyMap, board);
+         */
+        ItemTile[][] bookShelfItemTileMatrix = {
+                {new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.FRAME)},
+                {new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.FRAME), new ItemTile(ItemTileType.FRAME)},
+                {new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.FRAME)}
+        };
+        Bookshelf bookshelf = new Bookshelf();
+        bookshelf.setBookshelfMatrix(bookShelfItemTileMatrix);
+        BookshelfPointsCalculator pointsCalculator = new BookshelfPointsCalculator(adjacencyMap, bookshelf);
         pointsCalculator.buildAdjacencyMap();
         int points = pointsCalculator.calculatePoints(adjacencyMap);
         assertEquals(6, points);
@@ -26,13 +38,23 @@ class BookshelfPointsCalculatorTest {
 	
 	@Test
 	void adjacentToNothingTest() {
-		HashMap<String, ArrayList<ArrayList<int[]>>> adjacencyMap = new HashMap<>();
+		HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap = new HashMap<>();
+        /*
         String[][] board = {
                 {"R","R","B"},
                 {"R","G","B"},
                 {"","R","B"}
         };
-        BookshelfPointsCalculator pointsCalculator = new BookshelfPointsCalculator(adjacencyMap, board);
+        */
+
+        ItemTile[][] bookShelfItemTileMatrix = {
+                {new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.FRAME)},
+                {new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.CAT), new ItemTile(ItemTileType.FRAME)},
+                {new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.FRAME)}
+        };
+        Bookshelf bookshelf = new Bookshelf();
+        bookshelf.setBookshelfMatrix(bookShelfItemTileMatrix);
+        BookshelfPointsCalculator pointsCalculator = new BookshelfPointsCalculator(adjacencyMap, bookshelf);
         pointsCalculator.buildAdjacencyMap();
         int points = pointsCalculator.calculatePoints(adjacencyMap);
         assertEquals(4, points);
@@ -40,13 +62,22 @@ class BookshelfPointsCalculatorTest {
 	
 	@Test
 	void groupOfFiveTest() {
-		HashMap<String, ArrayList<ArrayList<int[]>>> adjacencyMap = new HashMap<>();
+        /*
         String[][] board = {
                 {"R","R","B"},
                 {"R","G","B"},
                 {"R","R","B"}
         };
-        BookshelfPointsCalculator pointsCalculator = new BookshelfPointsCalculator(adjacencyMap, board);
+        */
+        HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap = new HashMap<>();
+        ItemTile[][] bookShelfItemTileMatrix = {
+                {new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.FRAME)},
+                {new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.CAT), new ItemTile(ItemTileType.FRAME)},
+                {new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.FRAME)}
+        };
+        Bookshelf bookshelf = new Bookshelf();
+        bookshelf.setBookshelfMatrix(bookShelfItemTileMatrix);
+        BookshelfPointsCalculator pointsCalculator = new BookshelfPointsCalculator(adjacencyMap, bookshelf);
         pointsCalculator.buildAdjacencyMap();
         int points = pointsCalculator.calculatePoints(adjacencyMap);
         assertEquals(7, points);
@@ -54,14 +85,26 @@ class BookshelfPointsCalculatorTest {
 	
 	@Test
 	void groupOfSixTest() {
-		HashMap<String, ArrayList<ArrayList<int[]>>> adjacencyMap = new HashMap<>();
+        /*
         String[][] board = {
                 {"R","R","B"},
                 {"R","G","B"},
                 {"R","R","B"},
                 {"","R",""}
         };
-        BookshelfPointsCalculator pointsCalculator = new BookshelfPointsCalculator(adjacencyMap, board);
+        */
+
+        HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap = new HashMap<>();
+        ItemTile[][] bookShelfItemTileMatrix = {
+                {new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.FRAME)},
+                {new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.CAT), new ItemTile(ItemTileType.FRAME)},
+                {new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.FRAME)},
+                {new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.EMPTY)}
+        };
+        Bookshelf bookshelf = new Bookshelf();
+        bookshelf.setBookshelfMatrix(bookShelfItemTileMatrix);
+
+        BookshelfPointsCalculator pointsCalculator = new BookshelfPointsCalculator(adjacencyMap, bookshelf);
         pointsCalculator.buildAdjacencyMap();
         int points = pointsCalculator.calculatePoints(adjacencyMap);
         assertEquals(10, points);
