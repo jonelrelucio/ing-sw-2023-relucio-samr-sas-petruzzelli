@@ -17,9 +17,9 @@ public class GameController{
 
     /**
      * Updates the score of the current Player
-     * It checks the score obtained by the bookshelf calculator
-     * it checks the score obtained by the common goal card
-     * it checks the score obtained by the personal goal card
+     * It gets the score obtained from the bookshelf calculator
+     * it gets the score obtained from the common goal card
+     * it gets the score obtained from the personal goal card
      */
     public void updateCurrentPlayerScore() {
         int score = 0;
