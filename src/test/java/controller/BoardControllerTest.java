@@ -65,7 +65,7 @@ public class BoardControllerTest {
     public void testCanBeSelectedTiles2() {
         ArrayList<ItemTile> selectedTiles = new ArrayList<>();
         BoardController bc = new BoardController(matrix[0]);
-        bc.selectTile(1, 1);
+        bc.selectTile(new int[]{1, 1});
         for (int i = 0; i < expected[2].length; i++){
             for (int j = 0; j < 2; j++) {
                 assertEquals(expected[2][i][j], bc.getCanBeSelectedCoordinates().get(i)[j]);
@@ -76,8 +76,8 @@ public class BoardControllerTest {
     public void testCanBeSelectedTiles3() {
         ArrayList<ItemTile> selectedTiles = new ArrayList<>();
         BoardController bc = new BoardController(matrix[0]);
-        bc.selectTile(1, 1);
-        bc.selectTile(1, 2);
+        bc.selectTile(new int[]{1, 1});
+        bc.selectTile(new int[]{1, 2});
         for (int i = 0; i < expected[3].length; i++){
             for (int j = 0; j < 2; j++) {
                 assertEquals(expected[3][i][j], bc.getCanBeSelectedCoordinates().get(i)[j]);
@@ -88,8 +88,8 @@ public class BoardControllerTest {
     public void testPopSelectedTile() {
         ArrayList<ItemTile> selectedTiles = new ArrayList<>();
         BoardController bc = new BoardController(matrix[0]);
-        bc.selectTile(1, 1);
-        bc.selectTile(1, 2);
+        bc.selectTile(new int[]{1, 1});
+        bc.selectTile(new int[]{1, 2});
         assertEquals(1, bc.getSelectedCoordinates().get(0)[0]);
         assertEquals(1, bc.getSelectedCoordinates().get(0)[1]);
         assertEquals(1, bc.getSelectedCoordinates().get(1)[0]);
@@ -101,8 +101,8 @@ public class BoardControllerTest {
     @Test
     public void testGetSelectedTile() {
         BoardController bc = new BoardController(matrix[0]);
-        bc.selectTile(1, 1);
-        bc.selectTile(1, 2);
+        bc.selectTile(new int[]{1, 1});
+        bc.selectTile(new int[]{1, 2});
         ArrayList<ItemTile> expected = new ArrayList<>();
         expected.add(bc.getBoardMatrix()[1][1]);
         expected.add(bc.getBoardMatrix()[1][2]);
