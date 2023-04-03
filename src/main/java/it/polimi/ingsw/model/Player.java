@@ -21,19 +21,21 @@ public class Player {
 
     private final String nickname;
     private int score;
-    private int obtainedCommonGoalPoints;
     private Bookshelf bookshelf;
     private PersonalGoalCard personalGoalCard;
     private ArrayList<ItemTile> selectedTiles;
     private int numOfRounds;
     private PlayerState playerState;
     private ArrayList<CommonGoalCard> obtainedCommonGoalCards;
+    private int obtainedCommonGoalPoints;
+
 
 
     public Player(String nickname){
         this.nickname = nickname;
         this.bookshelf = new Bookshelf();
         selectedTiles = new ArrayList<>();
+        obtainedCommonGoalCards = new ArrayList<>();
     }
 
     // Getters
