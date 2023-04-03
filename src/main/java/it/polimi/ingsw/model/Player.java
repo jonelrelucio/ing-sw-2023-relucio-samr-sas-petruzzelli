@@ -17,15 +17,17 @@ enum PlayerState {
 
 public class Player {
 
+    private static final int ENDTOKENSCORE = 1;
+    private boolean winner;
+
     private String nickname;
     private int score;
     private Bookshelf bookshelf;
     private PersonalGoalCard personalGoalCard;
-    private ArrayList<CommonGoalCard> obtainedCommonGoalCards;
     private ArrayList<ItemTile> selectedTiles;
-    private static final int ENDTOKENSCORE = 1;
     private int numOfRounds;
     private PlayerState playerState;
+
 
     public Player(String nickname){
         this.nickname = nickname;
@@ -33,73 +35,29 @@ public class Player {
         selectedTiles = new ArrayList<>();
     }
 
-    public String getNickname() {
-        return nickname;
-    }
+    // Getters
+    public String getNickname() { return nickname; }
+    public int getScore() { return score; }
+    public Bookshelf getBookshelf() { return bookshelf; }
+    public PersonalGoalCard getPersonalGoalCard() { return personalGoalCard; }
+    public ArrayList<ItemTile> getSelectedTiles() { return selectedTiles; }
+    public int getNumOfRounds() { return numOfRounds; }
+    public PlayerState getPlayerState() { return playerState; }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
+    // Setters
+    public void setNickname(String nickname) {this.nickname = nickname;}
+    public void setScore(int score) {this.score = score;}
+    public void setBookshelf(Bookshelf bookshelf) {this.bookshelf = bookshelf;}
+    public void setPersonalGoalCard(PersonalGoalCard personalGoalCard) {this.personalGoalCard = personalGoalCard;}
+    public void setSelectedTiles(ArrayList<ItemTile> selectedTiles) {this.selectedTiles = selectedTiles;}
+    public void setNumOfRounds(int numOfRounds) {this.numOfRounds = numOfRounds;}
+    public void setPlayerState(PlayerState playerState) {this.playerState = playerState;}
 
-    public int getScore() {
-        return score;
-    }
 
-    // add the value of the parameter to the current player score
-    public void setScore(int score) {
-        this.score = this.score + score;
-    }
-
-    public Bookshelf getBookshelf() {
-        return bookshelf;
-    }
-
-    public void setBookshelf(Bookshelf bookshelf) {
-        this.bookshelf = bookshelf;
-    }
-
-    public PersonalGoalCard getPersonalGoalCard() {
-        return personalGoalCard;
-    }
-
-    public void setPersonalGoalCard(PersonalGoalCard personalGoalCard) {
-        this.personalGoalCard = personalGoalCard;
-    }
-
-    public ArrayList<CommonGoalCard> getObtainedCommonGoalCards() {
-        return obtainedCommonGoalCards;
-    }
-
-    // add the common goal card obtained
-    public void setObtainedCommonGoalCards(CommonGoalCard card) {
-        this.obtainedCommonGoalCards.add(card);
-    }
-
-    public ArrayList<ItemTile> getSelectedTiles() {
-        return selectedTiles;
-    }
-
-    public void setSelectedTiles(ArrayList<ItemTile> selectedTiles) {
-        this.selectedTiles = selectedTiles;
-    }
-
-    public int getNumOfRounds() {
-        return numOfRounds;
-    }
-
-    public void setNumOfRounds(int numOfRounds) {
-        this.numOfRounds = numOfRounds;
-    }
-
-    public PlayerState getPlayerState() {
-        return playerState;
-    }
-
-    public void setPlayerState(PlayerState playerState) {
-        this.playerState = playerState;
-    }
-
+    public boolean isWinner() { return winner; }
+    public void setWinner() { this.winner = true; }
     public void getEndGameToken() {
         this.score += ENDTOKENSCORE;
     }
+
 }
