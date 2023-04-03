@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.personalGoalCard;
+package it.polimi.ingsw.model;
 
 import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.model.ItemTile.ItemTile;

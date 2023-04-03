@@ -1,4 +1,4 @@
-package controller;
+package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.controller.BoardController;
 import it.polimi.ingsw.model.ItemTile.ItemTileType;

@@ -1,4 +1,4 @@
-package model;
+package it.polimi.ingsw.model.commonGoalCard;
 
 import it.polimi.ingsw.model.ItemTile.ItemTile;
 import it.polimi.ingsw.model.ItemTile.ItemTileType;

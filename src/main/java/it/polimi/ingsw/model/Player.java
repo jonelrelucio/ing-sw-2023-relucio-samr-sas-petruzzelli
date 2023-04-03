@@ -3,7 +3,6 @@ package it.polimi.ingsw.model;
 import java.util.ArrayList;
 
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCard;
-import it.polimi.ingsw.model.personalGoalCard.PersonalGoalCard;
 import it.polimi.ingsw.model.ItemTile.ItemTile;
 
 enum PlayerState {

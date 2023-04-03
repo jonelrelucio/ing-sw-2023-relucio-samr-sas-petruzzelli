@@ -2,7 +2,7 @@ package it.polimi.ingsw.controller.pointsCalculator;
 
 import it.polimi.ingsw.model.Bookshelf;
 import it.polimi.ingsw.model.ItemTile.ItemTile;
-import it.polimi.ingsw.model.personalGoalCard.PersonalGoalCard;
+import it.polimi.ingsw.model.PersonalGoalCard;
 
 public class PersonalGoalCardCalculator {
 
