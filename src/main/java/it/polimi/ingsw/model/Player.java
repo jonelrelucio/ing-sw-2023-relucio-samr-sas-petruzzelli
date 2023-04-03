@@ -20,7 +20,7 @@ public class Player {
     private static final int ENDTOKENSCORE = 1;
     private boolean winner;
 
-    private String nickname;
+    private final String nickname;
     private int score;
     private Bookshelf bookshelf;
     private PersonalGoalCard personalGoalCard;
@@ -45,7 +45,6 @@ public class Player {
     public PlayerState getPlayerState() { return playerState; }
 
     // Setters
-    public void setNickname(String nickname) {this.nickname = nickname;}
     public void setScore(int score) {this.score = score;}
     public void setBookshelf(Bookshelf bookshelf) {this.bookshelf = bookshelf;}
     public void setPersonalGoalCard(PersonalGoalCard personalGoalCard) {this.personalGoalCard = personalGoalCard;}
