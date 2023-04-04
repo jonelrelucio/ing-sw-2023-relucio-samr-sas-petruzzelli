@@ -108,31 +108,9 @@ public class BookshelfPointsCalculator {
 
     }
 
-    //dopo eliminare il printAdjacencyMap
-    
-    private static void printAdjacencyMap(Bookshelf bookshelf) {
-        HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap = new HashMap<>();
-        buildAdjacencyMap(bookshelf, adjacencyMap);
-
-        // TODO Auto-generated method stub
-        for(Entry<ItemTileType, ArrayList<ArrayList<int[]>>> mapEntry: adjacencyMap.entrySet()) {
-            System.out.println(mapEntry.getKey()+"=>[");
-            for(ArrayList<int[]> adjGrp : mapEntry.getValue()) {
-                System.out.println(" [");
-                for(int[] coords : adjGrp) {
-                    System.out.println("  "+ Arrays.toString(coords));
-                }
-                System.out.println(" ]");
-            }
-            System.out.println("]");
-        }
-    }
-    
-
     public static int getScore(Bookshelf bookshelf){
         HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap = new HashMap<>();
         buildAdjacencyMap(bookshelf, adjacencyMap);
-
         int points = 0;
         for(Entry<ItemTileType, ArrayList<ArrayList<int[]>>> entry : adjacencyMap.entrySet()) {
             for(ArrayList<int[]> adjacencyGroup : entry.getValue()) {
@@ -150,20 +128,6 @@ public class BookshelfPointsCalculator {
         }
         return points;
     }
-
-    
-    public static void main(String[] args){
-        HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap = new HashMap<>();
-        String[][] board = {
-                {"R","R","B"},
-                {"","B","B"},
-                {"R","","B"}
-        };
-        Bookshelf bookshelf = new Bookshelf();
-        printAdjacencyMap(bookshelf);
-        System.out.println(BookshelfPointsCalculator.getScore(bookshelf));
-    }
-    
 
 
 }
