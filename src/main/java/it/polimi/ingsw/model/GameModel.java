@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.bag.CommonGoalCardBag;
+import it.polimi.ingsw.model.factory.CommonGoalCardBag;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCardDeck;
 import it.polimi.ingsw.model.util.CircularArrayList;
 
@@ -18,6 +18,7 @@ public class GameModel {
     private Player currentPlayer;
 
     public GameModel(int numOfPlayer) {
+        if (numOfPlayer < 2 || numOfPlayer > 4 ) throw new IllegalArgumentException("Number of Player out of bounds");
         this.playerList = new CircularArrayList<>();
         this.commonGoalCardDeck = CommonGoalCardBag.commonGoalCardDeckBuilder(numOfPlayer);
         this.board = new Board(numOfPlayer);

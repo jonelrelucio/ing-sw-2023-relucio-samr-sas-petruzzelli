@@ -92,4 +92,3 @@ class BoardCoordinates {
         BoardCoordinatesMap = boardCoordinatesMap;
     }
 }
-

@@ -5,6 +5,10 @@ public class PersonalGoalCard {
 
     private ItemTile[][] personalGoalMatrix;
 
+    public PersonalGoalCard(ItemTile[][] personalGoalMatrix){
+        this.personalGoalMatrix = personalGoalMatrix;
+    }
+
     public ItemTile[][] getPersonalGoalCardMatrix() { return personalGoalMatrix; }
     public void setPersonalGoalMatrix(ItemTile[][] personalGoalMatrix) { this.personalGoalMatrix = personalGoalMatrix; }
 

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.bag;
+package it.polimi.ingsw.model.factory;
 
 import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.model.ItemTile.ItemTile;
@@ -11,7 +11,7 @@ import java.util.Collections;
 import java.util.Stack;
 
 
-public class PersonalGoalCardBag {
+public abstract class PersonalGoalCardBag {
 
     private static final int ROW = 6, COL = 5;
     private static final Stack<Integer> personalGoalCardBag = new Stack<>();
@@ -35,14 +35,23 @@ public class PersonalGoalCardBag {
      * @return                  random PersonGoalCard
      */
     public static PersonalGoalCard drawPersonalGoalCard(int numOfPlayers) {
-        ItemTile[][] personalGoalMatrix = new ItemTile[ROW][COL];
-        PersonalGoalCard personalGoalCard= new PersonalGoalCard();
         initPersonalGoalCardBag(numOfPlayers);
-        initCard(personalGoalMatrix);
-        buildPersonalGoalCard(personalGoalMatrix);
-        personalGoalCard.setPersonalGoalMatrix(personalGoalMatrix);
         numOfDraws++;
-        return personalGoalCard;
+        return drawPersonalGoalCard(numOfPlayers, personalGoalCardBag.pop());
+    }
+
+
+    /**
+     * Utility method
+     * Builds a specific personal goal card given a key
+     * @param key   represents the specific personal goal card
+     * @return      returns the specific personal goal card
+     */
+    public static PersonalGoalCard drawPersonalGoalCard(int numOfPlayers, int key) {
+        ItemTile[][] personalGoalMatrix = new ItemTile[ROW][COL];
+        initCard(personalGoalMatrix);
+        buildPersonalGoalCard(personalGoalMatrix, key);
+        return new PersonalGoalCard(personalGoalMatrix);
     }
 
     /**
@@ -51,9 +60,8 @@ public class PersonalGoalCardBag {
      * deserializes given path to an PersonalGoalCardCoordinates object
      * @param personalGoalMatrix ItemTile[][] personalGoalMatrix to be built
      */
-    private static void buildPersonalGoalCard(ItemTile[][] personalGoalMatrix) {
-        int key = personalGoalCardBag.pop();
-        String path = "json/PersonalGoalCoordinates";
+    private static void buildPersonalGoalCard(ItemTile[][] personalGoalMatrix, int key) {
+        String path = "/json/PersonalGoalCoordinates.json";
         PersonalGoalCardCoordinates pgc = (PersonalGoalCardCoordinates) Utility.deserializeJsonToObject(path, PersonalGoalCardCoordinates.class);
         int[][] matrixCoordinates = pgc.getMatrixCoordinates(key);
         ItemTileType[] itemCoordinates = pgc.getItemCoordinates(key);
@@ -66,7 +74,6 @@ public class PersonalGoalCardBag {
      * @param personalGoalMatrix    ItemTile[][] personGoalMatrix to be initialized
      */
     private static void initCard(ItemTile[][] personalGoalMatrix) {
-        personalGoalMatrix = new ItemTile[ROW][COL];
         for (int i = 0; i < ROW; i++){
             for (int j = 0; j < COL; j++ ){
                 personalGoalMatrix[i][j] = new ItemTile(ItemTileType.EMPTY);
@@ -93,9 +100,10 @@ public class PersonalGoalCardBag {
      * Utility method resets the numOfDraws to 0
      * Used only for testing
      */
-    public void resetBag() {
+    public static void resetBag() {
         numOfDraws = 0;
     }
+
 }
 
 

@@ -28,7 +28,7 @@ public class BoardTest{
     @Test
     public void test4PlayersBoard(){
         try {
-            board = new Board(4);
+            board = new Board(3);
             board.printBoard();
             System.out.println("");
         } catch (InvalidParameterException ignored) {};

@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCard;
 import it.polimi.ingsw.model.ItemTile.ItemTile;
+import it.polimi.ingsw.model.factory.PersonalGoalCardBag;
 
 enum PlayerState {
     WAITING, PLAYING;
@@ -30,8 +31,9 @@ public class Player {
 
 
 
-    public Player(String nickname){
+    public Player(String nickname, PersonalGoalCard personalGoalCard){
         this.nickname = nickname;
+        this.personalGoalCard = personalGoalCard;
         this.bookshelf = new Bookshelf();
         selectedTiles = new ArrayList<>();
         obtainedCommonGoalCards = new ArrayList<>();

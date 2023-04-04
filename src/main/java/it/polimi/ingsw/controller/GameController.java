@@ -8,11 +8,9 @@ import it.polimi.ingsw.view.View;
 
 public class GameController{
     private final GameModel gameModel;
-    private final View view;
 
-    public GameController(GameModel model, View view){
+    public GameController(GameModel model){
         this.gameModel = model;
-        this.view = view;
     }
 
     /**
@@ -25,7 +23,7 @@ public class GameController{
         int score = 0;
         score += BookshelfPointsCalculator.getScore(gameModel.getCurrentPlayer().getBookshelf());
         score += CommonGoalCardCalculator.getScore(gameModel.getCommonGoalCardDeck(), gameModel.getCurrentPlayer());
-        score += PersonalGoalCardCalculator.getScore(gameModel.getCurrentPlayer().getPersonalGoalCard(), gameModel.getCurrentPlayer().getBookshelf());
+        score += PersonalGoalCardCalculator.getScore(gameModel.getCurrentPlayer());
         if (gameModel.getCurrentPlayer().isWinner()) score += gameModel.getCurrentPlayer().getEndGameToken();
         gameModel.getCurrentPlayer().setScore(score);
     }

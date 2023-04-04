@@ -1,11 +1,11 @@
-package it.polimi.ingsw.model.bag;
+package it.polimi.ingsw.model.factory;
 
 import it.polimi.ingsw.model.commonGoalCard.*;
 
 import java.util.Collections;
 import java.util.Stack;
 
-public class CommonGoalCardBag {
+public abstract class CommonGoalCardBag {
 
 
     public static CommonGoalCardDeck commonGoalCardDeckBuilder(int numOfPlayer) {

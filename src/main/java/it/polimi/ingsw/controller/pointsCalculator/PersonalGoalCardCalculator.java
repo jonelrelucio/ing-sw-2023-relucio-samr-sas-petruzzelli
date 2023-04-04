@@ -1,8 +1,7 @@
 package it.polimi.ingsw.controller.pointsCalculator;
 
-import it.polimi.ingsw.model.Bookshelf;
 import it.polimi.ingsw.model.ItemTile.ItemTile;
-import it.polimi.ingsw.model.PersonalGoalCard;
+import it.polimi.ingsw.model.Player;
 
 public class PersonalGoalCardCalculator {
 
@@ -10,36 +9,35 @@ public class PersonalGoalCardCalculator {
 
     /**
      * Returns the score which depends on the number of matching tiles
-     * @param personalGoalCard  personalGoalCard
-     * @param bookshelf         bookshelf
+     * @param player            given the player, it gets the bookshelf and the PersonalGoalCard
      * @return                  score depending on number of matching tiles and pointsMapping
      */
-    public static int getScore(PersonalGoalCard personalGoalCard, Bookshelf bookshelf){
-        ItemTile[][] cardMatrix = personalGoalCard.getPersonalGoalCardMatrix();
-        ItemTile[][] bookshelfMatrix = bookshelf.getBookshelfMatrix();
-
-        if (cardMatrix.length != bookshelfMatrix.length || cardMatrix[0].length != bookshelfMatrix[0].length) {
+    public static int getScore(Player player){
+        ItemTile[][] personalGoalCardMatrix = player.getPersonalGoalCard().getPersonalGoalCardMatrix();
+        ItemTile[][] bookshelfMatrix = player.getBookshelf().getBookshelfMatrix();
+        if(personalGoalCardMatrix == null) throw new NullPointerException("Player has no personalGoalCardMatrix or no bookshelfMatrix ");
+        if (personalGoalCardMatrix.length != bookshelfMatrix.length || personalGoalCardMatrix[0].length != bookshelfMatrix[0].length) {
             throw new IllegalArgumentException("Card and bookshelf matrices must have the same dimensions.");
         }
-        int matchingTiles = getNumMatchingTiles(cardMatrix, bookshelfMatrix);
+        int matchingTiles = getNumMatchingTiles(personalGoalCardMatrix, bookshelfMatrix);
         return pointsMapping[matchingTiles];
     }
 
 
     /**
      * compares the two parameters and returns the number of matching tiles
-     * @param cardMatrix        cardMatrix which is an ItemTile[][]
+     * @param personalGoalCardMatrix        personalGoalCardMatrix which is an ItemTile[][]
      * @param bookshelfMatrix   bookShelfMatrix which is an ItemTile[][]
-     * @return                  number of matching tiles between cardMatrix and bookShelfMatrix
+     * @return                  number of matching tiles between personalGoalCardMatrix and bookShelfMatrix
      */
-    public static int getNumMatchingTiles(ItemTile[][] cardMatrix, ItemTile[][] bookshelfMatrix) {
-        if (cardMatrix.length != bookshelfMatrix.length || cardMatrix[0].length != bookshelfMatrix[0].length) {
+    public static int getNumMatchingTiles(ItemTile[][] personalGoalCardMatrix, ItemTile[][] bookshelfMatrix) {
+        if (personalGoalCardMatrix.length != bookshelfMatrix.length || personalGoalCardMatrix[0].length != bookshelfMatrix[0].length) {
             throw new IllegalArgumentException("Card and bookshelf matrices must have the same dimensions.");
         }
         int matchingTiles = 0;
-        for (int i=0; i<cardMatrix.length; i++){
-            for (int j = 0; j< cardMatrix[i].length; j++){
-                if (cardMatrix[i][j].equals(bookshelfMatrix[i][j])) matchingTiles++;
+        for (int i=0; i<personalGoalCardMatrix.length; i++){
+            for (int j = 0; j< personalGoalCardMatrix[i].length; j++){
+                if (personalGoalCardMatrix[i][j].equals(bookshelfMatrix[i][j]) && !personalGoalCardMatrix[i][j].isEmpty()) matchingTiles++;
             }
         }
         return matchingTiles;
