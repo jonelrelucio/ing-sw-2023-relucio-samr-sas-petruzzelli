@@ -1,6 +1,6 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.factory.CommonGoalCardBag;
+import it.polimi.ingsw.model.bag.CommonGoalCardBag;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCardDeck;
 import it.polimi.ingsw.model.util.CircularArrayList;
 

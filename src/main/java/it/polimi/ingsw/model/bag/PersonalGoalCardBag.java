@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.factory;
+package it.polimi.ingsw.model.bag;
 
 import com.google.gson.annotations.SerializedName;
 import it.polimi.ingsw.model.ItemTile.ItemTile;

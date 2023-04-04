@@ -7,7 +7,7 @@ import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCard1;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCard2;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCardDeck;
-import it.polimi.ingsw.model.factory.PersonalGoalCardBag;
+import it.polimi.ingsw.model.bag.PersonalGoalCardBag;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 

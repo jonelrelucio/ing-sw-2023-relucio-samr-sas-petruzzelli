@@ -1,9 +1,7 @@
-package it.polimi.ingsw.model.factory;
+package it.polimi.ingsw.model.bag;
 
 import it.polimi.ingsw.model.PersonalGoalCard;
 import org.junit.jupiter.api.Test;
-
-import static org.junit.jupiter.api.Assertions.*;
 
 public class PersonalGoalCardBagTest {
     @Test
