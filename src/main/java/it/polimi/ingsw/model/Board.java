@@ -2,6 +2,9 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.ItemTile.ItemTile;
 import it.polimi.ingsw.model.ItemTile.ItemTileType;
+
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 
@@ -15,20 +18,28 @@ public class Board {
     private int numOfPlayers;
     private int[][] boardCoordinates;
     private final ItemTileBag bag;
+    private ArrayList<int[]> selectedCoordinates;
+    private ArrayList<int[]> canBeSelectedCoordinates;
+    private ArrayList<ItemTile> selectedItemTiles;
 
     // CONSTRUCTOR
     public Board(int numOfPlayers){
         this.numOfPlayers = numOfPlayers;
         this.bag = new ItemTileBag();
+        this.selectedCoordinates = new ArrayList<>();
+        this.canBeSelectedCoordinates = new ArrayList<>();
         initItemTileMatrix();
         initBoardCoordinates(numOfPlayers);
         setItemsInCoordinates(boardCoordinates);
+        updateCanBeSelectedCoordinates();
     }
 
     // Getters
     public ItemTile[][] getBoardMatrix(){ return boardMatrix; }
     public ItemTile getMatrixTile(int x, int y) { return boardMatrix[x][y]; }
     public int getNumOfPlayers() {return numOfPlayers; }
+    public ArrayList<int[]> getSelectedCoordinates() { return selectedCoordinates; }
+    public ArrayList<int[]> getCanBeSelectedCoordinates() {return canBeSelectedCoordinates;}
 
     // Setters
     public void setBoardMatrix(ItemTile[][] boardMatrix ) {
@@ -36,6 +47,8 @@ public class Board {
     }
     public void setNumOfPlayers(int numOfPlayers) { this.numOfPlayers = numOfPlayers; }
     public void setMatrixTile(int x, int y, ItemTile itemTile) { boardMatrix[x][y] = itemTile; }
+    public void setSelectedCoordinates(ArrayList<int[]> selectedCoordinates) {this.selectedCoordinates = selectedCoordinates; }
+    public void setCanBeSelectedCoordinates(ArrayList<int[]> canBeSelectedCoordinates) {this.canBeSelectedCoordinates = canBeSelectedCoordinates; }
 
     /**
      * Initializes the matrix of itemTile to empty type
@@ -69,6 +82,140 @@ public class Board {
         }
     }
 
+    /**
+     * given a coordinate, returns true of it is adjacent to an empty tile
+     * @param coordinates  coordinates in int[]
+     * @return          true if the given position is adjacent to an empty tile
+     */
+    private boolean isAdjacentEmpty(int[] coordinates) {
+        int x = coordinates[0];
+        int y = coordinates[1];
+        if (boardMatrix[x+1][y].isEmpty()) return true;
+        else if (boardMatrix[x-1][y].isEmpty()) return true;
+        else if (boardMatrix[x][y+1].isEmpty()) return true;
+        else return boardMatrix[x][y - 1].isEmpty();
+    }
+
+    /**
+     * Returns an ArrayList of all non-empty adjacent coordinates of given coordinates
+     * @param coordinates   coordinates in int[]
+     * @return              ArrayList of Int[] of all the non-empty coordinates of given coordinates
+     */
+    private ArrayList<int[]> getAdjacentCoordinates(int[] coordinates) {
+        ArrayList<int[]> adjacentCoordinates = new ArrayList<>();
+        int x = coordinates[0];
+        int y = coordinates[1];
+        int[][] directions = new int[][] {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+
+        for (int[] direction : directions) {
+            int x2 = x + direction[0];
+            int y2 = y + direction[1];
+            if (x2 >= 0 && x2 < boardMatrix.length && y2 >= 0 && y2 < boardMatrix[0].length) {
+                if (!boardMatrix[x2][y2].isEmpty() && isAdjacentEmpty(new int[]{x2, y2})) {
+                    adjacentCoordinates.add(new int[] {x2, y2});
+                }
+            }
+        }
+        return adjacentCoordinates;
+    }
+
+    /**
+     * Updates the Arraylist of the can be selected Tiles
+     */
+    private void updateCanBeSelectedCoordinates(){
+        if (selectedCoordinates.isEmpty()) {
+            for (int i = 1; i < boardMatrix.length-1; i++) {
+                for (int j = 1; j < boardMatrix[0].length- 1; j++) {
+                    if (!boardMatrix[i][j].isEmpty() && isAdjacentEmpty(new int[]{i, j}))
+                        canBeSelectedCoordinates.add(new int[]{i, j});
+                }
+            }
+        } else if (selectedCoordinates.size() == 1 ) {
+            canBeSelectedCoordinates = getAdjacentCoordinates(selectedCoordinates.get(0));
+        } else if (selectedCoordinates.size() == 2) {
+            canBeSelectedCoordinates = getCommonCoordinates(selectedCoordinates.get(0), selectedCoordinates.get(1));
+        }
+    }
+
+    /**
+     * returns the common adjacent non-empty coordinates of two arrays of coordinates
+     * @param coordinate1   first coordinates int[]
+     * @param coordinate2   second coordinates int[]
+     * @return              ArrayList of the common adjacent non-empty coordinates of the first and second coordinates
+     */
+    public ArrayList<int[]> getCommonCoordinates(int[] coordinate1, int[] coordinate2) {
+        ArrayList<int[]> canBeSelected1 = getAdjacentCoordinates(coordinate1);
+        ArrayList<int[]> canBeSelected2 = getAdjacentCoordinates(coordinate2);
+        ArrayList<int[]> intersection = new ArrayList<>();
+        for (int[] tile1 : canBeSelected1) {
+            for (int[] tile2 : canBeSelected2) {
+                if (Arrays.equals(tile1, tile2)) {
+                    intersection.add(new int[]{tile1[0], tile1[1]});
+                }
+            }
+        }
+        return intersection;
+    }
+
+    private int getMaxAvailableSpace(Bookshelf bookshelf){
+        int max = 0;
+        for (int i = 0; i < bookshelf.getBookshelfMatrix()[0].length; i++ ){
+            int temp = 0;
+            for (int j = 0; j < bookshelf.getBookshelfMatrix().length; j++) {
+                if( bookshelf.getBookshelfMatrix()[j][i].isEmpty() ) temp++ ;
+            }
+            if (temp > max) max = temp;
+        }
+        return Math.min(max, 3);
+
+    }
+
+    /**
+     * Adds the given coordinates in the ArrayList of selectedTiles and updates the canBeSelectedTiles Arraylist
+     * @param coordinates   selected coordinates
+     */
+    public void selectTile(int[] coordinates, Bookshelf bookshelf) {
+        if (selectedCoordinates.size() > getMaxAvailableSpace(bookshelf))  throw new IllegalArgumentException("Can't select more tiles.");
+        for (int[] tile : canBeSelectedCoordinates) {
+            if (Arrays.equals(tile, coordinates)) {
+                selectedCoordinates.add(coordinates);
+                updateCanBeSelectedCoordinates();
+                return;
+            }
+        }
+        System.out.println("item in given coordinates can't be selected");
+    }
+
+    /**
+     * Pops the given coordinates from the Arraylist of selectedTiles and updates the canBeSelectedTiles ArrayList
+     * @param coordinates   coordinates to be popped from the ArrayList of selectedTiles
+     */
+    public void deselectTile(int[] coordinates ){
+        for (int i = 0; i < selectedCoordinates.size(); i++){
+            if (coordinates[0] == selectedCoordinates.get(i)[0] && coordinates[1] == selectedCoordinates.get(i)[1]) {
+                selectedCoordinates.remove(i);
+                updateCanBeSelectedCoordinates();
+                return;
+            }
+        }
+        System.out.println("No coordinates in selectedTiles.");
+
+    }
+
+    /**
+     * returns the ItemTiles from the coordinates in the arraylist selectedCoordinates
+     * @return  ItemTiles from the coordinates in the arraylist selectedCoordinates
+     */
+    public ArrayList<ItemTile> getSelectedItemTiles() {
+        for (int[] indices : selectedCoordinates) {
+            selectedItemTiles.add(boardMatrix[indices[0]][indices[1]]);
+            boardMatrix[indices[0]][indices[1]] = new ItemTile(ItemTileType.EMPTY);
+        }
+        selectedCoordinates.clear();
+        return selectedItemTiles;
+    }
+
+
     // TODO: Remove this method
     public void printBoard() {
         for (int j = 0; j < getBoardMatrix().length; j++) {
@@ -78,6 +225,7 @@ public class Board {
             System.out.println(" ");
         }
     }
+
 
 }
 

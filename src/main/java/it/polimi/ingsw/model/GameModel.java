@@ -56,4 +56,18 @@ public class GameModel {
     public void setState(State state) { this.state = state; }
     public void setNumOfRounds(int numOfRounds) { this.numOfRounds = numOfRounds;}
     public void setCurrentPlayer(Player currentPlayer) { this.currentPlayer = currentPlayer; }
+
+
+    /**
+     * Updates the score of the current player
+     */
+    public void updateCurrentPlayerScore() {
+        int score = 0;
+        score += currentPlayer.getBookshelf().getScore();
+        score += commonGoalCardDeck.getScore(currentPlayer);
+        score += currentPlayer.getPersonalGoalCard().getScore(currentPlayer.getBookshelf());
+        if (currentPlayer.isWinner()) score += currentPlayer.getEndGameToken();
+        currentPlayer.setScore(score);
+    }
+
 }
