@@ -12,30 +12,42 @@ public class BoardController {
     private final ItemTile[][] boardMatrix;
     private final ArrayList<int[]> selectedCoordinates;
     private ArrayList<int[]> canBeSelectedCoordinates;
-    private final ArrayList<ItemTile> selectedItemTiles = new ArrayList<>();
+
 
     // CONSTRUCTOR
     public BoardController(ItemTile[][] boardMatrix) {
         this.boardMatrix = boardMatrix;
         this.selectedCoordinates = new ArrayList<>();
         this.canBeSelectedCoordinates = new ArrayList<>();
-        updateCanBeSelectedCoordinates();
+        //updateCanBeSelectedCoordinates();
+        //moved updateCanBeSelectedCoordinates() to the model
     }
 
     // Getters
     public ItemTile[][] getBoardMatrix() { return boardMatrix; }
+
+    /*
+    Moved to model
     public ArrayList<int[]> getSelectedCoordinates() { return selectedCoordinates; }
     public ArrayList<int[]> getCanBeSelectedCoordinates() {return canBeSelectedCoordinates;}
 
+     */
+
     // Checks if the tile in position (x,y) is adjacent to an empty tile
+    /*
+    Moved to model
     public boolean isAdjacentEmpty(int x, int y)  {
         if (boardMatrix[x+1][y].isEmpty()) return true;
         else if (boardMatrix[x-1][y].isEmpty()) return true;
         else if (boardMatrix[x][y+1].isEmpty()) return true;
         else return boardMatrix[x][y - 1].isEmpty();
     }
+    */
+
 
     // Returns an ArrayList of all non-empty adjacent coordinates of given coordinates
+    /*
+    Moved to model
     public ArrayList<int[]> getAdjacentCoordinates(int[] coordinates) {
         ArrayList<int[]> adjacentCoordinates = new ArrayList<>();
         int x = coordinates[0];
@@ -53,8 +65,11 @@ public class BoardController {
         }
         return adjacentCoordinates;
     }
+    */
 
     // Updates the Arraylist of the can be selected Tiles
+    /*
+    Moved to model
     public void updateCanBeSelectedCoordinates(){
         if (selectedCoordinates.isEmpty()) {
             for (int i = 1; i < boardMatrix.length-1; i++) {
@@ -68,9 +83,12 @@ public class BoardController {
         } else if (selectedCoordinates.size() == 2) {
             canBeSelectedCoordinates = getCommonCoordinates(selectedCoordinates.get(0), selectedCoordinates.get(1));
         }
-    }
+
+    */
 
     // returns the common coordinates given two arrays of coordinates
+    /*
+    Moved to model
     public ArrayList<int[]> getCommonCoordinates(int[] coordinate1, int[] coordinate2) {
         ArrayList<int[]> canBeSelected1 = getAdjacentCoordinates(coordinate1);
         ArrayList<int[]> canBeSelected2 = getAdjacentCoordinates(coordinate2);
@@ -84,8 +102,11 @@ public class BoardController {
         }
         return intersection;
     }
+    */
 
     // Adds the given coordinates in the ArrayList of selectedTiles and updates the canBeSelectedTiles Arraylist
+    /*
+    Moved to model
     public void selectTile(int x, int y) {
         for (int[] tile : canBeSelectedCoordinates) {
             if (Arrays.equals(tile, new int[] {x, y})) {
@@ -96,8 +117,11 @@ public class BoardController {
         }
         System.out.println("item in given coordinates can't be selected");
     }
+    */
 
     // Pops the given coordinates from the Arraylist of selectedTiles and updates the canBeSelectedTiles ArrayList
+    /*
+    Moved to model
     public void popSelectedTile(int[] coordinates ){
         for (int i = 0; i < selectedCoordinates.size(); i++){
             if (coordinates[0] == selectedCoordinates.get(i)[0] && coordinates[1] == selectedCoordinates.get(i)[1]) {
@@ -109,8 +133,11 @@ public class BoardController {
         System.out.println("No coordinates in selectedTiles.");
 
     }
+    */
 
     // returns the ItemTiles from the coordinates in the arraylist selectedCoordinates
+    /*
+    Moved to model
     public ArrayList<ItemTile> getSelectedItemTiles() {
         for (int[] indices : selectedCoordinates) {
             selectedItemTiles.add(boardMatrix[indices[0]][indices[1]]);
@@ -119,6 +146,7 @@ public class BoardController {
         selectedCoordinates.clear();
         return selectedItemTiles;
     }
+    */
 
 
 }

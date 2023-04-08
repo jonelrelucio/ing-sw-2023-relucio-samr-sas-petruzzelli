@@ -1,6 +1,7 @@
 package controller;
 
 import it.polimi.ingsw.controller.BoardController;
+import it.polimi.ingsw.model.Board;
 import org.junit.jupiter.api.Test;
 
 import static it.polimi.ingsw.model.ItemTile.ItemTileType.*;
@@ -9,7 +10,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import it.polimi.ingsw.model.ItemTile.ItemTile;
 import java.util.ArrayList;
 
-public class BoardControllerTest {
+public class BoardTest {
 
     private ItemTile[][][] matrix = {
             {
@@ -44,68 +45,74 @@ public class BoardControllerTest {
 
     @Test
     public void testCanBeSelectedTiles() {
-        BoardController bc = new BoardController(matrix[0]);
+        //BoardController bc = new BoardController(matrix[0]);
+        Board board = new Board(2);
         for (int i = 0; i < expected[0].length; i++){
             for (int j = 0; j < 2; j++) {
-                assertEquals(expected[0][i][j], bc.getCanBeSelectedCoordinates().get(i)[j]);
+                assertEquals(expected[0][i][j], board.getCanBeSelectedCoordinates().get(i)[j]);
             }
         }
     }
     @Test
     public void testCanBeSelectedTiles1() {
-        BoardController bc = new BoardController(matrix[1]);
+        //BoardController bc = new BoardController(matrix[1]);
+        Board board = new Board(2);
         for (int i = 0; i < expected[1].length; i++){
             for (int j = 0; j < 2; j++) {
-                assertEquals(expected[1][i][j], bc.getCanBeSelectedCoordinates().get(i)[j]);
+                assertEquals(expected[1][i][j], board.getCanBeSelectedCoordinates().get(i)[j]);
             }
         }
     }
     @Test
     public void testCanBeSelectedTiles2() {
         ArrayList<ItemTile> selectedTiles = new ArrayList<>();
-        BoardController bc = new BoardController(matrix[0]);
-        bc.selectTile(1, 1);
+        //BoardController bc = new BoardController(matrix[0]);
+        Board board = new Board(2);//2 o qualunque numero
+        board.selectTile(1, 1);
         for (int i = 0; i < expected[2].length; i++){
             for (int j = 0; j < 2; j++) {
-                assertEquals(expected[2][i][j], bc.getCanBeSelectedCoordinates().get(i)[j]);
+                assertEquals(expected[2][i][j], board.getCanBeSelectedCoordinates().get(i)[j]);
             }
         }
     }
     @Test
     public void testCanBeSelectedTiles3() {
         ArrayList<ItemTile> selectedTiles = new ArrayList<>();
-        BoardController bc = new BoardController(matrix[0]);
-        bc.selectTile(1, 1);
-        bc.selectTile(1, 2);
+        //BoardController bc = new BoardController(matrix[0]);
+        Board board = new Board(2);
+        board.selectTile(1, 1);
+        board.selectTile(1, 2);
         for (int i = 0; i < expected[3].length; i++){
             for (int j = 0; j < 2; j++) {
-                assertEquals(expected[3][i][j], bc.getCanBeSelectedCoordinates().get(i)[j]);
+                assertEquals(expected[3][i][j], board.getCanBeSelectedCoordinates().get(i)[j]);
             }
         }
     }
     @Test
     public void testPopSelectedTile() {
         ArrayList<ItemTile> selectedTiles = new ArrayList<>();
-        BoardController bc = new BoardController(matrix[0]);
-        bc.selectTile(1, 1);
-        bc.selectTile(1, 2);
-        assertEquals(1, bc.getSelectedCoordinates().get(0)[0]);
-        assertEquals(1, bc.getSelectedCoordinates().get(0)[1]);
-        assertEquals(1, bc.getSelectedCoordinates().get(1)[0]);
-        assertEquals(2, bc.getSelectedCoordinates().get(1)[1]);
-        bc.popSelectedTile(new int[] {1, 2});
+        //BoardController bc = new BoardController(matrix[0]);
+        Board board = new Board(2);
+        board.selectTile(1, 1);
+        board.selectTile(1, 2);
+        assertEquals(1, board.getSelectedCoordinates().get(0)[0]);
+        assertEquals(1, board.getSelectedCoordinates().get(0)[1]);
+        assertEquals(1, board.getSelectedCoordinates().get(1)[0]);
+        assertEquals(2, board.getSelectedCoordinates().get(1)[1]);
+        board.popSelectedTile(new int[] {1, 2});
     }
 
 
     @Test
     public void testGetSelectedTile() {
-        BoardController bc = new BoardController(matrix[0]);
-        bc.selectTile(1, 1);
-        bc.selectTile(1, 2);
+        //BoardController bc = new BoardController(matrix[0]);
+        Board board = new Board(2);
+        board.selectTile(1, 1);
+        board.selectTile(1, 2);
         ArrayList<ItemTile> expected = new ArrayList<>();
-        expected.add(bc.getBoardMatrix()[1][1]);
-        expected.add(bc.getBoardMatrix()[1][2]);
-        ArrayList<ItemTile> selectedTile = bc.getSelectedItemTiles();
+        expected.add(board.getBoardMatrix()[1][1]);
+        expected.add(board.getBoardMatrix()[1][2]);
+        ArrayList<ItemTile> selectedTile = board.getSelectedItemTiles();
         for (int i = 0; i < expected.size(); i++) {
             assertSame(expected.get(i), selectedTile.get(i));
         }
