@@ -84,6 +84,26 @@ public class Bookshelf {
         setFull(checkFull());
     }
 
+    /**
+     * After calculating the available space of each column returns the max
+     * @return  the maximum available space of all column
+     */
+    public int getMaxAvailableSpace(){
+        int max = 0;
+        for (int i = 0; i < bookshelfMatrix[0].length; i++ ){
+            int temp = 0;
+            for (ItemTile[] matrix : bookshelfMatrix) {
+                if (matrix[i].isEmpty()) temp++;
+            }
+            if (temp > max) max = temp;
+        }
+        return Math.min(max, 3);
+    }
+
+
+
+
+
 
     private void buildAdjacencyMap( HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap){
         ItemTile[][] itemTileMatrix = bookshelfMatrix;

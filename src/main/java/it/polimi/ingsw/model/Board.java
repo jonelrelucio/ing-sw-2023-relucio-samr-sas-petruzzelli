@@ -157,65 +157,6 @@ public class Board {
         return intersection;
     }
 
-    private int getMaxAvailableSpace(Bookshelf bookshelf){
-        int max = 0;
-        for (int i = 0; i < bookshelf.getBookshelfMatrix()[0].length; i++ ){
-            int temp = 0;
-            for (int j = 0; j < bookshelf.getBookshelfMatrix().length; j++) {
-                if( bookshelf.getBookshelfMatrix()[j][i].isEmpty() ) temp++ ;
-            }
-            if (temp > max) max = temp;
-        }
-        return Math.min(max, 3);
-
-    }
-
-    /**
-     * Adds the given coordinates in the ArrayList of selectedTiles and updates the canBeSelectedTiles Arraylist
-     * @param coordinates   selected coordinates
-     */
-    public void selectTile(int[] coordinates, Bookshelf bookshelf) {
-        if (selectedCoordinates.size() > getMaxAvailableSpace(bookshelf))  throw new IllegalArgumentException("Can't select more tiles.");
-        for (int[] tile : canBeSelectedCoordinates) {
-            if (Arrays.equals(tile, coordinates)) {
-                selectedCoordinates.add(coordinates);
-                updateCanBeSelectedCoordinates();
-                return;
-            }
-        }
-        System.out.println("item in given coordinates can't be selected");
-    }
-
-    /**
-     * Pops the given coordinates from the Arraylist of selectedTiles and updates the canBeSelectedTiles ArrayList
-     * @param coordinates   coordinates to be popped from the ArrayList of selectedTiles
-     */
-    public void deselectTile(int[] coordinates ){
-        for (int i = 0; i < selectedCoordinates.size(); i++){
-            if (coordinates[0] == selectedCoordinates.get(i)[0] && coordinates[1] == selectedCoordinates.get(i)[1]) {
-                selectedCoordinates.remove(i);
-                updateCanBeSelectedCoordinates();
-                return;
-            }
-        }
-        System.out.println("No coordinates in selectedTiles.");
-
-    }
-
-    /**
-     * returns the ItemTiles from the coordinates in the arraylist selectedCoordinates
-     * @return  ItemTiles from the coordinates in the arraylist selectedCoordinates
-     */
-    public ArrayList<ItemTile> getSelectedItemTiles() {
-        for (int[] indices : selectedCoordinates) {
-            selectedItemTiles.add(boardMatrix[indices[0]][indices[1]]);
-            boardMatrix[indices[0]][indices[1]] = new ItemTile(ItemTileType.EMPTY);
-        }
-        selectedCoordinates.clear();
-        return selectedItemTiles;
-    }
-
-
     // TODO: Remove this method
     public void printBoard() {
         for (int j = 0; j < getBoardMatrix().length; j++) {
