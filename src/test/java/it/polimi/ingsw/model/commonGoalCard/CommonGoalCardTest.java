@@ -1,4 +1,4 @@
-package model;
+package it.polimi.ingsw.model.commonGoalCard;
 
 import it.polimi.ingsw.model.ItemTile.ItemTile;
 import it.polimi.ingsw.model.ItemTile.ItemTileType;
@@ -59,12 +59,12 @@ public class CommonGoalCardTest {
 
 
     private final ItemTile[][] bookshelf7 =
-            {       {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.EMPTY)},
-                    {new ItemTile(ItemTileType.PLANT),  new ItemTile(ItemTileType.PLANT),   new ItemTile(ItemTileType.GAME),    new ItemTile(ItemTileType.TROPHY),  new ItemTile(ItemTileType.EMPTY)},
-                    {new ItemTile(ItemTileType.FRAME),  new ItemTile(ItemTileType.TROPHY),  new ItemTile(ItemTileType.TROPHY),  new ItemTile(ItemTileType.PLANT),   new ItemTile(ItemTileType.PLANT)},
-                    {new ItemTile(ItemTileType.FRAME),  new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.GAME),    new ItemTile(ItemTileType.TROPHY),  new ItemTile(ItemTileType.PLANT)},
-                    {new ItemTile(ItemTileType.FRAME),  new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.GAME),    new ItemTile(ItemTileType.TROPHY),  new ItemTile(ItemTileType.PLANT)},
-                    {new ItemTile(ItemTileType.FRAME),  new ItemTile(ItemTileType.TROPHY),  new ItemTile(ItemTileType.GAME),    new ItemTile(ItemTileType.GAME),    new ItemTile(ItemTileType.TROPHY)}};
+            {       {new ItemTile(ItemTileType.FRAME),  new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.FRAME),   new ItemTile(ItemTileType.TROPHY),  new ItemTile(ItemTileType.TROPHY)},
+                    {new ItemTile(ItemTileType.BOOK),   new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.PLANT),   new ItemTile(ItemTileType.TROPHY),  new ItemTile(ItemTileType.TROPHY)},
+                    {new ItemTile(ItemTileType.BOOK),   new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.FRAME),   new ItemTile(ItemTileType.FRAME),   new ItemTile(ItemTileType.FRAME)},
+                    {new ItemTile(ItemTileType.FRAME),  new ItemTile(ItemTileType.FRAME),   new ItemTile(ItemTileType.FRAME),   new ItemTile(ItemTileType.PLANT),   new ItemTile(ItemTileType.PLANT)},
+                    {new ItemTile(ItemTileType.FRAME),  new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.FRAME),   new ItemTile(ItemTileType.GAME)},
+                    {new ItemTile(ItemTileType.FRAME),  new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.PLANT),   new ItemTile(ItemTileType.FRAME)}};
 
     @Test
     public void testCard1Absent() {
@@ -99,7 +99,7 @@ public class CommonGoalCardTest {
     @Test
     public void testCard3Present() {
         CommonGoalCard card = new CommonGoalCard3();
-        assertTrue(card.checkPattern(bookshelf1));
+        assertTrue(card.checkPattern(bookshelf7));
     }
 
     @Test
