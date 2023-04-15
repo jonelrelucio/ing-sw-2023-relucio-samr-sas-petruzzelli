@@ -159,16 +159,6 @@ public class Board {
 
 
 
-    // TODO: Remove this method
-    public void printBoard() {
-        for (int j = 0; j < getBoardMatrix().length; j++) {
-            for (int k = 0; k < getBoardMatrix()[0].length; k++) {
-                System.out.printf("%10s", getMatrixTile(j,k).getItemTileType().toString());
-            }
-            System.out.println(" ");
-        }
-    }
-
 
 }
 

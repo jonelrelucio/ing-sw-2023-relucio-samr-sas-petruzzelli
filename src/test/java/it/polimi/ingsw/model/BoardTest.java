@@ -2,6 +2,7 @@ package it.polimi.ingsw.model;
 
 
 import it.polimi.ingsw.model.ItemTile.ItemTile;
+import it.polimi.ingsw.model.ItemTile.ItemTileType;
 import org.junit.jupiter.api.Test;
 
 import java.security.InvalidParameterException;
@@ -13,11 +14,20 @@ public class BoardTest{
     private Board board;
     private final Bookshelf bookshelf = new Bookshelf();
 
+    private void printBoard() {
+        for (int j = 0; j < board.getBoardMatrix().length; j++) {
+            for (int k = 0; k < board.getBoardMatrix()[0].length; k++) {
+                System.out.printf("%10s", board.getMatrixTile(j,k).getItemTileType().toString());
+            }
+            System.out.println(" ");
+        }
+    }
+
     @Test
     public void test2PlayersBoard() {
         try {
             board = new Board(2);
-            board.printBoard();
+            printBoard();
             System.out.println("");
         } catch (InvalidParameterException ignored) {};
     }
@@ -32,7 +42,7 @@ public class BoardTest{
     public void test3PlayersBoard() {
         try {
             board = new Board(3);
-            board.printBoard();
+            printBoard();
             System.out.println("");
         } catch (InvalidParameterException ignored) {};
     }
@@ -47,7 +57,7 @@ public class BoardTest{
     public void test4PlayersBoard() {
         try {
             board = new Board(4);
-            board.printBoard();
+            printBoard();
             System.out.println("");
         } catch (InvalidParameterException ignored) {};
     }
@@ -56,6 +66,37 @@ public class BoardTest{
         board = new Board(4);
         System.out.println(board.getCanBeSelectedCoordinates());
         assertEquals(21, board.getCanBeSelectedCoordinates().size());
+    }
+
+    @Test
+    public void testSetters(){
+        Board board = new Board(2);
+
+        ArrayList<int[]> expected = new ArrayList<>();
+        expected.add(new int[] {1, 2});
+        expected.add(new int[] {3, 2});
+        expected.add(new int[] {2, 2});
+
+        ItemTile[][] boardItemTileMatrix = {
+                {new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.FRAME)},
+                {new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.FRAME), new ItemTile(ItemTileType.FRAME)},
+                {new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.FRAME)}
+        };
+
+
+        board.setBoardMatrix(boardItemTileMatrix);
+        assertEquals(boardItemTileMatrix, board.getBoardMatrix());
+
+        board.setNumOfPlayers(3);
+        assertEquals(3, board.getNumOfPlayers());
+
+        board.setCanBeSelectedCoordinates(expected);
+        assertEquals(expected, board.getCanBeSelectedCoordinates());
+
+        board.setSelectedCoordinates(expected);
+        assertEquals(expected, board.getSelectedCoordinates());
+
+
     }
 
 
