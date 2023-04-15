@@ -6,7 +6,6 @@ import it.polimi.ingsw.model.ItemTile.ItemTileType;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
-import java.util.Stack;
 
 public class Bookshelf {
 
