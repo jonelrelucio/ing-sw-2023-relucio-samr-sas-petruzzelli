@@ -35,6 +35,12 @@ public class BookshelfTest {
                     {new ItemTile(ItemTileType.FRAME),  new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.FRAME),   new ItemTile(ItemTileType.GAME)},
                     {new ItemTile(ItemTileType.FRAME),  new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.PLANT),   new ItemTile(ItemTileType.FRAME)}};
 
+    @Test
+    public void testGetBookshelfMatrix() {
+        Bookshelf bookshelf = new Bookshelf();
+        bookshelf.setBookshelfMatrix(bookshelf1);
+        assertEquals(bookshelf1, bookshelf.getBookshelfMatrix());
+    }
 
     @Test
     public void testRemainingEmptyTilesInCol() {
@@ -114,8 +120,8 @@ public class BookshelfTest {
         };
         Bookshelf bookshelf = new Bookshelf();
         bookshelf.setBookshelfMatrix(bookShelfItemTileMatrix);
-//        int points = BookshelfPointsCalculator.getScore(bookshelf);
-//        assertEquals(6, points);
+        int points = bookshelf.getScore();
+        assertEquals(6, points);
     }
 
     @Test
@@ -128,8 +134,8 @@ public class BookshelfTest {
         };
         Bookshelf bookshelf = new Bookshelf();
         bookshelf.setBookshelfMatrix(bookShelfItemTileMatrix);
-//        int points = BookshelfPointsCalculator.getScore(bookshelf);
-//        assertEquals(4, points);
+        int points = bookshelf.getScore();
+        assertEquals(4, points);
     }
 
     @Test
@@ -141,8 +147,8 @@ public class BookshelfTest {
         };
         Bookshelf bookshelf = new Bookshelf();
         bookshelf.setBookshelfMatrix(bookShelfItemTileMatrix);
-//        int points = BookshelfPointsCalculator.getScore(bookshelf);
-//        assertEquals(7, points);
+        int points = bookshelf.getScore();
+        assertEquals(7, points);
     }
 
     @Test
@@ -155,7 +161,7 @@ public class BookshelfTest {
         };
         Bookshelf bookshelf = new Bookshelf();
         bookshelf.setBookshelfMatrix(bookShelfItemTileMatrix);
-//        int points = BookshelfPointsCalculator.getScore(bookshelf);
-//        assertEquals(10, points);
+        int points = bookshelf.getScore();
+        assertEquals(10, points);
     }
 }
