@@ -18,7 +18,7 @@ public class CommonGoalCardDeck {
     private Stack<Integer> buildScoringStack(int key){
         Stack<Integer> scoringTokenStack = new Stack<>();
         for (int i = 0; i < scoringTokenArray[key-2].length; i++){
-            scoringTokenStack.push(scoringTokenArray[key-1][i]);
+            scoringTokenStack.push(scoringTokenArray[key-2][i]);
         }
         return scoringTokenStack;
     }

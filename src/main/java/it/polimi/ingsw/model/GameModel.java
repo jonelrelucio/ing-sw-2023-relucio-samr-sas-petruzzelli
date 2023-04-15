@@ -20,6 +20,7 @@ public class GameModel {
 
     public GameModel(int numOfPlayer) {
         if (numOfPlayer < 2 || numOfPlayer > 4 ) throw new IllegalArgumentException("Number of Player out of bounds");
+        this.numOfPlayer = numOfPlayer;
         this.playerList = new CircularArrayList<>();
         this.commonGoalCardDeck = CommonGoalCardBag.commonGoalCardDeckBuilder(numOfPlayer);
         this.board = new Board(numOfPlayer);
@@ -28,7 +29,8 @@ public class GameModel {
         PersonalGoalCardBag.resetBag();
     }
 
-    public Player getWinner() { return currentPlayer; }
+    public void initCurrentPlayer() { this.currentPlayer = playerList.get(0); }
+    public Player getWinner() { if(!currentPlayer.isWinner()) throw new IllegalCallerException(); return currentPlayer; }
     public void updateNextPlayer() { this.currentPlayer = playerList.get(playerList.indexOf(this.currentPlayer)+1); }
     public void updateNumOfRounds() { this.numOfRounds++; }
 
@@ -36,9 +38,7 @@ public class GameModel {
     public int getNumOfPlayer() {
         return numOfPlayer;
     }
-    public CircularArrayList<Player> getPlayerList() {
-        return playerList;
-    }
+    public CircularArrayList<Player> getPlayerList() {return playerList;}
     public CommonGoalCardDeck getCommonGoalCardDeck() {
         return commonGoalCardDeck;
     }
@@ -58,7 +58,6 @@ public class GameModel {
     public void setState(State state) { this.state = state; }
     public void setNumOfRounds(int numOfRounds) { this.numOfRounds = numOfRounds;}
     public void setCurrentPlayer(Player currentPlayer) { this.currentPlayer = currentPlayer; }
-
 
     /**
      * Updates the score of the current player
