@@ -20,7 +20,6 @@ public class Board {
     private final ItemTileBag bag;
     private ArrayList<int[]> selectedCoordinates;
     private ArrayList<int[]> canBeSelectedCoordinates;
-    private ArrayList<ItemTile> selectedItemTiles;
 
     // CONSTRUCTOR
     public Board(int numOfPlayers){
@@ -122,7 +121,7 @@ public class Board {
     /**
      * Updates the Arraylist of the can be selected Tiles
      */
-    private void updateCanBeSelectedCoordinates(){
+    public void updateCanBeSelectedCoordinates(){
         if (selectedCoordinates.isEmpty()) {
             for (int i = 1; i < boardMatrix.length-1; i++) {
                 for (int j = 1; j < boardMatrix[0].length- 1; j++) {
