@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.bag.CommonGoalCardBag;
+import it.polimi.ingsw.model.bag.PersonalGoalCardBag;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCardDeck;
 import it.polimi.ingsw.model.util.CircularArrayList;
 
@@ -24,6 +25,7 @@ public class GameModel {
         this.board = new Board(numOfPlayer);
         this.numOfRounds = 0;
         this.state = State.INIT;
+        PersonalGoalCardBag.resetBag();
     }
 
     public Player getWinner() { return currentPlayer; }

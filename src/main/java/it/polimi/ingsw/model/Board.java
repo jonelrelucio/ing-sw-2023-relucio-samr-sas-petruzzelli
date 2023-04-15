@@ -156,6 +156,9 @@ public class Board {
         return intersection;
     }
 
+
+
+
     // TODO: Remove this method
     public void printBoard() {
         for (int j = 0; j < getBoardMatrix().length; j++) {

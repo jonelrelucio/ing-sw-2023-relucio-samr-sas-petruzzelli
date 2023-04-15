@@ -225,16 +225,6 @@ public class Bookshelf {
 
 
 
-
-
-
-
-
-
-
-
-
-
     // Getters
     public ItemTile getMatrixTile(int x, int y) { return bookshelfMatrix[x][y]; }
     public ItemTile[][] getBookshelfMatrix() { return bookshelfMatrix;}

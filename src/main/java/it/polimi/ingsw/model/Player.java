@@ -9,10 +9,6 @@ import it.polimi.ingsw.model.ItemTile.ItemTile;
 
 enum PlayerState {
     WAITING, PLAYING;
-    @Override
-    public String toString() {
-        return super.toString();
-    }
 }
 
 public class Player {
@@ -47,17 +43,17 @@ public class Player {
     public int getScore() { return score; }
     public Bookshelf getBookshelf() { return bookshelf; }
     public PersonalGoalCard getPersonalGoalCard() { return personalGoalCard; }
-    public ArrayList<ItemTile> getSelectedTiles() { return selectedItemTiles; }
+    public ArrayList<ItemTile> getSelectedItemTiles() { return selectedItemTiles; }
     public int getNumOfRounds() { return numOfRounds; }
     public PlayerState getPlayerState() { return playerState; }
     public ArrayList<CommonGoalCard> getObtainedCommonGoalCards() { return obtainedCommonGoalCards;}
     public int getObtainedCommonGoalPoints() { return obtainedCommonGoalPoints; }
+    public Board getBoard() {return board;}
 
     // Setters
     public void setScore(int score) {this.score = score;}
     public void setBookshelf(Bookshelf bookshelf) {this.bookshelf = bookshelf;}
     public void setPersonalGoalCard(PersonalGoalCard personalGoalCard) {this.personalGoalCard = personalGoalCard;}
-    public void setSelectedTiles(ArrayList<ItemTile> selectedTiles) {this.selectedItemTiles = selectedTiles;}
     public void setNumOfRounds(int numOfRounds) {this.numOfRounds = numOfRounds;}
     public void setPlayerState(PlayerState playerState) {this.playerState = playerState;}
     public void setObtainedCommonGoalCards(CommonGoalCard card) { this.obtainedCommonGoalCards.add(card);}
@@ -77,7 +73,7 @@ public class Player {
      * @param coordinates   selected coordinates
      */
     public void selectCoordinates(int[] coordinates) {
-        if (board.getCanBeSelectedCoordinates().size() > bookshelf.getMaxAvailableSpace())  throw new IllegalArgumentException("Can't select more tiles.");
+        if (board.getSelectedCoordinates().size() > bookshelf.getMaxAvailableSpace())  throw new IllegalArgumentException("Can't select more tiles.");
         for (int[] tile : board.getCanBeSelectedCoordinates()) {
             if (Arrays.equals(tile, coordinates)) {
                 board.getSelectedCoordinates().add(coordinates);
@@ -85,7 +81,7 @@ public class Player {
                 return;
             }
         }
-        System.out.println("item in given coordinates can't be selected");
+        throw new RuntimeException("Item in given coordinates can't be selected");
     }
 
     /**
@@ -100,22 +96,45 @@ public class Player {
                 return;
             }
         }
-        System.out.println("No coordinates in selectedTiles.");
+        throw new RuntimeException("No coordinates in selectedTiles,");
 
     }
 
     /**
-     * returns the ItemTiles from the coordinates in the arraylist selectedCoordinates
-     * @return  ItemTiles from the coordinates in the arraylist selectedCoordinates
+     * gets the ItemTiles from the coordinates in the arraylist selectedCoordinates
      */
-    public ArrayList<ItemTile> getSelectedItemTiles() {
+    public void pickSelectedItemTiles() {
         for (int[] indices : board.getSelectedCoordinates()) {
             selectedItemTiles.add(board.getBoardMatrix()[indices[0]][indices[1]]);
             board.getBoardMatrix()[indices[0]][indices[1]] = new ItemTile(ItemTileType.EMPTY);
         }
         board.getSelectedCoordinates().clear();
-        return selectedItemTiles;
     }
+
+
+    /**
+     * rearranges items in selectedItemTiles
+     * @param newOrder  the order of the selectedItemTiles to be rearranged
+     */
+    public void rearrangeSelectedItemTiles(int... newOrder) {
+        ArrayList<ItemTile> rearrangedItems = new ArrayList<ItemTile>();
+
+        // Check that the new order array is valid
+        if (newOrder.length != selectedItemTiles.size() || newOrder.length == 0) {
+            throw new IllegalArgumentException("Invalid new order array");
+        }
+
+        // Add the items to the new list in the specified order
+        for (int index : newOrder) {
+            if (index < 0 || index >= selectedItemTiles.size()) {
+                throw new IllegalArgumentException("Invalid index in new order array");
+            }
+            rearrangedItems.add(selectedItemTiles.get(index));
+        }
+
+        selectedItemTiles = rearrangedItems;
+    }
+
 
 
 }

@@ -32,7 +32,7 @@ public class GameModelTest {
         int numOfPlayers = 2;
         gameModel = new GameModel(numOfPlayers);
         gameModel.setCommonGoalCardDeck(new CommonGoalCardDeck(numOfPlayers, new CommonGoalCard1(), new CommonGoalCard2()));
-        gameModel.setCurrentPlayer(new Player("Alessandro", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers, 2)));
+        gameModel.setCurrentPlayer(new Player("Alessandro", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers, 2), new Board(numOfPlayers)));
         gameModel.getCurrentPlayer().getBookshelf().setBookshelfMatrix(bookshelf1);
         gameModel.updateCurrentPlayerScore();
         System.out.println(gameModel.getCurrentPlayer().getScore());
@@ -43,7 +43,7 @@ public class GameModelTest {
         int numOfPlayers = 2;
         gameModel = new GameModel(3);
         gameModel.setCommonGoalCardDeck(new CommonGoalCardDeck(numOfPlayers, new CommonGoalCard1(), new CommonGoalCard2()));
-        gameModel.setCurrentPlayer(new Player("Alessandro", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers, 2)));
+        gameModel.setCurrentPlayer(new Player("Alessandro", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers, 2), new Board(numOfPlayers)));
         gameModel.getCurrentPlayer().getBookshelf().setBookshelfMatrix(bookshelf1);
         gameModel.getCurrentPlayer().setWinner();
         gameModel.updateCurrentPlayerScore();
@@ -55,7 +55,7 @@ public class GameModelTest {
         int numOfPlayers = 2;
         gameModel = new GameModel(numOfPlayers);
         gameModel.setCommonGoalCardDeck(new CommonGoalCardDeck(numOfPlayers, new CommonGoalCard1(), new CommonGoalCard2()));
-        gameModel.setCurrentPlayer(new Player("Alessandro", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers, 2)));
+        gameModel.setCurrentPlayer(new Player("Alessandro", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers, 2), new Board(numOfPlayers)));
         gameModel.getCurrentPlayer().getBookshelf().setBookshelfMatrix(bookshelf1);
         gameModel.updateCurrentPlayerScore();
         boolean flag = true;
@@ -73,7 +73,7 @@ public class GameModelTest {
         int numOfPlayers = 2;
         gameModel = new GameModel(numOfPlayers);
         gameModel.setCommonGoalCardDeck(new CommonGoalCardDeck(numOfPlayers, new CommonGoalCard1(), new CommonGoalCard2()));
-        gameModel.setCurrentPlayer(new Player("Alessandro", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers, 2)));
+        gameModel.setCurrentPlayer(new Player("Alessandro", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers, 2), new Board(numOfPlayers)));
         gameModel.getCurrentPlayer().getBookshelf().setBookshelfMatrix(bookshelf1);
         gameModel.getCurrentPlayer().setWinner();
         gameModel.updateCurrentPlayerScore();
@@ -92,7 +92,7 @@ public class GameModelTest {
         int numOfPlayers = 2;
         gameModel = new GameModel(numOfPlayers);
         gameModel.setCommonGoalCardDeck(new CommonGoalCardDeck(numOfPlayers, new CommonGoalCard1(), new CommonGoalCard2()));
-        gameModel.setCurrentPlayer(new Player("Alessandro", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers, 2)));
+        gameModel.setCurrentPlayer(new Player("Alessandro", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers, 2), new Board(numOfPlayers)));
         gameModel.getCurrentPlayer().getBookshelf().setBookshelfMatrix(bookshelf2);
         gameModel.updateCurrentPlayerScore();
         System.out.println(gameModel.getCurrentPlayer().getScore());
@@ -103,7 +103,7 @@ public class GameModelTest {
         int numOfPlayers = 2;
         gameModel = new GameModel(3);
         gameModel.setCommonGoalCardDeck(new CommonGoalCardDeck(numOfPlayers, new CommonGoalCard1(), new CommonGoalCard2()));
-        gameModel.setCurrentPlayer(new Player("Alessandro", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers, 2)));
+        gameModel.setCurrentPlayer(new Player("Alessandro", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers, 2), new Board(numOfPlayers)));
         gameModel.getCurrentPlayer().getBookshelf().setBookshelfMatrix(bookshelf2);
         gameModel.getCurrentPlayer().setWinner();
         gameModel.updateCurrentPlayerScore();
@@ -115,7 +115,7 @@ public class GameModelTest {
         int numOfPlayers = 2;
         gameModel = new GameModel(numOfPlayers);
         gameModel.setCommonGoalCardDeck(new CommonGoalCardDeck(numOfPlayers, new CommonGoalCard1(), new CommonGoalCard2()));
-        gameModel.setCurrentPlayer(new Player("Alessandro", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers, 2)));
+        gameModel.setCurrentPlayer(new Player("Alessandro", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers, 2), new Board(numOfPlayers)));
         gameModel.getCurrentPlayer().getBookshelf().setBookshelfMatrix(bookshelf2);
         gameModel.updateCurrentPlayerScore();
         boolean flag = true;
@@ -133,7 +133,7 @@ public class GameModelTest {
         int numOfPlayers = 2;
         gameModel = new GameModel(numOfPlayers);
         gameModel.setCommonGoalCardDeck(new CommonGoalCardDeck(numOfPlayers, new CommonGoalCard1(), new CommonGoalCard2()));
-        gameModel.setCurrentPlayer(new Player("Alessandro", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers, 2)));
+        gameModel.setCurrentPlayer(new Player("Alessandro", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers, 2), new Board(numOfPlayers)));
         gameModel.getCurrentPlayer().getBookshelf().setBookshelfMatrix(bookshelf2);
         gameModel.getCurrentPlayer().setWinner();
         gameModel.updateCurrentPlayerScore();
