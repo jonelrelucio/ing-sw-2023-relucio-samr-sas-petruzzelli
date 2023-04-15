@@ -15,7 +15,6 @@ public class Bookshelf {
     private static final int COL = 5;
     private ItemTile[][] bookshelfMatrix;
     private int selectedColumn;
-    private boolean isFull;
 
     // Constructor
     public Bookshelf() {
@@ -38,10 +37,10 @@ public class Bookshelf {
      * Counts how much available space in selectedColumn
      * @return  number of empty tiles in selected Column
      */
-    private int remainingEmptyTilesInCol(){
+    public int remainingEmptyTilesInSelectedCol(int col){
         int emptyTiles = 0;
         for (ItemTile[] matrix : bookshelfMatrix) {
-            if (matrix[selectedColumn].isEmpty()) emptyTiles++;
+            if (matrix[col].isEmpty()) emptyTiles++;
         }
         return emptyTiles;
     }
@@ -61,27 +60,21 @@ public class Bookshelf {
      * @return  true if the shelf matrix is full, false otherwise
      */
     public boolean checkFull(){
-        for (int i = 0; i < bookshelfMatrix.length; i++) {
-            if(selectedColumn > 0) return false;
-        }
-        return true;
+        return getMaxAvailableSpace() == 0;
     }
-
-
-    // TODO: TESTARE SE FUNZIONA
 
     /**
      * Fills the selected column from the bottom up with the stack of selectedTiles
      * @param selectedTiles stack of selectedTiles
      */
-    public void updateTiles(Stack<ItemTile> selectedTiles){
-        if (selectedTiles.size() > remainingEmptyTilesInCol()) throw new IllegalArgumentException("Selected Tiles are in larger number than available space in selected Column.");
-        for (int i = bookshelfMatrix.length-1; i>=0; i--) {
-            if (!selectedTiles.isEmpty() && !getMatrixTile(i,selectedColumn).isEmpty() ){
-                setMatrixTile(i, selectedColumn, selectedTiles.pop());
+    public void updateTiles(ArrayList<ItemTile> selectedTiles){
+        if (selectedTiles.size() > remainingEmptyTilesInSelectedCol(getSelectedColumn()))
+            throw new IllegalArgumentException("Selected Tiles are in larger number than available space in selected Column.");
+        for (int i = bookshelfMatrix.length-1; i >= 0; i--) {
+            if (getMatrixTile(i, getSelectedColumn()).isEmpty() ){
+                setMatrixTile(i, getSelectedColumn(), selectedTiles.remove(0));
             }
         }
-        setFull(checkFull());
     }
 
     /**
@@ -91,10 +84,7 @@ public class Bookshelf {
     public int getMaxAvailableSpace(){
         int max = 0;
         for (int i = 0; i < bookshelfMatrix[0].length; i++ ){
-            int temp = 0;
-            for (ItemTile[] matrix : bookshelfMatrix) {
-                if (matrix[i].isEmpty()) temp++;
-            }
+            int temp = remainingEmptyTilesInSelectedCol(i);
             if (temp > max) max = temp;
         }
         return Math.min(max, 3);
@@ -229,11 +219,9 @@ public class Bookshelf {
     public ItemTile getMatrixTile(int x, int y) { return bookshelfMatrix[x][y]; }
     public ItemTile[][] getBookshelfMatrix() { return bookshelfMatrix;}
     public int getSelectedColumn() { return selectedColumn; }
-    public boolean isFull() { return isFull; }
 
     // Setters
     public void setMatrixTile(int x, int y, ItemTile itemTile) { bookshelfMatrix[x][y] = itemTile; }
     public void setBookshelfMatrix(ItemTile[][] bookshelfMatrix) { this.bookshelfMatrix = bookshelfMatrix;}
     public void setSelectedColumn(int selectedColumn) {this.selectedColumn = selectedColumn; }
-    public void setFull(boolean isFull ) {this.isFull = isFull; }
 }
