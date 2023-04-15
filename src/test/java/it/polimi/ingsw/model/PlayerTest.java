@@ -119,6 +119,10 @@ public class PlayerTest {
         try {
             playerTest.rearrangeSelectedItemTiles(0, 10);
         } catch (RuntimeException ignore)  {System.out.println("IllegalArgumentException in rearrangeSelectedItemTiles() captured. Invalid Index");};
+        try {
+            playerTest.rearrangeSelectedItemTiles(-1, 10);
+        } catch (RuntimeException ignore)  {System.out.println("IllegalArgumentException in rearrangeSelectedItemTiles() captured. Invalid Index");};
+
     }
 
 

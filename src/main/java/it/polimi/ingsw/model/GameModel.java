@@ -67,7 +67,7 @@ public class GameModel {
         int score = 0;
         score += currentPlayer.getBookshelf().getScore();
         score += commonGoalCardDeck.getScore(currentPlayer);
-        score += currentPlayer.getPersonalGoalCard().getScore(currentPlayer.getBookshelf());
+        score += currentPlayer.getPersonalGoalCard().getScore(currentPlayer.getBookshelf().getBookshelfMatrix());
         if (currentPlayer.isWinner()) score += currentPlayer.getEndGameToken();
         currentPlayer.setScore(score);
     }
