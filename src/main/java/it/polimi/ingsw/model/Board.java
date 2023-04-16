@@ -11,17 +11,44 @@ import java.util.Map;
 import it.polimi.ingsw.model.bag.ItemTileBag;
 import it.polimi.ingsw.model.util.Utility;
 
+/**
+ * This class represents one single board
+ */
 public class Board {
 
+    /**
+     * These attributes represent the size of the board
+     */
     private final int ROW = 11, COL = 11;
+    /**
+     * This attribute represent the matrix of the board in ItemTile
+     */
     private ItemTile[][] boardMatrix = new ItemTile[ROW][COL];
+    /**
+     * This attribute represent the number of player using the board
+     */
     private int numOfPlayers;
+    /**
+     * This attribute represent an array of coordinates used to initialize the board
+     */
     private int[][] boardCoordinates;
+    /**
+     * This attribute represent a bag of ItemTiles used to initialize the board
+     */
     private final ItemTileBag bag;
+    /**
+     * This attribute represent an arraylist of selected coordinates by the player
+     */
     private ArrayList<int[]> selectedCoordinates;
+    /**
+     * This attribute represent an arraylist of coordinates that can be selected on the board by the player
+     */
     private ArrayList<int[]> canBeSelectedCoordinates;
 
-    // CONSTRUCTOR
+    /**
+     * Initializes the board taking into consideration the number of players
+     * @param numOfPlayers  number of players that use the board
+     */
     public Board(int numOfPlayers){
         this.numOfPlayers = numOfPlayers;
         this.bag = new ItemTileBag();
@@ -33,20 +60,68 @@ public class Board {
         updateCanBeSelectedCoordinates();
     }
 
-    // Getters
+    /**
+     * gets the matrix of the board
+     * @return  the board matrix in ItemTile[][]
+     */
     public ItemTile[][] getBoardMatrix(){ return boardMatrix; }
+
+    /**
+     * gets the item tile given the coordinates x an y as integers
+     * @param x the row
+     * @param y the column
+     * @return  the item tile given row and column coordinate
+     */
     public ItemTile getMatrixTile(int x, int y) { return boardMatrix[x][y]; }
+
+    /**
+     * gets the number of players that use the board
+     * @return  number of players that use the board
+     */
     public int getNumOfPlayers() {return numOfPlayers; }
+
+    /**
+     * gets the arraylist of selected coordinates by the player
+     * @return  arraylist of selected coordinates by the player
+     */
     public ArrayList<int[]> getSelectedCoordinates() { return selectedCoordinates; }
+
+    /**
+     * gets the arraylist of coordinates that can be selected by the player
+     * @return  arraylist of coordinates that can be selected by the player
+     */
     public ArrayList<int[]> getCanBeSelectedCoordinates() {return canBeSelectedCoordinates;}
 
-    // Setters
-    public void setBoardMatrix(ItemTile[][] boardMatrix ) {
-        this.boardMatrix = boardMatrix;
-    }
+    /**
+     * gets the matrix of the board of ItemTiles
+     * @param boardMatrix   the matrix of the board made of Item Tiles to be used to set the board
+     */
+    public void setBoardMatrix(ItemTile[][] boardMatrix ) { this.boardMatrix = boardMatrix;}
+
+    /**
+     * sets the number of players that use the board
+     * @param numOfPlayers  the number of players
+     */
     public void setNumOfPlayers(int numOfPlayers) { this.numOfPlayers = numOfPlayers; }
+
+    /**
+     * Sets the Item Tile in the given coordinate x and y
+     * @param x     Row of the matrix
+     * @param y     Column of the matrix
+     * @param itemTile  Item tile to be set
+     */
     public void setMatrixTile(int x, int y, ItemTile itemTile) { boardMatrix[x][y] = itemTile; }
+
+    /**
+     * sets the arraylist of selected coordinates by the player
+     * @param selectedCoordinates   arraylist of selected coordinates by the player
+     */
     public void setSelectedCoordinates(ArrayList<int[]> selectedCoordinates) {this.selectedCoordinates = selectedCoordinates; }
+
+    /**
+     * sets the arraylist of coordinates that can be selected by the player
+     * @param canBeSelectedCoordinates  arraylist of can be selected coordinates
+     */
     public void setCanBeSelectedCoordinates(ArrayList<int[]> canBeSelectedCoordinates) {this.canBeSelectedCoordinates = canBeSelectedCoordinates; }
 
     /**
@@ -159,17 +234,20 @@ public class Board {
 }
 
 
-
-
-
+/**
+ * This class is used to deserialize board coordinates from json file
+ */
 class BoardCoordinates {
+    /**
+     * A map with a key string associated to a list of list of integer value
+     */
     private Map<String, List<List<Integer>>> BoardCoordinatesMap;
 
+    /**
+     * @return  the boardCoordinates as a map
+     */
     public Map<String, List<List<Integer>>> getBoardCoordinatesMap() {
         return BoardCoordinatesMap;
     }
 
-    public void setBoardCoordinatesMap(Map<String, List<List<Integer>>> boardCoordinatesMap) {
-        BoardCoordinatesMap = boardCoordinatesMap;
-    }
 }
