@@ -84,7 +84,7 @@ public class Board {
     /**
      * given a coordinate, returns true of it is adjacent to an empty tile
      * @param coordinates  coordinates in int[]
-     * @return          true if the given position is adjacent to an empty tile
+     * @return              true if the given position is adjacent to an empty tile
      */
     private boolean isAdjacentEmpty(int[] coordinates) {
         int x = coordinates[0];
@@ -156,11 +156,11 @@ public class Board {
         return intersection;
     }
 
-
-
-
-
 }
+
+
+
+
 
 class BoardCoordinates {
     private Map<String, List<List<Integer>>> BoardCoordinatesMap;
