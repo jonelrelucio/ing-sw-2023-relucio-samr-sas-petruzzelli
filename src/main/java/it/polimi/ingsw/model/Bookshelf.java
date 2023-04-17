@@ -33,7 +33,7 @@ public class Bookshelf {
     }
 
     /**
-     * Counts how much available space in selectedColumn
+     * Counts how much available space is in selectedColumn
      * @return  number of empty tiles in selected Column
      */
     public int remainingEmptyTilesInSelectedCol(int col){
