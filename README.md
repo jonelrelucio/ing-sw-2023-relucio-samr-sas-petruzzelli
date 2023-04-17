@@ -18,8 +18,6 @@ Game Implementation [My Shelfie](https://www.craniocreations.it/prodotto/my-shel
 UML Diagrams have been develped using [diagrams](https://www.diagrams.net/).  
 Main UML Diagram: [UML Diagram](src/main/umlDiagram/ClassDiagram_Model.png)
 
-## JAVADOC Documentation
-Read  the project documentation: <a href="src/javadoc/it/polimi/ingsw/package-summary.html">JavaDoc</a>
 
 
 ### Functionality

@@ -26,7 +26,7 @@ public class GameModel {
         this.board = new Board(numOfPlayer);
         this.numOfRounds = 0;
         this.state = State.INIT;
-        PersonalGoalCardBag.resetBag();
+        PersonalGoalCardBag.reset();
     }
 
     public void initCurrentPlayer() { this.currentPlayer = playerList.get(0); }
