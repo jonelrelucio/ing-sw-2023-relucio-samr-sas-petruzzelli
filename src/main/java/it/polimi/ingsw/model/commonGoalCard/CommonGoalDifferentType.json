@@ -1,0 +1,34 @@
+[
+  {
+    "id": 9,
+    "row": 6,
+    "col": 1,
+    "occurrence": 3,
+    "minDifferentType": 1,
+    "maxDifferentType": 3
+  },
+  {
+    "id": 10,
+    "row": 1,
+    "col": 5,
+    "occurrence": 4,
+    "minDifferentType": 1,
+    "maxDifferentType": 3
+  },
+  {
+    "id": 11,
+    "row": 6,
+    "col": 1,
+    "occurrence": 2,
+    "minDifferentType": 6,
+    "maxDifferentType": 6
+  },
+  {
+    "id": 12,
+    "row": 1,
+    "col": 5,
+    "occurrence": 2,
+    "minDifferentType": 5,
+    "maxDifferentType": 5
+  }
+]
