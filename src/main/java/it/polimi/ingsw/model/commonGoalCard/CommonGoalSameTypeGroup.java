@@ -32,7 +32,7 @@ public class CommonGoalSameTypeGroup implements CommonGoalCard{
                 ItemTileType matchingType = bookshelf[row][col].getItemTileType();
                 groupID++;
 
-                int result = color(bookshelf, matchingType, locked, lockedAdjacent, row, col, groupID, 0);
+                int result = checkCoords(bookshelf, matchingType, locked, lockedAdjacent, row, col, groupID, 0);
 
                 boolean ok = true;
                 if (separated && result == num) {
@@ -59,26 +59,18 @@ public class CommonGoalSameTypeGroup implements CommonGoalCard{
 
                 if (result != num || !ok) {
                     // unlock the not valid group cells
-                    if (locked.containsKey(matchingType)) {
-                        if (locked.get(matchingType).containsKey(groupID)) {
-                            locked.get(matchingType).get(groupID).clear();
-                            locked.get(matchingType).remove(groupID);
-                        }
+                    if (locked.containsKey(matchingType) && locked.get(matchingType).containsKey(groupID)) {
+                        locked.get(matchingType).get(groupID).clear();
+                        locked.get(matchingType).remove(groupID);
                     }
-                    if (locked.get(matchingType) != null) {
-                        if (locked.get(matchingType).isEmpty()) locked.remove(matchingType);
-                    }
+                    if (locked.get(matchingType) != null && locked.get(matchingType).isEmpty()) locked.remove(matchingType);
 
                     if (separated) {
-                        if (lockedAdjacent.containsKey(matchingType)) {
-                            if (lockedAdjacent.get(matchingType).containsKey(groupID)) {
-                                lockedAdjacent.get(matchingType).get(groupID).clear();
-                                lockedAdjacent.get(matchingType).remove(groupID);
-                            }
+                        if (lockedAdjacent.containsKey(matchingType) && lockedAdjacent.get(matchingType).containsKey(groupID)) {
+                            lockedAdjacent.get(matchingType).get(groupID).clear();
+                            lockedAdjacent.get(matchingType).remove(groupID);
                         }
-                        if (lockedAdjacent.get(matchingType) != null) {
-                            if (lockedAdjacent.get(matchingType).isEmpty()) lockedAdjacent.remove(matchingType);
-                        }
+                        if (lockedAdjacent.get(matchingType) != null && lockedAdjacent.get(matchingType).isEmpty()) lockedAdjacent.remove(matchingType);
                     }
                 }
             }
@@ -88,7 +80,7 @@ public class CommonGoalSameTypeGroup implements CommonGoalCard{
     }
 
 
-    private int color(ItemTile[][] bookshelf, ItemTileType matchingType, HashMap<ItemTileType, HashMap<Integer, ArrayList<int[]>>> locked, HashMap<ItemTileType, HashMap<Integer, ArrayList<int[]>>> lockedAdjacent, int row, int col, int groupID, int count) {
+    private int checkCoords(ItemTile[][] bookshelf, ItemTileType matchingType, HashMap<ItemTileType, HashMap<Integer, ArrayList<int[]>>> locked, HashMap<ItemTileType, HashMap<Integer, ArrayList<int[]>>> lockedAdjacent, int row, int col, int groupID, int count) {
         if (separated && sameType) {
             if (bookshelf[row][col].getItemTileType() == matchingType && findCoordsByType(matchingType, lockedAdjacent, row, col)) return count;
         } else if (separated) {
@@ -108,7 +100,7 @@ public class CommonGoalSameTypeGroup implements CommonGoalCard{
             // check adjacent cells
             // check above
             if (row - 1 >= 0) {
-                count = color(bookshelf, matchingType, locked, lockedAdjacent, row - 1, col, groupID, count);
+                count = checkCoords(bookshelf, matchingType, locked, lockedAdjacent, row - 1, col, groupID, count);
                 if (count == num) {
                     return count;
                 }
@@ -116,7 +108,7 @@ public class CommonGoalSameTypeGroup implements CommonGoalCard{
 
             // check left
             if (col - 1 >= 0) {
-                count = color(bookshelf, matchingType, locked, lockedAdjacent, row, col - 1, groupID, count);
+                count = checkCoords(bookshelf, matchingType, locked, lockedAdjacent, row, col - 1, groupID, count);
                 if (count == num) {
                     return count;
                 }
@@ -124,7 +116,7 @@ public class CommonGoalSameTypeGroup implements CommonGoalCard{
 
             // check below
             if (row + 1 < bookshelf.length) {
-                count = color(bookshelf, matchingType, locked, lockedAdjacent, row + 1, col, groupID, count);
+                count = checkCoords(bookshelf, matchingType, locked, lockedAdjacent, row + 1, col, groupID, count);
                 if (count == num) {
                     return count;
                 }
@@ -132,7 +124,7 @@ public class CommonGoalSameTypeGroup implements CommonGoalCard{
 
             // check right
             if (col + 1 < bookshelf[0].length) {
-                count = color(bookshelf, matchingType, locked, lockedAdjacent, row, col + 1, groupID, count);
+                count = checkCoords(bookshelf, matchingType, locked, lockedAdjacent, row, col + 1, groupID, count);
                 if (count == num) {
                     return count;
                 }
@@ -172,14 +164,12 @@ public class CommonGoalSameTypeGroup implements CommonGoalCard{
 
 
     private int[] confrontAdjacent(HashMap<Integer, ArrayList<int[]>> lockedAdjacent, int groupID) {
-        if (lockedAdjacent != null) {
-            if (lockedAdjacent.containsKey(groupID)) {
-                for (Integer id : lockedAdjacent.keySet()) {
-                    if (id != groupID) {
-                        for (int[] x : lockedAdjacent.get(id)) {
-                            for (int[] y : lockedAdjacent.get(groupID)) {
-                                if (Arrays.equals(x, y)) return x;
-                            }
+        if (lockedAdjacent != null && lockedAdjacent.containsKey(groupID)) {
+            for (Integer id : lockedAdjacent.keySet()) {
+                if (id != groupID) {
+                    for (int[] x : lockedAdjacent.get(id)) {
+                        for (int[] y : lockedAdjacent.get(groupID)) {
+                            if (Arrays.equals(x, y)) return x;
                         }
                     }
                 }
@@ -231,11 +221,9 @@ public class CommonGoalSameTypeGroup implements CommonGoalCard{
     }
 
     private boolean findCoordsById(HashMap<Integer, ArrayList<int[]>> locked, int row, int col, int groupID) {
-        if (locked != null) {
-            if (locked.containsKey(groupID)) {
-                for (int[] x : locked.get(groupID)) {
-                    if (Arrays.equals(x, new int[]{row, col})) return true;
-                }
+        if (locked != null && locked.containsKey(groupID)) {
+            for (int[] x : locked.get(groupID)) {
+                if (Arrays.equals(x, new int[]{row, col})) return true;
             }
         }
 
