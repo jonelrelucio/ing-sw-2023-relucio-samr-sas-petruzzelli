@@ -58,7 +58,7 @@ public class Bookshelf {
      * Checks if the shelf matrix is full
      * @return  true if the shelf matrix is full, false otherwise
      */
-    public boolean checkFull(){
+    public boolean isFull(){
         return getMaxAvailableSpace() == 0;
     }
 

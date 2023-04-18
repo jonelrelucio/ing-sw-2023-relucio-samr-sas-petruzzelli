@@ -58,10 +58,10 @@ public class BookshelfTest {
 
         Bookshelf bookshelf = new Bookshelf();
         bookshelf.setBookshelfMatrix(bookshelf1);
-        assertFalse(bookshelf.checkFull());
+        assertFalse(bookshelf.isFull());
 
         bookshelf.setBookshelfMatrix(bookshelf3);
-        assertTrue(bookshelf.checkFull());
+        assertTrue(bookshelf.isFull());
     }
 
     @Test
