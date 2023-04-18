@@ -33,9 +33,9 @@ public class CommonGoalCardDeck {
 
         builder.registerTypeAdapter(CommonGoalCard.class, new CommonGoalCardDeserializer());
         Gson gson = builder.create();
-        Reader reader = null;
+        Reader reader;
         try {
-            reader = Files.newBufferedReader(Paths.get("src/main/java/it/polimi/ingsw/model/commonGoalCard/CommonGoalCard.json"));
+            reader = Files.newBufferedReader(Paths.get("src/main/resources/json/CommonGoalCard.json"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
@@ -66,21 +66,12 @@ public class CommonGoalCardDeck {
             JsonElement typeObj = jsonObject.get("cardType");
 
             if (typeObj != null) {
-                String cardType = typeObj.getAsString();
-
-                switch (cardType) {
-                    case "CommonGoalExactShape" -> {
-                        return context.deserialize(json, CommonGoalExactShape.class);
-                    }
-                    case "CommonGoalShape" -> {
-                        return context.deserialize(json, CommonGoalShape.class);
-                    }
-                    case "CommonGoalSameTypeGroup" -> {
-                        return context.deserialize(json, CommonGoalSameTypeGroup.class);
-                    }
-                    case "CommonGoalDifferentType" -> {
-                        return context.deserialize(json, CommonGoalDifferentType.class);
-                    }
+                String className = "it.polimi.ingsw.model.commonGoalCard." + typeObj.getAsString();
+                try {
+                    Class<?> cls = Class.forName(className);
+                    return context.deserialize(json, cls);
+                } catch (ClassNotFoundException e) {
+                    throw new RuntimeException(e);
                 }
             }
 
