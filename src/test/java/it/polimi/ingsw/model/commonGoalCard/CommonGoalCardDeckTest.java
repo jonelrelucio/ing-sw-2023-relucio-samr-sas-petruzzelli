@@ -1,7 +1,5 @@
-package model;
+package it.polimi.ingsw.model.commonGoalCard;
 
-import it.polimi.ingsw.model.commonGoalCard.CommonGoalCard;
-import it.polimi.ingsw.model.commonGoalCard.CommonGoalCardDeck;
 import org.junit.jupiter.api.Test;
 
 import java.io.IOException;
@@ -13,11 +11,7 @@ class CommonGoalCardDeckTest {
     @Test
     void createDeck2player() {
         CommonGoalCardDeck test;
-        try {
-            test = new CommonGoalCardDeck(2);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        test = new CommonGoalCardDeck(2);
         for (CommonGoalCard card : test.getDeck().keySet()) {
             int[] expected = {4, 8};
             int[] actual = new int[2];
@@ -35,11 +29,7 @@ class CommonGoalCardDeckTest {
     @Test
     void createDeck3player() {
         CommonGoalCardDeck test;
-        try {
-            test = new CommonGoalCardDeck(3);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        test = new CommonGoalCardDeck(3);
         for (CommonGoalCard card : test.getDeck().keySet()) {
             int[] expected = {4, 6, 8};
             int[] actual = new int[3];
@@ -57,11 +47,7 @@ class CommonGoalCardDeckTest {
     @Test
     void createDeck4player() {
         CommonGoalCardDeck test;
-        try {
-            test = new CommonGoalCardDeck(4);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        test = new CommonGoalCardDeck(4);
         for (CommonGoalCard card : test.getDeck().keySet()) {
             int[] expected = {2, 4, 6, 8};
             int[] actual = new int[4];
@@ -79,11 +65,7 @@ class CommonGoalCardDeckTest {
     @Test
     void getScoringToken() {
         CommonGoalCardDeck test;
-        try {
-            test = new CommonGoalCardDeck(3);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        test = new CommonGoalCardDeck(3);
 
         int actualScore;
 
