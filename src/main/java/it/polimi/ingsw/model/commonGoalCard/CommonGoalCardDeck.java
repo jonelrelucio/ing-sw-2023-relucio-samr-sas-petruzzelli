@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model.commonGoalCard;
 
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 
 import java.io.IOException;
 import java.io.Reader;
@@ -26,32 +27,17 @@ public class CommonGoalCardDeck {
     }
 
     public CommonGoalCardDeck(int numOfPlayers) throws IOException {
-        Stack<CommonGoalCard> completeDeck = new Stack<>();
+        GsonBuilder builder = new GsonBuilder();
 
-        Gson gson = new Gson();
+        builder.registerTypeAdapter(CommonGoalCard.class, new CommonGoalCardDeserializer());
+        Gson gson = builder.create();
+        Reader reader = Files.newBufferedReader(Paths.get("src/main/java/it/polimi/ingsw/model/commonGoalCard/CommonGoalCard.json"));
 
-        Reader reader = Files.newBufferedReader(Paths.get("CommonGoalExactShape.json"));
-        List<CommonGoalCard> exactShape = new ArrayList<>(Arrays.asList(gson.fromJson(reader, CommonGoalExactShape.class)));
-
-        reader = Files.newBufferedReader(Paths.get("CommonGoalShape.json"));
-        List<CommonGoalCard> shape = new ArrayList<>(Arrays.asList(gson.fromJson(reader, CommonGoalShape.class)));
-
-        reader = Files.newBufferedReader(Paths.get("CommonGoalSameTypeGroup.json"));
-        List<CommonGoalCard> group = new ArrayList<>(Arrays.asList(gson.fromJson(reader, CommonGoalSameTypeGroup.class)));
-
-        reader = Files.newBufferedReader(Paths.get("CommonGoalDifferentType.json"));
-        List<CommonGoalCard> different = new ArrayList<>(Arrays.asList(gson.fromJson(reader, CommonGoalDifferentType.class)));
-
-        completeDeck.addAll(exactShape);
-        completeDeck.addAll(shape);
-        completeDeck.addAll(group);
-        completeDeck.addAll(different);
+        List<CommonGoalCard> completeDeck = new ArrayList<>(Arrays.asList(gson.fromJson(reader, CommonGoalCard[].class)));
 
         Collections.shuffle(completeDeck);
-        CommonGoalCard card1 = completeDeck.pop();
-
-        Collections.shuffle(completeDeck);
-        CommonGoalCard card2 = completeDeck.pop();
+        CommonGoalCard card1 = completeDeck.remove(0);
+        CommonGoalCard card2 = completeDeck.remove(0);
 
         deck.put(card1, buildScoringStack(numOfPlayers));
         deck.put(card2, buildScoringStack(numOfPlayers));
@@ -62,13 +48,8 @@ public class CommonGoalCardDeck {
     }
 
     public int getScoringToken(CommonGoalCard card) {
-        return deck.get(card).pop();
-    }
-
-    public static void main(String[] args) {
-        String filename="CommonGoalExactShape.json";
-        Path pathToFile = Paths.get(filename);
-        System.out.println(pathToFile.toAbsolutePath());
+        if (deck.get(card).isEmpty()) return 0;
+        else return deck.get(card).pop();
     }
 
 }

@@ -1,0 +1,132 @@
+[
+  {
+    "cardType" : "CommonGoalExactShape",
+    "id": 1,
+    "coords": [
+      [0, 0, 0, 0, 0],
+      [1, 0, 0, 0, 0],
+      [1, 1, 0, 0, 0],
+      [1, 1, 1, 0, 0],
+      [1, 1, 1, 1, 0],
+      [1, 1, 1, 1, 1]
+    ],
+    "verticalSymmetric": true
+  },
+  {
+    "cardType" : "CommonGoalShape",
+    "id": 2,
+    "width": 1,
+    "height": 1,
+    "coords": [[0, 0]],
+    "occurrence": 8,
+    "verticalSymmetric": false,
+    "horizontalSymmetric": false,
+    "diagonalSymmetric": false,
+    "groupsOfSameType": true,
+    "separated": false
+  },
+  {
+    "cardType" : "CommonGoalShape",
+    "id": 3,
+    "width": 2,
+    "height": 2,
+    "coords": [[0, 0], [0, 1], [1, 0], [1, 1]],
+    "occurrence": 2,
+    "verticalSymmetric": false,
+    "horizontalSymmetric": false,
+    "diagonalSymmetric": false,
+    "groupsOfSameType": false,
+    "separated": true
+  },
+  {
+    "cardType" : "CommonGoalShape",
+    "id": 4,
+    "width": 5,
+    "height": 6,
+    "coords": [[0, 0], [0, 4], [5, 0], [5, 4]],
+    "occurrence": 1,
+    "verticalSymmetric": false,
+    "horizontalSymmetric": false,
+    "diagonalSymmetric": false,
+    "groupsOfSameType": false,
+    "separated": false
+  },
+  {
+    "cardType" : "CommonGoalShape",
+    "id": 5,
+    "width": 5,
+    "height": 5,
+    "coords": [[0, 0], [1, 1], [2, 2], [3, 3], [4, 4]],
+    "occurrence": 1,
+    "verticalSymmetric": false,
+    "horizontalSymmetric": true,
+    "diagonalSymmetric": false,
+    "groupsOfSameType": false,
+    "separated": false
+  },
+  {
+    "cardType" : "CommonGoalShape",
+    "id": 6,
+    "width": 3,
+    "height": 3,
+    "coords": [[0, 0], [1, 1], [2, 2], [0, 2], [2, 0]],
+    "occurrence": 1,
+    "verticalSymmetric": false,
+    "horizontalSymmetric": false,
+    "diagonalSymmetric": false,
+    "groupsOfSameType": false,
+    "separated": false
+  },
+  {
+    "cardType" : "CommonGoalSameTypeGroup",
+    "id": 7,
+    "num": 2,
+    "occurrence": 6,
+    "separated": true,
+    "sameType": false
+  },
+  {
+    "cardType" : "CommonGoalSameTypeGroup",
+    "id": 8,
+    "num": 4,
+    "occurrence": 4,
+    "separated": true,
+    "sameType": false
+  },
+  {
+    "cardType" : "CommonGoalDifferentType",
+    "id": 9,
+    "row": 6,
+    "col": 1,
+    "occurrence": 3,
+    "minDifferentType": 1,
+    "maxDifferentType": 3
+  },
+  {
+    "cardType" : "CommonGoalDifferentType",
+    "id": 10,
+    "row": 1,
+    "col": 5,
+    "occurrence": 4,
+    "minDifferentType": 1,
+    "maxDifferentType": 3
+  },
+  {
+    "cardType" : "CommonGoalDifferentType",
+    "id": 11,
+    "row": 6,
+    "col": 1,
+    "occurrence": 2,
+    "minDifferentType": 6,
+    "maxDifferentType": 6
+  },
+  {
+    "cardType" : "CommonGoalDifferentType",
+    "id": 12,
+    "row": 1,
+    "col": 5,
+    "occurrence": 2,
+    "minDifferentType": 5,
+    "maxDifferentType": 5
+  }
+]

@@ -35,7 +35,7 @@ public class CommonGoalExactShape implements CommonGoalCard {
             int[][] coordsSym = flipHorizontal();
             B:for (int row = 0; row < bookshelf.length; row++) {
                 for (int col = 0; col < bookshelf[0].length; col++) {
-                    if ((coords[row][col] == 1 && bookshelf[row][col].getItemTileType() == ItemTileType.EMPTY) || (coords[row][col] == 0 && bookshelf[row][col].getItemTileType() != ItemTileType.EMPTY)) {
+                    if ((coordsSym[row][col] == 1 && bookshelf[row][col].getItemTileType() == ItemTileType.EMPTY) || (coordsSym[row][col] == 0 && bookshelf[row][col].getItemTileType() != ItemTileType.EMPTY)) {
                         found = false;
                         break B;
                     }
