@@ -234,6 +234,8 @@ public class GameModelTest {
         Player currentPlayer = new Player("Alessandro", personalGoalCard, board);
         gameModel.setCurrentPlayer(currentPlayer);
         assertEquals(currentPlayer, gameModel.getCurrentPlayer());
+
+        gameModel.addNewPlayer(new Player("Jonel", personalGoalCard, board));
     }
 
 
