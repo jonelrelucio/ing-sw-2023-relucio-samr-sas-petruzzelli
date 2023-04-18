@@ -52,7 +52,6 @@ public class CommonGoalCardDeck {
         else return deck.get(card).pop();
     }
 
-
     public static class CommonGoalCardDeserializer implements JsonDeserializer<CommonGoalCard> {
         @Override
         public CommonGoalCard deserialize(JsonElement json, Type typeOf, JsonDeserializationContext context) throws JsonParseException {
