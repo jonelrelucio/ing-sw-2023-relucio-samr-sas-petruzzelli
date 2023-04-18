@@ -50,6 +50,9 @@ public class GameModel {
     public int getNumOfRounds() { return numOfRounds;}
     public Player getCurrentPlayer() { return currentPlayer;}
 
+    public void addNewPlayer(Player player){
+        playerList.add(player);
+    }
 
     // Setters
     public void setNumOfPlayer(int numOfPlayer) { this.numOfPlayer = numOfPlayer; }

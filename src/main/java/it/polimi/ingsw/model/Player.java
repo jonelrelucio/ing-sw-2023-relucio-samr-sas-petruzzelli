@@ -73,7 +73,8 @@ public class Player {
      * @param coordinates   selected coordinates
      */
     public void selectCoordinates(int[] coordinates) {
-        if (board.getSelectedCoordinates().size() > bookshelf.getMaxAvailableSpace())  throw new IllegalArgumentException("Can't select more tiles.");
+        if (board.getSelectedCoordinates().size() > bookshelf.getMaxAvailableSpace())
+            throw new IllegalArgumentException("Can't select more tiles.");
         for (int[] tile : board.getCanBeSelectedCoordinates()) {
             if (Arrays.equals(tile, coordinates)) {
                 board.getSelectedCoordinates().add(coordinates);
