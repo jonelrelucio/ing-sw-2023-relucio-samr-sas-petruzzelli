@@ -35,7 +35,7 @@ public class CommonGoalCardDeck {
         Gson gson = builder.create();
         Reader reader = null;
         try {
-            reader = Files.newBufferedReader(Paths.get("src/main/java/it/polimi/ingsw/model/commonGoalCard/CommonGoalCard.json"));
+            reader = Files.newBufferedReader(Paths.get("src/main/resources/json/CommonGoalCard.json"));
         } catch (IOException e) {
             throw new RuntimeException(e);
         }
