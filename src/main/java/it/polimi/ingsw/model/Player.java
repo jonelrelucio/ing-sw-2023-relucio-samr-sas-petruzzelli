@@ -110,6 +110,7 @@ public class Player {
             board.getBoardMatrix()[indices[0]][indices[1]] = new ItemTile(ItemTileType.EMPTY);
         }
         board.getSelectedCoordinates().clear();
+        board.updateCanBeSelectedCoordinates();
     }
 
 

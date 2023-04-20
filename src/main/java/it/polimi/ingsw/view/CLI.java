@@ -2,9 +2,10 @@ package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.ItemTile.ItemTile;
-import it.polimi.ingsw.model.PersonalGoalCard;
+import it.polimi.ingsw.model.ItemTile.ItemTileType;
 import it.polimi.ingsw.model.Player;
 import it.polimi.ingsw.model.bag.PersonalGoalCardBag;
+import it.polimi.ingsw.model.util.Utility;
 
 import java.util.Scanner;
 
@@ -63,38 +64,112 @@ public class CLI {
 
     public void printBoard() {
         ItemTile[][] boardMatrix = model.getBoard().getBoardMatrix();
-        System.out.println("Printing Board for "+model.getNumOfPlayer()+" players...");
-        System.out.println(" ");
+        System.out.println("      Game Board with "+model.getNumOfPlayer() + " players");
         System.out.println("      ┌────────────────────────────────────────────┐");
         System.out.println("      │                                            │");
         for (int i = 1; i < boardMatrix.length-1; i++){
             System.out.print("      │");
             for (int j = 0; j < boardMatrix[0].length; j++) {
                 if(boardMatrix[i][j].isEmpty())System.out.print(" "+Const.TILE);
-                else System.out.print("│"+Const.getItemColor(boardMatrix[i][j].getItemTileType())+Const.TILE+Const.RESET);
+                else if (Utility.containsCoordinates( model.getBoard().getCanBeSelectedCoordinates(), i, j))
+                    System.out.print(" "+Const.getHighlightedItemColor(boardMatrix[i][j].getItemTileType())+Const.SELECTABLE_TILE +Const.RESET );
+                else if (Utility.containsCoordinates( model.getBoard().getSelectedCoordinates(), i, j))
+                    System.out.print(" "+Const.getHighlightedItemColor(boardMatrix[i][j].getItemTileType())+Const.SELECTED_TILE +Const.RESET );
+                else System.out.print(" "+Const.getItemColor(boardMatrix[i][j].getItemTileType())+Const.TILE+Const.RESET);
             }
             System.out.println("│");
             System.out.println("      │                                            │");
         }
         System.out.println("      └────────────────────────────────────────────┘");
-        System.out.println(" ");
     }
 
-    public void printPersonalGoalCard(Player player) {
-        ItemTile[][] pgcMatrix = player.getPersonalGoalCard().getPersonalGoalCardMatrix();
-        System.out.println("Printing personal goal card for "+player.getNickname());
-        System.out.println(" ");
+    public void printMatrix(ItemTile[][] matrix) {
         System.out.println("      ┌───┬───┬───┬───┬───┐");
-        for (ItemTile[] matrix : pgcMatrix) {
+        for (ItemTile[] temp : matrix) {
             System.out.print("      │");
-            for (int j = 0; j < pgcMatrix[0].length; j++) {
-                if (matrix[j].isEmpty()) System.out.print( Const.TILE + "│");
-                else System.out.print(Const.getItemColor(matrix[j].getItemTileType()) + Const.TILE + Const.RESET + "│");
+            for (int j = 0; j < matrix[0].length; j++) {
+                if (temp[j].isEmpty()) System.out.print( Const.TILE + "│");
+                else System.out.print(Const.getItemColor(temp[j].getItemTileType()) + Const.TILE + Const.RESET + "│");
             }
             System.out.println(" ");
-            if (pgcMatrix[pgcMatrix.length-1] != matrix)  System.out.println("      ├───┼───┼───┼───┼───┤");
+            if (matrix[matrix.length-1] != temp)  System.out.println("      ├───┼───┼───┼───┼───┤");
             else System.out.println("      └───┴───┴───┴───┴───┘");
         }
+    }
+
+    public void printPersonalGoal(Player player){
+        System.out.println("      " + player.getNickname() + "'s Personal Goal Card:");
+        printMatrix(player.getPersonalGoalCard().getPersonalGoalCardMatrix());
+    }
+
+    public void printBookShelf(Player player) {
+        System.out.println("      " + player.getNickname() + "'s Bookshelf:");
+        printMatrix(player.getBookshelf().getBookshelfMatrix());
+    }
+
+    public void printBookshelves() {
+        int numRows = model.getPlayerList().get(0).getBookshelf().getBookshelfMatrix().length;
+        StringBuilder[] rows = new StringBuilder[numRows];
+        for (int i = 0; i < numRows; i++) {
+            rows[i] = new StringBuilder();
+            for (Player person : model.getPlayerList()) {
+                ItemTile[] temp = person.getBookshelf().getBookshelfMatrix()[i];
+                rows[i].append("      │");
+                for (int j = 0; j < person.getBookshelf().getBookshelfMatrix()[0].length; j++) {
+                    if (temp[j].isEmpty()) rows[i].append(Const.TILE + "│");
+                    else rows[i].append(Const.getItemColor(temp[j].getItemTileType())).append(Const.TILE).append(Const.RESET).append("│");
+                }
+                rows[i].append(" ");
+            }
+        }
+        System.out.println("      " + getPlayerNickname(model.getPlayerList().size()));
+        System.out.println("      " + getTopBorder(model.getPlayerList().size()));
+        for (StringBuilder row : rows) {
+            System.out.println(row.toString());
+            if (rows[rows.length-1] != row) System.out.println("      " + getMidBorder(model.getPlayerList().size()));
+        }
+        System.out.println("      " + getBotBorder(model.getPlayerList().size()));
+    }
+
+    private String getPlayerNickname(int numMatrices) {
+        StringBuilder border = new StringBuilder();
+        border.append(String.format("%-28s", model.getPlayerList().get(0).getNickname()));
+        for (int i = 1; i < model.getPlayerList().size(); i++) {
+            border.append(String.format("%-28s", model.getPlayerList().get(i).getNickname()));
+        }
+        return border.toString();
+    }
+
+    private String getTopBorder(int numMatrices) {
+        StringBuilder border = new StringBuilder();
+        border.append("┌───┬───┬───┬───┬───┐");
+        for (int i = 1; i < numMatrices; i++) {
+            border.append("       ┌───┬───┬───┬───┬───┐");
+        }
+        return border.toString();
+    }
+
+    private String getMidBorder(int numMatrices) {
+        StringBuilder border = new StringBuilder();
+        border.append("├───┼───┼───┼───┼───┤");
+        for (int i = 1; i < numMatrices; i++) {
+            border.append("       ├───┼───┼───┼───┼───┤");
+        }
+        return border.toString();
+    }
+
+    private String getBotBorder(int numMatrices) {
+        StringBuilder border = new StringBuilder();
+        border.append("└───┴───┴───┴───┴───┘");
+        for (int i = 1; i < numMatrices; i++) {
+            border.append("       └───┴───┴───┴───┴───┘");
+        }
+        return border.toString();
+    }
+
+    public void printAll(){
+        printBoard();
+        printBookshelves();
     }
 
     public int[] askPlayerSelectedTiles() {
@@ -103,14 +178,65 @@ public class CLI {
     }
 
     public static void main(String[] args) {
+
+        final ItemTile[][] groupOfTwo =
+                {       {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                        {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                        {new ItemTile(ItemTileType.TROPHY), new ItemTile(ItemTileType.TROPHY),  new ItemTile(ItemTileType.GAME),    new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                        {new ItemTile(ItemTileType.BOOK),   new ItemTile(ItemTileType.TROPHY),  new ItemTile(ItemTileType.PLANT),   new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.GAME)},
+                        {new ItemTile(ItemTileType.PLANT),  new ItemTile(ItemTileType.GAME),    new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.GAME),    new ItemTile(ItemTileType.GAME)},
+                        {new ItemTile(ItemTileType.PLANT),  new ItemTile(ItemTileType.GAME),    new ItemTile(ItemTileType.GAME),    new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.FRAME)}};
+
+
+        final ItemTile[][] bookshelf2 =
+                {       {new ItemTile(ItemTileType.EMPTY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                        {new ItemTile(ItemTileType.EMPTY),    new ItemTile(ItemTileType.TROPHY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                        {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                        {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.GAME),     new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                        {new ItemTile(ItemTileType.TROPHY),    new ItemTile(ItemTileType.GAME),     new ItemTile(ItemTileType.FRAME),   new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.EMPTY)},
+                        {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.GAME),    new ItemTile(ItemTileType.CAT)}};
+
+        final ItemTile[][] bookshelf1 =
+                {       {new ItemTile(ItemTileType.EMPTY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                        {new ItemTile(ItemTileType.EMPTY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.TROPHY)},
+                        {new ItemTile(ItemTileType.EMPTY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.PLANT),    new ItemTile(ItemTileType.BOOK)},
+                        {new ItemTile(ItemTileType.TROPHY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.GAME),    new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.BOOK)},
+                        {new ItemTile(ItemTileType.CAT),  new ItemTile(ItemTileType.PLANT),    new ItemTile(ItemTileType.PLANT),    new ItemTile(ItemTileType.FRAME),   new ItemTile(ItemTileType.PLANT)},
+                        {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.PLANT),    new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.GAME),    new ItemTile(ItemTileType.GAME)}};
+
+        final ItemTile[][] eightPieces =
+                {       {new ItemTile(ItemTileType.EMPTY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                        {new ItemTile(ItemTileType.EMPTY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.CAT)},
+                        {new ItemTile(ItemTileType.FRAME),  new ItemTile(ItemTileType.EMPTY),  new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.BOOK)},
+                        {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.EMPTY),     new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.BOOK)},
+                        {new ItemTile(ItemTileType.BOOK),   new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.FRAME),   new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.CAT)},
+                        {new ItemTile(ItemTileType.TROPHY), new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.BOOK)}};
+
+
+
         int numOfPlayers = 4;
         CLI.startingScreen();
         GameModel model = new GameModel(numOfPlayers);
         CLI view = new CLI(model);
-        view.printBoard();
-        PersonalGoalCard personalGoalCard = PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers);
-        Player player = new Player("Jonel", personalGoalCard, model.getBoard());
-        view.printPersonalGoalCard(player);
+        Player player1 = new Player("Jonel", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers), model.getBoard());
+        player1.getBookshelf().setBookshelfMatrix(groupOfTwo);
+        Player player2 = new Player("Alessandro", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers), model.getBoard());
+        player2.getBookshelf().setBookshelfMatrix(bookshelf2);
+        Player player3 = new Player("Dalila", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers), model.getBoard());
+        player3.getBookshelf().setBookshelfMatrix(eightPieces);
+        Player player4 = new Player("Lucian", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers), model.getBoard());
+        player4.getBookshelf().setBookshelfMatrix(bookshelf1);
+
+        model.addNewPlayer(player1);
+        model.addNewPlayer(player2);
+        model.addNewPlayer(player3);
+        model.addNewPlayer(player4);
+
+        player1.selectCoordinates(new int[]{2, 4});
+        player1.selectCoordinates(new int[]{3, 4});
+        player1.pickSelectedItemTiles();
+
+        view.printAll();
 
     }
 

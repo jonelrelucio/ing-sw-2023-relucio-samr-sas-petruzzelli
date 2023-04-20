@@ -6,6 +6,9 @@ public class Const {
 
     // Tile
     public static final String TILE = "   ";
+    public static final String SELECTABLE_TILE = " ¤ ";
+    public static final String SELECTED_TILE = " ■ ";
+
 
     // Reset
     public static final String RESET = "\033[0m";  // Text Reset
@@ -71,14 +74,16 @@ public class Const {
     public static final String WHITE_BOLD_BRIGHT = "\033[1;97m"; // WHITE
 
     // High Intensity backgrounds
-    public static final String BLACK_BACKGROUND_BRIGHT = "\033[0;100m";// BLACK
-    public static final String RED_BACKGROUND_BRIGHT = "\033[0;101m";// RED
-    public static final String GREEN_BACKGROUND_BRIGHT = "\033[0;102m";// GREEN
-    public static final String YELLOW_BACKGROUND_BRIGHT = "\033[0;103m";// YELLOW
-    public static final String BLUE_BACKGROUND_BRIGHT = "\033[0;104m";// BLUE
-    public static final String PURPLE_BACKGROUND_BRIGHT = "\033[0;105m"; // PURPLE
-    public static final String CYAN_BACKGROUND_BRIGHT = "\033[0;106m";  // CYAN
-    public static final String WHITE_BACKGROUND_BRIGHT = "\033[0;107m";   // WHITE
+    public static final String BLACK_BACKGROUND_BRIGHT = "\033[40;30m";  // BLACK
+    public static final String RED_BACKGROUND_BRIGHT = "\033[41;30m";    // RED
+    public static final String GREEN_BACKGROUND_BRIGHT = "\033[42;30m";  // GREEN
+    public static final String YELLOW_BACKGROUND_BRIGHT = "\033[43;30m"; // YELLOW
+    public static final String BLUE_BACKGROUND_BRIGHT = "\033[44;30m";   // BLUE
+    public static final String PURPLE_BACKGROUND_BRIGHT = "\033[45;30m"; // PURPLE
+    public static final String CYAN_BACKGROUND_BRIGHT = "\033[46;30m";   // CYAN
+    public static final String WHITE_BACKGROUND_BRIGHT = "\033[47;30m";  // WHITE
+
+
 
 
 
@@ -105,14 +110,22 @@ public class Const {
             Number:\s""";
 
     public static String getItemColor(ItemTileType type) {
-        switch (type){
-            case FRAME: return PURPLE_BACKGROUND;
-            case CAT: return GREEN_BACKGROUND;
-            case GAME: return YELLOW_BACKGROUND;
-            case BOOK: return WHITE_BACKGROUND;
-            case PLANT: return RED_BACKGROUND;
-            case TROPHY: return CYAN_BACKGROUND;
-        }
-        throw new RuntimeException("ItemTileType has no color");
+        return getString(type, PURPLE_BACKGROUND, GREEN_BACKGROUND, YELLOW_BACKGROUND, WHITE_BACKGROUND, RED_BACKGROUND, CYAN_BACKGROUND, BLACK_BACKGROUND);
+    }
+
+    public static String getHighlightedItemColor(ItemTileType type) {
+        return getString(type, PURPLE_BACKGROUND_BRIGHT, GREEN_BACKGROUND_BRIGHT, YELLOW_BACKGROUND_BRIGHT, WHITE_BACKGROUND_BRIGHT, RED_BACKGROUND_BRIGHT, CYAN_BACKGROUND_BRIGHT, BLACK_BACKGROUND_BRIGHT);
+    }
+
+    private static String getString(ItemTileType type, String purple, String green, String yellow, String white, String red, String cyan, String black) {
+        return switch (type) {
+            case FRAME -> purple;
+            case CAT -> green;
+            case GAME -> yellow;
+            case BOOK -> white;
+            case PLANT -> red;
+            case TROPHY -> cyan;
+            case EMPTY -> black;
+        };
     }
 }
