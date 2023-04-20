@@ -3,14 +3,19 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.bag.PersonalGoalCardBag;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCardDeck;
 import it.polimi.ingsw.model.util.CircularArrayList;
-
-import java.io.IOException;
+import it.polimi.ingsw.util.Observable;
 
 enum State {
     INIT, MID, END
 }
 
-public class GameModel {
+public class GameModel extends Observable<GameModel.Event> {
+
+    // TODO : define events
+    public enum Event {
+        Event1, Event2, Event3
+    }
+
     private int numOfPlayer;
     private CircularArrayList<Player> playerList;
     private CommonGoalCardDeck commonGoalCardDeck;
