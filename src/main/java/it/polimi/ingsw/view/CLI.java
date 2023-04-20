@@ -43,6 +43,7 @@ public class CLI {
 
     public static void newGame() {
         System.out.println("Starting a new Game. Contacting server...");
+        printLoading();
     }
 
     public static void joinGame() {
@@ -172,10 +173,43 @@ public class CLI {
         printBookshelves();
     }
 
+    public static void printLoading()  {
+        int index = 0;
+        StringBuilder string = new StringBuilder("#");
+        String missing = "                                  ";
+        while (index <= 33) {
+            System.out.printf("\rLoading [ "+string+missing+"]%d%%", (int)index*100/33);
+            string.append("#");
+            missing = missing.substring(0, 33-index);
+            try {
+                Thread.sleep(200);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            index++;
+        }
+        System.out.println();
+    }
+
     public int[] askPlayerSelectedTiles() {
         System.out.println("Select tile from board: ");
         return new int[]{Integer.parseInt(s.nextLine())};
     }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     public static void main(String[] args) {
 
