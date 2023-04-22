@@ -5,17 +5,19 @@ import it.polimi.ingsw.model.ItemTile.ItemTileType;
 
 import java.util.HashMap;
 
-public abstract class CommonGoalDifferentType implements CommonGoalCard{
+public class CommonGoalDifferentType implements CommonGoalCard{
+    private final int id;
     private final int row;
     private final int col;
     private final int occurrence;
     private final int minDifferentType;
     private final int maxDifferentType;
 
-    public CommonGoalDifferentType(int r, int c, int o, int min, int max) {
-        this.row = r;
-        this.col = c;
-        this.occurrence = o;
+    public CommonGoalDifferentType(int id, int row, int col, int occurrence, int min, int max) {
+        this.id = id;
+        this.row = row;
+        this.col = col;
+        this.occurrence = occurrence;
         this.minDifferentType = min;
         this.maxDifferentType = max;
     }

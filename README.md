@@ -25,8 +25,8 @@ Main UML Diagram: [UML Diagram](src/main/umlDiagram/ClassDiagram_Model.png)
 |:-----------------------------|:-----:|
 | Basic rules                  |  🟡   |
 | Complete rules               |  🟡   |
-| Socket                       |  🔴   |
 | RMI                          |  🔴   |
+| Socket                       |  🔴   |
 | CLI                          |  🔴   |
 | GLI                          |  🔴   |
 | Multiple games               |  🔴   |

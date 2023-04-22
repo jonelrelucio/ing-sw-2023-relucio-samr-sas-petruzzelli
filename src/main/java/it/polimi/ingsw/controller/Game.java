@@ -1,15 +1,13 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.GameModel;
-import it.polimi.ingsw.view.GameView;
-
-import java.util.Scanner;
+import it.polimi.ingsw.view.CLI;
 
 public class Game {
     GameModel model;
-    GameView view;
+    CLI view;
 
-    public Game(GameModel model, GameView view) {
+    public Game(GameModel model, CLI view) {
         this.model = model;
         this.view = view;
     }

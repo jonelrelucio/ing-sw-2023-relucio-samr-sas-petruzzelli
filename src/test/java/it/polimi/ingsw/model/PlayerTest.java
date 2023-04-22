@@ -4,7 +4,7 @@ import it.polimi.ingsw.model.ItemTile.ItemTile;
 import it.polimi.ingsw.model.ItemTile.ItemTileType;
 import it.polimi.ingsw.model.bag.PersonalGoalCardBag;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCard;
-import it.polimi.ingsw.model.commonGoalCard.CommonGoalCard1;
+import it.polimi.ingsw.model.commonGoalCard.CommonGoalShape;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -22,6 +22,7 @@ public class PlayerTest {
         personalGoalCardTest = PersonalGoalCardBag.drawPersonalGoalCard(2);
         playerTest = new Player("Test Player", personalGoalCardTest, boardTest );
         System.out.println("");
+        PersonalGoalCardBag.reset();
     }
 
     @Test
@@ -166,7 +167,8 @@ public class PlayerTest {
         playerTest.setPlayerState(PlayerState.PLAYING);
         assertEquals(PlayerState.PLAYING, playerTest.getPlayerState());
 
-        CommonGoalCard commonGoalCard = new CommonGoalCard1();
+        int[][] coords = {{0,0}, {0,1}, {1,0}, {1,1}};
+        CommonGoalCard commonGoalCard = new CommonGoalShape(3, 2, 2, coords, 2, false, false, false, false, true);
         playerTest.setObtainedCommonGoalCards(commonGoalCard);
         assertEquals(commonGoalCard, playerTest.getObtainedCommonGoalCards().get(0));
 

@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.bag.CommonGoalCardBag;
 import it.polimi.ingsw.model.bag.PersonalGoalCardBag;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCardDeck;
 import it.polimi.ingsw.model.util.CircularArrayList;
+
+import java.io.IOException;
 
 enum State {
     INIT, MID, END
@@ -22,7 +23,7 @@ public class GameModel {
         if (numOfPlayer < 2 || numOfPlayer > 4 ) throw new IllegalArgumentException("Number of Player out of bounds");
         this.numOfPlayer = numOfPlayer;
         this.playerList = new CircularArrayList<>();
-        this.commonGoalCardDeck = CommonGoalCardBag.commonGoalCardDeckBuilder(numOfPlayer);
+        this.commonGoalCardDeck = new CommonGoalCardDeck(numOfPlayer);
         this.board = new Board(numOfPlayer);
         this.numOfRounds = 0;
         this.state = State.INIT;
@@ -49,6 +50,9 @@ public class GameModel {
     public int getNumOfRounds() { return numOfRounds;}
     public Player getCurrentPlayer() { return currentPlayer;}
 
+    public void addNewPlayer(Player player){
+        playerList.add(player);
+    }
 
     // Setters
     public void setNumOfPlayer(int numOfPlayer) { this.numOfPlayer = numOfPlayer; }
