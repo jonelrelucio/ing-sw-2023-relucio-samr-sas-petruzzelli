@@ -18,6 +18,7 @@ public class PlayerTest {
     @BeforeEach
     void setUp(){
         boardTest = new Board(2);
+        PersonalGoalCardBag.reset();
         personalGoalCardTest = PersonalGoalCardBag.drawPersonalGoalCard(2);
         playerTest = new Player("Test Player", personalGoalCardTest, boardTest );
         System.out.println("");
