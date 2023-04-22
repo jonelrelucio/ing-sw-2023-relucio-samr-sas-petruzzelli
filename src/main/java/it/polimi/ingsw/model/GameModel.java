@@ -2,6 +2,8 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.bag.PersonalGoalCardBag;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCardDeck;
+import it.polimi.ingsw.model.events.GameEvent;
+import it.polimi.ingsw.model.events.modelEvents.*;
 import it.polimi.ingsw.model.util.CircularArrayList;
 import it.polimi.ingsw.util.Observable;
 
@@ -9,12 +11,7 @@ enum State {
     INIT, MID, END
 }
 
-public class GameModel extends Observable<GameModel.Event> {
-
-    // TODO : define events
-    public enum Event {
-        Event1, Event2, Event3
-    }
+public class GameModel extends Observable<GameEvent> {
 
     private int numOfPlayer;
     private CircularArrayList<Player> playerList;
@@ -57,16 +54,38 @@ public class GameModel extends Observable<GameModel.Event> {
 
     public void addNewPlayer(Player player){
         playerList.add(player);
+        setChangedAndNotifyObservers(new AddPlayer());
     }
 
     // Setters
-    public void setNumOfPlayer(int numOfPlayer) { this.numOfPlayer = numOfPlayer; }
-    public void setPlayerList(CircularArrayList<Player> playerList) { this.playerList = playerList; }
-    public void setCommonGoalCardDeck(CommonGoalCardDeck commonGoalCardDeck) { this.commonGoalCardDeck = commonGoalCardDeck; }
-    public void setBoard(Board board) { this.board = board; }
-    public void setState(State state) { this.state = state; }
-    public void setNumOfRounds(int numOfRounds) { this.numOfRounds = numOfRounds;}
-    public void setCurrentPlayer(Player currentPlayer) { this.currentPlayer = currentPlayer; }
+    public void setNumOfPlayer(int numOfPlayer) {
+        this.numOfPlayer = numOfPlayer;
+        setChangedAndNotifyObservers(new SetNumOfPlayer());
+    }
+    public void setPlayerList(CircularArrayList<Player> playerList) {
+        this.playerList = playerList;
+        setChangedAndNotifyObservers(new SetPlayerList());
+    }
+    public void setCommonGoalCardDeck(CommonGoalCardDeck commonGoalCardDeck) {
+        this.commonGoalCardDeck = commonGoalCardDeck;
+        setChangedAndNotifyObservers(new SetCommonGoalDeck());
+    }
+    public void setBoard(Board board) {
+        this.board = board;
+        setChangedAndNotifyObservers(new SetBoard());
+    }
+    public void setState(State state) {
+        this.state = state;
+        setChangedAndNotifyObservers(new SetState());
+    }
+    public void setNumOfRounds(int numOfRounds) {
+        this.numOfRounds = numOfRounds;
+        setChangedAndNotifyObservers(new SetNumOfRounds());
+    }
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+        setChangedAndNotifyObservers(new SetCurrentPlayer());
+    }
 
     /**
      * Updates the score of the current player
@@ -78,6 +97,13 @@ public class GameModel extends Observable<GameModel.Event> {
         score += currentPlayer.getPersonalGoalCard().getScore(currentPlayer.getBookshelf().getBookshelfMatrix());
         if (currentPlayer.isWinner()) score += currentPlayer.getEndGameToken();
         currentPlayer.setScore(score);
+
+        setChangedAndNotifyObservers(new UpdatePlayerScore());
+    }
+
+    private void setChangedAndNotifyObservers(GameEvent arg) {
+        setChanged();
+        notifyObservers(arg);
     }
 
 }

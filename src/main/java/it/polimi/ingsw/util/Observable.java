@@ -1,7 +1,8 @@
 package it.polimi.ingsw.util;
 
-import java.util.Vector;
+import it.polimi.ingsw.model.events.GameEvent;
 
+import java.util.Vector;
 /**
  * This class represents an observable object, or "data"
  * in the model-view paradigm. It can be subclassed to represent an
@@ -30,16 +31,16 @@ import java.util.Vector;
  * {@code equals} method returns true for them.
  *
  * @see     #notifyObservers()
- * @see     #notifyObservers(Enum) 
+ * @see     #notifyObservers(GameEvent)
  * @see     Observer
- * @see     Observer#update(Observable, Enum)
+ * @see     Observer#update(Observable, GameEvent)
  *
  * @param <Event> the enumeration of the event that this observable is emitting
  *
  * @implNote
  * This class is a Generic Implementation of the deprecated {@link java.util.Observable}.
  */
-public class Observable<Event extends Enum<Event>> {
+public class Observable<Event extends GameEvent> {
     private boolean changed = false;
     private Vector<Observer<? extends Observable<Event>, Event>> obs;
 
@@ -89,7 +90,7 @@ public class Observable<Event extends Enum<Event>> {
      *
      * @see     #clearChanged()
      * @see     #hasChanged()
-     * @see     Observer#update(Observable, Enum) 
+     * @see     Observer#update(Observable, GameEvent)
      */
     public void notifyObservers() {
         notifyObservers(null);
@@ -107,7 +108,7 @@ public class Observable<Event extends Enum<Event>> {
      * @param   arg   any object.
      * @see     #clearChanged()
      * @see     #hasChanged()
-     * @see     Observer#update(Observable, Enum) 
+     * @see     Observer#update(Observable, GameEvent)
      */
     public void notifyObservers(Event arg) {
         /*
@@ -162,7 +163,7 @@ public class Observable<Event extends Enum<Event>> {
      * {@code notifyObservers} methods.
      *
      * @see     #notifyObservers()
-     * @see     #notifyObservers(Enum)
+     * @see     #notifyObservers(GameEvent)
      */
     protected synchronized void clearChanged() {
         changed = false;

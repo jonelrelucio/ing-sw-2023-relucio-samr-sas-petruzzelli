@@ -1,11 +1,12 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCardDeck;
+import it.polimi.ingsw.model.events.GameEvent;
 import it.polimi.ingsw.model.util.CircularArrayList;
 import it.polimi.ingsw.util.Observable;
 import it.polimi.ingsw.util.Observer;
 
-public class GameModelView extends Observable<GameModel.Event> implements Observer<GameModel, GameModel.Event> {
+public class GameModelView extends Observable<GameEvent> implements Observer<GameModel, GameEvent> {
     private final GameModel model;
 
     public GameModelView(GameModel model) {
@@ -30,10 +31,6 @@ public class GameModelView extends Observable<GameModel.Event> implements Observ
         return model.getBoard();
     }
 
-    public State getState() {
-        return model.getState();
-    }
-
     public int getNumOfRounds() {
         return model.getNumOfRounds();
     }
@@ -43,7 +40,7 @@ public class GameModelView extends Observable<GameModel.Event> implements Observ
     }
 
     @Override
-    public void update(GameModel o, GameModel.Event arg) {
+    public void update(GameModel o, GameEvent arg) {
         setChanged();
         notifyObservers(arg);
     }
