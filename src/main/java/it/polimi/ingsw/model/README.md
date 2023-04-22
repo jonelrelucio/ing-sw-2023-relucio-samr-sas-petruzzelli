@@ -3,8 +3,7 @@
 - finish tests of Board and BoardCoordinates: DONE
 
 ### Common Goal Cards
-- Test CommonGoalCardDeck
-- Add CommonGoalCardDeckBuilder (maybe)
+- Test CommonGoalCardDeck: DONE
 
 ### Item Tile
 
