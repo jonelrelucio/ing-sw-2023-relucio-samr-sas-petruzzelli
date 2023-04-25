@@ -1,8 +1,10 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.model.bag.CommonGoalCardBag;
+import it.polimi.ingsw.model.bag.PersonalGoalCardBag;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCardDeck;
 import it.polimi.ingsw.model.util.CircularArrayList;
+
+import java.io.IOException;
 
 enum State {
     INIT, MID, END
@@ -19,14 +21,17 @@ public class GameModel {
 
     public GameModel(int numOfPlayer) {
         if (numOfPlayer < 2 || numOfPlayer > 4 ) throw new IllegalArgumentException("Number of Player out of bounds");
+        this.numOfPlayer = numOfPlayer;
         this.playerList = new CircularArrayList<>();
-        this.commonGoalCardDeck = CommonGoalCardBag.commonGoalCardDeckBuilder(numOfPlayer);
+        this.commonGoalCardDeck = new CommonGoalCardDeck(numOfPlayer);
         this.board = new Board(numOfPlayer);
         this.numOfRounds = 0;
         this.state = State.INIT;
+        PersonalGoalCardBag.reset();
     }
 
-    public Player getWinner() { return currentPlayer; }
+    public void initCurrentPlayer() { this.currentPlayer = playerList.get(0); }
+    public Player getWinner() { if(!currentPlayer.isWinner()) throw new IllegalCallerException(); return currentPlayer; }
     public void updateNextPlayer() { this.currentPlayer = playerList.get(playerList.indexOf(this.currentPlayer)+1); }
     public void updateNumOfRounds() { this.numOfRounds++; }
 
@@ -34,9 +39,7 @@ public class GameModel {
     public int getNumOfPlayer() {
         return numOfPlayer;
     }
-    public CircularArrayList<Player> getPlayerList() {
-        return playerList;
-    }
+    public CircularArrayList<Player> getPlayerList() {return playerList;}
     public CommonGoalCardDeck getCommonGoalCardDeck() {
         return commonGoalCardDeck;
     }
@@ -47,6 +50,9 @@ public class GameModel {
     public int getNumOfRounds() { return numOfRounds;}
     public Player getCurrentPlayer() { return currentPlayer;}
 
+    public void addNewPlayer(Player player){
+        playerList.add(player);
+    }
 
     // Setters
     public void setNumOfPlayer(int numOfPlayer) { this.numOfPlayer = numOfPlayer; }
@@ -57,7 +63,6 @@ public class GameModel {
     public void setNumOfRounds(int numOfRounds) { this.numOfRounds = numOfRounds;}
     public void setCurrentPlayer(Player currentPlayer) { this.currentPlayer = currentPlayer; }
 
-
     /**
      * Updates the score of the current player
      */
@@ -65,7 +70,7 @@ public class GameModel {
         int score = 0;
         score += currentPlayer.getBookshelf().getScore();
         score += commonGoalCardDeck.getScore(currentPlayer);
-        score += currentPlayer.getPersonalGoalCard().getScore(currentPlayer.getBookshelf());
+        score += currentPlayer.getPersonalGoalCard().getScore(currentPlayer.getBookshelf().getBookshelfMatrix());
         if (currentPlayer.isWinner()) score += currentPlayer.getEndGameToken();
         currentPlayer.setScore(score);
     }

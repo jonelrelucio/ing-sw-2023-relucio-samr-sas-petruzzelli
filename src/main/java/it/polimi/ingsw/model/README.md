@@ -1,8 +1,6 @@
 # To Do List
 ### Board
-- move printBoard method to the BoardViewer
-- finish tests of Board and BoardCoordinates
-- May have to move other methods from Board to BoardView
+- finish tests of Board and BoardCoordinates: DONE
 
 ### Common Goal Cards
 - Test CommonGoalCardDeck
@@ -14,20 +12,19 @@
 
 ### Personal Goal Cards
 - Create Personal Goal Card Controller: DONE
-- Test Personal Goal Cards
+- Test Personal Goal Cards: DONE
 - Test PersonaPersonalCardBag 
 
 ### Bookshelf
-- Move UpdateTiles method to the controller
-- Test UpdateTiles method
+- Test UpdateTiles method: DONE
 
 ### Game Model 
-- Update checkWinner
-- Update getNextPlayer
-- Fix CommonGoalCardDeck
+- Update checkWinner: DONE
+- Update getNextPlayer: DONE
+- Fix CommonGoalCardDeck: DONE
 
 ### Player
-- Add to controller a Points calculator for Player
+- Add to controller a Points calculator for Player: DONE
 
 
 

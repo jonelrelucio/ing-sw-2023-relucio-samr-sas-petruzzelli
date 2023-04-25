@@ -9,10 +9,6 @@ import it.polimi.ingsw.model.ItemTile.ItemTile;
 
 enum PlayerState {
     WAITING, PLAYING;
-    @Override
-    public String toString() {
-        return super.toString();
-    }
 }
 
 public class Player {
@@ -23,13 +19,13 @@ public class Player {
     private final String nickname;
     private int score;
     private final Board board;
-    private final Bookshelf bookshelf;
+    private Bookshelf bookshelf;
     private PersonalGoalCard personalGoalCard;
-    private ArrayList<ItemTile> selectedTiles;
     private int numOfRounds;
     private PlayerState playerState;
     private ArrayList<CommonGoalCard> obtainedCommonGoalCards;
     private int obtainedCommonGoalPoints;
+    private ArrayList<ItemTile> selectedItemTiles;
 
 
 
@@ -38,7 +34,7 @@ public class Player {
         this.personalGoalCard = personalGoalCard;
         this.bookshelf = new Bookshelf();
         this.board = board;
-        selectedTiles = new ArrayList<>();
+        selectedItemTiles = new ArrayList<>();
         obtainedCommonGoalCards = new ArrayList<>();
     }
 
@@ -47,17 +43,17 @@ public class Player {
     public int getScore() { return score; }
     public Bookshelf getBookshelf() { return bookshelf; }
     public PersonalGoalCard getPersonalGoalCard() { return personalGoalCard; }
-    public ArrayList<ItemTile> getSelectedTiles() { return selectedTiles; }
+    public ArrayList<ItemTile> getSelectedItemTiles() { return selectedItemTiles; }
     public int getNumOfRounds() { return numOfRounds; }
     public PlayerState getPlayerState() { return playerState; }
     public ArrayList<CommonGoalCard> getObtainedCommonGoalCards() { return obtainedCommonGoalCards;}
     public int getObtainedCommonGoalPoints() { return obtainedCommonGoalPoints; }
+    public Board getBoard() {return board;}
 
     // Setters
     public void setScore(int score) {this.score = score;}
     public void setBookshelf(Bookshelf bookshelf) {this.bookshelf = bookshelf;}
     public void setPersonalGoalCard(PersonalGoalCard personalGoalCard) {this.personalGoalCard = personalGoalCard;}
-    public void setSelectedTiles(ArrayList<ItemTile> selectedTiles) {this.selectedTiles = selectedTiles;}
     public void setNumOfRounds(int numOfRounds) {this.numOfRounds = numOfRounds;}
     public void setPlayerState(PlayerState playerState) {this.playerState = playerState;}
     public void setObtainedCommonGoalCards(CommonGoalCard card) { this.obtainedCommonGoalCards.add(card);}
@@ -76,46 +72,71 @@ public class Player {
      * Adds the given coordinates in the ArrayList of selectedTiles and updates the canBeSelectedTiles Arraylist
      * @param coordinates   selected coordinates
      */
-    public void selectTile(int[] coordinates, Bookshelf bookshelf, Board board) {
-        if (board.getCanBeSelectedCoordinates().size() > bookshelf.getMaxAvailableSpace())  throw new IllegalArgumentException("Can't select more tiles.");
-        for (int[] tile : canBeSelectedCoordinates) {
+    public void selectCoordinates(int[] coordinates) {
+        if (board.getSelectedCoordinates().size() > bookshelf.getMaxAvailableSpace())
+            throw new IllegalArgumentException("Can't select more tiles.");
+        for (int[] tile : board.getCanBeSelectedCoordinates()) {
             if (Arrays.equals(tile, coordinates)) {
-                selectedCoordinates.add(coordinates);
-                updateCanBeSelectedCoordinates();
+                board.getSelectedCoordinates().add(coordinates);
+                board.updateCanBeSelectedCoordinates();
                 return;
             }
         }
-        System.out.println("item in given coordinates can't be selected");
+        throw new RuntimeException("Item in given coordinates can't be selected");
     }
 
     /**
      * Pops the given coordinates from the Arraylist of selectedTiles and updates the canBeSelectedTiles ArrayList
      * @param coordinates   coordinates to be popped from the ArrayList of selectedTiles
      */
-    public void deselectTile(int[] coordinates ){
-        for (int i = 0; i < selectedCoordinates.size(); i++){
-            if (coordinates[0] == selectedCoordinates.get(i)[0] && coordinates[1] == selectedCoordinates.get(i)[1]) {
-                selectedCoordinates.remove(i);
-                updateCanBeSelectedCoordinates();
+    public void deselectCoordinates(int[] coordinates ){
+        for (int i = 0; i < board.getSelectedCoordinates().size(); i++){
+            if (coordinates[0] == board.getSelectedCoordinates().get(i)[0] && coordinates[1] == board.getSelectedCoordinates().get(i)[1]) {
+                board.getSelectedCoordinates().remove(i);
+                board.updateCanBeSelectedCoordinates();
                 return;
             }
         }
-        System.out.println("No coordinates in selectedTiles.");
+        throw new RuntimeException("No coordinates in selectedTiles,");
 
     }
 
     /**
-     * returns the ItemTiles from the coordinates in the arraylist selectedCoordinates
-     * @return  ItemTiles from the coordinates in the arraylist selectedCoordinates
+     * gets the ItemTiles from the coordinates in the arraylist selectedCoordinates
      */
-    public ArrayList<ItemTile> getSelectedItemTiles() {
-        for (int[] indices : selectedCoordinates) {
-            selectedItemTiles.add(boardMatrix[indices[0]][indices[1]]);
-            boardMatrix[indices[0]][indices[1]] = new ItemTile(ItemTileType.EMPTY);
+    public void pickSelectedItemTiles() {
+        for (int[] indices : board.getSelectedCoordinates()) {
+            selectedItemTiles.add(board.getBoardMatrix()[indices[0]][indices[1]]);
+            board.getBoardMatrix()[indices[0]][indices[1]] = new ItemTile(ItemTileType.EMPTY);
         }
-        selectedCoordinates.clear();
-        return selectedItemTiles;
+        board.getSelectedCoordinates().clear();
+        board.updateCanBeSelectedCoordinates();
     }
+
+
+    /**
+     * rearranges items in selectedItemTiles
+     * @param newOrder  the order of the selectedItemTiles to be rearranged
+     */
+    public void rearrangeSelectedItemTiles(int... newOrder) {
+        ArrayList<ItemTile> rearrangedItems = new ArrayList<ItemTile>();
+
+        // Check that the new order array is valid
+        if (newOrder.length != selectedItemTiles.size() || newOrder.length == 0) {
+            throw new IllegalArgumentException("Invalid new order array");
+        }
+
+        // Add the items to the new list in the specified order
+        for (int index : newOrder) {
+            if (index < 0 || index >= selectedItemTiles.size()) {
+                throw new IllegalArgumentException("Invalid index in new order array");
+            }
+            rearrangedItems.add(selectedItemTiles.get(index));
+        }
+
+        selectedItemTiles = rearrangedItems;
+    }
+
 
 
 }

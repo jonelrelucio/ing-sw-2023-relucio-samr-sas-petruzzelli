@@ -18,28 +18,28 @@ public abstract class PersonalGoalCardBag {
     private static int numOfDraws = 0;
 
     /**
-     * If the number of draws == 0 or if the number of draws == number of players
+     * resets the number of draws to 0
      * Initializes the personal goal card bag
      */
-    private static void initPersonalGoalCardBag(int numOfPlayers){
-        if (numOfDraws != 0 && numOfDraws != numOfPlayers) return;
-        numOfDraws = 0;
+    public static void initPersonalGoalCardBag(int numOfPlayers){
+        reset();
         Integer[] cards = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
         personalGoalCardBag.addAll(Arrays.asList(cards));
         Collections.shuffle(personalGoalCardBag);
     }
 
     /**
-     * Draws a random personalGoalCard from 1 to 12
+     * If the number of draws == 0 or if the number of draws == number of players, initializes the bag
+     * Then draws a random personalGoalCard from 1 to 12
      * @param numOfPlayers      number of players
      * @return                  random PersonGoalCard
      */
     public static PersonalGoalCard drawPersonalGoalCard(int numOfPlayers) {
-        initPersonalGoalCardBag(numOfPlayers);
+        if (numOfDraws >= numOfPlayers ) throw new IllegalCallerException("Cant draw anymore cards");
+        if (numOfDraws == 0) initPersonalGoalCardBag(numOfPlayers);
         numOfDraws++;
         return drawPersonalGoalCard(numOfPlayers, personalGoalCardBag.pop());
     }
-
 
     /**
      * Utility method
@@ -98,11 +98,14 @@ public abstract class PersonalGoalCardBag {
 
     /**
      * Utility method resets the numOfDraws to 0
-     * Used only for testing
      */
-    public static void resetBag() {
+    public static void reset() {
         numOfDraws = 0;
     }
+
+
+    public static Stack<Integer> getPersonalGoalCardBag() { return personalGoalCardBag; }
+    public static int getNumOfDraws() { return numOfDraws; }
 
 }
 

@@ -4,6 +4,8 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class Utility {
@@ -50,9 +52,17 @@ public class Utility {
             arr[i] = innerList.stream().mapToInt(Integer::intValue).toArray();
         }
         return arr;
+
     }
 
+    public static boolean containsCoordinates(ArrayList<int[]> list, int i, int j){
+        int[] coordinates = new int[]{i, j};
 
+        for (int[] array : list) {
+            if (Arrays.equals(array, coordinates)) return true;
+        }
+        return false;
+    }
 
 
 

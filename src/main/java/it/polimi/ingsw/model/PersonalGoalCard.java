@@ -17,12 +17,10 @@ public class PersonalGoalCard {
      * Returns the score which depends on the number of matching tiles
      * @return                  score depending on number of matching tiles and pointsMapping
      */
-    public int getScore(Bookshelf bookshelf){
-        ItemTile[][] bookshelfMatrix = bookshelf.getBookshelfMatrix();
+    public int getScore(ItemTile[][] bookshelfMatrix){
         if(personalGoalCardMatrix == null) throw new NullPointerException("Player has no personalGoalCardMatrix or no bookshelfMatrix ");
         if (personalGoalCardMatrix.length != bookshelfMatrix.length || personalGoalCardMatrix[0].length != bookshelfMatrix[0].length) {
-            throw new IllegalArgumentException("Card and bookshelf matrices must have the same dimensions.");
-        }
+            throw new IllegalArgumentException("Card and bookshelf matrices must have the same dimensions.");}
         int matchingTiles = getNumMatchingTiles( bookshelfMatrix);
         return pointsMapping[matchingTiles];
     }
@@ -34,8 +32,7 @@ public class PersonalGoalCard {
      */
     public int getNumMatchingTiles(ItemTile[][] bookshelfMatrix) {
         if (personalGoalCardMatrix.length != bookshelfMatrix.length || personalGoalCardMatrix[0].length != bookshelfMatrix[0].length) {
-            throw new IllegalArgumentException("Card and bookshelf matrices must have the same dimensions.");
-        }
+            throw new IllegalArgumentException("Card and bookshelf matrices must have the same dimensions.");}
         int matchingTiles = 0;
         for (int i=0; i<personalGoalCardMatrix.length; i++){
             for (int j = 0; j< personalGoalCardMatrix[i].length; j++){
@@ -44,18 +41,5 @@ public class PersonalGoalCard {
         }
         return matchingTiles;
     }
-
-
-    // TODO: remove print personal goal
-    public void printPersonalGoal() {
-        for (ItemTile[] itemTiles : personalGoalCardMatrix) {
-            for (int k = 0; k < personalGoalCardMatrix[0].length; k++) {
-                System.out.printf("%10s", itemTiles[k].getItemTileType().toString());
-            }
-            System.out.println(" ");
-        }
-    }
-
-
 }
 
