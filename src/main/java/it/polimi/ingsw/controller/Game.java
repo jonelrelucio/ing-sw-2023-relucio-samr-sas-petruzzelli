@@ -18,13 +18,23 @@ public class Game {
 
     }
 
-    public void initgame() {
-        model.initCurrentPlayer();
+    private void initgame() {
+
     }
 
     public void midgame() {
-        while(true){
-            model.getCurrentPlayer().selectCoordinates(view.askPlayerSelectedTiles());
-        }
+
+    }
+
+    /**
+     * Updates the score of the current player
+     */
+    public void updateCurrentPlayerScore() {
+        int score = 0;
+        score += model.getCurrentPlayer().getBookshelf().getScore();
+        score += model.getCommonGoalCardDeck().getScore(model.getCurrentPlayer());
+        score += model.getCurrentPlayer().getPersonalGoalCard().getScore(model.getCurrentPlayer().getBookshelf().getBookshelfMatrix());
+        if (model.getCurrentPlayer().isWinner()) score += model.getCurrentPlayer().getEndGameToken();
+        model.getCurrentPlayer().setScore(score);
     }
 }
