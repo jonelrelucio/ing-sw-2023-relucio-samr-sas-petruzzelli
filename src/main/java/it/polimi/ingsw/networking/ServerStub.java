@@ -1,5 +1,7 @@
 package it.polimi.ingsw.networking;
 
+import it.polimi.ingsw.events.GameEvent;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -38,9 +40,9 @@ public class ServerStub implements Server{
     }
 
     @Override
-    public void update() throws RemoteException {
+    public void update(Client client, GameEvent event) throws RemoteException {
         try{
-            oos.writeObject();
+            oos.writeObject(event);
         }catch (IOException e){
             throw new RuntimeException("Cannot send event", e);
         }

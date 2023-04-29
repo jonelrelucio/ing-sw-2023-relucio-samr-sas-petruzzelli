@@ -1,20 +1,28 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.events.GameEvent;
+import it.polimi.ingsw.events.PlayerNameEvent;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.ItemTile.ItemTile;
-import it.polimi.ingsw.model.ItemTile.ItemTileType;
 import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.bag.PersonalGoalCardBag;
 import it.polimi.ingsw.model.util.Utility;
+import it.polimi.ingsw.util.MyObservable;
+import it.polimi.ingsw.util.MyObserver;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
-public class CLI {
+public class CLI implements Runnable, MyObservable {
     static Scanner s = new Scanner(System.in);
     GameModel model;
+    private ArrayList<MyObserver> observers;
 
     public CLI(GameModel model) {
         this.model = model;
+    }
+
+    public CLI(){
+        observers = new ArrayList<>();
     }
 
     public static void startingScreen() {
@@ -29,6 +37,14 @@ public class CLI {
             case 2 -> joinGame();
             case 3 -> closeGame();
         }
+    }
+
+    private PlayerNameEvent askPlayerName(){
+        Scanner s = new Scanner(System.in);
+        System.out.print("Please choose your username: ");
+        String playerName = s.nextLine();
+        PlayerNameEvent playerNameEvent = new PlayerNameEvent("playerNameEvent", playerName);
+        return playerNameEvent;
     }
 
     private static int getNumInput(){
@@ -213,7 +229,7 @@ public class CLI {
 
     public static void main(String[] args) {
 
-        final ItemTile[][] groupOfTwo =
+        /*final ItemTile[][] groupOfTwo =
                 {       {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
                         {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
                         {new ItemTile(ItemTileType.TROPHY), new ItemTile(ItemTileType.TROPHY),  new ItemTile(ItemTileType.GAME),    new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
@@ -270,9 +286,35 @@ public class CLI {
         player1.selectCoordinates(new int[]{3, 4});
         player1.pickSelectedItemTiles();
 
-        view.printAll();
+        view.printAll();*/
 
     }
 
 
+    @Override
+    public void run() {
+        PlayerNameEvent nameEvent = askPlayerName();
+        notifyObservers(nameEvent);
+    }
+
+    @Override
+    public void addObserver(MyObserver observer) {
+        observers.add(observer);
+    }
+
+    @Override
+    public void deleteObserver(MyObserver observer) {
+        observers.remove(observer);
+    }
+
+    public void notifyObservers(GameEvent e) {
+        for(MyObserver observer : observers){
+            observer.update(this, e);
+        }
+    }
+
+    @Override
+    public void deleteObservers() {
+        observers.clear();
+    }
 }

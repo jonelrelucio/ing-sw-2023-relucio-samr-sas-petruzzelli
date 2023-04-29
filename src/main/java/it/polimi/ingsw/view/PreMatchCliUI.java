@@ -1,7 +1,7 @@
 package it.polimi.ingsw.view;
 
 import it.polimi.ingsw.events.GameEvent;
-import it.polimi.ingsw.events.PlayerEvent;
+import it.polimi.ingsw.events.PlayerNameEvent;
 import it.polimi.ingsw.util.Observable;
 
 import java.util.Scanner;
@@ -13,7 +13,7 @@ public class PreMatchCliUI extends Observable<GameEvent> implements Runnable {
     public void run() {
         String name = askName();
         setChanged();//poi vedere se è da togliere, modificando l'observable
-        notifyObservers(new PlayerEvent(name, 0));
+        //notifyObservers(new PlayerNameEvent(name, 0));
 
     }
 

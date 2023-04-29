@@ -1,5 +1,6 @@
 package it.polimi.ingsw.networking;
 import it.polimi.ingsw.events.GameEvent;
+import it.polimi.ingsw.events.PlayerNameEvent;
 import it.polimi.ingsw.networking.Client;
 
 import java.rmi.Remote;

@@ -1,5 +1,6 @@
 package it.polimi.ingsw.util;
 
+import it.polimi.ingsw.controller.Game;
 import it.polimi.ingsw.events.GameEvent;
 
 import java.util.Vector;
@@ -41,9 +42,9 @@ import java.util.Vector;
  * @implNote
  * This class is a Generic Implementation of the deprecated {@link java.util.Observable}.
  */
-public class Observable<GameEvent> {
+public class Observable<GameEventType extends GameEvent> {
     private boolean changed = false;
-    private Vector<Observer<Observable<GameEvent>, GameEvent>> obs;
+    private Vector<Observer<? extends Observable<? extends GameEvent>, ? extends GameEvent>> obs;
 
     /** Construct an Observable with zero Observers. */
 
@@ -60,7 +61,7 @@ public class Observable<GameEvent> {
      * @param   o   an observer to be added.
      * @throws NullPointerException   if the parameter o is null.
      */
-    public synchronized void addObserver(Observer<Observable<GameEvent>, GameEvent> o) {
+    public synchronized void addObserver(Observer<? extends Observable<? extends GameEvent>, ? extends GameEvent> o) {
         if (o == null)
             throw new NullPointerException();
         if (!obs.contains(o)) {
@@ -73,7 +74,7 @@ public class Observable<GameEvent> {
      * Passing {@code null} to this method will have no effect.
      * @param   o   the observer to be deleted.
      */
-    public synchronized void deleteObserver(Observer<? extends Observable<GameEvent>, GameEvent> o) {
+    public synchronized void deleteObserver(Observer<? extends Observable<? extends GameEvent>, ? extends GameEvent> o) {
         obs.removeElement(o);
     }
 
@@ -111,7 +112,7 @@ public class Observable<GameEvent> {
      * @see     #hasChanged()
      * @see     Observer#update(Observable, Enum) 
      */
-    public void notifyObservers(GameEvent arg) {
+    public <GameEventType extends GameEvent> void notifyObservers(GameEventType arg) {
         /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.
@@ -138,7 +139,7 @@ public class Observable<GameEvent> {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--)
-            ((Observer<Observable<GameEvent>, GameEvent>)arrLocal[i]).update(this, arg);
+            ((Observer<Observable<? extends GameEvent>, GameEventType>)arrLocal[i]).update(this, arg);
     }
 
     /**
