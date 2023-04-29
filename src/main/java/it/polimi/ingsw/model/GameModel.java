@@ -30,6 +30,23 @@ public class GameModel {
         PersonalGoalCardBag.reset();
     }
 
+    public GameModel(){
+        //if (numOfPlayer < 2 || numOfPlayer > 4 ) throw new IllegalArgumentException("Number of Player out of bounds");
+        this.numOfPlayer = 0;
+        this.playerList = new CircularArrayList<>();
+        this.numOfRounds = 0;
+        this.state = State.INIT;
+        PersonalGoalCardBag.reset();
+    }
+
+    public void initCommonGoalCardDeck(){
+        this.commonGoalCardDeck = new CommonGoalCardDeck(numOfPlayer);
+    }
+
+    public void initBoard(int numOfPlayers){
+        this.board = new Board(numOfPlayer);
+    }
+
     public void initCurrentPlayer() { this.currentPlayer = playerList.get(0); }
     public Player getWinner() { if(!currentPlayer.isWinner()) throw new IllegalCallerException(); return currentPlayer; }
     public void updateNextPlayer() { this.currentPlayer = playerList.get(playerList.indexOf(this.currentPlayer)+1); }

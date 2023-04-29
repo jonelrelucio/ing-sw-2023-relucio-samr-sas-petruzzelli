@@ -1,7 +1,7 @@
 package it.polimi.ingsw;
 
-public class App implements Runnable {
-    @Override
+public class App{
+
     public void run() {
 
     }
