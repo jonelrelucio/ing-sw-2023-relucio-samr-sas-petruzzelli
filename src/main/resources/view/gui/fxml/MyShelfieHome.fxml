@@ -10,7 +10,7 @@
    <children>
       <ImageView fitHeight="645.0" fitWidth="752.0" pickOnBounds="true">
          <image>
-            <Image url="@../background/background.jpg" />
+            <Image url="@../background/background.png" />
          </image>
       </ImageView>
       <Button fx:id="howToPlay" layoutX="324.0" layoutY="404.0" mnemonicParsing="false" onAction="#howToPlay" prefHeight="25.0" prefWidth="104.0" text="how to play">

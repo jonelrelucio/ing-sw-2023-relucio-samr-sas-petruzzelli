@@ -1,0 +1,102 @@
+package it.polimi.ingsw.client.controller.guicontroller;
+import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.ToggleGroup;
+import javafx.scene.layout.BorderPane;
+
+import java.net.URL;
+import java.util.ResourceBundle;
+
+public class ControllerNplayers implements Initializable {
+    @FXML
+    private RadioButton FourPlayersButton;
+    @FXML
+    private RadioButton ThreePlayersButton;
+    @FXML
+    private RadioButton TwoPlayersButton;
+    @FXML
+    private Label numberPlayerChosen;
+    @FXML
+    private Button gotoChooseNickName;
+
+    private ToggleGroup favLangToggleGroup;
+    private int selectedNumber;
+    private static ViewGui viewGUI;
+
+    public void setViewGui(ViewGui viewGUI) {
+        ControllerNplayers.viewGUI = viewGUI;
+    }
+
+    public void goToNextScene(){
+        viewGUI.chooseUsername();
+    }
+
+
+
+
+    /**
+     * This method will update the radioButtonLabel whenever a different
+     * radio button is pushed
+     */
+    public void radioButtonChanged() {
+        if (this.favLangToggleGroup.getSelectedToggle().equals(this.TwoPlayersButton)) {
+            selectedNumber = 2;
+            numberPlayerChosen.setText("The number of players chosen is " + selectedNumber + ".");
+        }
+
+        if (this.favLangToggleGroup.getSelectedToggle().equals(this.ThreePlayersButton)) {
+            selectedNumber = 3;
+            numberPlayerChosen.setText("The number of players chosen is " + selectedNumber + ".");
+        }
+
+        if (this.favLangToggleGroup.getSelectedToggle().equals(this.FourPlayersButton)) {
+            selectedNumber = 4;
+            numberPlayerChosen.setText("The number of players chosen is " + selectedNumber + ".");
+        }
+    }
+
+
+    /**
+     * setter number of players
+     */
+
+    public void setNumberOfPlayers(){
+        this.gotoChooseNickName.setDisable(false);
+    }
+
+
+
+
+    /**
+     * getter of selectedNumber
+     * @return
+     */
+
+    public int getSelectedNumber() {
+        return selectedNumber;
+    }
+
+
+
+    /**
+     * initializes the objects before a scene starts
+     * @param url
+     * @param rb
+     */
+
+    public void initialize(URL url, ResourceBundle rb){
+        //configuring the number of players selection
+        numberPlayerChosen.setText("");
+        favLangToggleGroup = new ToggleGroup();
+        this.ThreePlayersButton.setToggleGroup(favLangToggleGroup);
+        this.TwoPlayersButton.setToggleGroup(favLangToggleGroup);
+        this.FourPlayersButton.setToggleGroup(favLangToggleGroup);
+        //initialize the button for change scene
+        this.gotoChooseNickName.setDisable(true);
+    }
+
+}
+
