@@ -247,7 +247,6 @@ public class CLI {
                         {new ItemTile(ItemTileType.TROPHY), new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.BOOK)}};
 
 
-
         int numOfPlayers = 4;
         CLI.startingScreen();
         GameModel model = new GameModel(numOfPlayers);
@@ -267,12 +266,10 @@ public class CLI {
         model.addNewPlayer(player4);
 
         player1.selectCoordinates(new int[]{2, 4});
-        player1.selectCoordinates(new int[]{3, 4});
-        player1.pickSelectedItemTiles();
+        // player1.selectCoordinates(new int[]{3, 4});
+        // player1.pickSelectedItemTiles();
 
         view.printAll();
-
     }
-
 
 }
