@@ -2,11 +2,7 @@ package it.polimi.ingsw.distributed.rmi;
 
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
-import it.polimi.ingsw.events.GameEvent;
-import it.polimi.ingsw.events.PlayerNameEvent;
-import it.polimi.ingsw.util.Observable;
-import it.polimi.ingsw.view.CLI;
-import org.w3c.dom.events.Event;
+import it.polimi.ingsw.client.view.cli.CLI;
 
 import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
@@ -16,10 +12,11 @@ import java.rmi.server.UnicastRemoteObject;
 public class ClientImpl extends UnicastRemoteObject implements Client, Runnable {
 
     //CLI cliView = new CLI();
-    private CLI cliView;
+    private CLI view;
+
     @Override
     public void run() {
-        cliView.run();
+        view.run();
     }
 
     public ClientImpl(Server server) throws RemoteException{
@@ -39,20 +36,20 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
 
     private void initialize(Server server) throws RemoteException{
         server.register(this);
-    }
-
-    public void update(Observable<Event> observable, PlayerNameEvent e){
-        System.out.println("Ho osservato un evento PlayerNameEvent");
-    }
-
-    @Override
-    public void update() throws RemoteException {
-
+        view.addObserver( (o, arg) -> {
+            try {
+                server.update(this, arg);
+            } catch (RemoteException e) {
+                System.err.println("Unable to update the server: " + e.getMessage() + ". Skipping the update..." );
+            }
+        } );
     }
 
 
     @Override
-        public <GameEventType extends GameEvent> void update(MyObservable observable, GameEventType e) {
+    public void update()  {
 
     }
+
+
 }

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.client.view.cli;
 
 import it.polimi.ingsw.model.ItemTile.ItemTileType;
 

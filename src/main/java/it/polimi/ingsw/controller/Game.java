@@ -1,7 +1,7 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.model.GameModel;
-import it.polimi.ingsw.view.CLI;
+import it.polimi.ingsw.client.view.cli.CLI;
 
 public class Game {
     GameModel model;

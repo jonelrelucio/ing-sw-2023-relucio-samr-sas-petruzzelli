@@ -2,9 +2,8 @@ package it.polimi.ingsw.distributed.rmi;
 
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
-import it.polimi.ingsw.events.ConnectedEvent;
-import it.polimi.ingsw.events.GameEvent;
 import it.polimi.ingsw.model.GameModel;
+import it.polimi.ingsw.model.events.GameEvent;
 
 import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
@@ -32,7 +31,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     @Override
     public void register(Client client) throws RemoteException {
         //il client è il primo a connettersi
-        ConnectedEvent connectedEvent = new ConnectedEvent("ConnectedEvent", ConnectedEvent.Status.OK);
         if(clients.isEmpty()){
             clients.add(client);
             client.update();
@@ -45,6 +43,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 
     @Override
     public void update(Client client, GameEvent arg) throws RemoteException {
-
+        //TODO
     }
+
 }

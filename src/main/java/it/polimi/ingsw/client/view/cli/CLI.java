@@ -1,29 +1,25 @@
-package it.polimi.ingsw.view;
+package it.polimi.ingsw.client.view.cli;
 
-import it.polimi.ingsw.events.GameEvent;
-import it.polimi.ingsw.events.PlayerNameEvent;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.ItemTile.ItemTile;
 import it.polimi.ingsw.model.Player;
+import it.polimi.ingsw.model.events.GameEvent;
+import it.polimi.ingsw.model.events.NewGame;
 import it.polimi.ingsw.model.util.Utility;
+import it.polimi.ingsw.util.Observable;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
-public class CLI implements Runnable, MyObservable {
+public class CLI extends Observable<GameEvent> implements Runnable {
+
     static Scanner s = new Scanner(System.in);
     GameModel model;
-    private ArrayList<MyObserver> observers;
 
-    public CLI(GameModel model) {
-        this.model = model;
+    public void run() {
+        startingScreen();
     }
 
-    public CLI(){
-        observers = new ArrayList<>();
-    }
-
-    public static void startingScreen() {
+    public void startingScreen() {
         System.out.println(Const.title);
         int input;
         do {
@@ -37,15 +33,8 @@ public class CLI implements Runnable, MyObservable {
         }
     }
 
-    private PlayerNameEvent askPlayerName(){
-        Scanner s = new Scanner(System.in);
-        System.out.print("Please choose your username: ");
-        String playerName = s.nextLine();
-        PlayerNameEvent playerNameEvent = new PlayerNameEvent("playerNameEvent", playerName);
-        return playerNameEvent;
-    }
 
-    private static int getNumInput(){
+    private int getNumInput(){
         try {
             return Integer.parseInt(s.nextLine());
         }
@@ -55,8 +44,33 @@ public class CLI implements Runnable, MyObservable {
         }
     }
 
-    public static void newGame() {
+    private String askPlayerName() {
+        String username;
+        System.out.print("Please choose your username: ");
+        do {
+            s = new Scanner(System.in);
+            username = s.nextLine();
+            if (username.length() < 3 || username.isBlank()) System.out.println("Invalid username, try again...");
+        }   while( username.length() < 3 || username.isBlank() );
+        return username.toLowerCase();
+    }
+
+    public int askNumOfPlayers() {
+        int numOfPlayers;
+        System.out.print("Please choose number of players: ");
+        do {
+            numOfPlayers = getNumInput();
+            if (numOfPlayers <= 1 || numOfPlayers >= 5 ) System.out.println("Invalid input. Only 2 to 4 Players can play the game.");
+        }   while(numOfPlayers <= 1 || numOfPlayers >= 5  );
+        return numOfPlayers;
+    }
+
+    private void newGame() {
+        String username = askPlayerName();
+        int numOfPlayers = askNumOfPlayers();
         System.out.println("Starting a new Game. Contacting server...");
+        setChanged();
+        notifyObservers(new NewGame(username, numOfPlayers));
         printLoading();
     }
 
@@ -68,13 +82,6 @@ public class CLI implements Runnable, MyObservable {
         System.out.println("Closing game.");
     }
 
-    public static void askNumOfPlayers() {
-        int input;
-        do {
-            input = getNumInput();
-            if (input <= 1 || input >= 5 ) System.out.println("Invalid input. Only 2 to 4 Players can play the game.");
-        }   while(input <= 1 || input >= 5  );
-    }
 
 
     public void printBoard() {
@@ -222,9 +229,6 @@ public class CLI implements Runnable, MyObservable {
 
 
 
-
-
-
     public static void main(String[] args) {
 
         /*final ItemTile[][] groupOfTwo =
@@ -289,30 +293,4 @@ public class CLI implements Runnable, MyObservable {
     }
 
 
-    @Override
-    public void run() {
-        PlayerNameEvent nameEvent = askPlayerName();
-        notifyObservers(nameEvent);
-    }
-
-    @Override
-    public void addObserver(MyObserver observer) {
-        observers.add(observer);
-    }
-
-    @Override
-    public void deleteObserver(MyObserver observer) {
-        observers.remove(observer);
-    }
-
-    public void notifyObservers(GameEvent e) {
-        for(MyObserver observer : observers){
-            observer.update(this, e);
-        }
-    }
-
-    @Override
-    public void deleteObservers() {
-        observers.clear();
-    }
 }

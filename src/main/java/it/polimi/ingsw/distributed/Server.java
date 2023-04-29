@@ -1,5 +1,6 @@
 package it.polimi.ingsw.distributed;
-import it.polimi.ingsw.events.GameEvent;
+
+import it.polimi.ingsw.model.events.GameEvent;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

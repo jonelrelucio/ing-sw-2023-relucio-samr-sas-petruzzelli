@@ -6,13 +6,12 @@ import it.polimi.ingsw.model.util.CircularArrayList;
 import it.polimi.ingsw.util.Observable;
 import it.polimi.ingsw.util.Observer;
 
-public class GameModelView extends Observable<GameEvent> implements Observer<GameModel, GameEvent> {
+public class GameModelView  {
     private final GameModel model;
 
     public GameModelView(GameModel model) {
         if (model == null) throw new IllegalArgumentException();
         this.model = model;
-        model.addObserver(this);
     }
 
     public int getNumOfPlayer() {
@@ -39,9 +38,4 @@ public class GameModelView extends Observable<GameEvent> implements Observer<Gam
         return model.getCurrentPlayer();
     }
 
-    @Override
-    public void update(GameModel o, GameEvent arg) {
-        setChanged();
-        notifyObservers(arg);
-    }
 }

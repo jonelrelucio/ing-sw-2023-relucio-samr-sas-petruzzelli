@@ -1,7 +1,8 @@
 package it.polimi.ingsw.util;
 
 
-import it.polimi.ingsw.events.GameEvent;
+
+import it.polimi.ingsw.model.events.GameEvent;
 
 import java.util.Vector;
 
