@@ -1,10 +1,8 @@
 package it.polimi.ingsw.util;
 
-import it.polimi.ingsw.controller.Game;
-import it.polimi.ingsw.events.GameEvent;
+import it.polimi.ingsw.model.events.GameEvent;
 
 import java.util.Vector;
-
 /**
  * This class represents an observable object, or "data"
  * in the model-view paradigm. It can be subclassed to represent an
@@ -33,18 +31,18 @@ import java.util.Vector;
  * {@code equals} method returns true for them.
  *
  * @see     #notifyObservers()
- * @see     #notifyObservers(Enum) 
+ * @see     #notifyObservers(GameEvent)
  * @see     Observer
- * @see     Observer#update(Observable, Enum)
+ * @see     Observer#update(Observable, GameEvent)
  *
  * @param <Event> the enumeration of the event that this observable is emitting
  *
  * @implNote
  * This class is a Generic Implementation of the deprecated {@link java.util.Observable}.
  */
-public class Observable<GameEventType extends GameEvent> {
+public class Observable<Event extends GameEvent> {
     private boolean changed = false;
-    private Vector<Observer<? extends Observable<? extends GameEvent>, ? extends GameEvent>> obs;
+    private Vector<Observer<? extends Observable<Event>, Event>> obs;
 
     /** Construct an Observable with zero Observers. */
 
@@ -61,7 +59,7 @@ public class Observable<GameEventType extends GameEvent> {
      * @param   o   an observer to be added.
      * @throws NullPointerException   if the parameter o is null.
      */
-    public synchronized void addObserver(Observer<? extends Observable<? extends GameEvent>, ? extends GameEvent> o) {
+    public synchronized void addObserver(Observer<? extends Observable<Event>, Event> o) {
         if (o == null)
             throw new NullPointerException();
         if (!obs.contains(o)) {
@@ -74,7 +72,7 @@ public class Observable<GameEventType extends GameEvent> {
      * Passing {@code null} to this method will have no effect.
      * @param   o   the observer to be deleted.
      */
-    public synchronized void deleteObserver(Observer<? extends Observable<? extends GameEvent>, ? extends GameEvent> o) {
+    public synchronized void deleteObserver(Observer<? extends Observable<Event>, Event> o) {
         obs.removeElement(o);
     }
 
@@ -92,7 +90,7 @@ public class Observable<GameEventType extends GameEvent> {
      *
      * @see     #clearChanged()
      * @see     #hasChanged()
-     * @see     Observer#update(Observable, Enum) 
+     * @see     Observer#update(Observable, GameEvent)
      */
     public void notifyObservers() {
         notifyObservers(null);
@@ -110,9 +108,9 @@ public class Observable<GameEventType extends GameEvent> {
      * @param   arg   any object.
      * @see     #clearChanged()
      * @see     #hasChanged()
-     * @see     Observer#update(Observable, Enum) 
+     * @see     Observer#update(Observable, GameEvent)
      */
-    public <GameEventType extends GameEvent> void notifyObservers(GameEventType arg) {
+    public void notifyObservers(Event arg) {
         /*
          * a temporary array buffer, used as a snapshot of the state of
          * current Observers.
@@ -139,7 +137,7 @@ public class Observable<GameEventType extends GameEvent> {
         }
 
         for (int i = arrLocal.length-1; i>=0; i--)
-            ((Observer<Observable<? extends GameEvent>, GameEventType>)arrLocal[i]).update(this, arg);
+            ((Observer<Observable<Event>, Event>)arrLocal[i]).update(this, arg);
     }
 
     /**
@@ -165,7 +163,7 @@ public class Observable<GameEventType extends GameEvent> {
      * {@code notifyObservers} methods.
      *
      * @see     #notifyObservers()
-     * @see     #notifyObservers(Enum)
+     * @see     #notifyObservers(GameEvent)
      */
     protected synchronized void clearChanged() {
         changed = false;

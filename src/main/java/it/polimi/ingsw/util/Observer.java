@@ -1,6 +1,6 @@
 package it.polimi.ingsw.util;
 
-import it.polimi.ingsw.events.GameEvent;
+import it.polimi.ingsw.model.events.GameEvent;
 
 /**
  * A class can implement the {@code Observer} interface when it
@@ -15,7 +15,7 @@ import it.polimi.ingsw.events.GameEvent;
  * @implNote
  * This class is a Generic Implementation of the deprecated {@link java.util.Observer}.
  */
-public interface Observer<SubjectType extends Observable<? extends GameEvent>, GameEventType extends GameEvent> {
+public interface Observer<SubjectType extends Observable<Event>, Event extends GameEvent> {
     /**
      * This method is called whenever the observed object is changed. An
      * application calls an {@code Observable} object's
@@ -27,5 +27,5 @@ public interface Observer<SubjectType extends Observable<? extends GameEvent>, G
      *                 method.
      */
 
-     void update(SubjectType o, GameEventType arg);
+     void update(SubjectType o, Event arg);
 }

@@ -2,15 +2,17 @@ package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.bag.PersonalGoalCardBag;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCardDeck;
+import it.polimi.ingsw.model.events.GameEvent;
+import it.polimi.ingsw.model.events.modelEvents.*;
 import it.polimi.ingsw.model.util.CircularArrayList;
-
-import java.io.IOException;
+import it.polimi.ingsw.util.Observable;
 
 enum State {
     INIT, MID, END
 }
 
-public class GameModel {
+public class GameModel extends Observable<GameEvent> {
+
     private int numOfPlayer;
     private CircularArrayList<Player> playerList;
     private CommonGoalCardDeck commonGoalCardDeck;
@@ -28,23 +30,6 @@ public class GameModel {
         this.numOfRounds = 0;
         this.state = State.INIT;
         PersonalGoalCardBag.reset();
-    }
-
-    public GameModel(){
-        //if (numOfPlayer < 2 || numOfPlayer > 4 ) throw new IllegalArgumentException("Number of Player out of bounds");
-        this.numOfPlayer = 0;
-        this.playerList = new CircularArrayList<>();
-        this.numOfRounds = 0;
-        this.state = State.INIT;
-        PersonalGoalCardBag.reset();
-    }
-
-    public void initCommonGoalCardDeck(){
-        this.commonGoalCardDeck = new CommonGoalCardDeck(numOfPlayer);
-    }
-
-    public void initBoard(int numOfPlayers){
-        this.board = new Board(numOfPlayer);
     }
 
     public void initCurrentPlayer() { this.currentPlayer = playerList.get(0); }
@@ -69,16 +54,56 @@ public class GameModel {
 
     public void addNewPlayer(Player player){
         playerList.add(player);
+        setChangedAndNotifyObservers(new AddPlayer());
     }
 
     // Setters
-    public void setNumOfPlayer(int numOfPlayer) { this.numOfPlayer = numOfPlayer; }
-    public void setPlayerList(CircularArrayList<Player> playerList) { this.playerList = playerList; }
-    public void setCommonGoalCardDeck(CommonGoalCardDeck commonGoalCardDeck) { this.commonGoalCardDeck = commonGoalCardDeck; }
-    public void setBoard(Board board) { this.board = board; }
-    public void setState(State state) { this.state = state; }
-    public void setNumOfRounds(int numOfRounds) { this.numOfRounds = numOfRounds;}
-    public void setCurrentPlayer(Player currentPlayer) { this.currentPlayer = currentPlayer; }
+    public void setNumOfPlayer(int numOfPlayer) {
+        this.numOfPlayer = numOfPlayer;
+        setChangedAndNotifyObservers(new SetNumOfPlayer());
+    }
+    public void setPlayerList(CircularArrayList<Player> playerList) {
+        this.playerList = playerList;
+        setChangedAndNotifyObservers(new SetPlayerList());
+    }
+    public void setCommonGoalCardDeck(CommonGoalCardDeck commonGoalCardDeck) {
+        this.commonGoalCardDeck = commonGoalCardDeck;
+        setChangedAndNotifyObservers(new SetCommonGoalDeck());
+    }
+    public void setBoard(Board board) {
+        this.board = board;
+        setChangedAndNotifyObservers(new SetBoard());
+    }
+    public void setState(State state) {
+        this.state = state;
+        setChangedAndNotifyObservers(new SetState());
+    }
+    public void setNumOfRounds(int numOfRounds) {
+        this.numOfRounds = numOfRounds;
+        setChangedAndNotifyObservers(new SetNumOfRounds());
+    }
+    public void setCurrentPlayer(Player currentPlayer) {
+        this.currentPlayer = currentPlayer;
+        setChangedAndNotifyObservers(new SetCurrentPlayer());
+    }
 
+    /**
+     * Updates the score of the current player
+     */
+    public void updateCurrentPlayerScore() {
+        int score = 0;
+        score += currentPlayer.getBookshelf().getScore();
+        score += commonGoalCardDeck.getScore(currentPlayer);
+        score += currentPlayer.getPersonalGoalCard().getScore(currentPlayer.getBookshelf().getBookshelfMatrix());
+        if (currentPlayer.isWinner()) score += currentPlayer.getEndGameToken();
+        currentPlayer.setScore(score);
+
+        setChangedAndNotifyObservers(new UpdatePlayerScore());
+    }
+
+    private void setChangedAndNotifyObservers(GameEvent arg) {
+        setChanged();
+        notifyObservers(arg);
+    }
 
 }
