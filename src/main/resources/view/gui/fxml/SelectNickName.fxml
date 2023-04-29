@@ -15,7 +15,7 @@
    <children>
       <ImageView fitHeight="645.0" fitWidth="752.0" pickOnBounds="true">
          <image>
-            <Image url="@../background/background.jpg" />
+            <Image url="@../background/background.png" />
          </image>
       </ImageView>
       <BorderPane prefHeight="645.0" prefWidth="752.0">

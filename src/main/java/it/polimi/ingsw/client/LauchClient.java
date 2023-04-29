@@ -45,6 +45,7 @@ public class LauchClient {
         else if (answer.equals("s")) {
             //istanzia s;
         }
+
         System.out.println("Select visualization mode:\n" + "c <- Command Line Interface\n" +
                 "g <- Graphical User Interface" );
         answer = userInput().toLowerCase();

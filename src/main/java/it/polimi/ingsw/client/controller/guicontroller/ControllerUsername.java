@@ -54,6 +54,7 @@ public class ControllerUsername implements Initializable {
             nickName = nickNameTextField.getText();
         }
         goToNext.setDisable(false);
+        signInButton.setVisible(false);
         return nickName;
     }
 

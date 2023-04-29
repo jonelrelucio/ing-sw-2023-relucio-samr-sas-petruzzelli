@@ -15,6 +15,8 @@ public class ViewGui {
     Scene chooseUsernameScene;
     private ControllerMainScene controllerMainScene;
     Scene mainScene;
+    private ControllerNplayers controllerNplayers;
+    Scene selectPlayers;
 
 
     private final Stage window;
@@ -26,6 +28,7 @@ public class ViewGui {
      */
     public ViewGui(Stage window) {
         this.window = window;
+        changeSceneSelectPlayers();
         changeSceneChooseUsername();
         changeSceneMainScene();
     }
@@ -55,7 +58,30 @@ public class ViewGui {
     }
 
     /**
-     * changes to scene in which the player chooses the username
+     * changes to scene in which the player chosees the number of players
+     */
+
+    public void changeSceneSelectPlayers() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gui/fxml/SelectPlayers.fxml"));
+        try {
+            Parent boardPaneParent = loader.load();
+            selectPlayers = new Scene(boardPaneParent);
+            controllerNplayers = loader.getController();
+            controllerNplayers.setViewGui(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
+    public void selectNPlayers(){
+        Platform.runLater(()-> {
+            window.setScene(selectPlayers);
+            window.show();});
+    }
+
+    /**
+     * changes to Main scene
      */
 
 
