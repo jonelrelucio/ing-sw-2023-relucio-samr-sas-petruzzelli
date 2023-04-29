@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="645.0" prefWidth="752.0" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.controller.guicontroller.ControllerMyShelfie">
+   <children>
+      <ImageView fitHeight="645.0" fitWidth="752.0" pickOnBounds="true">
+         <image>
+            <Image url="@../background/background.jpg" />
+         </image>
+      </ImageView>
+      <Button fx:id="howToPlay" layoutX="324.0" layoutY="404.0" mnemonicParsing="false" onAction="#howToPlay" prefHeight="25.0" prefWidth="104.0" text="how to play">
+         <font>
+            <Font name="System Bold Italic" size="15.0" />
+         </font>
+      </Button>
+      <Button fx:id="letsPlay" layoutX="324.0" layoutY="349.0" mnemonicParsing="false" onAction="#letsPlay" prefHeight="25.0" prefWidth="104.0" text="Let's play!">
+         <font>
+            <Font name="System Bold Italic" size="15.0" />
+         </font>
+      </Button>
+   </children>
+</Pane>

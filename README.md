@@ -6,7 +6,7 @@ Game Implementation [My Shelfie](https://www.craniocreations.it/prodotto/my-shel
 
 
 
-<img src="src/main/resources/publisher_material/box_noShadow.png" align="right" width="200" alt="My Shelfie" >
+<img src="src/main/resources/view/gui/publisher_material/box_noShadow.png" align="right" width="200" alt="My Shelfie" >
 
 ### Group GC25 Components:
 - [Jonel Relucio](https://github.com/jonelrelucio)
