@@ -1,21 +1,19 @@
-package it.polimi.ingsw.networking;
+package it.polimi.ingsw.distributed.rmi;
 
+import it.polimi.ingsw.distributed.Client;
+import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.events.GameEvent;
-import it.polimi.ingsw.events.NumOfPlayersEvent;
 import it.polimi.ingsw.events.PlayerNameEvent;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.util.MyObservable;
-import it.polimi.ingsw.util.MyObserver;
+import it.polimi.ingsw.util.Observable;
 import it.polimi.ingsw.view.CLI;
-import it.polimi.ingsw.view.PreMatchCliUI;
+import org.w3c.dom.events.Event;
 
-import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 
-public class ClientImpl extends UnicastRemoteObject implements Client, Runnable, MyObserver {
+public class ClientImpl extends UnicastRemoteObject implements Client, Runnable {
 
     //CLI cliView = new CLI();
     private CLI cliView;
@@ -26,8 +24,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable,
 
     public ClientImpl(Server server) throws RemoteException{
         super();
-        cliView = new CLI();
-        cliView.addObserver(this);
+        initialize(server);
     }
 
     public ClientImpl(Server server, int port) throws RemoteException{
@@ -40,24 +37,13 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable,
         initialize(server);
     }
 
-
     private void initialize(Server server) throws RemoteException{
         server.register(this);
-
     }
 
-
-
-
-
-    public void update(MyObservable observable, PlayerNameEvent e){
+    public void update(Observable<Event> observable, PlayerNameEvent e){
         System.out.println("Ho osservato un evento PlayerNameEvent");
-
     }
-
-
-
-
 
     @Override
     public void update() throws RemoteException {
@@ -66,7 +52,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable,
 
 
     @Override
-    public <GameEventType extends GameEvent> void update(MyObservable observable, GameEventType e) {
+        public <GameEventType extends GameEvent> void update(MyObservable observable, GameEventType e) {
 
     }
 }

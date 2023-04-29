@@ -1,7 +1,5 @@
-package it.polimi.ingsw.networking;
+package it.polimi.ingsw.distributed;
 import it.polimi.ingsw.events.GameEvent;
-import it.polimi.ingsw.events.PlayerNameEvent;
-import it.polimi.ingsw.networking.Client;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;

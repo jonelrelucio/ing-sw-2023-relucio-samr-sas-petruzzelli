@@ -1,11 +1,10 @@
-package it.polimi.ingsw.networking;
+package it.polimi.ingsw.distributed.rmi;
 
+import it.polimi.ingsw.distributed.Client;
+import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.events.ConnectedEvent;
 import it.polimi.ingsw.events.GameEvent;
-import it.polimi.ingsw.events.PlayerNameEvent;
 import it.polimi.ingsw.model.GameModel;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.util.CircularArrayList;
 
 import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
@@ -23,20 +22,11 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         clients = new ArrayList<>();
     }
 
-    public ServerImpl() throws RemoteException{
-        super();
-    }
+    public ServerImpl() throws RemoteException{ super();}
 
-    public ServerImpl(GameModel gameModel, int port) throws RemoteException{
-        super(port);
-    }
+    public ServerImpl(GameModel gameModel, int port) throws RemoteException{ super(port);}
 
-
-
-    public ServerImpl(GameModel gameModel, int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException{
-        super(port, csf, ssf);
-    }
-
+    public ServerImpl(GameModel gameModel, int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException{ super(port, csf, ssf); }
 
 
     @Override

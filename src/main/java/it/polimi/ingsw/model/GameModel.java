@@ -32,6 +32,15 @@ public class GameModel extends Observable<GameEvent> {
         PersonalGoalCardBag.reset();
     }
 
+    public GameModel(){
+        //if (numOfPlayer < 2 || numOfPlayer > 4 ) throw new IllegalArgumentException("Number of Player out of bounds");
+        this.numOfPlayer = 0;
+        this.playerList = new CircularArrayList<>();
+        this.numOfRounds = 0;
+        this.state = State.INIT;
+        PersonalGoalCardBag.reset();
+    }
+
     public void initCurrentPlayer() { this.currentPlayer = playerList.get(0); }
     public Player getWinner() { if(!currentPlayer.isWinner()) throw new IllegalCallerException(); return currentPlayer; }
     public void updateNextPlayer() { this.currentPlayer = playerList.get(playerList.indexOf(this.currentPlayer)+1); }
@@ -85,20 +94,6 @@ public class GameModel extends Observable<GameEvent> {
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
         setChangedAndNotifyObservers(new SetCurrentPlayer());
-    }
-
-    /**
-     * Updates the score of the current player
-     */
-    public void updateCurrentPlayerScore() {
-        int score = 0;
-        score += currentPlayer.getBookshelf().getScore();
-        score += commonGoalCardDeck.getScore(currentPlayer);
-        score += currentPlayer.getPersonalGoalCard().getScore(currentPlayer.getBookshelf().getBookshelfMatrix());
-        if (currentPlayer.isWinner()) score += currentPlayer.getEndGameToken();
-        currentPlayer.setScore(score);
-
-        setChangedAndNotifyObservers(new UpdatePlayerScore());
     }
 
     private void setChangedAndNotifyObservers(GameEvent arg) {

@@ -1,4 +1,7 @@
-package it.polimi.ingsw.networking;
+package it.polimi.ingsw.distributed.socket;
+
+import it.polimi.ingsw.distributed.Client;
+import it.polimi.ingsw.distributed.Server;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -6,7 +9,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
 
-public class ClientSkeleton implements Client{
+public class ClientSkeleton implements Client {
 
     private final ObjectOutputStream oos;
     private final ObjectInputStream ois;

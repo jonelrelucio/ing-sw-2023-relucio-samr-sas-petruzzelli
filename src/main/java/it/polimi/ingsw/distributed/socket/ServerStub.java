@@ -1,5 +1,7 @@
-package it.polimi.ingsw.networking;
+package it.polimi.ingsw.distributed.socket;
 
+import it.polimi.ingsw.distributed.Client;
+import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.events.GameEvent;
 
 import java.io.IOException;
@@ -8,7 +10,7 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
 
-public class ServerStub implements Server{
+public class ServerStub implements Server {
     private String ip;
     private int port;
     private ObjectOutputStream oos;
