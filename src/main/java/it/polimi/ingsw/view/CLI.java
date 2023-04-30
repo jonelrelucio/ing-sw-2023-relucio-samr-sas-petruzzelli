@@ -1,6 +1,8 @@
 package it.polimi.ingsw.view;
 
+import it.polimi.ingsw.events.ConnectedEvent;
 import it.polimi.ingsw.events.GameEvent;
+import it.polimi.ingsw.events.NumOfPlayersEvent;
 import it.polimi.ingsw.events.PlayerNameEvent;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.ItemTile.ItemTile;
@@ -46,6 +48,8 @@ public class CLI implements Runnable, MyObservable {
         PlayerNameEvent playerNameEvent = new PlayerNameEvent("playerNameEvent", playerName);
         return playerNameEvent;
     }
+
+
 
     private static int getNumInput(){
         try {
@@ -307,7 +311,14 @@ public class CLI implements Runnable, MyObservable {
         observers.remove(observer);
     }
 
-    public void notifyObservers(GameEvent e) {
+    public void notifyObservers(PlayerNameEvent e) {
+        for(MyObserver observer : observers){
+            observer.update(this, e);
+        }
+    }
+
+    @Override
+    public void notifyObservers(NumOfPlayersEvent e) {
         for(MyObserver observer : observers){
             observer.update(this, e);
         }

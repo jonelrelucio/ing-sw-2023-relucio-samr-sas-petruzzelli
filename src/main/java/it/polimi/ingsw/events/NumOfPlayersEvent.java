@@ -8,5 +8,7 @@ public class NumOfPlayersEvent extends GameEvent{
         this.numOfPlayers = numOfPlayers;
     }
 
-
+    public int getNumOfPlayers() {
+        return numOfPlayers;
+    }
 }

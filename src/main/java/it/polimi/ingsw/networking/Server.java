@@ -12,7 +12,7 @@ public interface Server extends Remote {
      * @param client the client to register
      */
 
-    void register(Client client) throws RemoteException;
+    void register(Client client, PlayerNameEvent e) throws RemoteException;
 
     /**
      * Notify the server that a client has made a choice

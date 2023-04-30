@@ -1,6 +1,7 @@
 package it.polimi.ingsw.networking;
 
 import it.polimi.ingsw.events.GameEvent;
+import it.polimi.ingsw.events.PlayerNameEvent;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -21,7 +22,7 @@ public class ServerStub implements Server{
     }
 
     @Override
-    public void register(Client client) throws RemoteException {
+    public void register(Client client, PlayerNameEvent ev) throws RemoteException {
         try {
             this.socket = new Socket(ip, port);
             try {

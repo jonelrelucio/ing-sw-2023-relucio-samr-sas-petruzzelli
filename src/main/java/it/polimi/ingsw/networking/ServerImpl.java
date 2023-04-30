@@ -40,8 +40,9 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 
 
     @Override
-    public void register(Client client) throws RemoteException {
+    public void register(Client client, PlayerNameEvent e) throws RemoteException {
         //il client è il primo a connettersi
+        System.out.println("Ricevuto dal client un player dal nome: "+ e.getPlayerName());
         ConnectedEvent connectedEvent = new ConnectedEvent("ConnectedEvent", ConnectedEvent.Status.OK);
         if(clients.isEmpty()){
             clients.add(client);

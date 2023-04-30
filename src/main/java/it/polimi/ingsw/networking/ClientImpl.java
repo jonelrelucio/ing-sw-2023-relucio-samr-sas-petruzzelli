@@ -19,6 +19,9 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable,
 
     //CLI cliView = new CLI();
     private CLI cliView;
+    private GameEvent event;
+
+    private Server server;
     @Override
     public void run() {
         cliView.run();
@@ -28,31 +31,30 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable,
         super();
         cliView = new CLI();
         cliView.addObserver(this);
+        this.server = server;
     }
 
     public ClientImpl(Server server, int port) throws RemoteException{
         super(port);
-        initialize(server);
+
     }
 
     public ClientImpl(Server server, int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException {
         super(port, csf, ssf);
-        initialize(server);
-    }
-
-
-    private void initialize(Server server) throws RemoteException{
-        server.register(this);
 
     }
-
-
-
-
 
     public void update(MyObservable observable, PlayerNameEvent e){
-        System.out.println("Ho osservato un evento PlayerNameEvent");
+        System.out.println("Il nome del giocatore, lato client: "+ e.getPlayerName());
+        try{
+            server.register(this, e);
+        }catch(RemoteException ex){
 
+        }
+
+    }
+    public void update(MyObservable observable, NumOfPlayersEvent e){
+        System.out.println("Il numero dei giocatori è "+ e.getNumOfPlayers());
     }
 
 
@@ -65,8 +67,5 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable,
     }
 
 
-    @Override
-    public <GameEventType extends GameEvent> void update(MyObservable observable, GameEventType e) {
 
-    }
 }
