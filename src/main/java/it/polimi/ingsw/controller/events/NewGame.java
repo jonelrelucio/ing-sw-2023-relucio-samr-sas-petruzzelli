@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller.events;
 
+
 public class NewGame extends GameEvent {
     private String playerName;
     private Integer numOfPlayers;

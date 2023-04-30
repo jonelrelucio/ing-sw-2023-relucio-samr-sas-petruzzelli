@@ -2,9 +2,12 @@ package it.polimi.ingsw.client;
 
 
 
+import it.polimi.ingsw.AppClientRMI;
 import it.polimi.ingsw.client.view.cli.CLI;
 import it.polimi.ingsw.client.view.gui.LauchGui;
 
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
 import java.util.Scanner;
 
 public class LauchClient {
@@ -41,7 +44,11 @@ public class LauchClient {
             answer = userInput().toLowerCase();
         }
         if (answer.equals("r")) {
-           //istanzia rmi
+            try {
+                AppClientRMI.run();
+            } catch (RemoteException | NotBoundException e) {
+                throw new RuntimeException(e);
+            }
         }
         else if (answer.equals("s")) {
             //istanzia s;

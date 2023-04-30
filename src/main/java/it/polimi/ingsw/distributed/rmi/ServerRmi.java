@@ -5,6 +5,7 @@ import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.controller.events.GameEvent;
+import it.polimi.ingsw.model.GameModelView;
 import it.polimi.ingsw.util.Observable;
 
 import java.rmi.RemoteException;
@@ -33,14 +34,16 @@ public class ServerRmi extends UnicastRemoteObject implements Server {
 
     @Override
     public void register(Client client) throws RemoteException {
-        //il client è il primo a connettersi
-        if(clients.isEmpty()){
-            clients.add(client);
-            client.update();
-        }else if(clients.size() == gameModel.getNumOfPlayer()){
-            //così questa linea non viene mai beccata, devo fare sì che i client possano provare a connettersi anche quando è tutto pieno (con un Runnable)
-        }
+        this.gameModel = new GameModel();
+        this.gameModel.addObserver((o, arg) -> {
+            try {
+                client.update(new GameModelView(gameModel), arg);
+            } catch (RemoteException e) {
+                System.err.println("Unable to update the client: " + e.getMessage() + ". Skipping the update...");
+            }
+        });
 
+        this.controller = new Game(gameModel);
     }
 
     @Override

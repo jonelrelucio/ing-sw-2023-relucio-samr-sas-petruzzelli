@@ -1,21 +1,80 @@
 package it.polimi.ingsw.client.view.cli;
 
-import it.polimi.ingsw.client.view.cli.clicontroller.ControllerNewGame;
+import it.polimi.ingsw.client.view.cli.clicontroller.Utility;
 import it.polimi.ingsw.controller.events.GameEvent;
+import it.polimi.ingsw.controller.events.NewGame;
 import it.polimi.ingsw.model.GameModel;
+import it.polimi.ingsw.model.GameModelView;
 import it.polimi.ingsw.util.Observable;
+
+import java.util.Scanner;
 
 public class CLI extends Observable<GameEvent> implements Runnable {
 
-    ControllerNewGame controllerNewGame = new ControllerNewGame();
     GameModel model;
+    static Scanner s = new Scanner(System.in);
 
     public void run() {
-        controllerNewGame.run();
+        startingScreen();
     }
 
+    public void startingScreen() {
+        System.out.println(Const.title);
+        int input;
+        do {
+            input = Utility.getNumInput();
+            if (input <= 0 || input >= 4 ) System.out.println(Const.RED_BOLD_BRIGHT +"Invalid input. Enter a number from 1 to 3."+Const.RESET);
+        }   while(input <= 0 || input >= 4  );
+        switch (input) {
+            case 1 -> newGame();
+            case 2 -> System.exit(1);
+            case 3 -> System.exit(0);
+        }
+    }
 
-    public ControllerNewGame getControllerNewGame() {return controllerNewGame;}
+    private int getNumInput(){
+        try {
+            return Integer.parseInt(s.nextLine());
+        }
+        catch (NumberFormatException ex) {
+            System.out.println("Invalid input. Enter a number.");
+            return getNumInput();
+        }
+    }
+
+    private String askPlayerName() {
+        String username;
+        System.out.print("Please choose your username: ");
+        do {
+            s = new Scanner(System.in);
+            username = s.nextLine();
+            if (username.length() < 3 || username.isBlank()) System.out.println("Invalid username, try again...");
+        }   while( username.length() < 3 || username.isBlank() );
+        return username;
+    }
+
+    private int askNumOfPlayers() {
+        int numOfPlayers;
+        System.out.print("Please choose number of players: ");
+        do {
+            numOfPlayers = getNumInput();
+            if (numOfPlayers <= 1 || numOfPlayers >= 5 ) System.out.println("Invalid input. Only 2 to 4 Players can play the game.");
+        }   while(numOfPlayers <= 1 || numOfPlayers >= 5  );
+        return numOfPlayers;
+    }
+
+    public void newGame() {
+        String username = askPlayerName();
+        int numOfPlayers = askNumOfPlayers();
+        System.out.println("Starting a new Game. Contacting server...");
+        setChanged();
+        notifyObservers(new NewGame(numOfPlayers, username));
+        Utility.printLoading();
+    }
+
+    public void handleViewEvent(GameModelView modelView, GameEvent event) {
+    }
+
 
 
 
@@ -86,6 +145,5 @@ public class CLI extends Observable<GameEvent> implements Runnable {
         view.printAll();*/
 
     }
-
 
 }

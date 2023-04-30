@@ -21,6 +21,7 @@ public class Game {
 
     public void createNewGame(GameEvent x) {
         if (!(x instanceof NewGame event) ) throw new RuntimeException("Game Event is not A FirstPlayer instance");
+        System.out.print("Received game event");
         model.initGame(event.getNumOfPlayers(), event.getPlayerName());
     }
 

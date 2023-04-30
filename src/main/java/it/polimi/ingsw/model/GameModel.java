@@ -20,6 +20,7 @@ public class GameModel extends Observable<GameEvent> {
     private Board board;
     private State state;
     private int numOfRounds; // what is numOfRounds??? does it increment every player change or does it increment every loop of the playerlist
+    private int lastRound;
     private Player currentPlayer;
 
     public GameModel(int numOfPlayer) {
@@ -47,10 +48,10 @@ public class GameModel extends Observable<GameEvent> {
         this.board = new Board(numOfPlayer);
         this.commonGoalCardDeck = new CommonGoalCardDeck(numOfPlayer);
         this.playerList.add(new Player(nickname, PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayer), board));
-        initCurrentPlayer();
         notifyObservers(new NewGame(numOfPlayer, nickname));
     }
 
+    //TODO
     public void initCurrentPlayer() { this.currentPlayer = playerList.get(0); }
     public Player getWinner() { if(!currentPlayer.isWinner()) throw new IllegalCallerException(); return currentPlayer; }
     public void updateNextPlayer() { this.currentPlayer = playerList.get(playerList.indexOf(this.currentPlayer)+1); }

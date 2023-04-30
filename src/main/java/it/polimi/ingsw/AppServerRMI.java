@@ -12,7 +12,7 @@ public class AppServerRMI {
     public static void main(String[] args) throws RemoteException {
         GameModel gameModel = new GameModel();
         Server server = new ServerRmi(gameModel);
-        Registry registry = LocateRegistry.getRegistry();
+        Registry registry = LocateRegistry.createRegistry(1099);
         registry.rebind("server", server);
     }
 }

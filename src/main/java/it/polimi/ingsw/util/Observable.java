@@ -22,7 +22,6 @@ public class Observable<Event extends GameEvent> {
             throw new NullPointerException ();
         if (!obs.contains(o)) {
             obs.add(o);
-            System.out.println("Observer Added size "+obs.size());
         }
     }
 
@@ -41,10 +40,8 @@ public class Observable<Event extends GameEvent> {
             if (!changed)
                 return;
             arrLocal = obs.toArray();
-            System.out.println ("obs arr size"+obs.size());
             clearChanged();
         }
-        System.out.println(""+arg+"  arrSize   "+ arrLocal.length );
         for  (int i = arrLocal.length-1; i>=0; i--)
             ((Observer<Observable<Event>, Event>)arrLocal[i]).update(this, arg);
     }

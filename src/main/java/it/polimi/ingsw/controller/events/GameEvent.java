@@ -1,6 +1,9 @@
 package it.polimi.ingsw.controller.events;
 
-public abstract class GameEvent {
+import java.io.Serializable;
+
+public abstract class GameEvent implements Serializable {
+    static final long serialVersionUID = 1L;
     protected final String eventName;
 
     public GameEvent(String eventName) {
