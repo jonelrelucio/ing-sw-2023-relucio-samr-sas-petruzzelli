@@ -3,10 +3,12 @@ package it.polimi.ingsw.client.view.cli;
 import it.polimi.ingsw.client.view.cli.clicontroller.Utility;
 import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.events.NewGame;
+import it.polimi.ingsw.distributed.events.ViewEvents.WaitingForPlayersEvent;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.GameModelView;
 import it.polimi.ingsw.util.Observable;
 
+import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CLI extends Observable<GameEvent> implements Runnable {
@@ -14,10 +16,10 @@ public class CLI extends Observable<GameEvent> implements Runnable {
     GameModel model;
     static Scanner s = new Scanner(System.in);
 
+    @Override
     public void run() {
         startingScreen();
         newGame();
-        waitForPlayers();
     }
 
     public void startingScreen() {
@@ -76,8 +78,21 @@ public class CLI extends Observable<GameEvent> implements Runnable {
         Utility.printLoading();
     }
 
-    public void waitForPlayers() {
-
+    public void waitForPlayers(GameEvent x) {
+        if ( !(x instanceof WaitingForPlayersEvent event)  ) throw new IllegalArgumentException("Game Event is not of instance WaitingForPlayerEvent");
+        String[] loading = new String[] {"|", "/", "-", "\\"};
+        int index = 0;
+        while ( event.isWaiting() ) {
+            StringBuilder string = new StringBuilder("");
+            System.out.printf("\rWaiting" );
+            string.append(loading[index]);
+            try {
+                Thread.sleep(100);
+            } catch (InterruptedException e) {
+                throw new RuntimeException(e);
+            }
+            index = ( index + 1 ) % 4;
+        }
     }
 
 
@@ -85,7 +100,7 @@ public class CLI extends Observable<GameEvent> implements Runnable {
     public void handleViewEvent(GameModelView modelView, GameEvent event) {
         String eventName = event.getEventName();
         switch (eventName){
-            case "" -> waitForPlayers();
+            case "WAITING_PLAYERS" -> waitForPlayers(event);
         }
     }
 

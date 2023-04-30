@@ -13,6 +13,5 @@ public class AppClientRMI {
         Registry registry = LocateRegistry.getRegistry();
         Server server =  (Server) registry.lookup("server");
         ClientRmi client = new ClientRmi(server);
-        client.run();
     }
 }

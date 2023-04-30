@@ -11,7 +11,7 @@ import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 
-public class ClientRmi extends UnicastRemoteObject implements Client, Runnable {
+public class ClientRmi extends UnicastRemoteObject implements Client {
 
     CLI view = new CLI();
 
@@ -46,8 +46,4 @@ public class ClientRmi extends UnicastRemoteObject implements Client, Runnable {
         this.view.handleViewEvent(o, arg);
     }
 
-    @Override
-    public void run() {
-        view.run();
-    }
 }
