@@ -1,4 +1,4 @@
-package it.polimi.ingsw.controller.events;
+package it.polimi.ingsw.distributed.events;
 
 public class ReorderTiles extends GameEvent {
     public ReorderTiles() {

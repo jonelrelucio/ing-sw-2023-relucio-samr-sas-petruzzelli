@@ -3,9 +3,8 @@ package it.polimi.ingsw.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import it.polimi.ingsw.controller.Game;
-import it.polimi.ingsw.controller.events.GameEvent;
-import it.polimi.ingsw.controller.events.modelEvents.UpdatePlayerScore;
+import it.polimi.ingsw.distributed.events.GameEvent;
+import it.polimi.ingsw.distributed.events.modelEvents.UpdatePlayerScore;
 import it.polimi.ingsw.model.ItemTile.ItemTileType;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCard;
 import it.polimi.ingsw.model.ItemTile.ItemTile;

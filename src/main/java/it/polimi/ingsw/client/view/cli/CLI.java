@@ -1,8 +1,8 @@
 package it.polimi.ingsw.client.view.cli;
 
 import it.polimi.ingsw.client.view.cli.clicontroller.Utility;
-import it.polimi.ingsw.controller.events.GameEvent;
-import it.polimi.ingsw.controller.events.NewGame;
+import it.polimi.ingsw.distributed.events.GameEvent;
+import it.polimi.ingsw.distributed.events.NewGame;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.model.GameModelView;
 import it.polimi.ingsw.util.Observable;
@@ -16,6 +16,8 @@ public class CLI extends Observable<GameEvent> implements Runnable {
 
     public void run() {
         startingScreen();
+        newGame();
+        waitForPlayers();
     }
 
     public void startingScreen() {
@@ -26,7 +28,9 @@ public class CLI extends Observable<GameEvent> implements Runnable {
             if (input <= 0 || input >= 4 ) System.out.println(Const.RED_BOLD_BRIGHT +"Invalid input. Enter a number from 1 to 3."+Const.RESET);
         }   while(input <= 0 || input >= 4  );
         switch (input) {
-            case 1 -> newGame();
+            case 1 -> {
+                return;
+            }
             case 2 -> System.exit(1);
             case 3 -> System.exit(0);
         }
@@ -72,11 +76,18 @@ public class CLI extends Observable<GameEvent> implements Runnable {
         Utility.printLoading();
     }
 
+    public void waitForPlayers() {
+
+    }
+
 
 
     public void handleViewEvent(GameModelView modelView, GameEvent event) {
+        String eventName = event.getEventName();
+        switch (eventName){
+            case "" -> waitForPlayers();
+        }
     }
-
 
 
 

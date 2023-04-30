@@ -1,7 +1,7 @@
 package it.polimi.ingsw.distributed.rmi;
 
 import it.polimi.ingsw.client.view.cli.CLI;
-import it.polimi.ingsw.controller.events.GameEvent;
+import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.model.GameModelView;

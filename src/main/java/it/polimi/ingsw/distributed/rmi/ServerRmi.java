@@ -4,7 +4,7 @@ import it.polimi.ingsw.controller.Game;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.model.GameModel;
-import it.polimi.ingsw.controller.events.GameEvent;
+import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.model.GameModelView;
 
 import java.rmi.RemoteException;

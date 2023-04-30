@@ -1,7 +1,7 @@
 package it.polimi.ingsw.util;
 
 
-import it.polimi.ingsw.controller.events.GameEvent;
+import it.polimi.ingsw.distributed.events.GameEvent;
 
 public interface Observer<SubjectType extends Observable<Event>, Event extends GameEvent> {
 

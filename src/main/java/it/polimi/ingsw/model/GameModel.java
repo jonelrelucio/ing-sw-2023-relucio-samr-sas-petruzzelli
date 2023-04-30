@@ -1,10 +1,10 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.controller.events.NewGame;
-import it.polimi.ingsw.controller.events.modelEvents.*;
+import it.polimi.ingsw.distributed.events.NewGame;
+import it.polimi.ingsw.distributed.events.modelEvents.*;
 import it.polimi.ingsw.model.bag.PersonalGoalCardBag;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCardDeck;
-import it.polimi.ingsw.controller.events.GameEvent;
+import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.model.util.CircularArrayList;
 import it.polimi.ingsw.util.Observable;
 

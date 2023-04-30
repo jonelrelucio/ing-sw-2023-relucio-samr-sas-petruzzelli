@@ -1,6 +1,6 @@
 package it.polimi.ingsw.distributed.socket;
 
-import it.polimi.ingsw.controller.events.GameEvent;
+import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.model.GameModelView;

@@ -1,6 +1,6 @@
-package it.polimi.ingsw.controller.events.modelEvents;
+package it.polimi.ingsw.distributed.events.modelEvents;
 
-import it.polimi.ingsw.controller.events.GameEvent;
+import it.polimi.ingsw.distributed.events.GameEvent;
 
 public class UpdatePlayerScore extends GameEvent {
     public UpdatePlayerScore() {

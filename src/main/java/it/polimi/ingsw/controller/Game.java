@@ -1,8 +1,8 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.controller.events.NewGame;
+import it.polimi.ingsw.distributed.events.NewGame;
 import it.polimi.ingsw.model.GameModel;
-import it.polimi.ingsw.controller.events.GameEvent;
+import it.polimi.ingsw.distributed.events.GameEvent;
 
 public class Game {
     GameModel model;
