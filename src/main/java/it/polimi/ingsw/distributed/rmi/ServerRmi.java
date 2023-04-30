@@ -6,7 +6,6 @@ import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.controller.events.GameEvent;
 import it.polimi.ingsw.model.GameModelView;
-import it.polimi.ingsw.util.Observable;
 
 import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
@@ -34,16 +33,30 @@ public class ServerRmi extends UnicastRemoteObject implements Server {
 
     @Override
     public void register(Client client) throws RemoteException {
-        this.gameModel = new GameModel();
-        this.gameModel.addObserver((o, arg) -> {
-            try {
-                client.update(new GameModelView(gameModel), arg);
-            } catch (RemoteException e) {
-                System.err.println("Unable to update the client: " + e.getMessage() + ". Skipping the update...");
-            }
-        });
+        if(clients.isEmpty()){
+            clients.add(client);
+            this.gameModel = new GameModel();
+            this.gameModel.addObserver((o, arg) -> {
+                try {
+                    client.update(new GameModelView(gameModel), arg);
+                } catch (RemoteException e) {
+                    System.err.println("Unable to update the client: " + e.getMessage() + ". Skipping the update...");
+                }
+            });
+            this.controller = new Game(gameModel);
+        }else if(clients.size() < gameModel.getNumOfPlayer()){
+            clients.add(client);
+            this.gameModel.addObserver((o, arg) -> {
+                try {
+                    client.update(new GameModelView(gameModel), arg);
+                } catch (RemoteException e) {
+                    System.err.println("Unable to update the client: " + e.getMessage() + ". Skipping the update...");
+                }
+            });
+        } else {
 
-        this.controller = new Game(gameModel);
+        }
+
     }
 
     @Override

@@ -3,7 +3,9 @@ package it.polimi.ingsw.model;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCardDeck;
 import it.polimi.ingsw.model.util.CircularArrayList;
 
-public class GameModelView  {
+import java.io.Serializable;
+
+public class GameModelView implements Serializable {
     private final GameModel model;
 
     public GameModelView(GameModel model) {

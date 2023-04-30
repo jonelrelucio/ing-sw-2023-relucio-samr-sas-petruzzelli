@@ -43,7 +43,7 @@ public class ClientRmi extends UnicastRemoteObject implements Client, Runnable {
 
     @Override
     public void update(GameModelView o, GameEvent arg) {
-        view.handleViewEvent(o, arg);
+        this.view.handleViewEvent(o, arg);
     }
 
     @Override

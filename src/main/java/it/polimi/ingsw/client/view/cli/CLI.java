@@ -72,6 +72,8 @@ public class CLI extends Observable<GameEvent> implements Runnable {
         Utility.printLoading();
     }
 
+
+
     public void handleViewEvent(GameModelView modelView, GameEvent event) {
     }
 
