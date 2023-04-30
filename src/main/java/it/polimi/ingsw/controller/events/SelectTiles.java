@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.events;
+package it.polimi.ingsw.controller.events;
 
 import it.polimi.ingsw.model.ItemTile.ItemTile;
 import java.util.ArrayList;

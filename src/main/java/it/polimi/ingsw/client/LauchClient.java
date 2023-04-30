@@ -2,6 +2,7 @@ package it.polimi.ingsw.client;
 
 
 
+import it.polimi.ingsw.client.view.cli.CLI;
 import it.polimi.ingsw.client.view.gui.LauchGui;
 
 import java.util.Scanner;
@@ -59,6 +60,8 @@ public class LauchClient {
             //ViewCLI cli = new ViewCLI();
             //client = new Client(cli, "192.168.1.5", 5555);
             //client.start();
+            CLI cli = new CLI();
+            cli.run();
         }
         else if (answer.equals("g")) {
             LauchGui.main();

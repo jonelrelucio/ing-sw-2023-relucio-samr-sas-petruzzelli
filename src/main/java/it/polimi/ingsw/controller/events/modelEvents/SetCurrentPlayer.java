@@ -1,6 +1,6 @@
-package it.polimi.ingsw.model.events.modelEvents;
+package it.polimi.ingsw.controller.events.modelEvents;
 
-import it.polimi.ingsw.model.events.GameEvent;
+import it.polimi.ingsw.controller.events.GameEvent;
 
 public class SetCurrentPlayer extends GameEvent {
     public SetCurrentPlayer() {

@@ -47,7 +47,7 @@ public class ControllerUsername implements Initializable {
      */
 
 
-    public String setNickName(){
+    public void setNickName(){
         nickName = nickNameTextField.getText();
         while(nickName==null){
             nickNameTextLabel.setText("insert a username in the text field above.");
@@ -55,7 +55,6 @@ public class ControllerUsername implements Initializable {
         }
         goToNext.setDisable(false);
         signInButton.setVisible(false);
-        return nickName;
     }
 
 

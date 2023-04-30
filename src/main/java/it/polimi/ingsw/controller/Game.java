@@ -1,30 +1,29 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.controller.events.NewGame;
 import it.polimi.ingsw.model.GameModel;
-import it.polimi.ingsw.client.view.cli.CLI;
+import it.polimi.ingsw.controller.events.GameEvent;
 
 public class Game {
     GameModel model;
-    CLI view;
 
-    public Game(GameModel model, CLI view) {
+    public Game(GameModel model) {
         this.model = model;
-        this.view = view;
     }
 
-    public void play() {
-        initgame();
-        midgame();
-
+    public void eventHandler(GameEvent event) {
+        String eventName = event.getEventName();
+        switch (eventName){
+            case "NEW_GAME" -> createNewGame(event);
+            case "UPDATE_PLAYER_SCORE" -> updateCurrentPlayerScore();
+        }
     }
 
-    private void initgame() {
-
+    public void createNewGame(GameEvent x) {
+        if (!(x instanceof NewGame event) ) throw new RuntimeException("Game Event is not A FirstPlayer instance");
+        model.initGame(event.getNumOfPlayers(), event.getPlayerName());
     }
 
-    public void midgame() {
-
-    }
 
     /**
      * Updates the score of the current player
@@ -37,4 +36,5 @@ public class Game {
         if (model.getCurrentPlayer().isWinner()) score += model.getCurrentPlayer().getEndGameToken();
         model.getCurrentPlayer().setScore(score);
     }
+
 }

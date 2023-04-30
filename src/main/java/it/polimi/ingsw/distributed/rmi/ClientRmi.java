@@ -9,7 +9,7 @@ import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 
-public class ClientImpl extends UnicastRemoteObject implements Client, Runnable {
+public class ClientRmi extends UnicastRemoteObject implements Client, Runnable {
 
     //CLI cliView = new CLI();
     private CLI view;
@@ -19,17 +19,17 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
         view.run();
     }
 
-    public ClientImpl(Server server) throws RemoteException{
+    public ClientRmi(Server server) throws RemoteException{
         super();
         initialize(server);
     }
 
-    public ClientImpl(Server server, int port) throws RemoteException{
+    public ClientRmi(Server server, int port) throws RemoteException{
         super(port);
         initialize(server);
     }
 
-    public ClientImpl(Server server, int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException {
+    public ClientRmi(Server server, int port, RMIClientSocketFactory csf, RMIServerSocketFactory ssf) throws RemoteException {
         super(port, csf, ssf);
         initialize(server);
     }
@@ -38,7 +38,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable 
         server.register(this);
         view.addObserver( (o, arg) -> {
             try {
-                server.update(this, arg);
+                server.update(arg);
             } catch (RemoteException e) {
                 System.err.println("Unable to update the server: " + e.getMessage() + ". Skipping the update..." );
             }

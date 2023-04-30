@@ -1,9 +1,10 @@
 package it.polimi.ingsw.model;
 
+import it.polimi.ingsw.controller.events.NewGame;
+import it.polimi.ingsw.controller.events.modelEvents.*;
 import it.polimi.ingsw.model.bag.PersonalGoalCardBag;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCardDeck;
-import it.polimi.ingsw.model.events.GameEvent;
-import it.polimi.ingsw.model.events.modelEvents.*;
+import it.polimi.ingsw.controller.events.GameEvent;
 import it.polimi.ingsw.model.util.CircularArrayList;
 import it.polimi.ingsw.util.Observable;
 
@@ -41,6 +42,15 @@ public class GameModel extends Observable<GameEvent> {
         PersonalGoalCardBag.reset();
     }
 
+    public void initGame(int numOfPlayer, String nickname) {
+        this.numOfPlayer = numOfPlayer;
+        this.board = new Board(numOfPlayer);
+        this.commonGoalCardDeck = new CommonGoalCardDeck(numOfPlayer);
+        this.playerList.add(new Player(nickname, PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayer), board));
+        initCurrentPlayer();
+        notifyObservers(new NewGame(numOfPlayer, nickname));
+    }
+
     public void initCurrentPlayer() { this.currentPlayer = playerList.get(0); }
     public Player getWinner() { if(!currentPlayer.isWinner()) throw new IllegalCallerException(); return currentPlayer; }
     public void updateNextPlayer() { this.currentPlayer = playerList.get(playerList.indexOf(this.currentPlayer)+1); }
@@ -69,7 +79,6 @@ public class GameModel extends Observable<GameEvent> {
     // Setters
     public void setNumOfPlayer(int numOfPlayer) {
         this.numOfPlayer = numOfPlayer;
-        setChangedAndNotifyObservers(new SetNumOfPlayer());
     }
     public void setPlayerList(CircularArrayList<Player> playerList) {
         this.playerList = playerList;

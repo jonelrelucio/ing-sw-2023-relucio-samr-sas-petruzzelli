@@ -3,15 +3,19 @@ package it.polimi.ingsw.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 
+import it.polimi.ingsw.controller.Game;
+import it.polimi.ingsw.controller.events.GameEvent;
+import it.polimi.ingsw.controller.events.modelEvents.UpdatePlayerScore;
 import it.polimi.ingsw.model.ItemTile.ItemTileType;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCard;
 import it.polimi.ingsw.model.ItemTile.ItemTile;
+import it.polimi.ingsw.util.Observable;
 
 enum PlayerState {
     WAITING, PLAYING;
 }
 
-public class Player {
+public class Player extends Observable<GameEvent> {
 
     private static final int ENDTOKENSCORE = 1;
     private boolean winner;
@@ -51,7 +55,10 @@ public class Player {
     public Board getBoard() {return board;}
 
     // Setters
-    public void setScore(int score) {this.score = score;}
+    public void setScore(int score) {
+        this.score = score;
+        updateAndNotifyObservers(new UpdatePlayerScore());
+    }
     public void setBookshelf(Bookshelf bookshelf) {this.bookshelf = bookshelf;}
     public void setPersonalGoalCard(PersonalGoalCard personalGoalCard) {this.personalGoalCard = personalGoalCard;}
     public void setNumOfRounds(int numOfRounds) {this.numOfRounds = numOfRounds;}
@@ -135,6 +142,11 @@ public class Player {
         }
 
         selectedItemTiles = rearrangedItems;
+    }
+
+    private void updateAndNotifyObservers(GameEvent arg) {
+        setChanged();
+        notifyObservers(arg);
     }
 
 

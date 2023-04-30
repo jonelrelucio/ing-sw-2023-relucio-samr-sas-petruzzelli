@@ -1,8 +1,8 @@
 package it.polimi.ingsw.distributed.socket;
 
+import it.polimi.ingsw.controller.events.GameEvent;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
-import it.polimi.ingsw.events.GameEvent;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -42,7 +42,7 @@ public class ServerStub implements Server {
     }
 
     @Override
-    public void update(Client client, GameEvent event) throws RemoteException {
+    public void update( GameEvent event) throws RemoteException {
         try{
             oos.writeObject(event);
         }catch (IOException e){

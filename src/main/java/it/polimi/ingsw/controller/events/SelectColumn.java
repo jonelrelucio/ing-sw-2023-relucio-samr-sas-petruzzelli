@@ -1,4 +1,4 @@
-package it.polimi.ingsw.model.events;
+package it.polimi.ingsw.controller.events;
 
 public class SelectColumn extends GameEvent {
     private int col;

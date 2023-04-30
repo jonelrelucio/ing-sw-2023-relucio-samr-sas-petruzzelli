@@ -1,10 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCardDeck;
-import it.polimi.ingsw.model.events.GameEvent;
 import it.polimi.ingsw.model.util.CircularArrayList;
-import it.polimi.ingsw.util.Observable;
-import it.polimi.ingsw.util.Observer;
 
 public class GameModelView  {
     private final GameModel model;
