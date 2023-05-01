@@ -8,12 +8,9 @@ import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.model.util.CircularArrayList;
 import it.polimi.ingsw.util.Observable;
 
-enum State {
-    INIT, MID, END
-}
-
 public class GameModel extends Observable<GameEvent> {
 
+    public boolean endGame;
     private int numOfPlayer;
     private CircularArrayList<Player> playerList;
     private CommonGoalCardDeck commonGoalCardDeck;
@@ -39,6 +36,7 @@ public class GameModel extends Observable<GameEvent> {
         this.numOfPlayer = 0;
         this.playerList = new CircularArrayList<>();
         this.numOfRounds = 0;
+        this.endGame = false;
         this.state = State.INIT;
         PersonalGoalCardBag.reset();
     }
@@ -71,7 +69,9 @@ public class GameModel extends Observable<GameEvent> {
     public State getState() { return state;}
     public int getNumOfRounds() { return numOfRounds;}
     public Player getCurrentPlayer() { return currentPlayer;}
-
+    public boolean getEndGame() {
+        return endGame;
+    }
     public void addNewPlayer(Player player){
         playerList.add(player);
         setChangedAndNotifyObservers(new AddPlayer());
@@ -105,7 +105,9 @@ public class GameModel extends Observable<GameEvent> {
         this.currentPlayer = currentPlayer;
         setChangedAndNotifyObservers(new SetCurrentPlayer());
     }
-
+    public void setEndGame() {
+        this.endGame = true;
+    }
     private void setChangedAndNotifyObservers(GameEvent arg) {
         setChanged();
         notifyObservers(arg);
