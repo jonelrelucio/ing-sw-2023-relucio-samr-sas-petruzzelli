@@ -3,6 +3,7 @@ package it.polimi.ingsw.distributed.rmi;
 import it.polimi.ingsw.controller.Game;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
+import it.polimi.ingsw.distributed.events.ViewEvents.WaitingToJoin;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.distributed.events.GameEvent;
 
@@ -43,24 +44,25 @@ public class ServerRmi extends UnicastRemoteObject implements Server {
                     System.err.println("Unable to update the client: " + e.getMessage() + ". Skipping the update...");
                 }
             });
-        }else if(clients.size() < gameModel.getNumOfPlayer()){
+        } else {
+            // TODO: Find a better implementation (Client size is changed outside the while loop or maybe add a check function for the clients size)
+            if(clients.size() >= gameModel.getNumOfPlayer()) client.update(new WaitingToJoin(true));
+            while (clients.size() >= gameModel.getNumOfPlayer()) {
+            }
             clients.add(client);
             this.gameModel.addObserver((o, arg) -> {
                 try {
-                    client.update( arg);
+                    client.update(arg);
                 } catch (RemoteException e) {
                     System.err.println("Unable to update the client: " + e.getMessage() + ". Skipping the update...");
                 }
             });
-        } else {
-
         }
-
     }
 
     @Override
     public void update( GameEvent event) throws RemoteException {
-        this.controller.eventHandler(event);
+        this.controller.eventHandler( event);
     }
 
     @Override

@@ -40,12 +40,12 @@ public class ClientRmi extends UnicastRemoteObject implements Client {
             CLI viewInstance = (CLI) view;
             viewInstance.addObserver((o, arg) -> {
                 try {
-                    server.update(arg);
+                    server.update( arg);
                 } catch (RemoteException e) {
                     System.err.println("Unable to update the server: " + e.getMessage() + ". Skipping the update...");
                 }
             });
-            if (server.getNumOfClients() == 0) view.newGame();
+            if (server.getNumOfClients() == 1) view.newGame();
             else view.joinGame();
         } else {
             GUI viewInstance = (GUI) view;

@@ -61,4 +61,10 @@ public class ServerStub implements Server {
             throw new RemoteException("Cannot close socket", e);
         }
     }
+
+    @Override
+    public int getNumOfClients(){
+        //TODO
+        return 0;
+    }
 }

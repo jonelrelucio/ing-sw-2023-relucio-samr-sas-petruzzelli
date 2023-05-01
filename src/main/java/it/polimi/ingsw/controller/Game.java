@@ -1,5 +1,6 @@
 package it.polimi.ingsw.controller;
 
+import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.events.NewGame;
 import it.polimi.ingsw.distributed.events.modelEvents.AddPlayer;
@@ -13,7 +14,7 @@ public class Game {
         this.model = model;
     }
 
-    public void eventHandler(GameEvent event) {
+    public void eventHandler( GameEvent event) {
         String eventName = event.getEventName();
         switch (eventName){
             case "NEW_GAME" -> createNewGame(event);

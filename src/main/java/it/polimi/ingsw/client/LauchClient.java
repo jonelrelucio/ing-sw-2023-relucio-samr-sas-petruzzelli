@@ -51,8 +51,8 @@ public class LauchClient {
         }
 
         System.out.println( "Select connection mode:\n" +
-                "s <- SOCKET\n" +
-                "r <- RMI" );
+                "r <- RMI\n" +
+                "s <- SOCKET" );
         answer = userInput().toLowerCase();
         while(!answer.equals("s")&& !answer.equals("r")){
             System.out.println("Invalid choice");
@@ -69,7 +69,7 @@ public class LauchClient {
             }
         }
         else if (answer.equals("s")) {
-            view.run();
+            //TODO
         }
 
 

@@ -50,12 +50,9 @@ public class GameModel extends Observable<GameEvent> {
     }
 
     public void addNewPlayer(String username){
-        if (playerList.size() < numOfPlayer ) {
-            Player player = new Player(username, PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayer), board);
-            playerList.add(player);
-            setChangedAndNotifyObservers(new WaitingForPlayersEvent(false, numOfPlayer - 1, username));
-        }
-        else setChangedAndNotifyObservers(new WaitingToJoin(true));
+        Player player = new Player(username, PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayer), board);
+        playerList.add(player);
+        setChangedAndNotifyObservers(new WaitingForPlayersEvent(false, numOfPlayer - playerList.size(), username));
     }
 
 

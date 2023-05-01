@@ -18,7 +18,7 @@ public interface Server extends Remote {
      * @param event     the game event sent by the client
      */
     //Il client è il client che ha chiamato l'update sul server
-    void update(GameEvent event) throws RemoteException;
+    void update( GameEvent event) throws RemoteException;
 
 
     int getNumOfClients() throws RemoteException;

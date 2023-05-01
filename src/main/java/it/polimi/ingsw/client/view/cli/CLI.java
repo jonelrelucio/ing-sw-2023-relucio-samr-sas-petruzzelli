@@ -84,7 +84,7 @@ public class CLI extends Observable<GameEvent> implements View {
     public void createNewGame() {
         String username = askPlayerName();
         int numOfPlayers = askNumOfPlayers();
-        System.out.println("Starting a new Game. Contacting server...");
+        System.out.println("Contacting server...");
         setChanged();
         notifyObservers(new NewGame(numOfPlayers, username));
     }
@@ -98,19 +98,22 @@ public class CLI extends Observable<GameEvent> implements View {
     public void waitForPlayers(GameEvent x) {
         if ( !(x instanceof WaitingForPlayersEvent event)  ) throw new IllegalArgumentException("Game Event is not of instance WaitingForPlayerEvent");
         if (event.remainingPlayers() == 0) {
-            System.out.println("Starting new Game");
+            System.out.println(" ");
+            System.out.println(" ");
+            System.out.println("Starting new Game.");
+            System.out.println(" ");
         }
-        String multiple = event.remainingPlayers() == 1? "" : "s";
-        if (event.isFirstPlayer()) System.out.println("You are the first player to connect...");
-        System.out.printf("\rWaiting for %s more player%s", event.remainingPlayers(), multiple );
+        else {
+            String multiple = event.remainingPlayers() == 1? "" : "s";
+            if (event.isFirstPlayer()) System.out.println("You are the first player to connect...");
+            System.out.printf("\rWaiting for %s more player%s", event.remainingPlayers(), multiple );
+        }
     }
 
     private void waitingToJoin(GameEvent x) {
         if ( !(x instanceof WaitingToJoin event)  ) throw new IllegalArgumentException("Game Event is not of instance WaitingToJoinEvent");
-        if ( event.isWaitingToJoin() ) System.out.println("Game lobby is full. Wait...");
-        else joinExistingGame();
+        System.out.println("\rGame lobby is full. Please wait...");
     }
-
 
     @Override
     public void handleViewEvent( GameEvent event) {
