@@ -1,6 +1,6 @@
-<mxfile host="app.diagrams.net" modified="2023-05-01T12:19:49.617Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:109.0) Gecko/20100101 Firefox/112.0" etag="mDxdqI35Fe3brVC3DUuU" version="21.1.8" type="github">
+<mxfile host="app.diagrams.net" modified="2023-05-01T13:48:07.777Z" agent="Mozilla/5.0 (Macintosh; Intel Mac OS X 10.13; rv:109.0) Gecko/20100101 Firefox/112.0" etag="ERHyVLRDYxvOCht26XTZ" version="21.1.8" type="github">
   <diagram name="Pagina-1" id="7ho051suT3fmIOEfMXeg">
-    <mxGraphModel dx="5570" dy="2630" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+    <mxGraphModel dx="6630" dy="2800" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="0" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
       <root>
         <mxCell id="0" />
         <mxCell id="1" parent="0" />
@@ -777,6 +777,58 @@
         </mxCell>
         <mxCell id="Bx958i39I_2gn6iz-8l9-205" value="+ getNumOfPlayer() : int&#xa;+ getPlayerList() : CircularArrayList&lt;Player&gt;&#xa;+ getCommonGoalCardDeck() : CommonGoalCardDeck&#xa;+ getBoard() : Board&#xa;+ getNumOfRounds() : int&#xa;+ getCurrentPlayer() : Player" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" vertex="1" parent="Bx958i39I_2gn6iz-8l9-203">
           <mxGeometry y="70" width="340" height="110" as="geometry" />
+        </mxCell>
+        <mxCell id="Bx958i39I_2gn6iz-8l9-206" value="util" style="shape=folder;fontStyle=1;spacingTop=0;tabWidth=100;tabHeight=30;tabPosition=left;html=1;whiteSpace=wrap;align=left;verticalAlign=top;spacingLeft=5;" vertex="1" parent="1">
+          <mxGeometry x="4690" y="1540" width="800" height="540" as="geometry" />
+        </mxCell>
+        <mxCell id="Bx958i39I_2gn6iz-8l9-220" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=open;endSize=12;dashed=1;" edge="1" parent="1" source="Bx958i39I_2gn6iz-8l9-210" target="Bx958i39I_2gn6iz-8l9-148">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="4630" y="1872" />
+              <mxPoint x="4630" y="1700" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bx958i39I_2gn6iz-8l9-221" value="Use" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="Bx958i39I_2gn6iz-8l9-220">
+          <mxGeometry x="0.1638" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bx958i39I_2gn6iz-8l9-210" value="Observable" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillStyle=auto;strokeColor=#666666;fontColor=#1A1A1A;fillColor=#F5F5F5;gradientColor=none;swimlaneFillColor=none;spacing=2;" vertex="1" parent="1">
+          <mxGeometry x="4770" y="1762" width="200" height="220" as="geometry" />
+        </mxCell>
+        <mxCell id="Bx958i39I_2gn6iz-8l9-211" value="- changed : boolean&#xa;- obs : ArrayList" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" vertex="1" parent="Bx958i39I_2gn6iz-8l9-210">
+          <mxGeometry y="40" width="200" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Bx958i39I_2gn6iz-8l9-212" value="+ addObserver(Observer o)&#xa;+ deleteObserver(Observer o)&#xa;+ notifyObservers()&#xa;+ notifyObservers(Event arg)&#xa;+ deleteObservers()&#xa;+ setChanged()&#xa;+ clearChanged()&#xa;+ hasChanged()&#xa;+ countObservers() : int" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" vertex="1" parent="Bx958i39I_2gn6iz-8l9-210">
+          <mxGeometry y="80" width="200" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="Bx958i39I_2gn6iz-8l9-216" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=none;endFill=0;" edge="1" parent="1" source="Bx958i39I_2gn6iz-8l9-213" target="Bx958i39I_2gn6iz-8l9-215">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="Bx958i39I_2gn6iz-8l9-217" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;endArrow=open;endSize=12;dashed=1;" edge="1" parent="1" source="Bx958i39I_2gn6iz-8l9-213" target="Bx958i39I_2gn6iz-8l9-148">
+          <mxGeometry relative="1" as="geometry">
+            <Array as="points">
+              <mxPoint x="4570" y="1660" />
+              <mxPoint x="4570" y="1660" />
+            </Array>
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bx958i39I_2gn6iz-8l9-219" value="Use" style="edgeLabel;html=1;align=center;verticalAlign=middle;resizable=0;points=[];" vertex="1" connectable="0" parent="Bx958i39I_2gn6iz-8l9-217">
+          <mxGeometry x="-0.0883" y="1" relative="1" as="geometry">
+            <mxPoint as="offset" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bx958i39I_2gn6iz-8l9-213" value="&lt;&lt;interface&gt;&gt;&#xa;Observer" style="swimlane;fontStyle=1;align=center;verticalAlign=middle;childLayout=stackLayout;horizontal=1;startSize=40;horizontalStack=0;resizeParent=1;resizeParentMax=0;resizeLast=0;collapsible=1;marginBottom=0;fillStyle=auto;strokeColor=#666666;fontColor=#1A1A1A;fillColor=#F5F5F5;swimlaneFillColor=none;gradientColor=none;spacing=2;" vertex="1" parent="1">
+          <mxGeometry x="4740" y="1630" width="260" height="80" as="geometry">
+            <mxRectangle x="250" y="400" width="150" height="40" as="alternateBounds" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="Bx958i39I_2gn6iz-8l9-214" value="update(SubjectType o, Event arg)" style="text;strokeColor=#666666;fillColor=#f5f5f5;align=left;verticalAlign=middle;spacingLeft=4;spacingRight=4;overflow=hidden;rotatable=0;points=[[0,0.5],[1,0.5]];portConstraint=eastwest;fontColor=#333333;" vertex="1" parent="Bx958i39I_2gn6iz-8l9-213">
+          <mxGeometry y="40" width="260" height="40" as="geometry" />
+        </mxCell>
+        <mxCell id="Bx958i39I_2gn6iz-8l9-215" value="SubjectType extends Observable&amp;lt;Event&amp;gt;, Event extends GameEvent" style="shape=note;whiteSpace=wrap;html=1;backgroundOutline=1;fontColor=#000000;darkOpacity=0.05;fillColor=#FFF9B2;strokeColor=none;fillStyle=solid;direction=west;gradientDirection=north;gradientColor=#FFF2A1;shadow=1;size=20;pointerEvents=1;" vertex="1" parent="1">
+          <mxGeometry x="5050" y="1625" width="400" height="90" as="geometry" />
         </mxCell>
       </root>
     </mxGraphModel>
