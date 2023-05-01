@@ -67,7 +67,6 @@ public class LauchClient {
             } catch (RemoteException | NotBoundException e) {
                 throw new RuntimeException(e);
             }
-            view.run();
         }
         else if (answer.equals("s")) {
             view.run();

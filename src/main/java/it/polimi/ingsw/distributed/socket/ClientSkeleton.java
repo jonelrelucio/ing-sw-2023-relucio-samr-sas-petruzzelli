@@ -3,7 +3,6 @@ package it.polimi.ingsw.distributed.socket;
 import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
-import it.polimi.ingsw.model.GameModelView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -29,7 +28,7 @@ public class ClientSkeleton implements Client {
         }
     }
     @Override
-    public void update(GameModelView gameModelView, GameEvent gameEvent) throws RemoteException {
+    public void update( GameEvent gameEvent) throws RemoteException {
 
     }
 

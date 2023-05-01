@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.view.gui;
 
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.distributed.events.GameEvent;
-import it.polimi.ingsw.model.GameModelView;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -12,12 +11,16 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class GUI extends Application implements View {
+
+    //TODO
     @Override
-    public void run( )
-    { launch(); }
+    public void newGame() { launch(); }
 
     @Override
-    public void handleViewEvent(GameModelView gameModelView, GameEvent event) {
+    public void joinGame() { launch(); }
+
+    @Override
+    public void handleViewEvent(GameEvent event) {
         //TODO
         System.out.println("DO SOMETHING");
     }

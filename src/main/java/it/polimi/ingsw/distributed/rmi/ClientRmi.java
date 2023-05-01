@@ -6,7 +6,6 @@ import it.polimi.ingsw.client.view.gui.GUI;
 import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
-import it.polimi.ingsw.model.GameModelView;
 
 import java.rmi.RemoteException;
 import java.rmi.server.RMIClientSocketFactory;
@@ -46,6 +45,8 @@ public class ClientRmi extends UnicastRemoteObject implements Client {
                     System.err.println("Unable to update the server: " + e.getMessage() + ". Skipping the update...");
                 }
             });
+            if (server.getNumOfClients() == 0) view.newGame();
+            else view.joinGame();
         } else {
             GUI viewInstance = (GUI) view;
             //TODO: View is does not extend Observable yet
@@ -63,9 +64,8 @@ public class ClientRmi extends UnicastRemoteObject implements Client {
     }
 
     @Override
-    public void update(GameModelView model, GameEvent event) {
-        System.out.println("CALLED 1");
-        this.view.handleViewEvent(model, event);
+    public void update( GameEvent event) {
+        this.view.handleViewEvent( event);
     }
 
 }

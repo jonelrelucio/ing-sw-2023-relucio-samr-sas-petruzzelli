@@ -1,6 +1,8 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.distributed.events.NewGame;
+import it.polimi.ingsw.distributed.events.ViewEvents.WaitingForPlayersEvent;
+import it.polimi.ingsw.distributed.events.ViewEvents.WaitingToJoin;
 import it.polimi.ingsw.distributed.events.modelEvents.*;
 import it.polimi.ingsw.model.bag.PersonalGoalCardBag;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCardDeck;
@@ -39,13 +41,23 @@ public class GameModel extends Observable<GameEvent> {
         PersonalGoalCardBag.reset();
     }
 
-    public void initGame(int numOfPlayer, String nickname) {
+    public void initGame(int numOfPlayer, String username) {
         this.numOfPlayer = numOfPlayer;
         this.board = new Board(numOfPlayer);
         this.commonGoalCardDeck = new CommonGoalCardDeck(numOfPlayer);
-        this.playerList.add(new Player(nickname, PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayer), board));
-        notifyObservers(new NewGame(numOfPlayer, nickname));
+        this.playerList.add(new Player(username, PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayer), board));
+        setChangedAndNotifyObservers(new WaitingForPlayersEvent( true, numOfPlayer - 1, username));
     }
+
+    public void addNewPlayer(String username){
+        if (playerList.size() < numOfPlayer ) {
+            Player player = new Player(username, PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayer), board);
+            playerList.add(player);
+            setChangedAndNotifyObservers(new WaitingForPlayersEvent(false, numOfPlayer - 1, username));
+        }
+        else setChangedAndNotifyObservers(new WaitingToJoin(true));
+    }
+
 
     //TODO
     public void initCurrentPlayer() { this.currentPlayer = playerList.get(0); }
@@ -67,11 +79,6 @@ public class GameModel extends Observable<GameEvent> {
     public State getState() { return state;}
     public int getNumOfRounds() { return numOfRounds;}
     public Player getCurrentPlayer() { return currentPlayer;}
-
-    public void addNewPlayer(Player player){
-        playerList.add(player);
-        setChangedAndNotifyObservers(new AddPlayer());
-    }
 
     // Setters
     public void setNumOfPlayer(int numOfPlayer) {

@@ -5,11 +5,11 @@ import it.polimi.ingsw.client.view.cli.clicontroller.Utility;
 import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.events.NewGame;
 import it.polimi.ingsw.distributed.events.ViewEvents.WaitingForPlayersEvent;
+import it.polimi.ingsw.distributed.events.ViewEvents.WaitingToJoin;
+import it.polimi.ingsw.distributed.events.modelEvents.AddPlayer;
 import it.polimi.ingsw.model.GameModel;
-import it.polimi.ingsw.model.GameModelView;
 import it.polimi.ingsw.util.Observable;
 
-import java.util.ArrayList;
 import java.util.Scanner;
 
 public class CLI extends Observable<GameEvent> implements View {
@@ -18,23 +18,34 @@ public class CLI extends Observable<GameEvent> implements View {
     static Scanner s = new Scanner(System.in);
 
     @Override
-    public void run() {
-        startingScreen();
-        newGame();
-    }
-
-    public void startingScreen() {
-        System.out.println(Const.title);
+    public void newGame() {
+        System.out.println("Welcome to Myshelfie");
+        System.out.println("1 <- Create Game");
+        System.out.println("2 <- Exit game");
         int input;
         do {
             input = Utility.getNumInput();
-            if (input <= 0 || input >= 4 ) System.out.println(Const.RED_BOLD_BRIGHT +"Invalid input. Enter a number from 1 to 3."+Const.RESET);
+            if (input <= 0 || input >= 4 ) System.out.println(Const.RED_BOLD_BRIGHT +"Invalid input. Enter a number from 1 to 2."+Const.RESET);
         }   while(input <= 0 || input >= 4  );
         switch (input) {
-            case 1 -> {
-                return;
-            }
-            case 2 -> System.exit(1);
+            case 1 -> createNewGame();
+            case 3 -> System.exit(0);
+        }
+    }
+
+    @Override
+    public void joinGame() {
+        System.out.println("A Game lobby is already running.");
+        System.out.println("1 <- Join Game");
+        System.out.println("2 <- Exit game");
+
+        int input;
+        do {
+            input = Utility.getNumInput();
+            if (input <= 0 || input >= 4 ) System.out.println(Const.RED_BOLD_BRIGHT +"Invalid input. Enter a number from 1 to 2."+Const.RESET);
+        }   while(input <= 0 || input >= 4  );
+        switch (input) {
+            case 1 -> joinExistingGame();
             case 3 -> System.exit(0);
         }
     }
@@ -70,7 +81,7 @@ public class CLI extends Observable<GameEvent> implements View {
         return numOfPlayers;
     }
 
-    public void newGame() {
+    public void createNewGame() {
         String username = askPlayerName();
         int numOfPlayers = askNumOfPlayers();
         System.out.println("Starting a new Game. Contacting server...");
@@ -78,30 +89,35 @@ public class CLI extends Observable<GameEvent> implements View {
         notifyObservers(new NewGame(numOfPlayers, username));
     }
 
+    public void joinExistingGame() {
+        String username = askPlayerName();
+        setChanged();
+        notifyObservers(new AddPlayer(username));
+    }
+
     public void waitForPlayers(GameEvent x) {
         if ( !(x instanceof WaitingForPlayersEvent event)  ) throw new IllegalArgumentException("Game Event is not of instance WaitingForPlayerEvent");
-        String[] loading = new String[] {"|", "/", "-", "\\"};
-        int index = 0;
-        while ( event.isWaiting() ) {
-            StringBuilder string = new StringBuilder("");
-            System.out.printf("\rWaiting" );
-            string.append(loading[index]);
-            try {
-                Thread.sleep(100);
-            } catch (InterruptedException e) {
-                throw new RuntimeException(e);
-            }
-            index = ( index + 1 ) % 4;
+        if (event.remainingPlayers() == 0) {
+            System.out.println("Starting new Game");
         }
+        String multiple = event.remainingPlayers() == 1? "" : "s";
+        if (event.isFirstPlayer()) System.out.println("You are the first player to connect...");
+        System.out.printf("\rWaiting for %s more player%s", event.remainingPlayers(), multiple );
+    }
+
+    private void waitingToJoin(GameEvent x) {
+        if ( !(x instanceof WaitingToJoin event)  ) throw new IllegalArgumentException("Game Event is not of instance WaitingToJoinEvent");
+        if ( event.isWaitingToJoin() ) System.out.println("Game lobby is full. Wait...");
+        else joinExistingGame();
     }
 
 
     @Override
-    public void handleViewEvent(GameModelView modelView, GameEvent event) {
-        System.out.println("WAITING EVENT RECEIVED");
+    public void handleViewEvent( GameEvent event) {
         String eventName = event.getEventName();
         switch (eventName){
             case "WAITING_PLAYERS" -> waitForPlayers(event);
+            case "WAITING_TO_JOIN" -> waitingToJoin(event);
         }
     }
 
