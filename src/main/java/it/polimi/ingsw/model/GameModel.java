@@ -8,10 +8,6 @@ import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.model.util.CircularArrayList;
 import it.polimi.ingsw.util.Observable;
 
-enum State {
-    INIT, MID, END
-}
-
 public class GameModel extends Observable<GameEvent> {
 
     private int numOfPlayer;
