@@ -21,6 +21,7 @@ public class ServerRmi extends UnicastRemoteObject implements Server {
 
     public ServerRmi(GameModel gameModel) throws RemoteException {
         super();
+        this.gameModel = gameModel;
         clients = new ArrayList<>();
     }
 
@@ -35,15 +36,15 @@ public class ServerRmi extends UnicastRemoteObject implements Server {
     public void register(Client client) throws RemoteException {
         if(clients.isEmpty()){
             clients.add(client);
-            this.gameModel = new GameModel();
-            this.gameModel.addObserver((o, arg) -> {
+            controller = new Game(gameModel);
+            gameModel.addObserver((o, arg) -> {
                 try {
+                    System.out.println("CALLED 2");
                     client.update(new GameModelView(gameModel), arg);
                 } catch (RemoteException e) {
                     System.err.println("Unable to update the client: " + e.getMessage() + ". Skipping the update...");
                 }
             });
-            this.controller = new Game(gameModel);
         }else if(clients.size() < gameModel.getNumOfPlayer()){
             clients.add(client);
             this.gameModel.addObserver((o, arg) -> {

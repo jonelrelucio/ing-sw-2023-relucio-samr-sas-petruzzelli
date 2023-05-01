@@ -1,6 +1,7 @@
 package it.polimi.ingsw.model;
 
 import it.polimi.ingsw.distributed.events.NewGame;
+import it.polimi.ingsw.distributed.events.ViewEvents.WaitingForPlayersEvent;
 import it.polimi.ingsw.distributed.events.modelEvents.*;
 import it.polimi.ingsw.model.bag.PersonalGoalCardBag;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCardDeck;
@@ -48,7 +49,7 @@ public class GameModel extends Observable<GameEvent> {
         this.board = new Board(numOfPlayer);
         this.commonGoalCardDeck = new CommonGoalCardDeck(numOfPlayer);
         this.playerList.add(new Player(nickname, PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayer), board));
-        notifyObservers(new NewGame(numOfPlayer, nickname));
+        setChangedAndNotifyObservers(new WaitingForPlayersEvent(true));
     }
 
     //TODO
@@ -106,9 +107,9 @@ public class GameModel extends Observable<GameEvent> {
         setChangedAndNotifyObservers(new SetCurrentPlayer());
     }
 
-    private void setChangedAndNotifyObservers(GameEvent arg) {
+    private void setChangedAndNotifyObservers(GameEvent event) {
         setChanged();
-        notifyObservers(arg);
+        notifyObservers(event);
     }
 
 }

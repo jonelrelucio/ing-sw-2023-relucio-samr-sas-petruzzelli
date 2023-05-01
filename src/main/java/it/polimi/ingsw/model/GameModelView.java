@@ -6,6 +6,7 @@ import it.polimi.ingsw.model.util.CircularArrayList;
 import java.io.Serializable;
 
 public class GameModelView implements Serializable {
+    static final long serialVersionUID = 1L;
     private final GameModel model;
 
     public GameModelView(GameModel model) {

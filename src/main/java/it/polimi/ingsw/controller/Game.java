@@ -15,12 +15,13 @@ public class Game {
         String eventName = event.getEventName();
         switch (eventName){
             case "NEW_GAME" -> createNewGame(event);
+            case "" -> createNewGame(event);
             case "UPDATE_PLAYER_SCORE" -> updateCurrentPlayerScore();
         }
     }
 
     public void createNewGame(GameEvent x) {
-        if (!(x instanceof NewGame event) ) throw new RuntimeException("Game Event is not A FirstPlayer instance");
+        if (!(x instanceof NewGame event) ) throw new RuntimeException("Game Event is not a FirstPlayer instance");
         System.out.print("Received game event");
         model.initGame(event.getNumOfPlayers(), event.getPlayerName());
     }

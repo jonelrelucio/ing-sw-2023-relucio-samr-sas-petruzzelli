@@ -3,8 +3,9 @@ package it.polimi.ingsw.client;
 
 
 import it.polimi.ingsw.AppClientRMI;
+import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.view.cli.CLI;
-import it.polimi.ingsw.client.view.gui.LauchGui;
+import it.polimi.ingsw.client.view.gui.GUI;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -13,7 +14,7 @@ import java.util.Scanner;
 public class LauchClient {
 
     private static final Scanner scanner = new Scanner(System.in);
-
+    private static View view;
     private static String userInput(){
         return scanner.nextLine();
     }
@@ -32,6 +33,23 @@ public class LauchClient {
                 "            __/ |                                              \n" +
                 "           |___/                                               \n"+"\u001b[0m");
 
+
+        System.out.println("Select visualization mode:\n" + "c <- Command Line Interface\n" +
+                "g <- Graphical User Interface" );
+        answer = userInput().toLowerCase();
+        while(!answer.equals("g" )&& !answer.equals("c")){
+            System.out.println("Invalid choice");
+            System.out.println("Select visualization mode:\n" + "c <- Command Line Interface\n" +
+                    "g <- Graphical User Interface" );
+            answer = userInput().toLowerCase();
+        }
+        if (answer.equals("c")) {
+            view = new CLI();
+        }
+        else if (answer.equals("g")) {
+            view = new GUI();
+        }
+
         System.out.println( "Select connection mode:\n" +
                 "s <- SOCKET\n" +
                 "r <- RMI" );
@@ -45,35 +63,15 @@ public class LauchClient {
         }
         if (answer.equals("r")) {
             try {
-                AppClientRMI.run();
+                AppClientRMI.run(view);
             } catch (RemoteException | NotBoundException e) {
                 throw new RuntimeException(e);
             }
+            view.run();
         }
         else if (answer.equals("s")) {
-            //istanzia s;
+            view.run();
         }
-
-        System.out.println("Select visualization mode:\n" + "c <- Command Line Interface\n" +
-                "g <- Graphical User Interface" );
-        answer = userInput().toLowerCase();
-        while(!answer.equals("g" )&& !answer.equals("c")){
-            System.out.println("Invalid choice");
-            System.out.println("Select visualization mode:\n" + "c <- Command Line Interface\n" +
-                    "g <- Graphical User Interface" );
-            answer = userInput().toLowerCase();
-        }
-        if (answer.equals("c")) {
-            //ViewCLI cli = new ViewCLI();
-            //client = new Client(cli, "192.168.1.5", 5555);
-            //client.start();
-            CLI cli = new CLI();
-            cli.run();
-        }
-        else if (answer.equals("g")) {
-            LauchGui.main();
-        }
-
 
 
 

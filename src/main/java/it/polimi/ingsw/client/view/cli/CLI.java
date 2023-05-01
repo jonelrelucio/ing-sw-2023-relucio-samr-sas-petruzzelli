@@ -1,5 +1,6 @@
 package it.polimi.ingsw.client.view.cli;
 
+import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.view.cli.clicontroller.Utility;
 import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.events.NewGame;
@@ -11,7 +12,7 @@ import it.polimi.ingsw.util.Observable;
 import java.util.ArrayList;
 import java.util.Scanner;
 
-public class CLI extends Observable<GameEvent> implements Runnable {
+public class CLI extends Observable<GameEvent> implements View {
 
     GameModel model;
     static Scanner s = new Scanner(System.in);
@@ -75,7 +76,6 @@ public class CLI extends Observable<GameEvent> implements Runnable {
         System.out.println("Starting a new Game. Contacting server...");
         setChanged();
         notifyObservers(new NewGame(numOfPlayers, username));
-        Utility.printLoading();
     }
 
     public void waitForPlayers(GameEvent x) {
@@ -96,8 +96,9 @@ public class CLI extends Observable<GameEvent> implements Runnable {
     }
 
 
-
+    @Override
     public void handleViewEvent(GameModelView modelView, GameEvent event) {
+        System.out.println("WAITING EVENT RECEIVED");
         String eventName = event.getEventName();
         switch (eventName){
             case "WAITING_PLAYERS" -> waitForPlayers(event);
