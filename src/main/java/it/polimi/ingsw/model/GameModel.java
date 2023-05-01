@@ -10,7 +10,7 @@ import it.polimi.ingsw.util.Observable;
 
 public class GameModel extends Observable<GameEvent> {
 
-    public boolean endGame;
+    private boolean endGame;
     private int numOfPlayer;
     private CircularArrayList<Player> playerList;
     private CommonGoalCardDeck commonGoalCardDeck;
