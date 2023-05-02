@@ -57,6 +57,7 @@ public class ServerRmi extends UnicastRemoteObject implements Server {
                     System.err.println("Unable to update the client: " + e.getMessage() + ". Skipping the update...");
                 }
             });
+
         }
     }
 

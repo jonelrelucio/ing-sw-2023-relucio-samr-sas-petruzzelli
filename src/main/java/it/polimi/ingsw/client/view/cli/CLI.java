@@ -19,40 +19,6 @@ public class CLI extends Observable<GameEvent> implements View {
     private String playerNickname;
     static Scanner s = new Scanner(System.in);
 
-    @Override
-    public void newGame() {
-        System.out.println("Welcome to Myshelfie");
-        System.out.println("1 <- Create Game");
-        System.out.println("2 <- Exit game");
-        int input;
-        do {
-            input = Utility.getNumInput();
-            if (input <= 0 || input >= 4 ) System.out.println(Const.RED_BOLD_BRIGHT +"Invalid input. Enter a number from 1 to 2."+Const.RESET);
-        }   while(input <= 0 || input >= 4  );
-        switch (input) {
-            case 1 -> createNewGame();
-            case 3 -> System.exit(0);
-        }
-        listenPlayer();
-    }
-
-    @Override
-    public void joinGame() {
-        System.out.println("A Game lobby is already running.");
-        System.out.println("1 <- Join Game");
-        System.out.println("2 <- Exit game");
-
-        int input;
-        do {
-            input = Utility.getNumInput();
-            if (input <= 0 || input >= 4 ) System.out.println(Const.RED_BOLD_BRIGHT +"Invalid input. Enter a number from 1 to 2."+Const.RESET);
-        }   while(input <= 0 || input >= 4  );
-        switch (input) {
-            case 1 -> joinExistingGame();
-            case 3 -> System.exit(0);
-        }
-        listenPlayer();
-    }
 
     @Override
     public void handleViewEvent( GameEvent event) {
@@ -100,19 +66,21 @@ public class CLI extends Observable<GameEvent> implements View {
         return numOfPlayers;
     }
 
-    public void createNewGame() {
+    @Override
+    public void newGame() {
         String username = askPlayerName();
         int numOfPlayers = askNumOfPlayers();
         System.out.println("Contacting server...");
         setChangedAndNotifyObservers(new NewGameEvent(numOfPlayers, username));
     }
 
-    public void joinExistingGame() {
+    @Override
+    public void joinGame() {
         String username = askPlayerName();
         setChangedAndNotifyObservers(new AddPlayer(username));
     }
 
-    private void listenPlayer() {
+    private void listenToPlayerCommands() {
         String currentPlayer = controllerPrint.getCurrentPlayer();
         String command;
         if (currentPlayer.equals(playerNickname)) System.out.println("It's your turn!");
@@ -126,10 +94,10 @@ public class CLI extends Observable<GameEvent> implements View {
             if (command.equals("+selectTiles")) selectTile();
         }
         else if (command.equals("+help")) printHelp(currentPlayer);
-       // else if (command.equals("+showPersonalGoalCard")) getPersonalGoalCard();
+        //else if (command.equals("+showPersonalGoalCard")) getPersonalGoalCard();
         //else if (command.equals("+showCanBeSelectedTiles")) controllerPrint.showAvailableTiles();
         //TODO EXIT
-        else listenPlayer();
+        else listenToPlayerCommands();
     }
 
     private void printHelp(String currentPlayer ){
@@ -213,7 +181,7 @@ public class CLI extends Observable<GameEvent> implements View {
         notifyObservers(arg);
     }
 
-    public static void main(String[] args) {
+    //public static void main(String[] args) {
 
         /*final ItemTile[][] groupOfTwo =
                 {       {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
@@ -274,6 +242,6 @@ public class CLI extends Observable<GameEvent> implements View {
 
         view.printAll();*/
 
-    }
+    //}
 
 }
