@@ -1,14 +1,15 @@
 package it.polimi.ingsw.controller;
 
-import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.events.GameEvent;
-import it.polimi.ingsw.distributed.events.NewGame;
-import it.polimi.ingsw.distributed.events.modelEvents.AddPlayer;
+import it.polimi.ingsw.distributed.events.controllerEvents.NewGame;
+import it.polimi.ingsw.distributed.events.controllerEvents.AddPlayer;
 import it.polimi.ingsw.model.GameModel;
-import it.polimi.ingsw.model.State;
+
+import java.util.Collections;
 
 public class Game {
     GameModel model;
+    private boolean gameStarted;
 
     public Game(GameModel model) {
         this.model = model;
@@ -19,6 +20,7 @@ public class Game {
         switch (eventName){
             case "NEW_GAME" -> createNewGame(event);
             case "ADD_PLAYER" -> addNewPlayer(event);
+            case "START_GAME" -> startGame();
             case "UPDATE_PLAYER_SCORE" -> updateCurrentPlayerScore();
         }
     }
@@ -33,6 +35,18 @@ public class Game {
         if (!(x instanceof AddPlayer event) ) throw new RuntimeException("Game Event is not a AddPlayer instance");
         model.addNewPlayer(event.getUsername());
     }
+
+    public void startGame() {
+        // TODO MAY BREAK IF MULTIPLE THREAD
+        if(!gameStarted){
+            gameStarted = true;
+            Collections.shuffle(model.getPlayerList());
+            model.initCurrentPlayer();
+        }
+    }
+
+
+
 
 
     /**

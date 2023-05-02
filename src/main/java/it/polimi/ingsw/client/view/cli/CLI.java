@@ -1,20 +1,23 @@
 package it.polimi.ingsw.client.view.cli;
 
 import it.polimi.ingsw.client.view.View;
+import it.polimi.ingsw.client.view.cli.clicontroller.ControllerPrint;
 import it.polimi.ingsw.client.view.cli.clicontroller.Utility;
 import it.polimi.ingsw.distributed.events.GameEvent;
-import it.polimi.ingsw.distributed.events.NewGame;
+import it.polimi.ingsw.distributed.events.ViewEvents.InitGame;
+import it.polimi.ingsw.distributed.events.controllerEvents.NewGame;
+import it.polimi.ingsw.distributed.events.controllerEvents.StartGameEvent;
 import it.polimi.ingsw.distributed.events.ViewEvents.WaitingForPlayersEvent;
 import it.polimi.ingsw.distributed.events.ViewEvents.WaitingToJoin;
-import it.polimi.ingsw.distributed.events.modelEvents.AddPlayer;
-import it.polimi.ingsw.model.GameModel;
+import it.polimi.ingsw.distributed.events.controllerEvents.AddPlayer;
 import it.polimi.ingsw.util.Observable;
 
 import java.util.Scanner;
 
 public class CLI extends Observable<GameEvent> implements View {
 
-    GameModel model;
+    ControllerPrint controllerPrint = new ControllerPrint();
+    private String playerNickname;
     static Scanner s = new Scanner(System.in);
 
     @Override
@@ -48,6 +51,10 @@ public class CLI extends Observable<GameEvent> implements View {
             case 1 -> joinExistingGame();
             case 3 -> System.exit(0);
         }
+    }
+
+    private void setPlayerNickname(String nickname) {
+        this.playerNickname = playerNickname;
     }
 
     private int getNumInput(){
@@ -85,23 +92,39 @@ public class CLI extends Observable<GameEvent> implements View {
         String username = askPlayerName();
         int numOfPlayers = askNumOfPlayers();
         System.out.println("Contacting server...");
-        setChanged();
-        notifyObservers(new NewGame(numOfPlayers, username));
+        setChangedAndNotifyObservers(new NewGame(numOfPlayers, username));
     }
 
     public void joinExistingGame() {
         String username = askPlayerName();
-        setChanged();
-        notifyObservers(new AddPlayer(username));
+        setChangedAndNotifyObservers(new AddPlayer(username));
     }
 
-    public void waitForPlayers(GameEvent x) {
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+    private void waitForPlayers(GameEvent x) {
         if ( !(x instanceof WaitingForPlayersEvent event)  ) throw new IllegalArgumentException("Game Event is not of instance WaitingForPlayerEvent");
+        setPlayerNickname(event.getConnectedPlayer());
         if (event.remainingPlayers() == 0) {
             System.out.println(" ");
-            System.out.println(" ");
             System.out.println("Starting new Game.");
-            System.out.println(" ");
+            setChangedAndNotifyObservers(new StartGameEvent());
         }
         else {
             String multiple = event.remainingPlayers() == 1? "" : "s";
@@ -115,12 +138,19 @@ public class CLI extends Observable<GameEvent> implements View {
         System.out.println("\rGame lobby is full. Please wait...");
     }
 
+    private void initPrint(GameEvent x) {
+        if ( !(x instanceof InitGame event)  ) throw new IllegalArgumentException("Game Event is not of instance WaitingToJoinEvent");
+        controllerPrint.init(event.getBoardMatrix(), event.getPlayerList(), event.getBookshelfList(), event.getCanBeSelectedCoordinates(), event.getSelectedCoordinates(), event.getCurrentPlayer());
+        controllerPrint.printAll();
+    }
+
     @Override
     public void handleViewEvent( GameEvent event) {
         String eventName = event.getEventName();
         switch (eventName){
             case "WAITING_PLAYERS" -> waitForPlayers(event);
             case "WAITING_TO_JOIN" -> waitingToJoin(event);
+            case "INIT_GAME" -> initPrint(event);
         }
     }
 
@@ -129,7 +159,10 @@ public class CLI extends Observable<GameEvent> implements View {
 
 
 
-
+    private void setChangedAndNotifyObservers(GameEvent arg) {
+        setChanged();
+        notifyObservers(arg);
+    }
 
     public static void main(String[] args) {
 

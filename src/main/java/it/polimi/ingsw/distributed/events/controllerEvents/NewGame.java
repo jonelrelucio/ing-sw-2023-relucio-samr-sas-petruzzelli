@@ -1,5 +1,7 @@
-package it.polimi.ingsw.distributed.events;
+package it.polimi.ingsw.distributed.events.controllerEvents;
 
+
+import it.polimi.ingsw.distributed.events.GameEvent;
 
 public class NewGame extends GameEvent {
     private String playerName;

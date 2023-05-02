@@ -1,8 +1,7 @@
 package it.polimi.ingsw.model;
 
-import it.polimi.ingsw.distributed.events.NewGame;
+import it.polimi.ingsw.distributed.events.ViewEvents.InitGame;
 import it.polimi.ingsw.distributed.events.ViewEvents.WaitingForPlayersEvent;
-import it.polimi.ingsw.distributed.events.ViewEvents.WaitingToJoin;
 import it.polimi.ingsw.distributed.events.modelEvents.*;
 import it.polimi.ingsw.model.bag.PersonalGoalCardBag;
 import it.polimi.ingsw.model.commonGoalCard.CommonGoalCardDeck;
@@ -55,9 +54,10 @@ public class GameModel extends Observable<GameEvent> {
         setChangedAndNotifyObservers(new WaitingForPlayersEvent(false, numOfPlayer - playerList.size(), username));
     }
 
-
-    //TODO
-    public void initCurrentPlayer() { this.currentPlayer = playerList.get(0); }
+    public void initCurrentPlayer() {
+        this.currentPlayer = playerList.get(0);
+        setChangedAndNotifyObservers(new InitGame(board, playerList,currentPlayer.getNickname(), board.getCanBeSelectedCoordinates(), board.getSelectedCoordinates()));
+    }
     public Player getWinner() { if(!currentPlayer.isWinner()) throw new IllegalCallerException(); return currentPlayer; }
     public void updateNextPlayer() { this.currentPlayer = playerList.get(playerList.indexOf(this.currentPlayer)+1); }
     public void updateNumOfRounds() { this.numOfRounds++; }

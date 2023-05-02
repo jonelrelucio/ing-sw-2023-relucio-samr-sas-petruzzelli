@@ -21,4 +21,5 @@ public class WaitingForPlayersEvent extends GameEvent {
     public int remainingPlayers() { return remainingPlayers; }
 
     public String getConnectedPlayer() { return connectedPlayer; }
+
 }

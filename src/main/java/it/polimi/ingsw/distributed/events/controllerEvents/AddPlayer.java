@@ -1,4 +1,4 @@
-package it.polimi.ingsw.distributed.events.modelEvents;
+package it.polimi.ingsw.distributed.events.controllerEvents;
 
 import it.polimi.ingsw.distributed.events.GameEvent;
 
