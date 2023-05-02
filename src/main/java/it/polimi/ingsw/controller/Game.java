@@ -1,8 +1,10 @@
 package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.distributed.events.GameEvent;
+import it.polimi.ingsw.distributed.events.ViewEvents.UpdateCanBeSelectedTilesEvent;
 import it.polimi.ingsw.distributed.events.controllerEvents.NewGame;
 import it.polimi.ingsw.distributed.events.controllerEvents.AddPlayer;
+import it.polimi.ingsw.distributed.events.controllerEvents.SelectCoordinatesEvent;
 import it.polimi.ingsw.model.GameModel;
 
 import java.util.Collections;
@@ -21,8 +23,15 @@ public class Game {
             case "NEW_GAME" -> createNewGame(event);
             case "ADD_PLAYER" -> addNewPlayer(event);
             case "START_GAME" -> startGame();
-            case "UPDATE_PLAYER_SCORE" -> updateCurrentPlayerScore();
+            case "SELECT_COORDINATES" -> selectCoordinates(event);
         }
+    }
+
+    private void selectCoordinates(GameEvent x) {
+        if (!(x instanceof SelectCoordinatesEvent event) ) throw new RuntimeException("Game Event is not a SelectCoordinates instance");
+        model.getCurrentPlayer().selectCoordinates(new int[] {event.getX(), event.getY()});
+        //TODO COULD BE WRONG TO CALL SET CHANGED AND NOTIFY OBSERVERS AND MAYBE SHOULD CHANGE AND CREATE A NEW EVENT FOR THIS
+        model.setChangedAndNotifyObservers(new UpdateCanBeSelectedTilesEvent(model.getBoard().getCanBeSelectedCoordinates(), model.getBoard().getSelectedCoordinates()));
     }
 
     public void createNewGame(GameEvent x) {
@@ -49,17 +58,6 @@ public class Game {
 
 
 
-    /**
-     * Updates the score of the current player
-     */
-    public void updateCurrentPlayerScore() {
-        int score = 0;
-        score += model.getCurrentPlayer().getBookshelf().getScore();
-        score += model.getCommonGoalCardDeck().getScore(model.getCurrentPlayer());
-        score += model.getCurrentPlayer().getPersonalGoalCard().getScore(model.getCurrentPlayer().getBookshelf().getBookshelfMatrix());
-        if (model.getCurrentPlayer().isWinner()) score += model.getCurrentPlayer().getEndGameToken();
-        model.getCurrentPlayer().setScore(score);
-    }
 
 //
 //    /**

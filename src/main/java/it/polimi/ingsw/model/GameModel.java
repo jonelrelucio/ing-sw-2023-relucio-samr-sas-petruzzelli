@@ -106,7 +106,21 @@ public class GameModel extends Observable<GameEvent> {
         setChangedAndNotifyObservers(new SetCurrentPlayer());
     }
 
-    private void setChangedAndNotifyObservers(GameEvent arg) {
+
+    /**
+     * Updates the score of the current player
+     */
+    public void updateCurrentPlayerScore() {
+        int score = 0;
+        score += currentPlayer.getBookshelf().getScore();
+        score += commonGoalCardDeck.getScore(currentPlayer);
+        score += getCurrentPlayer().getPersonalGoalCard().getScore(currentPlayer.getBookshelf().getBookshelfMatrix());
+        if (currentPlayer.isWinner()) score += currentPlayer.getEndGameToken();
+        currentPlayer.setScore(score);
+    }
+
+    //TODO could be private
+    public void setChangedAndNotifyObservers(GameEvent arg) {
         setChanged();
         notifyObservers(arg);
     }

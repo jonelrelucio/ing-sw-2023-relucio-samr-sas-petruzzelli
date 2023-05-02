@@ -144,4 +144,18 @@ public class ControllerPrint {
     }
 
 
+    public void printCanBeSelectedTiles() {
+        System.out.println("Can be selected Tiles coordinates: ");
+        for ( int[] coordinates : canBeSelectedCoordinates ){
+            System.out.printf("     [%d %d]  ", coordinates[0], coordinates[1]);
+        }
+    }
+
+    public void setCanBeSelectedCoordinates(ArrayList<int[]> canBeSelectedCoordinates) {
+        this.canBeSelectedCoordinates = canBeSelectedCoordinates;
+    }
+
+    public void setSelectedCoordinates(ArrayList<int[]> selectedCoordinates) {
+        this.selectedCoordinates = selectedCoordinates;
+    }
 }
