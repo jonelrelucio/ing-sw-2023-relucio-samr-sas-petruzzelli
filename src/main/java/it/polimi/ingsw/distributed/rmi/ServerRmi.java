@@ -3,7 +3,7 @@ package it.polimi.ingsw.distributed.rmi;
 import it.polimi.ingsw.controller.Game;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
-import it.polimi.ingsw.distributed.events.ViewEvents.WaitingToJoin;
+import it.polimi.ingsw.distributed.events.ViewEvents.FullGameLobbyEvent;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.distributed.events.GameEvent;
 
@@ -46,7 +46,7 @@ public class ServerRmi extends UnicastRemoteObject implements Server {
             });
         } else {
             // TODO: Find a better implementation (Client size is changed outside the while loop or maybe add a check function for the clients size)
-            if(clients.size() >= gameModel.getNumOfPlayer()) client.update(new WaitingToJoin(true));
+            if(clients.size() >= gameModel.getNumOfPlayer()) client.update(new FullGameLobbyEvent(true));
             while (clients.size() >= gameModel.getNumOfPlayer()) {
             }
             clients.add(client);

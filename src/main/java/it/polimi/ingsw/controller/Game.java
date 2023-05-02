@@ -2,7 +2,7 @@ package it.polimi.ingsw.controller;
 
 import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.events.ViewEvents.UpdateCanBeSelectedTilesEvent;
-import it.polimi.ingsw.distributed.events.controllerEvents.NewGame;
+import it.polimi.ingsw.distributed.events.controllerEvents.NewGameEvent;
 import it.polimi.ingsw.distributed.events.controllerEvents.AddPlayer;
 import it.polimi.ingsw.distributed.events.controllerEvents.SelectCoordinatesEvent;
 import it.polimi.ingsw.model.GameModel;
@@ -35,7 +35,7 @@ public class Game {
     }
 
     public void createNewGame(GameEvent x) {
-        if (!(x instanceof NewGame event) ) throw new RuntimeException("Game Event is not a FirstPlayer instance");
+        if (!(x instanceof NewGameEvent event) ) throw new RuntimeException("Game Event is not a FirstPlayer instance");
         System.out.print("Received game event");
         model.initGame(event.getNumOfPlayers(), event.getPlayerName());
     }

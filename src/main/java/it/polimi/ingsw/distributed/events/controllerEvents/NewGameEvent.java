@@ -3,11 +3,11 @@ package it.polimi.ingsw.distributed.events.controllerEvents;
 
 import it.polimi.ingsw.distributed.events.GameEvent;
 
-public class NewGame extends GameEvent {
+public class NewGameEvent extends GameEvent {
     private String playerName;
     private Integer numOfPlayers;
 
-    public NewGame(int numOfPlayers, String playerName ) {
+    public NewGameEvent(int numOfPlayers, String playerName ) {
         super("NEW_GAME");
         this.playerName = playerName;
         this.numOfPlayers = numOfPlayers;

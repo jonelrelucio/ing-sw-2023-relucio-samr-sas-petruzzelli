@@ -158,4 +158,8 @@ public class ControllerPrint {
     public void setSelectedCoordinates(ArrayList<int[]> selectedCoordinates) {
         this.selectedCoordinates = selectedCoordinates;
     }
+
+    public String getCurrentPlayer() {
+        return currentPlayer;
+    }
 }
