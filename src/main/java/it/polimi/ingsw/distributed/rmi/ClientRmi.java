@@ -12,7 +12,7 @@ import java.rmi.server.RMIClientSocketFactory;
 import java.rmi.server.RMIServerSocketFactory;
 import java.rmi.server.UnicastRemoteObject;
 
-public class ClientRmi extends UnicastRemoteObject implements Client {
+public class ClientRmi extends UnicastRemoteObject implements Client, Runnable {
 
     View view;
 
@@ -36,6 +36,7 @@ public class ClientRmi extends UnicastRemoteObject implements Client {
 
     private void initialize(Server server) throws RemoteException {
         server.register(this);
+        view.isConnected(true);
         if (view instanceof CLI ) {
             CLI viewInstance = (CLI) view;
             viewInstance.addObserver((o, arg) -> {
@@ -45,8 +46,8 @@ public class ClientRmi extends UnicastRemoteObject implements Client {
                     System.err.println("Unable to update the server: " + e.getMessage() + ". Skipping the update...");
                 }
             });
-            if (server.getNumOfClients() == 1) view.newGame();
-            else view.joinGame();
+            view.isConnected(server.getNumOfClients() == 1);
+
         } else {
             GUI viewInstance = (GUI) view;
             //TODO: View is does not extend Observable yet
@@ -66,6 +67,11 @@ public class ClientRmi extends UnicastRemoteObject implements Client {
     @Override
     public void update( GameEvent event) {
         this.view.handleViewEvent( event);
+    }
+
+    @Override
+    public void run(){
+        view.run();
     }
 
 }

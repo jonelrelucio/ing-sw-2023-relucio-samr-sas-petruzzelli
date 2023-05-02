@@ -20,6 +20,11 @@ public class GUI extends Application implements View {
     public void joinGame() { launch(); }
 
     @Override
+    public void isConnected(boolean isConnected){
+        System.out.println(" ");
+    }
+
+    @Override
     public void handleViewEvent(GameEvent event) {
         //TODO
         System.out.println("DO SOMETHING");
@@ -34,6 +39,12 @@ public class GUI extends Application implements View {
         primaryStage.setOnCloseRequest(event -> System.exit(0));
         primaryStage.setResizable(false);
         primaryStage.show();
+    }
+
+    @Override
+    public void run() {
+        // TODO
+        System.out.println("");
     }
 
 

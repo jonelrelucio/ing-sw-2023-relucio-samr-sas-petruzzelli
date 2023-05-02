@@ -2,7 +2,6 @@ package it.polimi.ingsw.client.view.cli;
 
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.view.cli.clicontroller.ControllerPrint;
-import it.polimi.ingsw.client.view.cli.clicontroller.Utility;
 import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.events.ViewEvents.*;
 import it.polimi.ingsw.distributed.events.controllerEvents.NewGameEvent;
@@ -13,12 +12,25 @@ import it.polimi.ingsw.util.Observable;
 
 import java.util.Scanner;
 
-public class CLI extends Observable<GameEvent> implements View {
+public class CLI extends Observable<GameEvent> implements View, Runnable {
 
     ControllerPrint controllerPrint = new ControllerPrint();
     private String playerNickname;
     static Scanner s = new Scanner(System.in);
+    private boolean isConnected = false;
 
+    @Override
+    public void run() {
+        if (isConnected) {
+            newGame();
+        }
+        else joinGame();
+    }
+
+    @Override
+    public void isConnected(boolean isConnected) {
+        this.isConnected = isConnected;
+    }
 
     @Override
     public void handleViewEvent( GameEvent event) {
@@ -27,6 +39,7 @@ public class CLI extends Observable<GameEvent> implements View {
             case "WAITING_PLAYERS" -> waitForPlayers(event);
             case "WAITING_TO_JOIN" -> waitingToJoin(event);
             case "INIT_GAME" -> initPrint(event);
+            case "NEW_TURN_EVENT" -> listenToPlayerCommands(event);
             case "UPDATE_CAN_BE_SELECTED" -> updateCanBeSelectedTiles(event);
         }
     }
@@ -80,24 +93,24 @@ public class CLI extends Observable<GameEvent> implements View {
         setChangedAndNotifyObservers(new AddPlayer(username));
     }
 
-    private void listenToPlayerCommands() {
+    private void listenToPlayerCommands(GameEvent x) {
+        if (!(x instanceof NewTurnEvent event)  ) throw new IllegalArgumentException("Game Event is not of NewTurnEvent exception");
         String currentPlayer = controllerPrint.getCurrentPlayer();
         String command;
-        if (currentPlayer.equals(playerNickname)) System.out.println("It's your turn!");
+        if (currentPlayer.equals(event.getCurrentPlayer())) System.out.println("It's your turn!");
         System.out.println("Type: +help for available commands");
         do {
             s = new Scanner(System.in);
             command = s.nextLine();
             if (!command.startsWith("+")) System.out.println("Invalid command, try again...");
         }   while( !command.startsWith("+") );
-        if ( currentPlayer.equals((playerNickname)) ) {
+        if ( currentPlayer.equals((event.getCurrentPlayer())) ) {
             if (command.equals("+selectTiles")) selectTile();
         }
         else if (command.equals("+help")) printHelp(currentPlayer);
         //else if (command.equals("+showPersonalGoalCard")) getPersonalGoalCard();
         //else if (command.equals("+showCanBeSelectedTiles")) controllerPrint.showAvailableTiles();
         //TODO EXIT
-        else listenToPlayerCommands();
     }
 
     private void printHelp(String currentPlayer ){
@@ -155,7 +168,6 @@ public class CLI extends Observable<GameEvent> implements View {
         setPlayerNickname(event.getConnectedPlayer());
         if (event.remainingPlayers() == 0) {
             System.out.println(" ");
-            System.out.println("Starting new Game.");
             setChangedAndNotifyObservers(new StartGameEvent());
         }
         else {
