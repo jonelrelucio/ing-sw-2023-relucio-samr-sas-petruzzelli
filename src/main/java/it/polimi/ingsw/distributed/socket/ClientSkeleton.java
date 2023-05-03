@@ -32,6 +32,11 @@ public class ClientSkeleton implements Client {
 
     }
 
+    @Override
+    public void printFullLobby() {
+
+    }
+
     public void receive(Server server) throws RemoteException{
 
     }

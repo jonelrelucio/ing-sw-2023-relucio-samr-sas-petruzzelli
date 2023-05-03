@@ -7,4 +7,6 @@ import java.rmi.RemoteException;
 
 public interface Client extends Remote {
     void update( GameEvent event) throws RemoteException;
+
+    void printFullLobby() throws RemoteException;
 }

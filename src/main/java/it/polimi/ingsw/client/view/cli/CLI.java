@@ -4,7 +4,6 @@ import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.view.cli.clicontroller.ControllerPrint;
 import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.events.ViewEvents.*;
-import it.polimi.ingsw.distributed.events.controllerEvents.NewGameEvent;
 import it.polimi.ingsw.distributed.events.controllerEvents.SelectCoordinatesEvent;
 import it.polimi.ingsw.distributed.events.controllerEvents.StartGameEvent;
 import it.polimi.ingsw.distributed.events.controllerEvents.AddPlayer;
@@ -15,21 +14,10 @@ import java.util.Scanner;
 public class CLI extends Observable<GameEvent> implements View, Runnable {
 
     ControllerPrint controllerPrint = new ControllerPrint();
-    private String playerNickname;
     static Scanner s = new Scanner(System.in);
-    private boolean isConnected = false;
 
     @Override
     public void run() {
-        if (isConnected) {
-            newGame();
-        }
-        else joinGame();
-    }
-
-    @Override
-    public void isConnected(boolean isConnected) {
-        this.isConnected = isConnected;
     }
 
     @Override
@@ -44,11 +32,8 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
         }
     }
 
-    private void setPlayerNickname(String nickname) {
-        this.playerNickname = nickname;
-    }
 
-    private int getNumInput(){
+    public int getNumInput(){
         try {
             return Integer.parseInt(s.nextLine());
         }
@@ -69,29 +54,6 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
         return username;
     }
 
-    private int askNumOfPlayers() {
-        int numOfPlayers;
-        System.out.print("Please choose number of players: ");
-        do {
-            numOfPlayers = getNumInput();
-            if (numOfPlayers <= 1 || numOfPlayers >= 5 ) System.out.println("Invalid input. Only 2 to 4 Players can play the game.");
-        }   while(numOfPlayers <= 1 || numOfPlayers >= 5  );
-        return numOfPlayers;
-    }
-
-    @Override
-    public void newGame() {
-        String username = askPlayerName();
-        int numOfPlayers = askNumOfPlayers();
-        System.out.println("Contacting server...");
-        setChangedAndNotifyObservers(new NewGameEvent(numOfPlayers, username));
-    }
-
-    @Override
-    public void joinGame() {
-        String username = askPlayerName();
-        setChangedAndNotifyObservers(new AddPlayer(username));
-    }
 
     private void listenToPlayerCommands(GameEvent x) {
         if (!(x instanceof NewTurnEvent event)  ) throw new IllegalArgumentException("Game Event is not of NewTurnEvent exception");
@@ -114,9 +76,7 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
     }
 
     private void printHelp(String currentPlayer ){
-        if (currentPlayer.equals(playerNickname)) {
-            System.out.println("+selectTiles        selects from 1 to 3 available tiles from the board.");
-        }
+        System.out.println("+selectTiles        selects from 1 to 3 available tiles from the board.");
         System.out.println("+showPersonalGoalCard   prints own personal goal Card.");
         System.out.println("+showCanBeSelectedTiles prints the available tiles that can be selected.");
         //TODO
@@ -165,7 +125,6 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
 
     private void waitForPlayers(GameEvent x) {
         if ( !(x instanceof WaitingForPlayersEvent event)  ) throw new IllegalArgumentException("Game Event is not of instance WaitingForPlayerEvent");
-        setPlayerNickname(event.getConnectedPlayer());
         if (event.remainingPlayers() == 0) {
             System.out.println(" ");
             setChangedAndNotifyObservers(new StartGameEvent());
@@ -178,7 +137,6 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
     }
 
     private void waitingToJoin(GameEvent x) {
-        if ( !(x instanceof FullGameLobbyEvent event)  ) throw new IllegalArgumentException("Game Event is not of instance WaitingToJoinEvent");
         System.out.println("\rGame lobby is full. Please wait...");
     }
 

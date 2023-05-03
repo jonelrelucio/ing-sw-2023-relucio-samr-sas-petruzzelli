@@ -1,5 +1,6 @@
 package it.polimi.ingsw;
 
+import it.polimi.ingsw.distributed.ClientsHandler;
 import it.polimi.ingsw.model.GameModel;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.rmi.ServerRmi;

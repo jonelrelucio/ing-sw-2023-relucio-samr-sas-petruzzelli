@@ -13,21 +13,16 @@ import java.io.IOException;
 public class GUI extends Application implements View {
 
     //TODO
-    @Override
-    public void newGame() { launch(); }
-
-    @Override
-    public void joinGame() { launch(); }
-
-    @Override
-    public void isConnected(boolean isConnected){
-        System.out.println(" ");
-    }
 
     @Override
     public void handleViewEvent(GameEvent event) {
         //TODO
         System.out.println("DO SOMETHING");
+    }
+
+    @Override
+    public int getNumInput() {
+        return 0;
     }
 
     @Override

@@ -9,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 public class ServerStub implements Server {
     private String ip;
@@ -50,6 +51,26 @@ public class ServerStub implements Server {
         }
     }
 
+    @Override
+    public boolean isFirst(Client client) throws RemoteException {
+        return false;
+    }
+
+    @Override
+    public void setMaxNumOfClients(int maxNumOfClients) throws RemoteException {
+
+    }
+
+    @Override
+    public boolean canConnect(Client client) {
+        return false;
+    }
+
+    @Override
+    public ArrayList<Client> getClients() {
+        return null;
+    }
+
     public void receive(Client client) throws RemoteException {
 
     }
@@ -62,9 +83,4 @@ public class ServerStub implements Server {
         }
     }
 
-    @Override
-    public int getNumOfClients(){
-        //TODO
-        return 0;
-    }
 }

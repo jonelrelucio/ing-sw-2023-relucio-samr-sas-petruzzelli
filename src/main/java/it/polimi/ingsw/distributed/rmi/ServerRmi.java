@@ -15,14 +15,14 @@ import java.util.ArrayList;
 
 public class ServerRmi extends UnicastRemoteObject implements Server {
 
+    private ArrayList<Client> clients = new ArrayList<>();
+    private int maxNumOfClients;
     private GameModel gameModel;
     private Game controller;
-    private ArrayList<Client> clients;
 
     public ServerRmi(GameModel gameModel) throws RemoteException {
         super();
         this.gameModel = gameModel;
-        clients = new ArrayList<>();
     }
 
     public ServerRmi() throws RemoteException{ super();}
@@ -34,7 +34,8 @@ public class ServerRmi extends UnicastRemoteObject implements Server {
 
     @Override
     public void register(Client client) throws RemoteException {
-        if(clients.isEmpty()){
+
+
             clients.add(client);
             controller = new Game(gameModel);
             gameModel.addObserver((o, arg) -> {
@@ -44,21 +45,8 @@ public class ServerRmi extends UnicastRemoteObject implements Server {
                     System.err.println("Unable to update the client: " + e.getMessage() + ". Skipping the update...");
                 }
             });
-        } else {
-            // TODO: Find a better implementation (Client size is changed outside the while loop or maybe add a check function for the clients size)
-            if(clients.size() >= gameModel.getNumOfPlayer()) client.update(new FullGameLobbyEvent(true));
-            while (clients.size() >= gameModel.getNumOfPlayer()) {
-            }
-            clients.add(client);
-            this.gameModel.addObserver((o, arg) -> {
-                try {
-                    client.update(arg);
-                } catch (RemoteException e) {
-                    System.err.println("Unable to update the client: " + e.getMessage() + ". Skipping the update...");
-                }
-            });
 
-        }
+
     }
 
     @Override
@@ -67,8 +55,28 @@ public class ServerRmi extends UnicastRemoteObject implements Server {
     }
 
     @Override
-    public int getNumOfClients() {
-        return clients.size();
+    public boolean isFirst(Client client) {
+        return clients.isEmpty();
     }
+
+    @Override
+    public void setMaxNumOfClients(int numOfClients) throws RemoteException {
+        this.maxNumOfClients = numOfClients;
+
+        while (clients.size() != maxNumOfClients){
+            clients.get(clients.size()-1).printFullLobby();
+            clients.remove(clients.size()-1);
+        }
+    }
+
+    public boolean canConnect(Client client){
+        return clients.size() < maxNumOfClients;
+    }
+
+    @Override
+    public ArrayList<Client> getClients() {
+        return clients;
+    }
+
 
 }
