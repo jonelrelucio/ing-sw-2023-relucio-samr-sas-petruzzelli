@@ -34,6 +34,7 @@ public class ServerRmi extends UnicastRemoteObject implements Server {
 
     @Override
     public void register(Client client) throws RemoteException {
+        System.out.println("Invocato");
         if(clients.isEmpty()){
             clients.add(client);
             controller = new Game(gameModel);
