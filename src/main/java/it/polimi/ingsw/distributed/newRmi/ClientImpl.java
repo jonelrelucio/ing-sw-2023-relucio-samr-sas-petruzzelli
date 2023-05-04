@@ -21,10 +21,11 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
     public ClientImpl(View view) throws RemoteException {
         super();
         this.view = view;
-        run();
+        start();
     }
 
-    public void start() {
+    @Override
+    public void start() throws RemoteException {
         Registry registry = null;
         try {
             registry = LocateRegistry.getRegistry();
@@ -57,8 +58,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
         String username;
         do {
             username = view.askUsername().toLowerCase();
-            if (server.isUsernameAvailable(username)) view.printUsernameNotAvailable();
-        } while(server.isUsernameAvailable(username));
+            if (!server.isUsernameAvailable(username)) view.printMessage("The username is not Available. Try Again.");
+        } while(!server.isUsernameAvailable(username));
         this.username = username;
     }
 
@@ -70,7 +71,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
 
     @Override
     public void receiveFromServer(String message) {
-        view.printMessageFromServer(message);
+        view.printMessage(message);
     }
 
     @Override

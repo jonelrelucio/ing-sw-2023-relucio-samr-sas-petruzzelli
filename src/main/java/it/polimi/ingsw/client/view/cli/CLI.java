@@ -41,16 +41,11 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
         return username;
     }
 
-    @Override
-    public void printUsernameNotAvailable() {
-        System.out.println("Username already taken.");
-        System.out.println("Choose another username.");
-    }
 
     @Override
     public int askMaxNumOfPlayers() {
         int maxNumOfPlayers;
-        System.out.print("Please choose maximum number of players (from 2 to 4 players can join):");
+        System.out.println("Please choose maximum number of players (from 2 to 4 players can join):");
         do {
             s = new Scanner(System.in);
             maxNumOfPlayers = getNumInput();
@@ -60,7 +55,7 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
     }
 
     @Override
-    public void printMessageFromServer(String string) {
+    public void printMessage(String string) {
         System.out.println(string);
     }
 

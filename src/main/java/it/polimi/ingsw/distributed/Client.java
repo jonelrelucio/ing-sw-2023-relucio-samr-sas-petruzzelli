@@ -5,9 +5,9 @@ import it.polimi.ingsw.distributed.events.GameEvent;
 import java.rmi.Remote;
 import java.rmi.RemoteException;
 
-public interface Client extends Remote, Runnable {
+public interface Client extends Remote {
 
-    void start();
+    void start() throws RemoteException;
 
     void update( GameEvent event) throws RemoteException;
 

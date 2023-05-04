@@ -18,6 +18,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     private GameModel gameModel;
     private Game gameController;
     private int maxConnections = 0;
+    private boolean alreadyAsked = false;
+    private boolean gameStarted = false;
 
     public ServerImpl() throws RemoteException {
         super();
@@ -35,21 +37,32 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 
     @Override
     public void register(Client client, String username) throws RemoteException {
-        // TODO:  check if it is thread safe or not;
-        ClientHandler newClientHandler = new ClientHandler(client, username);
-        clientHandlers.add(newClientHandler);
-        checkConnections(client, newClientHandler);
+        if (maxConnections <= clientHandlers.size() && maxConnections != 0) gameStarted = true;
+        if (!gameStarted){
+            // TODO:  check if it is thread safe or not;
+            ClientHandler newClientHandler = new ClientHandler(client, username);
+            clientHandlers.add(newClientHandler);
+            manageConnection(client, newClientHandler);
+        }
+        else client.receiveFromServer("The game has already started. Come back later...");
     }
 
-    private void checkConnections(Client client, ClientHandler newClientHandler) throws RemoteException {
-        sendMessageToClient(clientHandlers.get(0).getClient(), "You are the first client to enter");
-        int maxConnections = clientHandlers.get(0).getClient().askMaxNumOfPlayers();
-        for (ClientHandler clientHandler : clientHandlers){
-            sendMessageToClient(clientHandler.getClient(), String.format("%s has entered the waiting room.", newClientHandler.getUsername() ));
-            if (maxConnections == 0) sendMessageToClient(clientHandler.getClient(), String.format("Added to the waiting list. Waiting for %s to set number of players.", clientHandlers.get(0).getUsername() ));
-            else if (clientHandlers.size() < maxConnections ) sendMessageToClient(clientHandler.getClient(), String.format("%d more players remaining", maxConnections - clientHandlers.size() ));
+    private void manageConnection(Client client, ClientHandler newClientHandler) throws RemoteException {
+        if ( !alreadyAsked) {
+            alreadyAsked = true;
+            sendMessageToClient(clientHandlers.get(0).getClient(), "You are the first client to enter");
+            maxConnections = clientHandlers.get(0).getClient().askMaxNumOfPlayers();
         }
-        if(maxConnections != 0) startGame();
+        for (ClientHandler clientHandler : clientHandlers){
+            if (maxConnections == 0) {
+                sendMessageToClient(clientHandler.getClient(), String.format("%s joined the waiting list. Waiting for %s to set number of players.",newClientHandler.getUsername(), clientHandlers.get(0).getUsername() ));
+            }
+            else if (clientHandlers.size() < maxConnections ) sendMessageToClient(clientHandler.getClient(), String.format("%s joined the waiting list. %d more players remaining", newClientHandler.getUsername(), maxConnections - clientHandlers.size() ));
+        }
+        if(maxConnections == 0) sendMessageToClient(clientHandlers.get(0).getClient(), "Please enter a maximum number of players: ");
+        if(maxConnections != 0) {
+            startGame();
+        }
     }
 
     private void startGame() throws RemoteException {
@@ -69,7 +82,6 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         }
         return playerList;
     }
-
 
     private void removeFromWaitingList() throws RemoteException {
         while (clientHandlers.size() != maxConnections){

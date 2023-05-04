@@ -36,10 +36,6 @@ public class GUI extends Application implements View {
         return null;
     }
 
-    @Override
-    public void printUsernameNotAvailable() {
-
-    }
 
     @Override
     public int askMaxNumOfPlayers() {
@@ -47,7 +43,7 @@ public class GUI extends Application implements View {
     }
 
     @Override
-    public void printMessageFromServer(String string) {
+    public void printMessage(String string) {
 
     }
 }
