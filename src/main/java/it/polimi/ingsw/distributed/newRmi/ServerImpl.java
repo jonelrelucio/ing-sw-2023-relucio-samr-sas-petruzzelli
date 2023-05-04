@@ -19,11 +19,11 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     private Game gameController;
     private int maxConnections = 0;
     private boolean alreadyAsked = false;
-    private boolean gameStarted = false;
 
     public ServerImpl() throws RemoteException {
         super();
         clientHandlers = new ArrayList<>();
+        start();
     }
 
     public void start() throws RemoteException {
@@ -37,14 +37,11 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 
     @Override
     public void register(Client client, String username) throws RemoteException {
-        if (maxConnections <= clientHandlers.size() && maxConnections != 0) gameStarted = true;
-        if (!gameStarted){
-            // TODO:  check if it is thread safe or not;
-            ClientHandler newClientHandler = new ClientHandler(client, username);
-            clientHandlers.add(newClientHandler);
-            manageConnection(client, newClientHandler);
-        }
-        else client.receiveFromServer("The game has already started. Come back later...");
+        // TODO:  check if it is thread safe or not;
+        ClientHandler newClientHandler = new ClientHandler(client, username);
+        clientHandlers.add(newClientHandler);
+        manageConnection(client, newClientHandler);
+
     }
 
     private void manageConnection(Client client, ClientHandler newClientHandler) throws RemoteException {
@@ -103,8 +100,13 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     @Override
     public boolean isUsernameAvailable(String username) throws RemoteException{
         for (ClientHandler clientHandler : clientHandlers){
-            if (clientHandler.getUsername().equals(username)) return false;
+            if (clientHandler.getUsername().equals(username)) return true;
         }
-        return true;
+        return false;
+    }
+
+    @Override
+    public boolean canJoin() {
+        return maxConnections > clientHandlers.size() || maxConnections == 0;
     }
 }

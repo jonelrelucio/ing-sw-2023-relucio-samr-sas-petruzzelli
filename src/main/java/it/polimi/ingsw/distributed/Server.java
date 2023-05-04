@@ -11,4 +11,6 @@ public interface Server extends Remote {
     boolean isUsernameAvailable(String username) throws RemoteException;
 
     void start() throws RemoteException;
+
+    boolean canJoin() throws RemoteException;
 }

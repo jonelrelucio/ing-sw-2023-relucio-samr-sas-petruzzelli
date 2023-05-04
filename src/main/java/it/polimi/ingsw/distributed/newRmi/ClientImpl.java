@@ -38,7 +38,9 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
         } catch (NotBoundException | RemoteException e) {
             connectionError = true;
         }
-        if (!connectionError) {
+
+        if (!server.canJoin()) System.out.println("The game has already started. Come back later.");
+        else if (!connectionError) {
             try {
                 askUsername();
             } catch (RemoteException e) {
@@ -58,8 +60,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
         String username;
         do {
             username = view.askUsername().toLowerCase();
-            if (!server.isUsernameAvailable(username)) view.printMessage("The username is not Available. Try Again.");
-        } while(!server.isUsernameAvailable(username));
+            if (server.isUsernameAvailable(username)) view.printMessage("The username is not Available. Try Again.");
+        } while(server.isUsernameAvailable(username));
         this.username = username;
     }
 
