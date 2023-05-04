@@ -57,7 +57,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
             else if (clientHandlers.size() < maxConnections ) sendMessageToClient(clientHandler.getClient(), String.format("%s joined the waiting list. %d more players remaining", newClientHandler.getUsername(), maxConnections - clientHandlers.size() ));
         }
         if(maxConnections == 0) sendMessageToClient(clientHandlers.get(0).getClient(), "Please enter a maximum number of players: ");
-        if(maxConnections != 0) {
+        if(maxConnections != 0 && maxConnections == clientHandlers.size()) {
             startGame();
         }
     }
