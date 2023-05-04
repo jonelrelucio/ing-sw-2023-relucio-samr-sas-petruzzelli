@@ -1,9 +1,13 @@
 package it.polimi.ingsw.client.view;
 
-import it.polimi.ingsw.distributed.events.GameEvent;
 
 public interface View extends Runnable{
-    void handleViewEvent( GameEvent event);
 
-    int getNumInput();
+    String askUsername();
+
+    void printUsernameNotAvailable();
+
+    int askMaxNumOfPlayers();
+
+    void printMessageFromServer(String string);
 }

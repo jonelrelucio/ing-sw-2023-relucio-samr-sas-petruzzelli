@@ -1,9 +1,5 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.distributed.events.ViewEvents.InitGame;
-import it.polimi.ingsw.distributed.events.ViewEvents.NewTurnEvent;
-import it.polimi.ingsw.distributed.events.ViewEvents.WaitingForPlayersEvent;
-import it.polimi.ingsw.distributed.events.modelEvents.*;
 import it.polimi.ingsw.server.model.bag.PersonalGoalCardBag;
 import it.polimi.ingsw.server.model.commonGoalCard.CommonGoalCardDeck;
 import it.polimi.ingsw.distributed.events.GameEvent;
@@ -46,19 +42,15 @@ public class GameModel extends Observable<GameEvent> {
         this.board = new Board(numOfPlayer);
         this.commonGoalCardDeck = new CommonGoalCardDeck(numOfPlayer);
         this.playerList.add(new Player(username, PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayer), board));
-        setChangedAndNotifyObservers(new WaitingForPlayersEvent( true, numOfPlayer - 1, username));
     }
 
     public void addNewPlayer(String username){
         Player player = new Player(username, PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayer), board);
         playerList.add(player);
-        setChangedAndNotifyObservers(new WaitingForPlayersEvent(false, numOfPlayer - playerList.size(), username));
     }
 
     public void initCurrentPlayer() {
         this.currentPlayer = playerList.get(0);
-        setChangedAndNotifyObservers(new InitGame(board, playerList,currentPlayer.getNickname(), board.getCanBeSelectedCoordinates(), board.getSelectedCoordinates()));
-        setChangedAndNotifyObservers(new NewTurnEvent(currentPlayer.getNickname()));
     }
     public Player getWinner() { if(!currentPlayer.isWinner()) throw new IllegalCallerException(); return currentPlayer; }
     public void updateNextPlayer() { this.currentPlayer = playerList.get(playerList.indexOf(this.currentPlayer)+1); }
@@ -85,29 +77,22 @@ public class GameModel extends Observable<GameEvent> {
     }
     public void setPlayerList(CircularArrayList<Player> playerList) {
         this.playerList = playerList;
-        setChangedAndNotifyObservers(new SetPlayerList());
     }
     public void setCommonGoalCardDeck(CommonGoalCardDeck commonGoalCardDeck) {
         this.commonGoalCardDeck = commonGoalCardDeck;
-        setChangedAndNotifyObservers(new SetCommonGoalDeck());
     }
     public void setBoard(Board board) {
         this.board = board;
-        setChangedAndNotifyObservers(new SetBoard());
     }
     public void setState(State state) {
         this.state = state;
-        setChangedAndNotifyObservers(new SetState());
     }
     public void setNumOfRounds(int numOfRounds) {
         this.numOfRounds = numOfRounds;
-        setChangedAndNotifyObservers(new SetNumOfRounds());
     }
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
-        setChangedAndNotifyObservers(new SetCurrentPlayer());
     }
-
 
     /**
      * Updates the score of the current player

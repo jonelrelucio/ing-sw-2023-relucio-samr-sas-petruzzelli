@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client.view.cli.clicontroller;
+package it.polimi.ingsw.client.view.cli.cliController;
 
 import it.polimi.ingsw.client.view.cli.Const;
 import it.polimi.ingsw.server.model.ItemTile.ItemTileType;

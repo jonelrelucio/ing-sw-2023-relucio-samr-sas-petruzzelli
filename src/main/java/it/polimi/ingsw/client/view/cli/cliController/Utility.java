@@ -1,6 +1,5 @@
-package it.polimi.ingsw.client.view.cli.clicontroller;
+package it.polimi.ingsw.client.view.cli.cliController;
 
-import java.io.InputStream;
 import java.util.Scanner;
 
 public class Utility {

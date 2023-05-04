@@ -64,7 +64,7 @@ public class LauchClient {
         if (answer.equals("r")) {
             try {
                 AppClientRMI.run(view);
-            } catch (RemoteException | NotBoundException e) {
+            } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
         }

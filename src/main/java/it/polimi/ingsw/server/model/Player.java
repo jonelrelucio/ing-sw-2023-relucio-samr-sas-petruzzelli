@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import it.polimi.ingsw.distributed.events.GameEvent;
-import it.polimi.ingsw.distributed.events.controllerEvents.UpdatePlayerScore;
 import it.polimi.ingsw.server.model.ItemTile.ItemTileType;
 import it.polimi.ingsw.server.model.commonGoalCard.CommonGoalCard;
 import it.polimi.ingsw.server.model.ItemTile.ItemTile;
@@ -56,7 +55,6 @@ public class Player extends Observable<GameEvent> {
     // Setters
     public void setScore(int score) {
         this.score = score;
-        updateAndNotifyObservers(new UpdatePlayerScore());
     }
     public void setBookshelf(Bookshelf bookshelf) {this.bookshelf = bookshelf;}
     public void setPersonalGoalCard(PersonalGoalCard personalGoalCard) {this.personalGoalCard = personalGoalCard;}

@@ -1,59 +1,74 @@
 package it.polimi.ingsw.server.controller;
 
-import it.polimi.ingsw.distributed.events.GameEvent;
-import it.polimi.ingsw.distributed.events.ViewEvents.UpdateCanBeSelectedTilesEvent;
-import it.polimi.ingsw.distributed.events.controllerEvents.NewGameEvent;
-import it.polimi.ingsw.distributed.events.controllerEvents.AddPlayer;
-import it.polimi.ingsw.distributed.events.controllerEvents.SelectCoordinatesEvent;
+import it.polimi.ingsw.server.model.Board;
 import it.polimi.ingsw.server.model.GameModel;
+import it.polimi.ingsw.server.model.PersonalGoalCard;
+import it.polimi.ingsw.server.model.Player;
+import it.polimi.ingsw.server.model.bag.PersonalGoalCardBag;
+import it.polimi.ingsw.server.model.util.CircularArrayList;
 
-import java.util.Collections;
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+
 
 public class Game {
-    GameModel model;
+    GameModel gameModel;
     private boolean gameStarted;
 
+
     public Game(GameModel model) {
-        this.model = model;
+        this.gameModel = model;
     }
 
-    public void eventHandler( GameEvent event) {
-        String eventName = event.getEventName();
-        switch (eventName){
-            case "NEW_GAME" -> createNewGame(event);
-            case "ADD_PLAYER" -> addNewPlayer(event);
-            case "START_GAME" -> startGame();
-            case "SELECT_COORDINATES" -> selectCoordinates(event);
+    public void initGameModel(ArrayList<String> usernameList) {
+        CircularArrayList<Player> playerList = new CircularArrayList<>();
+        Board board = new Board(usernameList.size());
+        for (String username : usernameList) {
+            playerList.add(new Player(username, PersonalGoalCardBag.drawPersonalGoalCard(usernameList.size()), board ));
         }
+        gameModel.setPlayerList(playerList);
     }
 
-    private void selectCoordinates(GameEvent x) {
-        if (!(x instanceof SelectCoordinatesEvent event) ) throw new RuntimeException("Game Event is not a SelectCoordinates instance");
-        model.getCurrentPlayer().selectCoordinates(new int[] {event.getX(), event.getY()});
-        //TODO COULD BE WRONG TO CALL SET CHANGED AND NOTIFY OBSERVERS AND MAYBE SHOULD CHANGE AND CREATE A NEW EVENT FOR THIS
-        model.setChangedAndNotifyObservers(new UpdateCanBeSelectedTilesEvent(model.getBoard().getCanBeSelectedCoordinates(), model.getBoard().getSelectedCoordinates()));
+    public void start() {
+        System.out.println("Game Started.");
     }
 
-    public void createNewGame(GameEvent x) {
-        if (!(x instanceof NewGameEvent event) ) throw new RuntimeException("Game Event is not a FirstPlayer instance");
-        System.out.print("Received game event");
-        model.initGame(event.getNumOfPlayers(), event.getPlayerName());
-    }
-
-    public void addNewPlayer(GameEvent x) {
-        if (!(x instanceof AddPlayer event) ) throw new RuntimeException("Game Event is not a AddPlayer instance");
-        model.addNewPlayer(event.getUsername());
-    }
-
-    public void startGame() {
-        // TODO MAY BREAK IF MULTIPLE THREAD
-        if(!gameStarted){
-            gameStarted = true;
-            Collections.shuffle(model.getPlayerList());
-            model.initCurrentPlayer();
-        }
-    }
-
+//    TODO Manage game events
+//    public void eventHandler( GameEvent event) {
+//        String eventName = event.getEventName();
+//        switch (eventName){
+//            case "NEW_GAME" -> createNewGame(event);
+//            case "ADD_PLAYER" -> addNewPlayer(event);
+//            case "START_GAME" -> startGame();
+//            case "SELECT_COORDINATES" -> selectCoordinates(event);
+//        }
+//    }
+//
+//    private void selectCoordinates(GameEvent x) {
+//        if (!(x instanceof SelectCoordinatesEvent event) ) throw new RuntimeException("Game Event is not a SelectCoordinates instance");
+//        model.getCurrentPlayer().selectCoordinates(new int[] {event.getX(), event.getY()});
+//        model.setChangedAndNotifyObservers(new UpdateCanBeSelectedTilesEvent(model.getBoard().getCanBeSelectedCoordinates(), model.getBoard().getSelectedCoordinates()));
+//    }
+//
+//    public void createNewGame(GameEvent x) {
+//        if (!(x instanceof NewGameEvent event) ) throw new RuntimeException("Game Event is not a FirstPlayer instance");
+//        System.out.print("Received game event");
+//        model.initGame(event.getNumOfPlayers(), event.getPlayerName());
+//    }
+//
+//    public void addNewPlayer(GameEvent x) {
+//        if (!(x instanceof AddPlayer event) ) throw new RuntimeException("Game Event is not a AddPlayer instance");
+//        model.addNewPlayer(event.getUsername());
+//    }
+//
+//    public void startGame() {
+//        if(!gameStarted){
+//            gameStarted = true;
+//            Collections.shuffle(model.getPlayerList());
+//            model.initCurrentPlayer();
+//        }
+//    }
+//
 
 
 

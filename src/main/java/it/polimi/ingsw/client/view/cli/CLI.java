@@ -1,12 +1,8 @@
 package it.polimi.ingsw.client.view.cli;
 
 import it.polimi.ingsw.client.view.View;
-import it.polimi.ingsw.client.view.cli.clicontroller.ControllerPrint;
+import it.polimi.ingsw.client.view.cli.cliController.ControllerPrint;
 import it.polimi.ingsw.distributed.events.GameEvent;
-import it.polimi.ingsw.distributed.events.ViewEvents.*;
-import it.polimi.ingsw.distributed.events.controllerEvents.SelectCoordinatesEvent;
-import it.polimi.ingsw.distributed.events.controllerEvents.StartGameEvent;
-import it.polimi.ingsw.distributed.events.controllerEvents.AddPlayer;
 import it.polimi.ingsw.util.Observable;
 
 import java.util.Scanner;
@@ -20,18 +16,6 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
     public void run() {
     }
 
-    @Override
-    public void handleViewEvent( GameEvent event) {
-        String eventName = event.getEventName();
-        switch (eventName){
-            case "WAITING_PLAYERS" -> waitForPlayers(event);
-            case "WAITING_TO_JOIN" -> waitingToJoin(event);
-            case "INIT_GAME" -> initPrint(event);
-            case "NEW_TURN_EVENT" -> listenToPlayerCommands(event);
-            case "UPDATE_CAN_BE_SELECTED" -> updateCanBeSelectedTiles(event);
-        }
-    }
-
 
     public int getNumInput(){
         try {
@@ -43,7 +27,10 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
         }
     }
 
-    private String askPlayerName() {
+
+
+    @Override
+    public String askUsername() {
         String username;
         System.out.print("Please choose your username: ");
         do {
@@ -54,97 +41,29 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
         return username;
     }
 
+    @Override
+    public void printUsernameNotAvailable() {
+        System.out.println("Username already taken.");
+        System.out.println("Choose another username.");
+    }
 
-    private void listenToPlayerCommands(GameEvent x) {
-        if (!(x instanceof NewTurnEvent event)  ) throw new IllegalArgumentException("Game Event is not of NewTurnEvent exception");
-        String currentPlayer = controllerPrint.getCurrentPlayer();
-        String command;
-        if (currentPlayer.equals(event.getCurrentPlayer())) System.out.println("It's your turn!");
-        System.out.println("Type: +help for available commands");
+    @Override
+    public int askMaxNumOfPlayers() {
+        int maxNumOfPlayers;
+        System.out.print("Please choose maximum number of players (from 2 to 4 players can join):");
         do {
             s = new Scanner(System.in);
-            command = s.nextLine();
-            if (!command.startsWith("+")) System.out.println("Invalid command, try again...");
-        }   while( !command.startsWith("+") );
-        if ( currentPlayer.equals((event.getCurrentPlayer())) ) {
-            if (command.equals("+selectTiles")) selectTile();
-        }
-        else if (command.equals("+help")) printHelp(currentPlayer);
-        //else if (command.equals("+showPersonalGoalCard")) getPersonalGoalCard();
-        //else if (command.equals("+showCanBeSelectedTiles")) controllerPrint.showAvailableTiles();
-        //TODO EXIT
+            maxNumOfPlayers = getNumInput();
+            if (maxNumOfPlayers < 2 || maxNumOfPlayers > 4) System.out.println("Only from 2 to 4 players can join. Selected a number again:");
+        }   while( maxNumOfPlayers < 2 || maxNumOfPlayers > 4 );
+        return maxNumOfPlayers;
     }
 
-    private void printHelp(String currentPlayer ){
-        System.out.println("+selectTiles        selects from 1 to 3 available tiles from the board.");
-        System.out.println("+showPersonalGoalCard   prints own personal goal Card.");
-        System.out.println("+showCanBeSelectedTiles prints the available tiles that can be selected.");
-        //TODO
+    @Override
+    public void printMessageFromServer(String string) {
+        System.out.println(string);
     }
 
-    private void selectTile() {
-        String input;
-        System.out.println("The Dotted spots on the board are the tiles that can be selected.");
-        controllerPrint.printCanBeSelectedTiles();
-        int x, y;
-        do {
-            x = -1;
-            y = -1;
-            System.out.println("To select a tile enter the coordinates: x y");
-            s = new Scanner(System.in);
-            input = s.nextLine();
-            String[] coordinates = input.split(" ");
-            if (coordinates.length != 2 || isNumeric(coordinates[0]) || isNumeric(coordinates[1])) {
-                System.out.println("Invalid coordinates, try again...");
-                continue;
-            }
-            x = Integer.parseInt(coordinates[0]);
-            y = Integer.parseInt(coordinates[1]);
-        } while (x < 0 || y < 0);
-        setChangedAndNotifyObservers(new SelectCoordinatesEvent(x, y));
-    }
-
-    private static boolean isNumeric(String str) {
-        try {
-            Integer.parseInt(str);
-            return false;
-        } catch (NumberFormatException e) {
-            return true;
-        }
-    }
-
-
-    private void updateCanBeSelectedTiles(GameEvent x) {
-        if ( !(x instanceof UpdateCanBeSelectedTilesEvent event)  ) throw new IllegalArgumentException("Game Event is not of instance UpdateCanBeSelectedTile");
-        controllerPrint.setCanBeSelectedCoordinates(event.getCanBeSelectedCoordinates());
-        controllerPrint.setSelectedCoordinates(event.getSelectedCoordinates());
-        controllerPrint.printAll();
-        selectTile();
-    }
-
-
-    private void waitForPlayers(GameEvent x) {
-        if ( !(x instanceof WaitingForPlayersEvent event)  ) throw new IllegalArgumentException("Game Event is not of instance WaitingForPlayerEvent");
-        if (event.remainingPlayers() == 0) {
-            System.out.println(" ");
-            setChangedAndNotifyObservers(new StartGameEvent());
-        }
-        else {
-            String multiple = event.remainingPlayers() == 1? "" : "s";
-            if (event.isFirstPlayer()) System.out.println("You are the first player to connect...");
-            System.out.printf("\rWaiting for %s more player%s", event.remainingPlayers(), multiple );
-        }
-    }
-
-    private void waitingToJoin(GameEvent x) {
-        System.out.println("\rGame lobby is full. Please wait...");
-    }
-
-    private void initPrint(GameEvent x) {
-        if ( !(x instanceof InitGame event)  ) throw new IllegalArgumentException("Game Event is not of instance WaitingToJoinEvent");
-        controllerPrint.init(event.getBoardMatrix(), event.getPlayerList(), event.getBookshelfList(), event.getCanBeSelectedCoordinates(), event.getSelectedCoordinates(), event.getCurrentPlayer());
-        controllerPrint.printAll();
-    }
 
     private void setChangedAndNotifyObservers(GameEvent arg) {
         setChanged();

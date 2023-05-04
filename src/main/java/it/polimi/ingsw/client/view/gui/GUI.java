@@ -12,18 +12,6 @@ import java.io.IOException;
 
 public class GUI extends Application implements View {
 
-    //TODO
-
-    @Override
-    public void handleViewEvent(GameEvent event) {
-        //TODO
-        System.out.println("DO SOMETHING");
-    }
-
-    @Override
-    public int getNumInput() {
-        return 0;
-    }
 
     @Override
     public void start(Stage primaryStage) throws IOException {
@@ -43,4 +31,23 @@ public class GUI extends Application implements View {
     }
 
 
+    @Override
+    public String askUsername() {
+        return null;
+    }
+
+    @Override
+    public void printUsernameNotAvailable() {
+
+    }
+
+    @Override
+    public int askMaxNumOfPlayers() {
+        return 0;
+    }
+
+    @Override
+    public void printMessageFromServer(String string) {
+
+    }
 }
