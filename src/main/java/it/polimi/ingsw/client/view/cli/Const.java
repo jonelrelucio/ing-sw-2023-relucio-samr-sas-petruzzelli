@@ -1,6 +1,6 @@
 package it.polimi.ingsw.client.view.cli;
 
-import it.polimi.ingsw.model.ItemTile.ItemTileType;
+import it.polimi.ingsw.server.model.ItemTile.ItemTileType;
 
 public class Const {
 

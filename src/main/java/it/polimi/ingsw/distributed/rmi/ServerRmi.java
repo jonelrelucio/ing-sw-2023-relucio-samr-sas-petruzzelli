@@ -1,10 +1,9 @@
 package it.polimi.ingsw.distributed.rmi;
 
-import it.polimi.ingsw.controller.Game;
+import it.polimi.ingsw.server.controller.Game;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
-import it.polimi.ingsw.distributed.events.ViewEvents.FullGameLobbyEvent;
-import it.polimi.ingsw.model.GameModel;
+import it.polimi.ingsw.server.model.GameModel;
 import it.polimi.ingsw.distributed.events.GameEvent;
 
 import java.rmi.RemoteException;

@@ -1,7 +1,7 @@
 package it.polimi.ingsw.client.view.cli.clicontroller;
 
 import it.polimi.ingsw.client.view.cli.Const;
-import it.polimi.ingsw.model.ItemTile.ItemTileType;
+import it.polimi.ingsw.server.model.ItemTile.ItemTileType;
 
 import java.util.ArrayList;
 import java.util.Arrays;

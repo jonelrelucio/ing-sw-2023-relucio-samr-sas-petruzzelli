@@ -1,6 +1,6 @@
 package it.polimi.ingsw.distributed.events;
 
-import it.polimi.ingsw.model.ItemTile.ItemTile;
+import it.polimi.ingsw.server.model.ItemTile.ItemTile;
 import java.util.ArrayList;
 
 public class SelectTiles extends GameEvent {

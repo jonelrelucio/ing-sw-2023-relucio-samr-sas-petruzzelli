@@ -1,11 +1,11 @@
 package it.polimi.ingsw.distributed.events.ViewEvents;
 
 import it.polimi.ingsw.distributed.events.GameEvent;
-import it.polimi.ingsw.model.Board;
-import it.polimi.ingsw.model.ItemTile.ItemTileType;
-import it.polimi.ingsw.model.Player;
-import it.polimi.ingsw.model.util.CircularArrayList;
-import it.polimi.ingsw.model.util.Utility;
+import it.polimi.ingsw.server.model.Board;
+import it.polimi.ingsw.server.model.ItemTile.ItemTileType;
+import it.polimi.ingsw.server.model.Player;
+import it.polimi.ingsw.server.model.util.CircularArrayList;
+import it.polimi.ingsw.server.model.util.Utility;
 
 import java.util.ArrayList;
 
