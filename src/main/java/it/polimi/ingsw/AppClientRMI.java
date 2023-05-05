@@ -8,6 +8,7 @@ import java.rmi.RemoteException;
 
 public class AppClientRMI {
     public static void run(View view) throws RemoteException {
-        Client client = new ClientImpl(view);
+        ClientImpl client = new ClientImpl(view);
+        client.run();
     }
 }

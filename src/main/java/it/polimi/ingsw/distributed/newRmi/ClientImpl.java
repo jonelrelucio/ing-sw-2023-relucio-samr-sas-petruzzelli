@@ -9,6 +9,7 @@ import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 
 import java.rmi.NotBoundException;
+import java.rmi.Remote;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
@@ -24,11 +25,10 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
     public ClientImpl(View view) throws RemoteException {
         super();
         this.view = view;
-        start();
     }
 
     @Override
-    public void start() throws RemoteException {
+    public void run()  {
         Registry registry = null;
         try {
             registry = LocateRegistry.getRegistry();
@@ -42,21 +42,25 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
             connectionError = true;
         }
 
-        if (!server.canJoin()) System.out.println("The game has already started. Come back later.");
-        else if (!connectionError) {
-            try {
-                askUsername();
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
+        try {
+            if (!server.canJoin()) System.out.println("The game has already started. Come back later.");
+            else if (!connectionError) {
+                try {
+                    askUsername();
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+                try {
+                    server.register(this, username);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+                addObserver();
             }
-            try {
-                server.register(this, username);
-            } catch (RemoteException e) {
-                throw new RuntimeException(e);
-            }
-            addObserver();
+            else System.out.println("Can't connect to server");
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
         }
-        else System.out.println("Can't connect to server");
     }
 
     private void addObserver(){
@@ -111,11 +115,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
     }
 
     @Override
-    public void startView(){
-        run();
+    public void startView() throws RemoteException{
+        view.run();
     }
 
-    @Override
-    public void run() {
-    }
 }
