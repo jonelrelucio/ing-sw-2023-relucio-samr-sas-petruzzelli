@@ -15,5 +15,6 @@ public interface Client extends Remote, Runnable {
 
     int askMaxNumOfPlayers() throws RemoteException;
 
+    void startView() throws RemoteException;
 
 }

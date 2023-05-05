@@ -141,7 +141,7 @@ public class Player extends Observable<GameEvent> {
         selectedItemTiles = rearrangedItems;
     }
 
-    private void updateAndNotifyObservers(GameEvent arg) {
+    private void setChangedAndNotifyObservers(GameEvent arg) {
         setChanged();
         notifyObservers(arg);
     }

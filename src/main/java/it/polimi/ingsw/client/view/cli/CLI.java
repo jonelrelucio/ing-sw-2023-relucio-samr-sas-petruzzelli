@@ -8,6 +8,7 @@ import it.polimi.ingsw.distributed.events.controllerEvents.MessageEvent;
 import it.polimi.ingsw.server.model.ItemTile.ItemTileType;
 import it.polimi.ingsw.util.Observable;
 
+import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
@@ -74,7 +75,7 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
     }
 
 
-    private void selectTile() {
+    private void selectTile() throws RemoteException {
         String input;
         System.out.println("The Dotted spots on the board are the tiles that can be selected.");
         controllerPrint.printCanBeSelectedTiles();
@@ -194,9 +195,9 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
 
     private String getPlayerNickname() {
         StringBuilder border = new StringBuilder();
-        border.append(String.format("%-28s",gameModelView.getBookshelfList()[0]));
+        border.append(String.format("%-28s",gameModelView.getPlayerList()[0]));
         for (int i = 1; i < gameModelView.getBookshelfList().length; i++) {
-            border.append(String.format("%-28s",gameModelView.getBookshelfList()[i]));
+            border.append(String.format("%-28s",gameModelView.getPlayerList()[i]));
         }
         return border.toString();
     }

@@ -59,11 +59,15 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
         else System.out.println("Can't connect to server");
     }
 
-    private void addObserver() throws RemoteException{
+    private void addObserver(){
 
         if (view instanceof CLI viewInstance) {
             viewInstance.addObserver((o, arg) -> {
-                server.update( arg );
+                try {
+                    server.update(arg);
+                } catch (RemoteException e) {
+                    System.err.println("Unable to update the server: " + e.getMessage() + ". Skipping the update...");
+                }
             });
         } else {
             GUI viewInstance = (GUI) view;
@@ -97,13 +101,18 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
     }
 
     @Override
-    public void receiveFromServer(String message) {
+    public void receiveFromServer(String message) throws RemoteException {
         view.printMessage(message);
     }
 
     @Override
-    public int askMaxNumOfPlayers() {
+    public int askMaxNumOfPlayers() throws RemoteException{
         return view.askMaxNumOfPlayers();
+    }
+
+    @Override
+    public void startView(){
+        run();
     }
 
     @Override
