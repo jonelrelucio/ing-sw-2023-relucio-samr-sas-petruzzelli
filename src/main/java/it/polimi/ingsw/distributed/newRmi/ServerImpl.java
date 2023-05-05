@@ -3,6 +3,8 @@ package it.polimi.ingsw.distributed.newRmi;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.ClientHandler;
 import it.polimi.ingsw.distributed.Server;
+import it.polimi.ingsw.distributed.events.GameEvent;
+import it.polimi.ingsw.distributed.events.controllerEvents.MessageEvent;
 import it.polimi.ingsw.server.controller.Game;
 import it.polimi.ingsw.server.model.GameModel;
 
@@ -108,5 +110,11 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     @Override
     public boolean canJoin() {
         return maxConnections > clientHandlers.size() || maxConnections == 0;
+    }
+
+    @Override
+    public void update(GameEvent arg) throws RemoteException{
+        if (!(arg instanceof MessageEvent messageEvent)) throw new RuntimeException("Game event is not of instance messageEvent.");
+        gameController.handleEvent(messageEvent);
     }
 }

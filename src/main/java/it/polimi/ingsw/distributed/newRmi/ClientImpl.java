@@ -1,6 +1,8 @@
 package it.polimi.ingsw.distributed.newRmi;
 
 import it.polimi.ingsw.client.view.View;
+import it.polimi.ingsw.client.view.cli.CLI;
+import it.polimi.ingsw.client.view.gui.GUI;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.events.GameEvent;
@@ -51,8 +53,29 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
             } catch (RemoteException e) {
                 throw new RuntimeException(e);
             }
+            addObserver();
         }
         else System.out.println("Can't connect to server");
+    }
+
+    private void addObserver()  {
+
+        if (view instanceof CLI viewInstance) {
+            viewInstance.addObserver((o, arg) -> {
+                server.update( arg );
+            });
+        } else {
+            GUI viewInstance = (GUI) view;
+            //TODO: View is does not extend Observable yet
+//            viewInstance.addObserver((o, arg) -> {
+//                try {
+//                    server.update(arg);
+//                } catch (RemoteException e) {
+//                    System.err.println("Unable to update the server: " + e.getMessage() + ". Skipping the update...");
+//                }
+//            });
+        }
+
     }
 
 
