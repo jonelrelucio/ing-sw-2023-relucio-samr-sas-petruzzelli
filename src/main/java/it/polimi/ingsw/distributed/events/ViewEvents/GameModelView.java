@@ -9,7 +9,7 @@ import it.polimi.ingsw.server.model.util.Utility;
 
 import java.util.ArrayList;
 
-public class InitGame extends GameEvent {
+public class GameModelView extends GameEvent {
 
     private ItemTileType[][] boardMatrix;
     private int[][] boardItemId;
@@ -21,15 +21,14 @@ public class InitGame extends GameEvent {
     private String currentPlayer;
 
 
-    public InitGame(Board board, CircularArrayList<Player> playerList, String currentPlayer, ArrayList<int[]> canBeSelectedCoordinates, ArrayList<int[]> selectedCoordinates){
-        super("INIT_GAME");
+    public GameModelView(Board board, CircularArrayList<Player> playerList, String currentPlayer){
         this.boardMatrix = Utility.serializeBoardMatrix(board.getBoardMatrix());
         this.boardItemId = Utility.serializeItemId(board.getBoardMatrix());
         this.playerList = Utility.serializeStringList(playerList);
         this.bookshelfList = Utility.serializeArrayOfBookshelves(playerList);
         this.bookshelfListItemId = Utility.serializeArrayOfItemId(playerList);
-        this.canBeSelectedCoordinates = canBeSelectedCoordinates;
-        this.selectedCoordinates = selectedCoordinates;
+        this.canBeSelectedCoordinates = board.getCanBeSelectedCoordinates();
+        this.selectedCoordinates = board.getSelectedCoordinates();
         this.currentPlayer = currentPlayer;
     }
 

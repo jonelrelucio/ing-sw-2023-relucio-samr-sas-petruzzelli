@@ -69,9 +69,15 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         sendMessageToAllClients("Starting a new Game...");
         ArrayList<String> playerList = createPlayerList();
         gameModel = new GameModel();
+        gameModel.addObserver( (o, arg) -> {
+
+        });
         gameController = new Game(gameModel);
         gameController.initGameModel(playerList);
         gameController.start();
+        for(ClientHandler clientHandler : clientHandlers) {
+            clientHandler.getClient().run();
+        }
     }
 
     private ArrayList<String> createPlayerList() {
@@ -108,7 +114,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     }
 
     @Override
-    public boolean canJoin() {
+    public boolean canJoin() throws RemoteException {
         return maxConnections > clientHandlers.size() || maxConnections == 0;
     }
 

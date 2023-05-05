@@ -151,15 +151,4 @@ public class ControllerPrint {
         }
     }
 
-    public void setCanBeSelectedCoordinates(ArrayList<int[]> canBeSelectedCoordinates) {
-        this.canBeSelectedCoordinates = canBeSelectedCoordinates;
-    }
-
-    public void setSelectedCoordinates(ArrayList<int[]> selectedCoordinates) {
-        this.selectedCoordinates = selectedCoordinates;
-    }
-
-    public String getCurrentPlayer() {
-        return currentPlayer;
-    }
 }

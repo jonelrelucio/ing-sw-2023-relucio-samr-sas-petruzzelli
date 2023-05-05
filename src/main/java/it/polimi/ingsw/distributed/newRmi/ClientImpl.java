@@ -6,6 +6,7 @@ import it.polimi.ingsw.client.view.gui.GUI;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.events.GameEvent;
+import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -58,7 +59,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
         else System.out.println("Can't connect to server");
     }
 
-    private void addObserver()  {
+    private void addObserver() throws RemoteException{
 
         if (view instanceof CLI viewInstance) {
             viewInstance.addObserver((o, arg) -> {
@@ -91,7 +92,8 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
 
     @Override
     public void update(GameEvent event) throws RemoteException {
-
+        if (! (event instanceof GameModelView gameModelView)) throw new RuntimeException("Game Event is not instance of GameModelView");
+        view.update(gameModelView);
     }
 
     @Override
@@ -103,7 +105,6 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
     public int askMaxNumOfPlayers() {
         return view.askMaxNumOfPlayers();
     }
-
 
     @Override
     public void run() {

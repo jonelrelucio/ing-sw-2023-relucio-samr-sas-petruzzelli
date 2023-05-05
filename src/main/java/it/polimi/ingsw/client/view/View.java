@@ -1,6 +1,8 @@
 package it.polimi.ingsw.client.view;
 
 
+import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
+
 public interface View extends Runnable{
 
     String askUsername();
@@ -8,4 +10,8 @@ public interface View extends Runnable{
     int askMaxNumOfPlayers();
 
     void printMessage(String string);
+
+    void update(GameModelView gameModelView);
+
+
 }

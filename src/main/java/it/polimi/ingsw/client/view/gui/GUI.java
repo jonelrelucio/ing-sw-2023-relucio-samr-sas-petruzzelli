@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.view.gui;
 
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.distributed.events.GameEvent;
+import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -44,6 +45,11 @@ public class GUI extends Application implements View {
 
     @Override
     public void printMessage(String string) {
+
+    }
+
+    @Override
+    public void update(GameModelView gameModelView) {
 
     }
 }
