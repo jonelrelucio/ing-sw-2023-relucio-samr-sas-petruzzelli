@@ -103,6 +103,12 @@ public class GameModel extends Observable<GameEvent> {
         currentPlayer.setScore(score);
     }
 
+    public void selectCoordinates(int[] selectedCoordinates) {
+        currentPlayer.selectCoordinates(selectedCoordinates);
+        setChangedAndNotifyObservers(new GameModelView(board, playerList, currentPlayer.getNickname()));
+
+    }
+
     //TODO could be private
     public void setChangedAndNotifyObservers(GameEvent arg) {
         setChanged();

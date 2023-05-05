@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
 
+import static it.polimi.ingsw.distributed.events.controllerEvents.Event.SELECT_COORDINATES;
 import static it.polimi.ingsw.distributed.events.controllerEvents.Event.SELECT_TILE;
 
 public class CLI extends Observable<GameEvent> implements View, Runnable {
@@ -23,6 +24,12 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
 
     @Override
     public void run() {
+        printAll();
+        try {
+            selectTile();
+        } catch (RemoteException e) {
+            throw new RuntimeException(e);
+        }
         printAll();
     }
 
@@ -78,7 +85,7 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
     private void selectTile() throws RemoteException {
         String input;
         System.out.println("The Dotted spots on the board are the tiles that can be selected.");
-        controllerPrint.printCanBeSelectedTiles();
+        printCanBeSelectedTiles();
         int x, y;
         do {
             x = -1;
@@ -94,7 +101,7 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
             x = Integer.parseInt(coordinates[0]);
             y = Integer.parseInt(coordinates[1]);
         } while (x < 0 || y < 0);
-        setChangedAndNotifyObservers(new MessageEvent(SELECT_TILE, input));
+        setChangedAndNotifyObservers(new MessageEvent(SELECT_COORDINATES, input));
     }
 
     private static boolean isNumeric(String str) {
@@ -240,8 +247,9 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
     public void printCanBeSelectedTiles() {
         System.out.println("Can be selected Tiles coordinates: ");
         for ( int[] coordinates : gameModelView.getCanBeSelectedCoordinates() ){
-            System.out.printf("     [%d %d]  ", coordinates[0], coordinates[1]);
+            System.out.printf(" [%d %d]", coordinates[0], coordinates[1]);
         }
+        System.out.println(" ");
     }
 
     //public static void main(String[] args) {

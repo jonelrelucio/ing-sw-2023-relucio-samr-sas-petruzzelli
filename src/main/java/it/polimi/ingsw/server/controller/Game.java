@@ -74,7 +74,7 @@ class SelectCoordinates implements EventManager{
         int x = Integer.parseInt(coordinates[0]);
         int y = Integer.parseInt(coordinates[1]);
         int[] selectedCoordinates = new int[] {x, y};
-        gameModel.getCurrentPlayer().selectCoordinates(selectedCoordinates);
+        gameModel.selectCoordinates(selectedCoordinates);
     }
 }
 
