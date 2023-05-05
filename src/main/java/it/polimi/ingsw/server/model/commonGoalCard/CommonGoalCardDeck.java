@@ -66,7 +66,7 @@ public class CommonGoalCardDeck {
             JsonElement typeObj = jsonObject.get("cardType");
 
             if (typeObj != null) {
-                String className = "it.polimi.ingsw.server.model.commonGoalCard.CommonGoalCard." + typeObj.getAsString();
+                String className = "it.polimi.ingsw.server.model.commonGoalCard." + typeObj.getAsString();
                 try {
                     Class<?> cls = Class.forName(className);
                     return context.deserialize(json, cls);
