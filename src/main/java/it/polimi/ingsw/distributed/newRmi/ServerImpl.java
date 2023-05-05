@@ -79,15 +79,15 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
     }
 
     private void updateClients(){
-//        for (ClientHandler clientHandler : clientHandlers ) {
-//            gameModel.addObserver((o, arg) -> {
-//                try {
-//                    clientHandler.getClient().update(arg);
-//                } catch (RemoteException e) {
-//                    System.err.println("Unable to update the client: " + e.getMessage() + ". Skipping the update...");
-//                }
-//            });
-//        }
+        for (ClientHandler clientHandler : clientHandlers ) {
+            gameModel.addObserver((o, arg) -> {
+                try {
+                    clientHandler.getClient().update(arg);
+                } catch (RemoteException e) {
+                    System.err.println("Unable to update the client: " + e.getMessage() + ". Skipping the update...");
+                }
+            });
+        }
     }
 
     private ArrayList<String> createPlayerList() {

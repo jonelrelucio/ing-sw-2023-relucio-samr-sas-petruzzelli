@@ -40,7 +40,7 @@ public class GameModel extends Observable<GameEvent> {
         PersonalGoalCardBag.reset();
     }
 
-    public void initGame(Board board, CircularArrayList<Player> playerList) throws RemoteException {
+    public void initGame(Board board, CircularArrayList<Player> playerList) {
         this.numOfPlayer = playerList.size();
         this.board = board;
         this.commonGoalCardDeck = new CommonGoalCardDeck(numOfPlayer);
