@@ -42,11 +42,11 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         // TODO:  check if it is thread safe or not;
         ClientHandler newClientHandler = new ClientHandler(client, username);
         clientHandlers.add(newClientHandler);
-        manageConnection(client, newClientHandler);
+        manageConnection( newClientHandler);
 
     }
 
-    private void manageConnection(Client client, ClientHandler newClientHandler) throws RemoteException {
+    private void manageConnection( ClientHandler newClientHandler) throws RemoteException {
         if ( !alreadyAsked) {
             alreadyAsked = true;
             sendMessageToClient(clientHandlers.get(0).getClient(), "You are the first client to enter");
@@ -69,15 +69,25 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         sendMessageToAllClients("Starting a new Game...");
         ArrayList<String> playerList = createPlayerList();
         gameModel = new GameModel();
-        gameModel.addObserver( (o, arg) -> {
-
-        });
+        updateClients();
         gameController = new Game(gameModel);
         gameController.initGameModel(playerList);
         gameController.start();
         for(ClientHandler clientHandler : clientHandlers) {
-            clientHandler.getClient().run();
+            clientHandler.getClient().startView();
         }
+    }
+
+    private void updateClients(){
+//        for (ClientHandler clientHandler : clientHandlers ) {
+//            gameModel.addObserver((o, arg) -> {
+//                try {
+//                    clientHandler.getClient().update(arg);
+//                } catch (RemoteException e) {
+//                    System.err.println("Unable to update the client: " + e.getMessage() + ". Skipping the update...");
+//                }
+//            });
+//        }
     }
 
     private ArrayList<String> createPlayerList() {

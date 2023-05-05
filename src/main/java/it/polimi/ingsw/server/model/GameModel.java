@@ -7,6 +7,8 @@ import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.server.model.util.CircularArrayList;
 import it.polimi.ingsw.util.Observable;
 
+import java.rmi.RemoteException;
+
 public class GameModel extends Observable<GameEvent> {
 
     private int numOfPlayer;
@@ -38,18 +40,13 @@ public class GameModel extends Observable<GameEvent> {
         PersonalGoalCardBag.reset();
     }
 
-    public void initGame(Board board, CircularArrayList<Player> playerList) {
+    public void initGame(Board board, CircularArrayList<Player> playerList) throws RemoteException {
         this.numOfPlayer = playerList.size();
         this.board = board;
         this.commonGoalCardDeck = new CommonGoalCardDeck(numOfPlayer);
         this.playerList = playerList;
         this.currentPlayer = playerList.get(0);
         setChangedAndNotifyObservers(new GameModelView(board, playerList, currentPlayer.getNickname()));
-    }
-
-    public void addNewPlayer(String username){
-        Player player = new Player(username, PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayer), board);
-        playerList.add(player);
     }
 
     public Player getWinner() { if(!currentPlayer.isWinner()) throw new IllegalCallerException(); return currentPlayer; }
