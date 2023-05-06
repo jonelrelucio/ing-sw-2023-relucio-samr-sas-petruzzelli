@@ -16,7 +16,7 @@ import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
 import static it.polimi.ingsw.distributed.events.controllerEvents.EventController.*;
 
 public class CLI extends Observable<MessageEvent> implements View, Runnable {
-    static Scanner s;
+    private Scanner s ;
     private String thisUsername;
     private final HashMap<EventView, ViewEventHandler> viewEventHandlers;
 
@@ -44,8 +44,8 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
 
     public void newTurn(GameModelView gameModelView){
-        s = new Scanner(System.in);
         new Thread(() -> {
+            s = new Scanner(System.in);
             printAll(gameModelView);
             System.out.printf("It's %s's turn.\n", gameModelView.getCurrentPlayer());
             listenToPlayer(gameModelView);
