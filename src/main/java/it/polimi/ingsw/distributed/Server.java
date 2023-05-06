@@ -1,7 +1,6 @@
 package it.polimi.ingsw.distributed;
 
 
-import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.events.controllerEvents.MessageEvent;
 
 import java.rmi.Remote;
@@ -17,7 +16,5 @@ public interface Server extends Remote {
 
     boolean canJoin() throws RemoteException;
 
-    void update(MessageEvent event) throws RemoteException;
-
-
+    void update( MessageEvent messageEvent) throws RemoteException;
 }

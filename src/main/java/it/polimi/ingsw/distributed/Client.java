@@ -1,6 +1,6 @@
 package it.polimi.ingsw.distributed;
 
-import it.polimi.ingsw.distributed.events.GameEvent;
+import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 
 import java.rmi.Remote;
@@ -10,7 +10,7 @@ public interface Client extends Remote {
 
 
 
-    void update(GameModelView gameModelView) throws RemoteException;
+    void update(GameModelView gameModelView, EventView event) throws RemoteException;
 
     void receiveFromServer(String message) throws RemoteException;
 
@@ -18,6 +18,5 @@ public interface Client extends Remote {
 
     void start() throws RemoteException;
 
-    void startView() throws RemoteException;
 
 }

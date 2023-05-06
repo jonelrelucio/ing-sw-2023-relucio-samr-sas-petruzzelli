@@ -1,6 +1,7 @@
 package it.polimi.ingsw.client.view.cli;
 
-    import it.polimi.ingsw.client.view.View;
+import it.polimi.ingsw.client.view.View;
+import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 import it.polimi.ingsw.distributed.events.controllerEvents.MessageEvent;
 import it.polimi.ingsw.server.model.ItemTile.ItemTileType;
@@ -8,44 +9,57 @@ import it.polimi.ingsw.util.Observable;
 
 import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.Scanner;
 
-import static it.polimi.ingsw.distributed.events.controllerEvents.Event.*;
+import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
+import static it.polimi.ingsw.distributed.events.controllerEvents.EventController.*;
 
 public class CLI extends Observable<MessageEvent> implements View, Runnable {
-
-    private GameModelView gameModelView;
-    static Scanner s = new Scanner(System.in);
+    static Scanner s;
     private String thisUsername;
+    private final HashMap<EventView, ViewEventHandler> viewEventHandlers;
 
+
+    public CLI(){
+        viewEventHandlers = new HashMap<>();
+        viewEventHandlers.put(SELECT_COORDINATES_SUCCESS, new SelectedCoordinatesSuccess());
+        viewEventHandlers.put(SELECT_COORDINATES_FAIL, new SelectedCoordinatesFail());
+        viewEventHandlers.put(DESELECT_COORDINATES_SUCCESS, new DeselectCoordinatesSuccess());
+        viewEventHandlers.put(DESELECT_COORDINATES_FAIL, new DeselectCoordinatesFail());
+        viewEventHandlers.put(PICK_TILES_SUCCESS, new PickTiles());
+        viewEventHandlers.put(NEW_ORDER_SUCCESS, new NewOrderSuccess());
+        viewEventHandlers.put(NEW_ORDER_FAIL, new NewOrderFail());
+        viewEventHandlers.put(SELECT_COLUMN_FAIL, new SelectColumnFail());
+    }
 
     @Override
     public void run() {
+    }
+
+    @Override
+    public void ViewEventHandler(GameModelView gameModelView, EventView eventView) {
+        viewEventHandlers.get(eventView).performAction(this, gameModelView);
+    }
+
+
+    public void newTurn(GameModelView gameModelView){
+        s = new Scanner(System.in);
         new Thread(() -> {
-            printAll();
-            newTurn();
+            printAll(gameModelView);
+            System.out.printf("It's %s's turn.\n", gameModelView.getCurrentPlayer());
+            listenToPlayer(gameModelView);
         }).start();
     }
 
-    public void newTurn(){
-        if (gameModelView.getCurrentPlayer().equals(thisUsername)){
-            System.out.println("It's your turn.");
-            selectTile();
-            reorderTiles();
-            selectColumn();
+        private void listenToPlayer(GameModelView gameModelView) {
+            if ( isMyTurn(gameModelView)) {
+                selectCoordinates(gameModelView);
+            }
         }
 
-    }
 
-    private void selectColumn() {
-        printSelectedTiles();
-    }
-
-
-    private void reorderTiles() {
-    }
-
-    public int getNumInput(){
+        public int getNumInput(){
         try {
             return Integer.parseInt(s.nextLine());
         }
@@ -88,49 +102,61 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     }
 
     @Override
-    public void update(GameModelView gameModelView) {
-        this.gameModelView = gameModelView;
-    }
-
-    @Override
     public void setThisUsername(String thisUsername) {
         this.thisUsername = thisUsername;
     }
 
 
-    private void selectTile() {
+    private String getCoordinates(){
         String input;
-        System.out.println("The Dotted spots on the board are the tiles that can be selected.");
-        printCanBeSelectedTiles();
         int x, y;
         do {
             x = -1;
             y = -1;
-            System.out.println("To select a tile enter the coordinates: x y");
+            System.out.println("Enter the coordinates: x y");
             input = s.nextLine();
             String[] coordinates = input.split(" ");
-            if (coordinates.length != 2 || isNumeric(coordinates[0]) || isNumeric(coordinates[1])) {
+            if (coordinates.length != 2 || !isNumeric(coordinates[0]) || !isNumeric(coordinates[1])) {
                 System.out.println("Invalid coordinates, try again...");
                 continue;
             }
             x = Integer.parseInt(coordinates[0]);
             y = Integer.parseInt(coordinates[1]);
         } while (x < 0 || y < 0);
-        setChangedAndNotifyObservers(new MessageEvent(SELECT_COORDINATES, input));
-        printAll();
-        if  (gameModelView.getSelectedCoordinates().size() == 3 || gameModelView.getCanBeSelectedCoordinates().size() == 0) pickTiles();
-        else if ( askIfSelectAgain() ) selectTile();
+        return input;
+    }
+
+
+    public void selectCoordinates(GameModelView gameModelView) {
+        System.out.println("Do you want to select a coordinate from the board? yes/no");
+        if (askYesOrNo()){
+            String coordinates;
+            System.out.println("The Dotted spots on the board are the tiles that can be selected.");
+            printCanBeSelectedCoordinates(gameModelView);
+            coordinates = getCoordinates();
+            setChangedAndNotifyObservers(new MessageEvent(SELECT_COORDINATES, coordinates));
+        }
         else pickTiles();
     }
 
+
+    public void askDeselectCoordinates(GameModelView gameModelView) {
+        printSelectedCoordinates(gameModelView);
+        System.out.println("Do you want to deselect coordinates? yes/no: ");
+        if (askYesOrNo()) {
+            String coordinates = getCoordinates();
+            setChangedAndNotifyObservers(new MessageEvent(DESELECT_COORDINATES, coordinates));
+        }
+        else if  (gameModelView.getSelectedCoordinates().size() == 3 || gameModelView.getCanBeSelectedCoordinates().size() == 0) pickTiles();
+        else selectCoordinates(gameModelView);
+    }
+
     private void pickTiles() {
-        System.out.println("You picked the tiles from the board");
         setChangedAndNotifyObservers(new MessageEvent(PICK_TILES, " "));
     }
 
-    private boolean askIfSelectAgain() {
+    public boolean askYesOrNo() {
         String answer;
-        System.out.println("Do you want to select another coordinate? yes no");
         do {
             answer = s.nextLine();
             if (!answer.equals("yes") && !answer.equals("no") ) System.out.println("Please select yes or no");
@@ -141,25 +167,84 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     private static boolean isNumeric(String str) {
         try {
             Integer.parseInt(str);
-            return false;
-        } catch (NumberFormatException e) {
             return true;
+        } catch (NumberFormatException e) {
+            return false;
         }
     }
+
+    public void askTileOrder(GameModelView gameModelView) {
+        System.out.println("Do you want to order your Tiles? yes/no");
+        if (!askYesOrNo()) selectColumn(gameModelView);
+        else {
+            System.out.println("Rearrange the tiles by setting a new array of indexes: ");
+            System.out.println("(example of new order: 2 0 1)");
+            String input = getTileOrder();
+            setChangedAndNotifyObservers(new MessageEvent(NEW_ORDER, input));
+        }
+    }
+
+    private String getTileOrder() {
+        String input;
+        boolean isValid;
+        do {
+            isValid = true;
+            input = s.nextLine();
+            String[] strArr = input.split(" ");
+            int[] intArr = new int[strArr.length];
+            for (String value : strArr) {
+                if (!isNumeric(value)) {
+                    isValid = false;
+                    break;
+                }
+                if (Integer.parseInt(value) < 0) {
+                    isValid = false;
+                    break;
+                }
+            }
+            if (!isValid) {
+                System.out.println("Please enter valid numbers only.");
+            }
+        } while (!isValid);
+        return input;
+    }
+
+    public void selectColumn(GameModelView gameModelView) {
+        printBookshelves(gameModelView);
+        System.out.printf("%s select the column where you want to put your tiles. ", gameModelView.getCurrentPlayer());
+        System.out.println("Choose a number from 0 to 4: ");
+        String input;
+        String[] strArr;
+        int x;
+        do {
+            x = -1;
+            input = s.nextLine();
+            strArr = input.split(" ");
+            if ( !isNumeric(input) || strArr.length != 1) System.out.println("Invalid input. Try again: ");
+            else {
+                x = Integer.parseInt(input);
+                if (x < 0 ) System.out.println("Invalid input. Try Again: ");
+            }
+        } while (!isNumeric(input) || strArr.length != 1 || x < 0);
+        setChangedAndNotifyObservers(new MessageEvent(SELECT_COLUMN, input));
+    }
+
 
     private void setChangedAndNotifyObservers(MessageEvent arg) {
         setChanged();
         notifyObservers(arg);
     }
 
-
+    public boolean isMyTurn(GameModelView gameModelView){
+        return gameModelView.getCurrentPlayer().equals(thisUsername);
+    }
 
 
     /***************************************************************************************************************/
 
 
 
-    private void printSelectedTiles() {
+    public void printSelectedTiles(GameModelView gameModelView) {
 
         System.out.println("These are the tiles you have selected:");
         System.out.println(" ");
@@ -193,7 +278,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         return false;
     }
 
-    public void printBoard() {
+    public void printBoard(GameModelView gameModelView) {
         System.out.println("      Game Board with "+ gameModelView.getPlayerList().length + " players");
         System.out.println("      ┌────────────────────────────────────────────┐");
         System.out.println("      │                                            │");
@@ -237,7 +322,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 //        printMatrix(player.getBookshelf().getBookshelfMatrix());
 //    }
 
-    public void printBookshelves() {
+    public void printBookshelves(GameModelView gameModelView) {
         int numRows = gameModelView.getBookshelfList()[0].length;
         StringBuilder[] rows = new StringBuilder[numRows];
         for (int i = 0; i < numRows; i++) {
@@ -252,16 +337,17 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
                 rows[i].append(" ");
             }
         }
-        System.out.println("      " + getPlayerNickname());
+        System.out.println("      " + getPlayerNickname(gameModelView));
         System.out.println("      " + getTopBorder(gameModelView.getBookshelfList().length));
         for (StringBuilder row : rows) {
             System.out.println(row.toString());
             if (rows[rows.length-1] != row) System.out.println("      " + getMidBorder(gameModelView.getBookshelfList().length));
         }
         System.out.println("      " + getBotBorder(gameModelView.getBookshelfList().length));
+        System.out.println(" ");
     }
 
-    private String getPlayerNickname() {
+    private String getPlayerNickname(GameModelView gameModelView) {
         StringBuilder border = new StringBuilder();
         border.append(String.format("%-28s",gameModelView.getPlayerList()[0]));
         for (int i = 1; i < gameModelView.getBookshelfList().length; i++) {
@@ -297,16 +383,16 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         return border.toString();
     }
 
-    public void printAll(){
+    public void printAll(GameModelView gameModelView){
         System.out.println(" ");
         System.out.println(" ");
-        printBoard();
-        printBookshelves();
+        printBoard(gameModelView);
+        printBookshelves(gameModelView);
         System.out.println(" ");
     }
 
 
-    public void printCanBeSelectedTiles() {
+    public void printCanBeSelectedCoordinates(GameModelView gameModelView) {
         System.out.println("Can be selected Tiles coordinates: ");
         for ( int[] coordinates : gameModelView.getCanBeSelectedCoordinates() ){
             System.out.printf(" [%d %d]", coordinates[0], coordinates[1]);
@@ -314,67 +400,103 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         System.out.println(" ");
     }
 
-    //public static void main(String[] args) {
+    public void printSelectedCoordinates(GameModelView gameModelView) {
+        if (gameModelView.getSelectedCoordinates().isEmpty()) return;
+        System.out.println("These are the coordinates that you have selected: ");
+        for ( int[] coordinates : gameModelView.getSelectedCoordinates() ){
+            System.out.printf(" [%d %d]", coordinates[0], coordinates[1]);
+        }
+        System.out.println(" ");
+    }
 
-        /*final ItemTile[][] groupOfTwo =
-                {       {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
-                        {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
-                        {new ItemTile(ItemTileType.TROPHY), new ItemTile(ItemTileType.TROPHY),  new ItemTile(ItemTileType.GAME),    new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
-                        {new ItemTile(ItemTileType.BOOK),   new ItemTile(ItemTileType.TROPHY),  new ItemTile(ItemTileType.PLANT),   new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.GAME)},
-                          {new ItemTile(ItemTileType.PLANT),  new ItemTile(ItemTileType.GAME),    new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.GAME),    new ItemTile(ItemTileType.GAME)},
-                        {new ItemTile(ItemTileType.PLANT),  new ItemTile(ItemTileType.GAME),    new ItemTile(ItemTileType.GAME),    new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.FRAME)}};
+}
 
+interface ViewEventHandler {
 
-        final ItemTile[][] bookshelf2 =
-                {       {new ItemTile(ItemTileType.EMPTY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
-                        {new ItemTile(ItemTileType.EMPTY),    new ItemTile(ItemTileType.TROPHY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
-                        {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
-                        {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.GAME),     new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
-                        {new ItemTile(ItemTileType.TROPHY),    new ItemTile(ItemTileType.GAME),     new ItemTile(ItemTileType.FRAME),   new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.EMPTY)},
-                        {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.GAME),    new ItemTile(ItemTileType.CAT)}};
+    void performAction(CLI view, GameModelView gameModelView);
+}
 
-        final ItemTile[][] bookshelf1 =
-                {       {new ItemTile(ItemTileType.EMPTY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
-                        {new ItemTile(ItemTileType.EMPTY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.TROPHY)},
-                        {new ItemTile(ItemTileType.EMPTY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.PLANT),    new ItemTile(ItemTileType.BOOK)},
-                        {new ItemTile(ItemTileType.TROPHY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.GAME),    new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.BOOK)},
-                        {new ItemTile(ItemTileType.CAT),  new ItemTile(ItemTileType.PLANT),    new ItemTile(ItemTileType.PLANT),    new ItemTile(ItemTileType.FRAME),   new ItemTile(ItemTileType.PLANT)},
-                        {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.PLANT),    new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.GAME),    new ItemTile(ItemTileType.GAME)}};
+class SelectedCoordinatesFail implements ViewEventHandler {
 
-        final ItemTile[][] eightPieces =
-                {       {new ItemTile(ItemTileType.EMPTY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
-                        {new ItemTile(ItemTileType.EMPTY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.CAT)},
-                        {new ItemTile(ItemTileType.FRAME),  new ItemTile(ItemTileType.EMPTY),  new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.BOOK)},
-                        {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.EMPTY),     new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.BOOK)},
-                        {new ItemTile(ItemTileType.BOOK),   new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.FRAME),   new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.CAT)},
-                        {new ItemTile(ItemTileType.TROPHY), new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.BOOK)}};
+    @Override
+    public void performAction(CLI view, GameModelView gameModelView) {
+        if( !view.isMyTurn(gameModelView)) return;
+        view.printAll(gameModelView);
+        System.out.println("The selected coordinates are not available");
+        view.selectCoordinates(gameModelView);
+    }
 
+}
 
+class SelectedCoordinatesSuccess implements ViewEventHandler {
 
-        int numOfPlayers = 4;
-        CLI.startingScreen();
-        GameModel model = new GameModel(numOfPlayers);
-        CLI view = new CLI(model);
-        Player player1 = new Player("Jonel", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers), model.getBoard());
-        player1.getBookshelf().setBookshelfMatrix(groupOfTwo);
-        Player player2 = new Player("Alessandro", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers), model.getBoard());
-        player2.getBookshelf().setBookshelfMatrix(bookshelf2);
-        Player player3 = new Player("Dalila", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers), model.getBoard());
-        player3.getBookshelf().setBookshelfMatrix(eightPieces);
-        Player player4 = new Player("Lucian", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers), model.getBoard());
-        player4.getBookshelf().setBookshelfMatrix(bookshelf1);
+    @Override
+    public void performAction(CLI view, GameModelView gameModelView) {
+        if( !view.isMyTurn(gameModelView)) return;
+        view.printAll(gameModelView);
+        view.askDeselectCoordinates(gameModelView);
+    }
+}
 
-        model.addNewPlayer(player1);
-        model.addNewPlayer(player2);
-        model.addNewPlayer(player3);
-        model.addNewPlayer(player4);
+class DeselectCoordinatesSuccess implements ViewEventHandler{
 
-        player1.selectCoordinates(new int[]{2, 4});
-        player1.selectCoordinates(new int[]{3, 4});
-        player1.pickSelectedItemTiles();
+    @Override
+    public void performAction(CLI view, GameModelView gameModelView) {
+        if( !view.isMyTurn(gameModelView)) return;
+        view.printAll(gameModelView);
+        view.selectCoordinates(gameModelView);
+    }
+}
 
-        view.printAll();*/
+class DeselectCoordinatesFail implements ViewEventHandler{
 
-    //}
+    @Override
+    public void performAction(CLI view, GameModelView gameModelView) {
+        if( !view.isMyTurn(gameModelView)) return;
+        view.printAll(gameModelView);
+        view.askDeselectCoordinates(gameModelView);
+    }
+}
 
+class PickTiles implements ViewEventHandler {
+
+    @Override
+    public void performAction(CLI view, GameModelView gameModelView) {
+        if( !view.isMyTurn(gameModelView)) return;
+        view.printAll(gameModelView);
+        view.printSelectedTiles(gameModelView);
+        if (gameModelView.getSelectedTiles().size() <= 1) view.selectColumn(gameModelView);
+        else view.askTileOrder(gameModelView);
+    }
+
+}
+
+class NewOrderSuccess implements ViewEventHandler {
+
+    @Override
+    public void performAction(CLI view, GameModelView gameModelView) {
+        if( !view.isMyTurn(gameModelView)) return;
+        view.printSelectedTiles(gameModelView);
+        view.askTileOrder(gameModelView);
+    }
+}
+
+class NewOrderFail implements ViewEventHandler {
+
+    @Override
+    public void performAction(CLI view, GameModelView gameModelView) {
+        if( !view.isMyTurn(gameModelView)) return;
+        System.out.println("The tile order is invalid.");
+        view.askTileOrder(gameModelView);
+    }
+}
+
+class SelectColumnFail implements ViewEventHandler {
+
+    @Override
+    public void performAction(CLI view, GameModelView gameModelView) {
+        if( !view.isMyTurn(gameModelView)) return;
+        System.out.println("The selected column is invalid.");
+        view.selectColumn(gameModelView);
+    }
 }

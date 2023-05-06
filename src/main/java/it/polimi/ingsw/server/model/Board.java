@@ -198,6 +198,7 @@ public class Board {
      */
     public void updateCanBeSelectedCoordinates(){
         if (selectedCoordinates.isEmpty()) {
+            canBeSelectedCoordinates = new ArrayList<>();
             for (int i = 1; i < boardMatrix.length-1; i++) {
                 for (int j = 1; j < boardMatrix[0].length- 1; j++) {
                     if (!boardMatrix[i][j].isEmpty() && isAdjacentEmpty(new int[]{i, j}))

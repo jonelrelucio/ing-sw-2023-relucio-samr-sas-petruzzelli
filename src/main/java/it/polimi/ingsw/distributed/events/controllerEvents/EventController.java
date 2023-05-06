@@ -1,7 +1,8 @@
 package it.polimi.ingsw.distributed.events.controllerEvents;
 
-public enum Event {
+public enum EventController {
     SELECT_COORDINATES,
     DESELECT_COORDINATES,
-    PICK_TILES
+    NEW_ORDER,
+    SELECT_COLUMN, PICK_TILES
 }

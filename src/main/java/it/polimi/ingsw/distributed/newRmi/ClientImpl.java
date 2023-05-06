@@ -5,6 +5,7 @@ import it.polimi.ingsw.client.view.cli.CLI;
 import it.polimi.ingsw.client.view.gui.GUI;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
+import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 
 import java.rmi.NotBoundException;
@@ -12,6 +13,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+
+import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
 
 public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
 
@@ -79,9 +82,9 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
      * @param gameModelView     game model view instance
      */
     @Override
-    public synchronized void update(GameModelView gameModelView) throws RemoteException {
-        view.update(gameModelView);
-        if (gameModelView.isEndTurn()) view.run();
+    public void update(GameModelView gameModelView, EventView event) throws RemoteException {
+        if (event != NEW_TURN) view.ViewEventHandler(gameModelView, event);
+        else view.newTurn(gameModelView);
     }
 
     /**
@@ -110,16 +113,6 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
     @Override
     public void run() {
         start();
-    }
-
-    /**
-     * Method called remotely.
-     * Server after meeting all conditions, calls this method to start the view.
-     */
-    // todo: remove or fix the latch inside the view cli
-    @Override
-    public void startView() throws RemoteException{
-        view.run();
     }
 
 

@@ -1,12 +1,15 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 import it.polimi.ingsw.server.model.bag.PersonalGoalCardBag;
 import it.polimi.ingsw.server.model.commonGoalCard.CommonGoalCardDeck;
 import it.polimi.ingsw.server.model.util.CircularArrayList;
 import it.polimi.ingsw.util.Observable;
 
-public class GameModel extends Observable<GameModelView> {
+import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
+
+public class GameModel extends Observable<EventView> {
 
     private int numOfPlayer;
     private CircularArrayList<Player> playerList;
@@ -43,14 +46,11 @@ public class GameModel extends Observable<GameModelView> {
         this.commonGoalCardDeck = new CommonGoalCardDeck(numOfPlayer);
         this.playerList = playerList;
         this.currentPlayer = playerList.get(0);
-        setChangedAndNotifyObservers(new GameModelView(board, playerList, currentPlayer, false));
+        setChangedAndNotifyObservers(NEW_TURN);
     }
 
     public Player getWinner() { if(!currentPlayer.isWinner()) throw new IllegalCallerException(); return currentPlayer; }
-    public void updateNextPlayer() {
-        this.currentPlayer = playerList.get(playerList.indexOf(this.currentPlayer)+1);
-        setChangedAndNotifyObservers(new GameModelView(board, playerList, currentPlayer, true));
-    }
+    public void updateNextPlayer() {this.currentPlayer = playerList.get(playerList.indexOf(this.currentPlayer)+1);}
     public void updateNumOfRounds() { this.numOfRounds++; }
 
     // Getters
@@ -105,16 +105,32 @@ public class GameModel extends Observable<GameModelView> {
 
     public void pickTiles(){
         currentPlayer.pickSelectedItemTiles();
-        setChangedAndNotifyObservers(new GameModelView(board, playerList, currentPlayer, false));
+        setChangedAndNotifyObservers(PICK_TILES_SUCCESS);
     }
 
     public void selectCoordinates(int[] selectedCoordinates) {
-        currentPlayer.selectCoordinates(selectedCoordinates);
-        setChangedAndNotifyObservers(new GameModelView(board, playerList, currentPlayer, false));
+        EventView event = currentPlayer.selectCoordinates(selectedCoordinates);
+        setChangedAndNotifyObservers(event);
+    }
+
+    public void deselectCoordinates(int[] selectedCoordinates) {
+        EventView event = currentPlayer.deselectCoordinates(selectedCoordinates);
+        setChangedAndNotifyObservers(event);
+    }
+
+    public void rearrangeSelectedItemTiles(int[] newOrder) {
+        EventView event = currentPlayer.rearrangeSelectedItemTiles(newOrder);
+        setChangedAndNotifyObservers(event);
+    }
+
+    public void selectColumn(int col) {
+        EventView event = currentPlayer.putItemsInSelectedColumn(col);
+        updateNextPlayer();
+        setChangedAndNotifyObservers(event);
     }
 
     //TODO could be private
-    public void setChangedAndNotifyObservers(GameModelView arg) {
+    public void setChangedAndNotifyObservers(EventView arg) {
         setChanged();
         notifyObservers(arg);
     }

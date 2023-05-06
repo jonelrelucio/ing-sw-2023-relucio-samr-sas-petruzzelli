@@ -3,7 +3,7 @@ package it.polimi.ingsw.distributed.newRmi;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.ClientHandler;
 import it.polimi.ingsw.distributed.Server;
-import it.polimi.ingsw.distributed.events.GameEvent;
+import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 import it.polimi.ingsw.distributed.events.controllerEvents.MessageEvent;
 import it.polimi.ingsw.server.controller.Game;
 import it.polimi.ingsw.server.model.GameModel;
@@ -101,11 +101,8 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         gameModel = new GameModel();
         updateClients();
         gameController = new Game(gameModel);
-        gameController.initGameModel(playerList);
         gameController.start();
-        for(ClientHandler clientHandler : clientHandlers) {
-            clientHandler.getClient().startView();
-        }
+        gameController.initGameModel(playerList);
     }
 
     /**
@@ -116,7 +113,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
         for (ClientHandler clientHandler : clientHandlers ) {
             gameModel.addObserver((o, arg) -> {
                 try {
-                    clientHandler.getClient().update(arg);
+                    clientHandler.getClient().update(new GameModelView(gameModel), arg);
                 } catch (RemoteException e) {
                     System.err.println("Unable to update the client: " + e.getMessage() + ". Skipping the update...");
                 }
@@ -197,11 +194,12 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
 
     /**
      * Method called remotely.
-     * receives a message event that is sent to the the game controller which manages the message event
-     * @param arg   message event received from the client, which got it from its observable view.
+     * receives a message event that is sent to the game controller which manages the message event
+     *
+     * @param messageEvent message event received from the client, which got it from its observable view.
      */
     @Override
-    public void update(MessageEvent messageEvent) throws RemoteException{
+    public void update( MessageEvent messageEvent) throws RemoteException{
         gameController.handleEvent(messageEvent);
     }
 }
