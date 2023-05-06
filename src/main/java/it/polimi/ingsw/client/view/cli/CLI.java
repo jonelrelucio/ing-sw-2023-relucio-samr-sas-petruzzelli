@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.view.cli;
 
-import it.polimi.ingsw.client.view.View;
-import it.polimi.ingsw.distributed.events.GameEvent;
+    import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 import it.polimi.ingsw.distributed.events.controllerEvents.MessageEvent;
 import it.polimi.ingsw.server.model.ItemTile.ItemTileType;
@@ -13,7 +12,7 @@ import java.util.Scanner;
 
 import static it.polimi.ingsw.distributed.events.controllerEvents.Event.*;
 
-public class CLI extends Observable<GameEvent> implements View, Runnable {
+public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     private GameModelView gameModelView;
     static Scanner s = new Scanner(System.in);
@@ -148,7 +147,7 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
         }
     }
 
-    private void setChangedAndNotifyObservers(GameEvent arg) {
+    private void setChangedAndNotifyObservers(MessageEvent arg) {
         setChanged();
         notifyObservers(arg);
     }

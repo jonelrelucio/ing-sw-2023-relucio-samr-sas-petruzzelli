@@ -5,7 +5,6 @@ import it.polimi.ingsw.client.view.cli.CLI;
 import it.polimi.ingsw.client.view.gui.GUI;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
-import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 
 import java.rmi.NotBoundException;
@@ -77,11 +76,10 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
     /**
      * Method called remotely by the observer in the server that observes its game model.
      * Updates the view game model view.
-     * @param event     Game Event is of game model view instance
+     * @param gameModelView     game model view instance
      */
     @Override
-    public synchronized void update(GameEvent event) throws RemoteException {
-        if (! (event instanceof GameModelView gameModelView)) throw new RuntimeException("Game Event is not instance of GameModelView");
+    public synchronized void update(GameModelView gameModelView) throws RemoteException {
         view.update(gameModelView);
         if (gameModelView.isEndTurn()) view.run();
     }

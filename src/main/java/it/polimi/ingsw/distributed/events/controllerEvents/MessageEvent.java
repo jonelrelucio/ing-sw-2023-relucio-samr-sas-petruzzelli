@@ -1,8 +1,11 @@
 package it.polimi.ingsw.distributed.events.controllerEvents;
 
-import it.polimi.ingsw.distributed.events.GameEvent;
 
-public class MessageEvent extends GameEvent {
+import java.io.Serializable;
+
+public class MessageEvent implements Serializable {
+
+    static final long serialVersionUID = 1L;
     private final Event eventType;
     private final String message;
 
@@ -18,6 +21,5 @@ public class MessageEvent extends GameEvent {
     public String getMessage() {
         return message;
     }
-
 
 }

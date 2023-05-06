@@ -201,8 +201,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
      * @param arg   message event received from the client, which got it from its observable view.
      */
     @Override
-    public void update(GameEvent arg) throws RemoteException{
-        if (!(arg instanceof MessageEvent messageEvent)) throw new RuntimeException("Game event is not of instance messageEvent.");
+    public void update(MessageEvent messageEvent) throws RemoteException{
         gameController.handleEvent(messageEvent);
     }
 }

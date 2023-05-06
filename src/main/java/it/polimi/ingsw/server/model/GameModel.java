@@ -3,11 +3,10 @@ package it.polimi.ingsw.server.model;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 import it.polimi.ingsw.server.model.bag.PersonalGoalCardBag;
 import it.polimi.ingsw.server.model.commonGoalCard.CommonGoalCardDeck;
-import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.server.model.util.CircularArrayList;
 import it.polimi.ingsw.util.Observable;
 
-public class GameModel extends Observable<GameEvent> {
+public class GameModel extends Observable<GameModelView> {
 
     private int numOfPlayer;
     private CircularArrayList<Player> playerList;
@@ -115,7 +114,7 @@ public class GameModel extends Observable<GameEvent> {
     }
 
     //TODO could be private
-    public void setChangedAndNotifyObservers(GameEvent arg) {
+    public void setChangedAndNotifyObservers(GameModelView arg) {
         setChanged();
         notifyObservers(arg);
     }
