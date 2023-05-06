@@ -32,7 +32,6 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
 
     /**
      * Starts the client:
-     * runs the view
      * locates the server rmi.
      * checks if client can join the server, by calling a remote method.
      * asks the username and registers the client to the server
@@ -40,7 +39,6 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
      */
     @Override
     public void start() {
-        view.run();
         Registry registry = null;
         try {
             registry = LocateRegistry.getRegistry();
@@ -119,9 +117,11 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
      * Method called remotely.
      * Server after meeting all conditions, calls this method to start the view.
      */
+    // todo: remove or fix the latch inside the view cli
     @Override
     public void startView() throws RemoteException{
         view.startView();
+        view.run();
     }
 
 
