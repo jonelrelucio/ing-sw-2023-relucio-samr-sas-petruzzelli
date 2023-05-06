@@ -1,7 +1,6 @@
 package it.polimi.ingsw.client.view.cli;
 
 import it.polimi.ingsw.client.view.View;
-import it.polimi.ingsw.client.view.cli.cliController.ControllerPrint;
 import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 import it.polimi.ingsw.distributed.events.controllerEvents.MessageEvent;
@@ -12,18 +11,23 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
+import java.util.concurrent.CountDownLatch;
 
-import static it.polimi.ingsw.distributed.events.controllerEvents.Event.SELECT_COORDINATES;
-import static it.polimi.ingsw.distributed.events.controllerEvents.Event.SELECT_TILE;
+import static it.polimi.ingsw.distributed.events.controllerEvents.Event.*;
 
 public class CLI extends Observable<GameEvent> implements View, Runnable {
 
-    GameModelView gameModelView;
-    ControllerPrint controllerPrint = new ControllerPrint();
+    private GameModelView gameModelView;
     static Scanner s = new Scanner(System.in);
+    private CountDownLatch latch = new CountDownLatch(1);
 
     @Override
     public void run() {
+        try {
+            latch.await();
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         printAll();
         try {
             selectTile();
@@ -79,6 +83,11 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
     @Override
     public void update(GameModelView gameModelView) {
         this.gameModelView = gameModelView;
+    }
+
+    @Override
+    public void startView() {
+        latch.countDown();
     }
 
 

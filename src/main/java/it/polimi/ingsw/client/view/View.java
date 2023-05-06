@@ -3,6 +3,8 @@ package it.polimi.ingsw.client.view;
 
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 
+import java.util.concurrent.CountDownLatch;
+
 public interface View extends Runnable{
 
     String askUsername();
@@ -13,5 +15,5 @@ public interface View extends Runnable{
 
     void update(GameModelView gameModelView);
 
-
+    void startView();
 }

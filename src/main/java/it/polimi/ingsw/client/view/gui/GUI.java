@@ -10,6 +10,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.concurrent.CountDownLatch;
 
 public class GUI extends Application implements View {
 
@@ -52,4 +53,10 @@ public class GUI extends Application implements View {
     public void update(GameModelView gameModelView) {
 
     }
+
+    @Override
+    public void startView() {
+
+    }
+
 }
