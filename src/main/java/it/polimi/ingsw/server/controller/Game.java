@@ -31,6 +31,7 @@ public class Game {
         eventHandlers = new HashMap<>();
         eventHandlers.put(SELECT_COORDINATES ,new SelectCoordinates());
         eventHandlers.put(DESELECT_COORDINATES, new DeselectCoordinates());
+        eventHandlers.put(PICK_TILES, new PickCoordinates());
 
     }
 
@@ -48,6 +49,7 @@ public class Game {
     public void start() {
         gameModel.setState(State.MID);
         System.out.println("Game has started.");
+        System.out.printf("It's %s's turn.\n", gameModel.getCurrentPlayer().getNickname());
     }
 
     public void handleEvent(MessageEvent messageEvent) {
@@ -84,5 +86,15 @@ class DeselectCoordinates implements EventManager{
     @Override
     public void performAction(GameModel gameModel, String message) {
 
+    }
+}
+
+class PickCoordinates implements EventManager{
+
+
+    @Override
+    public void performAction(GameModel gameModel, String message) {
+        System.out.println(gameModel.getCurrentPlayer().getNickname() + " picked the selected tiles from the board.");
+        gameModel.pickTiles();
     }
 }

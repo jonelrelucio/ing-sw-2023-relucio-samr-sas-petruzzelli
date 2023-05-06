@@ -7,8 +7,6 @@ import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.server.model.util.CircularArrayList;
 import it.polimi.ingsw.util.Observable;
 
-import java.rmi.RemoteException;
-
 public class GameModel extends Observable<GameEvent> {
 
     private int numOfPlayer;
@@ -46,11 +44,14 @@ public class GameModel extends Observable<GameEvent> {
         this.commonGoalCardDeck = new CommonGoalCardDeck(numOfPlayer);
         this.playerList = playerList;
         this.currentPlayer = playerList.get(0);
-        setChangedAndNotifyObservers(new GameModelView(board, playerList, currentPlayer.getNickname()));
+        setChangedAndNotifyObservers(new GameModelView(board, playerList, currentPlayer, false));
     }
 
     public Player getWinner() { if(!currentPlayer.isWinner()) throw new IllegalCallerException(); return currentPlayer; }
-    public void updateNextPlayer() { this.currentPlayer = playerList.get(playerList.indexOf(this.currentPlayer)+1); }
+    public void updateNextPlayer() {
+        this.currentPlayer = playerList.get(playerList.indexOf(this.currentPlayer)+1);
+        setChangedAndNotifyObservers(new GameModelView(board, playerList, currentPlayer, true));
+    }
     public void updateNumOfRounds() { this.numOfRounds++; }
 
     // Getters
@@ -103,10 +104,14 @@ public class GameModel extends Observable<GameEvent> {
         currentPlayer.setScore(score);
     }
 
+    public void pickTiles(){
+        currentPlayer.pickSelectedItemTiles();
+        setChangedAndNotifyObservers(new GameModelView(board, playerList, currentPlayer, false));
+    }
+
     public void selectCoordinates(int[] selectedCoordinates) {
         currentPlayer.selectCoordinates(selectedCoordinates);
-        setChangedAndNotifyObservers(new GameModelView(board, playerList, currentPlayer.getNickname()));
-
+        setChangedAndNotifyObservers(new GameModelView(board, playerList, currentPlayer, false));
     }
 
     //TODO could be private

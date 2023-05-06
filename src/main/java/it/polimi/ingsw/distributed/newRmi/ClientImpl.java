@@ -83,6 +83,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
     public synchronized void update(GameEvent event) throws RemoteException {
         if (! (event instanceof GameModelView gameModelView)) throw new RuntimeException("Game Event is not instance of GameModelView");
         view.update(gameModelView);
+        if (gameModelView.isEndTurn()) view.run();
     }
 
     /**
@@ -120,7 +121,6 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
     // todo: remove or fix the latch inside the view cli
     @Override
     public void startView() throws RemoteException{
-        view.startView();
         view.run();
     }
 
@@ -135,6 +135,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
             if (server.isUsernameAvailable(username)) view.printMessage("The username is not Available. Try Again.");
         } while(server.isUsernameAvailable(username));
         this.username = username;
+        view.setThisUsername(username);
     }
 
 

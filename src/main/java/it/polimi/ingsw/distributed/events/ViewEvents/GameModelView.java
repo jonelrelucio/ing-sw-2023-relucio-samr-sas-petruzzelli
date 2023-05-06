@@ -19,17 +19,21 @@ public class GameModelView extends GameEvent {
     private ArrayList<int[]> canBeSelectedCoordinates;
     private ArrayList<int[]> selectedCoordinates;
     private String currentPlayer;
+    private boolean endTurn;
+    private ArrayList<ItemTileType> selectedTiles;
 
 
-    public GameModelView(Board board, CircularArrayList<Player> playerList, String currentPlayer){
+    public GameModelView(Board board, CircularArrayList<Player> playerList, Player currentPlayer, boolean endTurn){
         this.boardMatrix = Utility.serializeBoardMatrix(board.getBoardMatrix());
         this.boardItemId = Utility.serializeItemId(board.getBoardMatrix());
         this.playerList = Utility.serializeStringList(playerList);
         this.bookshelfList = Utility.serializeArrayOfBookshelves(playerList);
         this.bookshelfListItemId = Utility.serializeArrayOfItemId(playerList);
+        this.selectedTiles = Utility.serializeArrayOfItemTiles(currentPlayer.getSelectedItemTiles());
         this.canBeSelectedCoordinates = board.getCanBeSelectedCoordinates();
         this.selectedCoordinates = board.getSelectedCoordinates();
-        this.currentPlayer = currentPlayer;
+        this.currentPlayer = currentPlayer.getNickname();
+        this.endTurn = endTurn;
     }
 
     public ItemTileType[][] getBoardMatrix() { return boardMatrix; }
@@ -40,5 +44,6 @@ public class GameModelView extends GameEvent {
     public ArrayList<int[]> getCanBeSelectedCoordinates() { return canBeSelectedCoordinates; }
     public ArrayList<int[]> getSelectedCoordinates() { return  selectedCoordinates; }
     public String getCurrentPlayer() { return currentPlayer; }
-
+    public ArrayList<ItemTileType> getSelectedTiles() { return selectedTiles; }
+    public boolean isEndTurn() {return endTurn;}
 }

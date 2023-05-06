@@ -112,7 +112,7 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
      * Adds observers to the game model, which is an observable.
      * When the game model receives an update, the clients are updated too.
      */
-    private synchronized void updateClients(){
+    private void updateClients(){
         for (ClientHandler clientHandler : clientHandlers ) {
             gameModel.addObserver((o, arg) -> {
                 try {
@@ -123,6 +123,10 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
             });
         }
     }
+
+    /**
+     * Obser
+     */
 
     // TODO: remove the shuffle method from the game model
     /**

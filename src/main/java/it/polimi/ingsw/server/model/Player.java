@@ -115,6 +115,7 @@ public class Player extends Observable<GameEvent> {
         }
         board.getSelectedCoordinates().clear();
         board.updateCanBeSelectedCoordinates();
+        numOfRounds++;
     }
 
 

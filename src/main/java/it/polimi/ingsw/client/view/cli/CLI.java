@@ -7,11 +7,9 @@ import it.polimi.ingsw.distributed.events.controllerEvents.MessageEvent;
 import it.polimi.ingsw.server.model.ItemTile.ItemTileType;
 import it.polimi.ingsw.util.Observable;
 
-import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Scanner;
-import java.util.concurrent.CountDownLatch;
 
 import static it.polimi.ingsw.distributed.events.controllerEvents.Event.*;
 
@@ -19,24 +17,34 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
 
     private GameModelView gameModelView;
     static Scanner s = new Scanner(System.in);
-    private CountDownLatch latch = new CountDownLatch(1);
+    private String thisUsername;
+
 
     @Override
     public void run() {
-        try {
-            latch.await();
-        } catch (InterruptedException e) {
-            throw new RuntimeException(e);
-        }
-        printAll();
-        try {
-            selectTile();
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
-        printAll();
+        new Thread(() -> {
+            printAll();
+            newTurn();
+        }).start();
     }
 
+    public void newTurn(){
+        if (gameModelView.getCurrentPlayer().equals(thisUsername)){
+            System.out.println("It's your turn.");
+            selectTile();
+            reorderTiles();
+            selectColumn();
+        }
+
+    }
+
+    private void selectColumn() {
+        printSelectedTiles();
+    }
+
+
+    private void reorderTiles() {
+    }
 
     public int getNumInput(){
         try {
@@ -86,12 +94,12 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
     }
 
     @Override
-    public void startView() {
-        latch.countDown();
+    public void setThisUsername(String thisUsername) {
+        this.thisUsername = thisUsername;
     }
 
 
-    private void selectTile() throws RemoteException {
+    private void selectTile() {
         String input;
         System.out.println("The Dotted spots on the board are the tiles that can be selected.");
         printCanBeSelectedTiles();
@@ -100,7 +108,6 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
             x = -1;
             y = -1;
             System.out.println("To select a tile enter the coordinates: x y");
-            s = new Scanner(System.in);
             input = s.nextLine();
             String[] coordinates = input.split(" ");
             if (coordinates.length != 2 || isNumeric(coordinates[0]) || isNumeric(coordinates[1])) {
@@ -111,6 +118,25 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
             y = Integer.parseInt(coordinates[1]);
         } while (x < 0 || y < 0);
         setChangedAndNotifyObservers(new MessageEvent(SELECT_COORDINATES, input));
+        printAll();
+        if  (gameModelView.getSelectedCoordinates().size() == 3 || gameModelView.getCanBeSelectedCoordinates().size() == 0) pickTiles();
+        else if ( askIfSelectAgain() ) selectTile();
+        else pickTiles();
+    }
+
+    private void pickTiles() {
+        System.out.println("You picked the tiles from the board");
+        setChangedAndNotifyObservers(new MessageEvent(PICK_TILES, " "));
+    }
+
+    private boolean askIfSelectAgain() {
+        String answer;
+        System.out.println("Do you want to select another coordinate? yes no");
+        do {
+            answer = s.nextLine();
+            if (!answer.equals("yes") && !answer.equals("no") ) System.out.println("Please select yes or no");
+        } while( !answer.equals("yes") && !answer.equals("no"));
+        return answer.equals("yes");
     }
 
     private static boolean isNumeric(String str) {
@@ -131,6 +157,33 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
 
 
     /***************************************************************************************************************/
+
+
+
+    private void printSelectedTiles() {
+
+        System.out.println("These are the tiles you have selected:");
+        System.out.println(" ");
+        int size = 5;
+
+        System.out.print("      ┌");
+        for (int i = 0; i < size; i++){
+            if ( i != size-1) System.out.print("───┬");
+            else System.out.print("───┐");
+        }
+        System.out.print("\n      │");
+        for (int i = 0; i < size ; i++){
+            if ( i < gameModelView.getSelectedTiles().size() )System.out.print(Const.getItemColor(gameModelView.getSelectedTiles().get(i)) + Const.TILE + Const.RESET + "│");
+            else System.out.print("   │");
+        }
+        System.out.print("\n      └");
+        for (int i = 0; i < size; i++){
+            if ( i != size-1) System.out.print("───┴");
+            else System.out.print("───┘\n");
+        }
+
+    }
+
 
 
     private boolean containsCoordinates(ArrayList<int[]> list, int i, int j){
@@ -250,6 +303,7 @@ public class CLI extends Observable<GameEvent> implements View, Runnable {
         System.out.println(" ");
         printBoard();
         printBookshelves();
+        System.out.println(" ");
     }
 
 

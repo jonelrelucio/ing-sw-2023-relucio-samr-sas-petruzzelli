@@ -55,7 +55,7 @@ public class GUI extends Application implements View {
     }
 
     @Override
-    public void startView() {
+    public void setThisUsername(String thisUsername) {
 
     }
 

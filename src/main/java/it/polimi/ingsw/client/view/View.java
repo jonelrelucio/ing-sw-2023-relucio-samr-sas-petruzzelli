@@ -15,5 +15,5 @@ public interface View extends Runnable{
 
     void update(GameModelView gameModelView);
 
-    void startView();
+    void setThisUsername(String thisUsername);
 }

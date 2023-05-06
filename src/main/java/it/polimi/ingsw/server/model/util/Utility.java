@@ -8,6 +8,7 @@ import it.polimi.ingsw.server.model.Player;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
 import java.util.List;
 
 public class Utility {
@@ -115,6 +116,14 @@ public class Utility {
                     toReturn[i][j][k] = playerList.get(i).getBookshelf().getBookshelfMatrix()[j][k].getId();
                 }
             }
+        }
+        return toReturn;
+    }
+
+    public static ArrayList<ItemTileType> serializeArrayOfItemTiles(ArrayList<ItemTile> selectedItemTiles) {
+        ArrayList<ItemTileType> toReturn = new ArrayList<>();
+        for (ItemTile itemTile : selectedItemTiles) {
+            toReturn.add(itemTile.getItemTileType());
         }
         return toReturn;
     }
