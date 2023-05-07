@@ -179,7 +179,11 @@ public class Board {
         ArrayList<int[]> adjacentCoordinates = new ArrayList<>();
         int x = coordinates[0];
         int y = coordinates[1];
-        int[][] directions = new int[][] {{-1, 0}, {1, 0}, {0, -1}, {0, 1}};
+        int[][] directions = new int[][] {
+                {-1, 0}, {1, 0}, {0, -1}, {0, 1},
+                {-2, 0}, {2, 0}, {0, -2}, {0, 2}
+        };
+
 
         for (int[] direction : directions) {
             int x2 = x + direction[0];
