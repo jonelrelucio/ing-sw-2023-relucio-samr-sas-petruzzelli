@@ -15,6 +15,9 @@ import java.util.concurrent.CountDownLatch;
 
 public class GUI extends Application implements View {
 
+    public static void startView() {
+        launch();
+    }
 
     @Override
     public void start(Stage primaryStage) throws IOException {

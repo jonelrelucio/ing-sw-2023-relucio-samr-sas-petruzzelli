@@ -47,7 +47,8 @@ public class LauchClient {
             view = new CLI();
         }
         else if (answer.equals("g")) {
-            view = new GUI();
+            //view = new GUI();
+            GUI.startView();
         }
 
         System.out.println( "Select connection mode:\n" +
