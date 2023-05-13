@@ -16,7 +16,6 @@ import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
 import static it.polimi.ingsw.distributed.events.controllerEvents.EventController.*;
 
 public class CLI extends Observable<MessageEvent> implements View, Runnable {
-    private Scanner s ;
     private String thisUsername;
     private final HashMap<EventView, ViewEventHandler> viewEventHandlers;
 
@@ -45,22 +44,22 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     public void newTurn(GameModelView gameModelView){
         new Thread(() -> {
-            s = new Scanner(System.in);
             printAll(gameModelView);
             System.out.printf("It's %s's turn.\n", gameModelView.getCurrentPlayer());
             listenToPlayer(gameModelView);
         }).start();
     }
 
-        private void listenToPlayer(GameModelView gameModelView) {
+
+    private void listenToPlayer(GameModelView gameModelView) {
             if ( isMyTurn(gameModelView)) {
                 selectCoordinates(gameModelView);
             }
         }
 
-
         public int getNumInput(){
         try {
+            Scanner s = new Scanner(System.in) ;
             return Integer.parseInt(s.nextLine());
         }
         catch (NumberFormatException ex) {
@@ -69,14 +68,12 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         }
     }
 
-
-
     @Override
     public String askUsername() {
         String username;
         System.out.print("Please choose your username: ");
         do {
-            s = new Scanner(System.in);
+            Scanner s = new Scanner(System.in) ;;
             username = s.nextLine();
             if (username.length() < 3 || username.isBlank()) System.out.println("Invalid username, try again...");
         }   while( username.length() < 3 || username.isBlank() );
@@ -89,7 +86,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         int maxNumOfPlayers;
         System.out.println("Please choose maximum number of players (from 2 to 4 players can join):");
         do {
-            s = new Scanner(System.in);
+            Scanner s = new Scanner(System.in) ;
             maxNumOfPlayers = getNumInput();
             if (maxNumOfPlayers < 2 || maxNumOfPlayers > 4) System.out.println("Only from 2 to 4 players can join. Selected a number again:");
         }   while( maxNumOfPlayers < 2 || maxNumOfPlayers > 4 );
@@ -114,6 +111,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
             x = -1;
             y = -1;
             System.out.println("Enter the coordinates: x y");
+            Scanner s = new Scanner(System.in) ;
             input = s.nextLine();
             String[] coordinates = input.split(" ");
             if (coordinates.length != 2 || !isNumeric(coordinates[0]) || !isNumeric(coordinates[1])) {
@@ -158,6 +156,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     public boolean askYesOrNo() {
         String answer;
         do {
+            Scanner s = new Scanner(System.in) ;
             answer = s.nextLine();
             if (!answer.equals("yes") && !answer.equals("no") ) System.out.println("Please select yes or no");
         } while( !answer.equals("yes") && !answer.equals("no"));
@@ -189,6 +188,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         boolean isValid;
         do {
             isValid = true;
+            Scanner s = new Scanner(System.in) ;
             input = s.nextLine();
             String[] strArr = input.split(" ");
             int[] intArr = new int[strArr.length];
@@ -218,6 +218,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         int x;
         do {
             x = -1;
+            Scanner s = new Scanner(System.in) ;
             input = s.nextLine();
             strArr = input.split(" ");
             if ( !isNumeric(input) || strArr.length != 1) System.out.println("Invalid input. Try again: ");
@@ -231,8 +232,10 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
 
     private void setChangedAndNotifyObservers(MessageEvent arg) {
-        setChanged();
-        notifyObservers(arg);
+        new Thread(() -> {
+            setChanged();
+            notifyObservers(arg);
+        }).start();
     }
 
     public boolean isMyTurn(GameModelView gameModelView){
@@ -412,7 +415,6 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 }
 
 interface ViewEventHandler {
-
     void performAction(CLI view, GameModelView gameModelView);
 }
 
