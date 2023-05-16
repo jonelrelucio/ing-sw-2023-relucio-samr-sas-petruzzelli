@@ -41,6 +41,8 @@ public class GameServer extends UnicastRemoteObject implements Server {
             alreadyAsked = true;
             connection.sendMessageToClient("You are the first client to enter");
             //TODO: completare.....maxConnections = connection
+            //maxConnections = clientHandlers.get(0).getClient().askMaxNumOfPlayers();
+            connection.askMaxNumOfPlayers();
         }
 
         for(Connection conn : connections){
@@ -68,12 +70,6 @@ public class GameServer extends UnicastRemoteObject implements Server {
         gameController = new Game(gameModel);
         gameController.initGameModel(playerList);
         gameController.start();
-        /*
-        VEDERE COME FARE
-        for(ClientHandler clientHandler : clientHandlers) {
-            clientHandler.getClient().startView();
-        }
-         */
         for(Connection conn : connections){
             conn.startView();
         }
@@ -92,6 +88,15 @@ public class GameServer extends UnicastRemoteObject implements Server {
         }
 
          */
+        for(Connection conn : connections){
+            gameModel.addObserver((o, arg)->{
+                try{
+                    conn.updateClient(arg);
+                }catch(RemoteException e){
+                    System.err.println("Unable to update the client: " + e.getMessage() + ". Skipping the update...");
+                }
+            });
+        }
     }
 
     private ArrayList<String> createPlayerList() {

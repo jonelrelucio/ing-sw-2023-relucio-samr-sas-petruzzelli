@@ -1,6 +1,7 @@
 package it.polimi.ingsw.distributed.integrated;
 
 import it.polimi.ingsw.distributed.Client;
+import it.polimi.ingsw.distributed.events.GameEvent;
 
 import java.rmi.RemoteException;
 
@@ -32,5 +33,15 @@ public class RMIConnection extends Connection{
             System.err.println("Cannot start view" + e);
         }
 
+    }
+
+    @Override
+    void askMaxNumOfPlayers() throws RemoteException {
+        client.askMaxNumOfPlayers();
+    }
+
+    @Override
+    void updateClient(GameEvent event) throws RemoteException {
+        client.update(event);
     }
 }

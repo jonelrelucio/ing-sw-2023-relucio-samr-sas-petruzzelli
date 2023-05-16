@@ -1,5 +1,7 @@
 package it.polimi.ingsw.distributed.integrated;
 
+import it.polimi.ingsw.distributed.events.GameEvent;
+
 import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
@@ -30,6 +32,21 @@ public class SocketConnection extends Connection{
 
     @Override
     public void sendMessageToClient(String message) throws RemoteException {
+
+    }
+
+    @Override
+    public void updateClient(GameEvent event) throws RemoteException {
+
+    }
+
+    @Override
+    void startView() throws RemoteException {
+
+    }
+
+    @Override
+    void askMaxNumOfPlayers() throws RemoteException {
 
     }
 }

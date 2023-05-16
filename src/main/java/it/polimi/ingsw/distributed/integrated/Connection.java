@@ -1,5 +1,7 @@
 package it.polimi.ingsw.distributed.integrated;
 
+import it.polimi.ingsw.distributed.events.GameEvent;
+
 import java.rmi.RemoteException;
 
 public abstract class Connection {
@@ -11,5 +13,9 @@ public abstract class Connection {
     public String getUsername(){
         return username;
     }
+
+    abstract void updateClient(GameEvent event) throws RemoteException;
+
+    abstract void askMaxNumOfPlayers() throws RemoteException;
 
 }
