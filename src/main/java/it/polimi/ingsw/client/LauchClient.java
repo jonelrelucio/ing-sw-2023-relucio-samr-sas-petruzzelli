@@ -6,6 +6,8 @@ import it.polimi.ingsw.AppClientRMI;
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.view.cli.CLI;
 import it.polimi.ingsw.client.view.gui.GUI;
+import it.polimi.ingsw.distributed.Client;
+import it.polimi.ingsw.distributed.newRmi.ClientImpl;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -15,6 +17,9 @@ public class LauchClient {
 
     private static final Scanner scanner = new Scanner(System.in);
     private static View view;
+
+    private Client client;  //distributed
+
     private static String userInput(){
         return scanner.nextLine();
     }
