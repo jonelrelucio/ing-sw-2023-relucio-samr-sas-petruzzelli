@@ -260,3 +260,6 @@ class BoardCoordinates {
     }
 
 }
+
+
+// TODO fix the column when full

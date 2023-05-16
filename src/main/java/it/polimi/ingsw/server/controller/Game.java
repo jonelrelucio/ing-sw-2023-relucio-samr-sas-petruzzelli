@@ -30,7 +30,7 @@ public class Game {
     //TODO ADD MORE EVENTS
     private void initEventHandler() {
         eventHandlers = new HashMap<>();
-        eventHandlers.put(SELECT_COORDINATES ,new SelectCoordinates());
+        eventHandlers.put(SELECT_COORDINATES , this::selectCoordinate);
         eventHandlers.put(DESELECT_COORDINATES, new DeselectCoordinates());
         eventHandlers.put(PICK_TILES, new PickCoordinates());
         eventHandlers.put(NEW_ORDER, new NewOrderTiles());
@@ -59,26 +59,22 @@ public class Game {
         eventHandlers.get(eventType).performAction(gameModel, message);
     }
 
-}
-
-
-interface EventManager {
-
-    void performAction(GameModel gameModel, String message);
-}
-
-
-class SelectCoordinates implements EventManager{
-
-    @Override
-    public void performAction(GameModel gameModel, String message) {
+    public void selectCoordinate(String message) {
         String[] coordinates = message.split(" ");
         int x = Integer.parseInt(coordinates[0]);
         int y = Integer.parseInt(coordinates[1]);
         int[] selectedCoordinates = new int[] {x, y};
         gameModel.selectCoordinates(selectedCoordinates);
     }
+
 }
+
+
+interface EventManager {
+
+    void performAction( String message);
+}
+
 
 class DeselectCoordinates implements EventManager{
 

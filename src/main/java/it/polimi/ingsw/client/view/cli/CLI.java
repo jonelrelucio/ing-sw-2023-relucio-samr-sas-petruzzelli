@@ -127,14 +127,22 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     public void selectCoordinates(GameModelView gameModelView) {
         System.out.println("Do you want to select a coordinate from the board? yes/no");
+        String coordinates;
         if (askYesOrNo()){
-            String coordinates;
+            System.out.println("The Dotted spots on the board are the tiles that can be selected.");
+            printCanBeSelectedCoordinates(gameModelView);
+            coordinates = getCoordinates();
+            setChangedAndNotifyObservers(new MessageEvent(SELECT_COORDINATES, coordinates));
+        }
+        else if(gameModelView.getSelectedTiles().size() == 0) {
+            System.out.println("You have not selected a tile. Please select at least a tile.");
             System.out.println("The Dotted spots on the board are the tiles that can be selected.");
             printCanBeSelectedCoordinates(gameModelView);
             coordinates = getCoordinates();
             setChangedAndNotifyObservers(new MessageEvent(SELECT_COORDINATES, coordinates));
         }
         else pickTiles();
+
     }
 
 
