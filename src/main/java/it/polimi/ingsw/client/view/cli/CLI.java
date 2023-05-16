@@ -28,8 +28,8 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         viewEventHandlers.put(DESELECT_COORDINATES_FAIL, this::deselectCoordinatesFail);
         viewEventHandlers.put(PICK_TILES_SUCCESS, this::pickTilesEvent);
         viewEventHandlers.put(NEW_ORDER_SUCCESS, this::newOrderSuccess);
-        viewEventHandlers.put(NEW_ORDER_FAIL, new NewOrderFail());
-        viewEventHandlers.put(SELECT_COLUMN_FAIL, new SelectColumnFail());
+        viewEventHandlers.put(NEW_ORDER_FAIL, this::newOrderFail);
+        viewEventHandlers.put(SELECT_COLUMN_FAIL, this::selectColumnFail);
     }
 
     @Override
@@ -435,19 +435,19 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         askDeselectCoordinates(gameModelView);
     }
 
-    public void deselectCoordinatesSuccess(GameModelView gameModelView) {
+    private void deselectCoordinatesSuccess(GameModelView gameModelView) {
         if( !isMyTurn(gameModelView)) return;
         printAll(gameModelView);
         selectCoordinates(gameModelView);
     }
 
-    public void deselectCoordinatesFail( GameModelView gameModelView) {
+    private void deselectCoordinatesFail( GameModelView gameModelView) {
         if( !isMyTurn(gameModelView)) return;
         printAll(gameModelView);
         askDeselectCoordinates(gameModelView);
     }
 
-    public void pickTilesEvent(GameModelView gameModelView ) {
+    private void pickTilesEvent(GameModelView gameModelView ) {
         if( !isMyTurn(gameModelView)) return;
         printAll(gameModelView);
         printSelectedTiles(gameModelView);
@@ -456,47 +456,27 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     }
 
 
-    public void newOrderSuccess(GameModelView gameModelView) {
-        if( !view.isMyTurn(gameModelView)) return;
-        view.printSelectedTiles(gameModelView);
-        view.askTileOrder(gameModelView);
+    private void newOrderSuccess(GameModelView gameModelView) {
+        if( !isMyTurn(gameModelView)) return;
+        printSelectedTiles(gameModelView);
+        askTileOrder(gameModelView);
     }
 
+    private void newOrderFail(GameModelView gameModelView) {
+        if( !isMyTurn(gameModelView)) return;
+        System.out.println("The tile order is invalid.");
+        askTileOrder(gameModelView);
+    }
 
+    private void selectColumnFail(GameModelView gameModelView) {
+        if( !isMyTurn(gameModelView)) return;
+        System.out.println("The selected column is invalid.");
+        selectColumn(gameModelView);
+    }
 }
 
 
-
+@FunctionalInterface
 interface ViewEventHandler {
     void performAction(GameModelView gameModelView);
-}
-
-class NewOrderSuccess implements ViewEventHandler {
-
-    @Override
-    public void performAction(CLI view, GameModelView gameModelView) {
-        if( !view.isMyTurn(gameModelView)) return;
-        view.printSelectedTiles(gameModelView);
-        view.askTileOrder(gameModelView);
-    }
-}
-
-class NewOrderFail implements ViewEventHandler {
-
-    @Override
-    public void performAction(CLI view, GameModelView gameModelView) {
-        if( !view.isMyTurn(gameModelView)) return;
-        System.out.println("The tile order is invalid.");
-        view.askTileOrder(gameModelView);
-    }
-}
-
-class SelectColumnFail implements ViewEventHandler {
-
-    @Override
-    public void performAction(CLI view, GameModelView gameModelView) {
-        if( !view.isMyTurn(gameModelView)) return;
-        System.out.println("The selected column is invalid.");
-        view.selectColumn(gameModelView);
-    }
 }
