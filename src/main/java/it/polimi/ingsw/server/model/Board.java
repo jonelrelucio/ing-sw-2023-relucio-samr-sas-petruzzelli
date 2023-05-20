@@ -180,20 +180,24 @@ public class Board {
         int x = coordinates[0];
         int y = coordinates[1];
         int[][] directions = new int[][] {
-                {-1, 0}, {1, 0}, {0, -1}, {0, 1},
-                {-2, 0}, {2, 0}, {0, -2}, {0, 2}
+                {-1, 0}, {1, 0}, {0, -1}, {0, 1}
         };
-
-
-        for (int[] direction : directions) {
+        for ( int[] direction : directions ){
             int x2 = x + direction[0];
             int y2 = y + direction[1];
+
             if (x2 >= 0 && x2 < boardMatrix.length && y2 >= 0 && y2 < boardMatrix[0].length) {
                 if (!boardMatrix[x2][y2].isEmpty() && isAdjacentEmpty(new int[]{x2, y2})) {
                     adjacentCoordinates.add(new int[] {x2, y2});
+                    int x3 = x2 + direction[0];
+                    int y3 = y2 + direction[1];
+                    if (!boardMatrix[x3][y3].isEmpty() &&  isAdjacentEmpty(new int[]{x3, y3})) {
+                        adjacentCoordinates.add(new int[] {x3, y3});
+                    }
                 }
             }
         }
+
         return adjacentCoordinates;
     }
 
@@ -256,3 +260,6 @@ class BoardCoordinates {
     }
 
 }
+
+
+// TODO fix the column when full

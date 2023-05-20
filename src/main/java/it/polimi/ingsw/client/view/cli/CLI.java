@@ -16,21 +16,20 @@ import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
 import static it.polimi.ingsw.distributed.events.controllerEvents.EventController.*;
 
 public class CLI extends Observable<MessageEvent> implements View, Runnable {
-    private Scanner s ;
     private String thisUsername;
     private final HashMap<EventView, ViewEventHandler> viewEventHandlers;
 
 
     public CLI(){
         viewEventHandlers = new HashMap<>();
-        viewEventHandlers.put(SELECT_COORDINATES_SUCCESS, new SelectedCoordinatesSuccess());
-        viewEventHandlers.put(SELECT_COORDINATES_FAIL, new SelectedCoordinatesFail());
-        viewEventHandlers.put(DESELECT_COORDINATES_SUCCESS, new DeselectCoordinatesSuccess());
-        viewEventHandlers.put(DESELECT_COORDINATES_FAIL, new DeselectCoordinatesFail());
-        viewEventHandlers.put(PICK_TILES_SUCCESS, new PickTiles());
-        viewEventHandlers.put(NEW_ORDER_SUCCESS, new NewOrderSuccess());
-        viewEventHandlers.put(NEW_ORDER_FAIL, new NewOrderFail());
-        viewEventHandlers.put(SELECT_COLUMN_FAIL, new SelectColumnFail());
+        viewEventHandlers.put(SELECT_COORDINATES_SUCCESS, this::selectedCoordinatesSuccess);
+        viewEventHandlers.put(SELECT_COORDINATES_FAIL,  this::selectedCoordinatesFail);
+        viewEventHandlers.put(DESELECT_COORDINATES_SUCCESS, this::deselectCoordinatesSuccess);
+        viewEventHandlers.put(DESELECT_COORDINATES_FAIL, this::deselectCoordinatesFail);
+        viewEventHandlers.put(PICK_TILES_SUCCESS, this::pickTilesEvent);
+        viewEventHandlers.put(NEW_ORDER_SUCCESS, this::newOrderSuccess);
+        viewEventHandlers.put(NEW_ORDER_FAIL, this::newOrderFail);
+        viewEventHandlers.put(SELECT_COLUMN_FAIL, this::selectColumnFail);
     }
 
     @Override
@@ -39,28 +38,28 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     @Override
     public void ViewEventHandler(GameModelView gameModelView, EventView eventView) {
-        viewEventHandlers.get(eventView).performAction(this, gameModelView);
+        viewEventHandlers.get(eventView).performAction(gameModelView);
     }
 
 
     public void newTurn(GameModelView gameModelView){
         new Thread(() -> {
-            s = new Scanner(System.in);
             printAll(gameModelView);
             System.out.printf("It's %s's turn.\n", gameModelView.getCurrentPlayer());
             listenToPlayer(gameModelView);
         }).start();
     }
 
-        private void listenToPlayer(GameModelView gameModelView) {
+
+    private void listenToPlayer(GameModelView gameModelView) {
             if ( isMyTurn(gameModelView)) {
                 selectCoordinates(gameModelView);
             }
         }
 
-
         public int getNumInput(){
         try {
+            Scanner s = new Scanner(System.in) ;
             return Integer.parseInt(s.nextLine());
         }
         catch (NumberFormatException ex) {
@@ -69,14 +68,12 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         }
     }
 
-
-
     @Override
     public String askUsername() {
         String username;
         System.out.print("Please choose your username: ");
         do {
-            s = new Scanner(System.in);
+            Scanner s = new Scanner(System.in) ;;
             username = s.nextLine();
             if (username.length() < 3 || username.isBlank()) System.out.println("Invalid username, try again...");
         }   while( username.length() < 3 || username.isBlank() );
@@ -89,7 +86,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         int maxNumOfPlayers;
         System.out.println("Please choose maximum number of players (from 2 to 4 players can join):");
         do {
-            s = new Scanner(System.in);
+            Scanner s = new Scanner(System.in) ;
             maxNumOfPlayers = getNumInput();
             if (maxNumOfPlayers < 2 || maxNumOfPlayers > 4) System.out.println("Only from 2 to 4 players can join. Selected a number again:");
         }   while( maxNumOfPlayers < 2 || maxNumOfPlayers > 4 );
@@ -114,6 +111,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
             x = -1;
             y = -1;
             System.out.println("Enter the coordinates: x y");
+            Scanner s = new Scanner(System.in) ;
             input = s.nextLine();
             String[] coordinates = input.split(" ");
             if (coordinates.length != 2 || !isNumeric(coordinates[0]) || !isNumeric(coordinates[1])) {
@@ -129,14 +127,22 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     public void selectCoordinates(GameModelView gameModelView) {
         System.out.println("Do you want to select a coordinate from the board? yes/no");
+        String coordinates;
         if (askYesOrNo()){
-            String coordinates;
+            System.out.println("The Dotted spots on the board are the tiles that can be selected.");
+            printCanBeSelectedCoordinates(gameModelView);
+            coordinates = getCoordinates();
+            setChangedAndNotifyObservers(new MessageEvent(SELECT_COORDINATES, coordinates));
+        }
+        else if(gameModelView.getSelectedTiles().size() == 0) {
+            System.out.println("You have not selected a tile. Please select at least a tile.");
             System.out.println("The Dotted spots on the board are the tiles that can be selected.");
             printCanBeSelectedCoordinates(gameModelView);
             coordinates = getCoordinates();
             setChangedAndNotifyObservers(new MessageEvent(SELECT_COORDINATES, coordinates));
         }
         else pickTiles();
+
     }
 
 
@@ -158,6 +164,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     public boolean askYesOrNo() {
         String answer;
         do {
+            Scanner s = new Scanner(System.in) ;
             answer = s.nextLine();
             if (!answer.equals("yes") && !answer.equals("no") ) System.out.println("Please select yes or no");
         } while( !answer.equals("yes") && !answer.equals("no"));
@@ -189,6 +196,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         boolean isValid;
         do {
             isValid = true;
+            Scanner s = new Scanner(System.in) ;
             input = s.nextLine();
             String[] strArr = input.split(" ");
             int[] intArr = new int[strArr.length];
@@ -218,6 +226,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         int x;
         do {
             x = -1;
+            Scanner s = new Scanner(System.in) ;
             input = s.nextLine();
             strArr = input.split(" ");
             if ( !isNumeric(input) || strArr.length != 1) System.out.println("Invalid input. Try again: ");
@@ -231,8 +240,10 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
 
     private void setChangedAndNotifyObservers(MessageEvent arg) {
-        setChanged();
-        notifyObservers(arg);
+        new Thread(() -> {
+            setChanged();
+            notifyObservers(arg);
+        }).start();
     }
 
     public boolean isMyTurn(GameModelView gameModelView){
@@ -409,94 +420,63 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         System.out.println(" ");
     }
 
-}
+    /******************************************************************************************/
 
-interface ViewEventHandler {
-
-    void performAction(CLI view, GameModelView gameModelView);
-}
-
-class SelectedCoordinatesFail implements ViewEventHandler {
-
-    @Override
-    public void performAction(CLI view, GameModelView gameModelView) {
-        if( !view.isMyTurn(gameModelView)) return;
-        view.printAll(gameModelView);
+    private void selectedCoordinatesFail(GameModelView gameModelView) {
+        if( !isMyTurn(gameModelView)) return;
+        printAll(gameModelView);
         System.out.println("The selected coordinates are not available");
-        view.selectCoordinates(gameModelView);
+        selectCoordinates(gameModelView);
     }
 
-}
-
-class SelectedCoordinatesSuccess implements ViewEventHandler {
-
-    @Override
-    public void performAction(CLI view, GameModelView gameModelView) {
-        if( !view.isMyTurn(gameModelView)) return;
-        view.printAll(gameModelView);
-        view.askDeselectCoordinates(gameModelView);
-    }
-}
-
-class DeselectCoordinatesSuccess implements ViewEventHandler{
-
-    @Override
-    public void performAction(CLI view, GameModelView gameModelView) {
-        if( !view.isMyTurn(gameModelView)) return;
-        view.printAll(gameModelView);
-        view.selectCoordinates(gameModelView);
-    }
-}
-
-class DeselectCoordinatesFail implements ViewEventHandler{
-
-    @Override
-    public void performAction(CLI view, GameModelView gameModelView) {
-        if( !view.isMyTurn(gameModelView)) return;
-        view.printAll(gameModelView);
-        view.askDeselectCoordinates(gameModelView);
-    }
-}
-
-class PickTiles implements ViewEventHandler {
-
-    @Override
-    public void performAction(CLI view, GameModelView gameModelView) {
-        if( !view.isMyTurn(gameModelView)) return;
-        view.printAll(gameModelView);
-        view.printSelectedTiles(gameModelView);
-        if (gameModelView.getSelectedTiles().size() <= 1) view.selectColumn(gameModelView);
-        else view.askTileOrder(gameModelView);
+    private void selectedCoordinatesSuccess(GameModelView gameModelView) {
+        if( !isMyTurn(gameModelView)) return;
+        printAll(gameModelView);
+        askDeselectCoordinates(gameModelView);
     }
 
-}
-
-class NewOrderSuccess implements ViewEventHandler {
-
-    @Override
-    public void performAction(CLI view, GameModelView gameModelView) {
-        if( !view.isMyTurn(gameModelView)) return;
-        view.printSelectedTiles(gameModelView);
-        view.askTileOrder(gameModelView);
+    private void deselectCoordinatesSuccess(GameModelView gameModelView) {
+        if( !isMyTurn(gameModelView)) return;
+        printAll(gameModelView);
+        selectCoordinates(gameModelView);
     }
-}
 
-class NewOrderFail implements ViewEventHandler {
+    private void deselectCoordinatesFail( GameModelView gameModelView) {
+        if( !isMyTurn(gameModelView)) return;
+        printAll(gameModelView);
+        askDeselectCoordinates(gameModelView);
+    }
 
-    @Override
-    public void performAction(CLI view, GameModelView gameModelView) {
-        if( !view.isMyTurn(gameModelView)) return;
+    private void pickTilesEvent(GameModelView gameModelView ) {
+        if( !isMyTurn(gameModelView)) return;
+        printAll(gameModelView);
+        printSelectedTiles(gameModelView);
+        if (gameModelView.getSelectedTiles().size() <= 1) selectColumn(gameModelView);
+        else askTileOrder(gameModelView);
+    }
+
+
+    private void newOrderSuccess(GameModelView gameModelView) {
+        if( !isMyTurn(gameModelView)) return;
+        printSelectedTiles(gameModelView);
+        askTileOrder(gameModelView);
+    }
+
+    private void newOrderFail(GameModelView gameModelView) {
+        if( !isMyTurn(gameModelView)) return;
         System.out.println("The tile order is invalid.");
-        view.askTileOrder(gameModelView);
+        askTileOrder(gameModelView);
+    }
+
+    private void selectColumnFail(GameModelView gameModelView) {
+        if( !isMyTurn(gameModelView)) return;
+        System.out.println("The selected column is invalid.");
+        selectColumn(gameModelView);
     }
 }
 
-class SelectColumnFail implements ViewEventHandler {
 
-    @Override
-    public void performAction(CLI view, GameModelView gameModelView) {
-        if( !view.isMyTurn(gameModelView)) return;
-        System.out.println("The selected column is invalid.");
-        view.selectColumn(gameModelView);
-    }
+@FunctionalInterface
+interface ViewEventHandler {
+    void performAction(GameModelView gameModelView);
 }
