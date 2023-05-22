@@ -31,8 +31,10 @@ public class SocketRunnable implements Runnable{
                 }.start();
 
                  */
-                server.getConnections().add(new SocketConnection(socket));
-                System.out.println("Socket connection added, connections size: "+server.getConnections().size());
+                SocketClientHandler sch = new SocketClientHandler(socket, server);
+                sch.start();
+
+
                 //server.sendToAll("Messaggio inviato a questa connessione dal Server");
             }
         }catch(IOException e){

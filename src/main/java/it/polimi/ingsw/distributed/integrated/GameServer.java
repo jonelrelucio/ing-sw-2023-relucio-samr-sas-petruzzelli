@@ -36,18 +36,18 @@ public class GameServer extends UnicastRemoteObject implements Server {
         manageConnection(connection);
     }
 
-    private void manageConnection(Connection connection) throws RemoteException{
+    public void manageConnection(Connection connection) throws RemoteException{
         if(!alreadyAsked){
             alreadyAsked = true;
             connection.sendMessageToClient("You are the first client to enter");
-            //TODO: completare.....maxConnections = connection
+
             //maxConnections = clientHandlers.get(0).getClient().askMaxNumOfPlayers();
-            connection.askMaxNumOfPlayers();
+            maxConnections = connection.askMaxNumOfPlayers();
         }
 
         for(Connection conn : connections){
             if(maxConnections == 0){
-                connection.sendMessageToClient(String.format("\"%s joined the waiting list. Waiting for %s to set number of players.", conn.getUsername()));
+                connection.sendMessageToClient(String.format("%s joined the waiting list. Waiting for %s to set number of players.", conn.getUsername(), conn.getUsername()));
             }else if(connections.size() < maxConnections){
                 connection.sendMessageToClient(String.format("%s joined the waiting list. %d more players remaining", conn.getUsername(), maxConnections - connections.size()));
             }
@@ -55,7 +55,7 @@ public class GameServer extends UnicastRemoteObject implements Server {
             if(maxConnections == 0){
                 connection.sendMessageToClient("Please enter a maximum number of players: ");
             }
-            if(maxConnections != 0 && maxConnections != connections.size()){
+            if(maxConnections != 0 && maxConnections == connections.size()){
                 startGame();
             }
         }

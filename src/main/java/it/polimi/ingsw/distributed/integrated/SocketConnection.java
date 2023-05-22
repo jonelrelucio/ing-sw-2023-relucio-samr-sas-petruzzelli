@@ -32,7 +32,13 @@ public class SocketConnection extends Connection{
 
     @Override
     public void sendMessageToClient(String message) throws RemoteException {
+        try{
+            oos.writeObject(message);
+            oos.flush();
 
+        }catch(IOException e){
+            System.err.println("Could not send message "+ e);
+        }
     }
 
     @Override
@@ -46,7 +52,31 @@ public class SocketConnection extends Connection{
     }
 
     @Override
-    void askMaxNumOfPlayers() throws RemoteException {
+    int askMaxNumOfPlayers() throws RemoteException {
+        return 0;//TODO: implement
+    }
 
+    public void sendObject(Object object){
+        try{
+
+            oos.writeObject(object);
+            oos.flush();
+        }catch(IOException e){
+            System.err.println("Cannot send message to client");
+        }
+    }
+
+    public Object receiveObject(){
+        try {
+            return ois.readObject();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        } catch (ClassNotFoundException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
     }
 }

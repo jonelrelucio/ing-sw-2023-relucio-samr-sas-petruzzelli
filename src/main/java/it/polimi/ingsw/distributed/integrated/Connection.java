@@ -16,6 +16,6 @@ public abstract class Connection {
 
     abstract void updateClient(GameEvent event) throws RemoteException;
 
-    abstract void askMaxNumOfPlayers() throws RemoteException;
+    abstract int askMaxNumOfPlayers() throws RemoteException;
 
 }

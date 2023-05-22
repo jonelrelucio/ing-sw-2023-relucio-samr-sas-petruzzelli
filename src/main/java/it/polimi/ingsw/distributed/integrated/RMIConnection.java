@@ -8,7 +8,7 @@ import java.rmi.RemoteException;
 public class RMIConnection extends Connection{
     private Client client;//Provare a fare RMIClient
 
-    private String username;//TODO: trovare un altro modo per visualizzare il username, non in connection
+    //TODO: trovare un altro modo per visualizzare l'username
 
     public RMIConnection(Client client, String username){
         this.client = client;
@@ -36,8 +36,8 @@ public class RMIConnection extends Connection{
     }
 
     @Override
-    void askMaxNumOfPlayers() throws RemoteException {
-        client.askMaxNumOfPlayers();
+    int askMaxNumOfPlayers() throws RemoteException {
+        return client.askMaxNumOfPlayers();
     }
 
     @Override
