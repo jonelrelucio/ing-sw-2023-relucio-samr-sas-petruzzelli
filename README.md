@@ -25,10 +25,10 @@ Main UML Diagram: [UML Diagram](src/main/umlDiagram/ClassDiagram_Model.png)
 |:-----------------------------|:-----:|
 | Basic rules                  |  🟡   |
 | Complete rules               |  🟡   |
-| RMI                          |  🔴   |
-| Socket                       |  🔴   |
-| CLI                          |  🔴   |
-| GLI                          |  🔴   |
+| RMI                          |  🟡   |
+| Socket                       |  🟡   |
+| CLI                          |  🟡   |
+| GUI                          |  🟡   |
 | Multiple games               |  🔴   |
 | Persistence                  |  🔴   |
 | Resilience to disconnections |  🔴   |
