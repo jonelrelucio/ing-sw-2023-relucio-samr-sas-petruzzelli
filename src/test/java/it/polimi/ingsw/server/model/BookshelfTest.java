@@ -108,9 +108,6 @@ public class BookshelfTest {
         assertEquals(ItemTileType.BOOK, bookshelf.getMatrixTile(0, 1).getItemTileType());
     }
 
-
-
-
     @Test
     void backwardsLShapeTest() {
         ItemTile[][] bookShelfItemTileMatrix = {

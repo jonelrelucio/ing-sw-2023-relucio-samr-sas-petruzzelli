@@ -255,6 +255,8 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
 
 
+
+
     public void printSelectedTiles(GameModelView gameModelView) {
 
         System.out.println("These are the tiles you have selected:");
@@ -278,8 +280,6 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         }
 
     }
-
-
 
     private boolean containsCoordinates(ArrayList<int[]> list, int i, int j){
         int[] coordinates = new int[]{i, j};
@@ -322,16 +322,13 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
             else System.out.println("      └───┴───┴───┴───┴───┘");
         }
     }
-//
-//    public void printPersonalGoal(String player){
-//        System.out.println("      " + player + "'s Personal Goal Card:");
-//        printMatrix(player.getPersonalGoalCard().getPersonalGoalCardMatrix());
-//    }
 
-//    public void printBookShelf(String player) {
-//        System.out.println("      " + player + "'s Bookshelf:");
-//        printMatrix(player.getBookshelf().getBookshelfMatrix());
-//    }
+    public void printPersonalGoal(GameModelView gameModelView){
+        ItemTileType[][] personalGoalCard = gameModelView.getPersonalGoalCardList().get(thisUsername);
+        System.out.println("      Your personal Goal Card:");
+        printMatrix(personalGoalCard);
+    }
+
 
     public void printBookshelves(GameModelView gameModelView) {
         int numRows = gameModelView.getBookshelfList()[0].length;
@@ -360,12 +357,13 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     private String getPlayerNickname(GameModelView gameModelView) {
         StringBuilder border = new StringBuilder();
-        border.append(String.format("%-28s",gameModelView.getPlayerList()[0]));
+        border.append(String.format("%s (%d)%20s",gameModelView.getPlayerList()[0], gameModelView.getPointsList()[0], "" ));
         for (int i = 1; i < gameModelView.getBookshelfList().length; i++) {
-            border.append(String.format("%-28s",gameModelView.getPlayerList()[i]));
+            border.append(String.format("%s (%d)%20s",gameModelView.getPlayerList()[i], gameModelView.getPointsList()[i], ""));
         }
         return border.toString();
     }
+
 
     private String getTopBorder(int numMatrices) {
         StringBuilder border = new StringBuilder();
@@ -399,6 +397,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         System.out.println(" ");
         printBoard(gameModelView);
         printBookshelves(gameModelView);
+        printPersonalGoal(gameModelView);
         System.out.println(" ");
     }
 

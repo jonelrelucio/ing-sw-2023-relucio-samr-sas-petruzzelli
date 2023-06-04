@@ -97,8 +97,9 @@ public class GameModel extends Observable<EventView> {
         int score = 0;
         score += currentPlayer.getBookshelf().getScore();
         score += commonGoalCardDeck.getScore(currentPlayer);
-        score += getCurrentPlayer().getPersonalGoalCard().getScore(currentPlayer.getBookshelf().getBookshelfMatrix());
+        score += currentPlayer.getPersonalGoalCard().getScore(currentPlayer.getBookshelf().getBookshelfMatrix());
         if (currentPlayer.isWinner()) score += currentPlayer.getEndGameToken();
+        System.out.println(currentPlayer.getNickname() + " has " + score + " points.");
         currentPlayer.setScore(score);
     }
 
@@ -124,9 +125,15 @@ public class GameModel extends Observable<EventView> {
 
     public void selectColumn(int col) {
         EventView event = currentPlayer.putItemsInSelectedColumn(col);
+        updateCurrentPlayerScore();
         updateNextPlayer();
         setChangedAndNotifyObservers(event);
     }
+
+    private boolean newRound() {
+        return currentPlayer.equals(playerList.get(0));
+    }
+
 
     //TODO could be private
     public void setChangedAndNotifyObservers(EventView arg) {

@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.model.util.Utility;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 public class GameModelView implements Serializable {
 
@@ -18,6 +19,8 @@ public class GameModelView implements Serializable {
     private ArrayList<int[]> selectedCoordinates;
     private String currentPlayer;
     private ArrayList<ItemTileType> selectedTiles;
+    private HashMap<String, ItemTileType[][]> personalGoalCardList;
+    private int[] pointsList;
 
 
     public GameModelView(GameModel gameModel){
@@ -27,6 +30,8 @@ public class GameModelView implements Serializable {
         this.bookshelfList = Utility.serializeArrayOfBookshelves(gameModel.getPlayerList());
         this.bookshelfListItemId = Utility.serializeArrayOfItemId(gameModel.getPlayerList());
         this.selectedTiles = Utility.serializeArrayOfItemTiles(gameModel.getCurrentPlayer().getSelectedItemTiles());
+        this.personalGoalCardList = Utility.serializeArrayOfPersonalGoalCards(gameModel.getPlayerList());
+        this.pointsList = Utility.serializePointsList(gameModel.getPlayerList());
         this.canBeSelectedCoordinates = gameModel.getBoard().getCanBeSelectedCoordinates();
         this.selectedCoordinates = gameModel.getBoard().getSelectedCoordinates();
         this.currentPlayer = gameModel.getCurrentPlayer().getNickname();
@@ -41,4 +46,6 @@ public class GameModelView implements Serializable {
     public ArrayList<int[]> getSelectedCoordinates() { return  selectedCoordinates; }
     public String getCurrentPlayer() { return currentPlayer; }
     public ArrayList<ItemTileType> getSelectedTiles() { return selectedTiles; }
+    public HashMap<String, ItemTileType[][]> getPersonalGoalCardList() { return personalGoalCardList; }
+    public int[] getPointsList() { return pointsList; }
 }
