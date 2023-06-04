@@ -7,7 +7,7 @@ import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.view.cli.CLI;
 import it.polimi.ingsw.client.view.gui.GUI;
 
-import java.rmi.NotBoundException;
+
 import java.rmi.RemoteException;
 import java.util.Scanner;
 
@@ -47,8 +47,8 @@ public class LauchClient {
             view = new CLI();
         }
         else if (answer.equals("g")) {
-            //view = new GUI();
             GUI.startView();
+           // view=new ControllerMainScene();
         }
 
         System.out.println( "Select connection mode:\n" +

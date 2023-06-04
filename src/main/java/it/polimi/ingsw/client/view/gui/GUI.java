@@ -13,7 +13,7 @@ import javafx.stage.Stage;
 import java.io.IOException;
 import java.util.concurrent.CountDownLatch;
 
-public class GUI extends Application implements View {
+public class GUI extends Application {
 
     public static void startView() {
         launch();
@@ -29,44 +29,5 @@ public class GUI extends Application implements View {
         primaryStage.setResizable(false);
         primaryStage.show();
     }
-
-    @Override
-    public void run() {
-        // TODO
-        System.out.println("");
-    }
-
-
-    @Override
-    public void ViewEventHandler(GameModelView gameModelView, EventView eventView) {
-
-    }
-
-    @Override
-    public String askUsername() {
-        return null;
-    }
-
-
-    @Override
-    public int askMaxNumOfPlayers() {
-        return 0;
-    }
-
-    @Override
-    public void printMessage(String string) {
-
-    }
-
-    @Override
-    public void setThisUsername(String thisUsername) {
-
-    }
-
-    @Override
-    public void newTurn(GameModelView gameModelView) {
-
-    }
-
 
 }

@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client.view.gui.guiController.guicontroller;
+package it.polimi.ingsw.client.view.gui.guiController;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
@@ -19,7 +19,7 @@ public class ControllerNplayers implements Initializable {
     @FXML
     private Label numberPlayerChosen;
     @FXML
-    private Button gotoChooseNickName;
+    private Button gotoMainScene;
 
     private ToggleGroup favLangToggleGroup;
     private int selectedNumber;
@@ -30,7 +30,7 @@ public class ControllerNplayers implements Initializable {
     }
 
     public void goToNextScene(){
-        viewGUI.chooseUsername();
+        viewGUI.showMain();
     }
 
 
@@ -63,7 +63,8 @@ public class ControllerNplayers implements Initializable {
      */
 
     public void setNumberOfPlayers(){
-        this.gotoChooseNickName.setDisable(false);
+        viewGUI.unLock();
+        gotoMainScene.setDisable(false);
     }
 
 
@@ -94,7 +95,7 @@ public class ControllerNplayers implements Initializable {
         this.TwoPlayersButton.setToggleGroup(favLangToggleGroup);
         this.FourPlayersButton.setToggleGroup(favLangToggleGroup);
         //initialize the button for change scene
-        this.gotoChooseNickName.setDisable(true);
+        this.gotoMainScene.setDisable(true);
     }
 
 }
