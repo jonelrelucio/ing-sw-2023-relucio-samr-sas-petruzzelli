@@ -29,11 +29,11 @@ public class Game {
     //TODO ADD MORE EVENTS
     private void initEventHandler() {
         eventHandlers = new HashMap<>();
-        eventHandlers.put(SELECT_COORDINATES ,new SelectCoordinates());
-        eventHandlers.put(DESELECT_COORDINATES, new DeselectCoordinates());
-        eventHandlers.put(PICK_TILES, new PickCoordinates());
-        eventHandlers.put(NEW_ORDER, new NewOrderTiles());
-        eventHandlers.put(SELECT_COLUMN, new SelectColumn());
+        eventHandlers.put(SELECT_COORDINATES , this::selectCoordinate);
+        eventHandlers.put(DESELECT_COORDINATES, this::deselectCoordinates);
+        eventHandlers.put(PICK_TILES, this::pickCoordinates);
+        eventHandlers.put(NEW_ORDER, this::newOrderTiles);
+        eventHandlers.put(SELECT_COLUMN, this::selectColumn);
     }
 
     public void initGameModel(ArrayList<String> usernameList) {
@@ -55,70 +55,47 @@ public class Game {
     public void handleEvent(MessageEvent messageEvent) {
         EventController eventType = messageEvent.getEventType();
         String message = messageEvent.getMessage();
-        eventHandlers.get(eventType).performAction(gameModel, message);
+        eventHandlers.get(eventType).performAction( message);
     }
 
-}
-
-
-interface EventManager {
-
-    void performAction(GameModel gameModel, String message);
-}
-
-
-class SelectCoordinates implements EventManager{
-
-    @Override
-    public void performAction(GameModel gameModel, String message) {
+    public void selectCoordinate(String message) {
         String[] coordinates = message.split(" ");
         int x = Integer.parseInt(coordinates[0]);
         int y = Integer.parseInt(coordinates[1]);
         int[] selectedCoordinates = new int[] {x, y};
         gameModel.selectCoordinates(selectedCoordinates);
     }
-}
 
-class DeselectCoordinates implements EventManager{
-
-
-    @Override
-    public void performAction(GameModel gameModel, String message) {
+    public void deselectCoordinates(String message ) {
         String[] coordinates = message.split(" ");
         int x = Integer.parseInt(coordinates[0]);
         int y = Integer.parseInt(coordinates[1]);
         int[] selectedCoordinates = new int[] {x, y};
         gameModel.deselectCoordinates(selectedCoordinates);
     }
-}
 
-class PickCoordinates implements EventManager{
-
-    @Override
-    public void performAction(GameModel gameModel, String message) {
+    private void pickCoordinates(String message) {
         System.out.println(gameModel.getCurrentPlayer().getNickname() + " picked the selected tiles from the board.");
         gameModel.pickTiles();
     }
-}
 
-class NewOrderTiles implements EventManager {
-
-    @Override
-    public void performAction(GameModel gameModel, String message) {
-        String[] strArr = message.split(" "); // split the string at spaces
+    private void newOrderTiles(String message) {
+        String[] strArr = message.split(" ");
         int[] newOrder = new int[strArr.length];
         for (int i = 0; i < strArr.length; i++) {
-            newOrder[i] = Integer.parseInt(strArr[i]); // parse each substring as integer
+            newOrder[i] = Integer.parseInt(strArr[i]);
         }
         gameModel.rearrangeSelectedItemTiles(newOrder);
     }
-}
 
-class SelectColumn implements  EventManager {
-
-    @Override
-    public void performAction(GameModel gameModel, String message) {
+    private void selectColumn(String message ) {
         int col = Integer.parseInt(message);
         gameModel.selectColumn(col);
     }
+
+}
+
+@FunctionalInterface
+interface EventManager {
+    void performAction( String message);
 }
