@@ -19,4 +19,5 @@ public interface View extends Runnable{
     void setThisUsername(String thisUsername);
 
     void newTurn(GameModelView gameModelView);
+
 }

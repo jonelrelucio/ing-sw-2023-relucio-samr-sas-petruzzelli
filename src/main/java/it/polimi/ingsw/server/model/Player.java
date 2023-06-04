@@ -3,12 +3,10 @@ package it.polimi.ingsw.server.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
 import it.polimi.ingsw.server.model.ItemTile.ItemTileType;
 import it.polimi.ingsw.server.model.commonGoalCard.CommonGoalCard;
 import it.polimi.ingsw.server.model.ItemTile.ItemTile;
-import it.polimi.ingsw.util.Observable;
 
 import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
 
@@ -16,7 +14,7 @@ enum PlayerState {
     WAITING, PLAYING;
 }
 
-public class Player extends Observable<GameEvent> {
+public class Player {
 
     private static final int ENDTOKENSCORE = 1;
     private boolean winner;

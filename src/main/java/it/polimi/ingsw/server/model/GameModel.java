@@ -1,7 +1,6 @@
 package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
-import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 import it.polimi.ingsw.server.model.bag.PersonalGoalCardBag;
 import it.polimi.ingsw.server.model.commonGoalCard.CommonGoalCardDeck;
 import it.polimi.ingsw.server.model.util.CircularArrayList;

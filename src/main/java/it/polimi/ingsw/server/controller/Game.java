@@ -1,6 +1,5 @@
 package it.polimi.ingsw.server.controller;
 
-import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.events.controllerEvents.EventController;
 import it.polimi.ingsw.distributed.events.controllerEvents.MessageEvent;
 import it.polimi.ingsw.server.model.Board;
