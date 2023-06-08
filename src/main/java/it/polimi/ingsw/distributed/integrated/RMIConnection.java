@@ -2,6 +2,7 @@ package it.polimi.ingsw.distributed.integrated;
 
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.events.GameEvent;
+import it.polimi.ingsw.distributed.integrated.messages.Message;
 
 import java.rmi.RemoteException;
 
@@ -42,6 +43,12 @@ public class RMIConnection extends Connection{
 
     @Override
     void updateClient(GameEvent event) throws RemoteException {
+        //spawnare un tnread
         client.update(event);
+    }
+
+    @Override
+    public void sendMessageToClient(Message message){
+
     }
 }

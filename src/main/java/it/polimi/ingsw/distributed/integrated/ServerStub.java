@@ -88,7 +88,8 @@ public class ServerStub implements Server {
         }
 
         try {
-            return (boolean) ois.readObject();
+            boolean canJoin = (boolean) ois.readObject();
+            return canJoin;
         } catch (IOException e) {
             throw new RuntimeException(e);
         } catch(ClassNotFoundException e){
@@ -101,5 +102,27 @@ public class ServerStub implements Server {
     @Override
     public void update(GameEvent arg) throws RemoteException {
 
+    }
+
+    public void sendObject(Object object){
+        try{
+
+            oos.writeObject(object);
+            oos.flush();
+        }catch(IOException e){
+            System.err.println("Cannot send message, error "+ e);
+        }
+    }
+
+    public Object receiveObject(){
+        Object object = null;
+        try{
+            object = ois.readObject();
+        }catch(IOException e){
+            System.err.println("Cannot read object, error "+e);
+        }catch(ClassNotFoundException e){
+            System.err.println("Class not found, "+e);
+        }
+        return object;
     }
 }

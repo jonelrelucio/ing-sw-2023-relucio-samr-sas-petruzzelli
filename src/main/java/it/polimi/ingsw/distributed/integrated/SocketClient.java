@@ -7,17 +7,21 @@ import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
+import it.polimi.ingsw.distributed.integrated.messages.ClientUpdateMessage;
+import it.polimi.ingsw.distributed.integrated.messages.Message;
+import it.polimi.ingsw.distributed.integrated.messages.MessageType;
+import it.polimi.ingsw.distributed.integrated.messages.SimpleTextMessage;
 
 import java.rmi.RemoteException;
 
 public class SocketClient implements Client, Runnable{
 
     private View view;
-    private Server server;
+    private ServerStub server;
     private String username;
     private boolean connectionError = false;
 
-    public SocketClient(Server serverStub, View view){
+    public SocketClient(ServerStub serverStub, View view){
         this.server = serverStub;
         this.view = view;
     }
@@ -62,7 +66,12 @@ public class SocketClient implements Client, Runnable{
                     throw new RuntimeException(e);
                 }
 
+                //Non so cosa va prima
+                waitForPlayers();
                 addObserver();
+
+
+
             }
         } catch (RemoteException e) {
             throw new RuntimeException(e);
@@ -89,6 +98,112 @@ public class SocketClient implements Client, Runnable{
 //                }
 //            });
         }
+    }
+
+    private void waitForPlayers(){
+        /*
+        Message message = (Message) server.receiveObject();
+        //cambiare la condizione nel while
+        while (message.getMessageType() == MessageType.FIRST_PLAYER_MESSAGE){
+            message = (Message) server.receiveObject();
+            if(message.getMessageType() == MessageType.NUM_OF_PLAYERS_MESSAGE){
+                try {
+                    int numOfPlayers = askMaxNumOfPlayers();
+                    server.sendObject(numOfPlayers);
+                } catch (RemoteException e) {
+                    throw new RuntimeException(e);
+                }
+
+                //ricevuta stringa che dice quanti rimangono
+
+            }
+        }
+
+         */
+        /*
+        SimpleTextMessage message;
+        do{
+            message = (SimpleTextMessage) server.receiveObject();
+            if(message.getMessageType() == MessageType.FIRST_PLAYER_MESSAGE){
+                SimpleTextMessage numOfPlayersMessage = (SimpleTextMessage) server.receiveObject();  //SE NON VA COSì CAMBIARE DA numOfPlayersMessage a message dichiarato sopra
+                if(numOfPlayersMessage.getMessageType() == MessageType.NUM_OF_PLAYERS_MESSAGE){
+                    try{
+                        int numOfPlayers = askMaxNumOfPlayers();
+                        server.sendObject(numOfPlayers);
+                    }catch(RemoteException e){
+                        throw new RuntimeException(e);
+                    }
+                }
+                //waiting for x to set the number of players
+                SimpleTextMessage waitToSetNumOfPlayers = (SimpleTextMessage) server.receiveObject();
+                view.printMessage(waitToSetNumOfPlayers.getMessage());
+                //inviare alla cli per la stampa
+                //enter maximum number of players
+                SimpleTextMessage enterMaximumNumOfPlayers = (SimpleTextMessage) server.receiveObject();    //forse è da togliere
+                view.printMessage(enterMaximumNumOfPlayers.getMessage());
+
+
+            }
+            if(message.getMessageType() == MessageType.REMAINING_PLAYERS_MESSAGE){
+                view.printMessage(message.getMessage());
+            }
+        }while (message.getMessageType() != MessageType.START_GAME_MESSAGE);*/
+
+        SimpleTextMessage message = (SimpleTextMessage) server.receiveObject();
+        while(message.getMessageType() != MessageType.START_GAME_MESSAGE){
+            if(message.getMessageType() == MessageType.FIRST_PLAYER_MESSAGE){
+                SimpleTextMessage numOfPlayersMessage = (SimpleTextMessage) server.receiveObject();  //SE NON VA COSì CAMBIARE DA numOfPlayersMessage a message dichiarato sopra
+                if(numOfPlayersMessage.getMessageType() == MessageType.NUM_OF_PLAYERS_MESSAGE){
+                    try{
+                        int numOfPlayers = askMaxNumOfPlayers();
+                        server.sendObject(numOfPlayers);
+                    }catch(RemoteException e){
+                        throw new RuntimeException(e);
+                    }
+                }
+                //waiting for x to set the number of players
+                SimpleTextMessage waitToSetNumOfPlayers = (SimpleTextMessage) server.receiveObject();
+                view.printMessage(waitToSetNumOfPlayers.getMessage());
+                //inviare alla cli per la stampa
+                //enter maximum number of players
+                SimpleTextMessage enterMaximumNumOfPlayers = (SimpleTextMessage) server.receiveObject();    //forse è da togliere
+                view.printMessage(enterMaximumNumOfPlayers.getMessage());
+                if(enterMaximumNumOfPlayers.getMessageType() == MessageType.START_GAME_MESSAGE){
+                    break;
+                }
+
+            }
+            if(message.getMessageType() == MessageType.REMAINING_PLAYERS_MESSAGE){
+                view.printMessage(message.getMessage());
+            }
+
+
+
+
+
+            message = (SimpleTextMessage) server.receiveObject();
+        }
+
+
+        //updateClientMessage
+        ClientUpdateMessage clientUpdateMessage = (ClientUpdateMessage)server.receiveObject();
+        try{
+            update(clientUpdateMessage.getGameEvent());
+
+        }catch(RemoteException e){
+            System.err.println("Cannot update client, "+e);
+        }
+
+        SimpleTextMessage startViewMessage = (SimpleTextMessage) server.receiveObject();
+        if(startViewMessage.getMessageType() == MessageType.START_VIEW_MESSAGE){
+            try{
+                startView();
+            }catch(RemoteException e){
+                System.err.println("Cannot start view");
+            }
+        }
+
+
     }
 
     private void askUsername() throws RemoteException{

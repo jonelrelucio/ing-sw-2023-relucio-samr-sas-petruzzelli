@@ -56,7 +56,7 @@ public class ClientMain {
         }else{
             System.out.println("Scelto un client di tipo socket");
             server = new ServerStub("localhost", 1234);
-            SocketClient client = new SocketClient(server, view);
+            SocketClient client = new SocketClient((ServerStub) server, view);
             client.run();
         }
         //server.connect(client);
