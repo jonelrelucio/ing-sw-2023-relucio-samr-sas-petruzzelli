@@ -22,7 +22,8 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     private String thisUsername;
     private final HashMap<EventView, ViewEventHandler> viewEventHandlers;
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in)); // used for chat message input
-
+    private boolean isMyTurn = false;
+    Thread chatThread;
 
     public CLI(){
         viewEventHandlers = new HashMap<>();
@@ -64,7 +65,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     }
 
     private void startChat() {
-        new Thread(() -> {
+        chatThread = new Thread(() -> {
             try {
                 System.out.println("Write your message and press enter to send it to the other players");
                 System.out.println("write '/showChat' and press enter to get the last 10 messages from the chat");
@@ -72,6 +73,8 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
                     String message = reader.readLine();
                     if (message.equals("/showChat")) {
                         setChangedAndNotifyObservers(new MessageEvent(SHOW_CHAT, thisUsername));
+                    } else if (message.equals("/quit") && isMyTurn) {
+                        return;
                     } else if (!message.isBlank()) {
                         setChangedAndNotifyObservers(new MessageEvent(NEW_MESSAGE_CHAT, thisUsername + ": " + message));
                     }
@@ -79,7 +82,9 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-        }).start();
+        });
+
+        chatThread.start();
     }
 
     public int getNumInput(){
@@ -135,9 +140,23 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         do {
             x = -1;
             y = -1;
-            System.out.println("Enter the coordinates: x y");
-            Scanner s = new Scanner(System.in) ;
-            input = s.nextLine();
+            Scanner s = new Scanner(System.in);
+            while (true) {
+                System.out.println("Enter the coordinates: x y");
+                input = s.nextLine();
+                if (input.equals("/chat")) {
+                    startChat();
+                    if (chatThread.isAlive()) {
+                        try {
+                            chatThread.join();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                } else {
+                    break;
+                }
+            }
             String[] coordinates = input.split(" ");
             if (coordinates.length != 2 || !isNumeric(coordinates[0]) || !isNumeric(coordinates[1])) {
                 System.out.println("Invalid coordinates, try again...");
@@ -272,6 +291,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     }
 
     public boolean isMyTurn(GameModelView gameModelView){
+        isMyTurn = gameModelView.getCurrentPlayer().equals(thisUsername);
         return gameModelView.getCurrentPlayer().equals(thisUsername);
     }
 
