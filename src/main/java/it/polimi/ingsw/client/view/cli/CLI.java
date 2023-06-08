@@ -7,6 +7,9 @@ import it.polimi.ingsw.distributed.events.controllerEvents.MessageEvent;
 import it.polimi.ingsw.server.model.ItemTile.ItemTileType;
 import it.polimi.ingsw.util.Observable;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -18,6 +21,7 @@ import static it.polimi.ingsw.distributed.events.controllerEvents.EventControlle
 public class CLI extends Observable<MessageEvent> implements View, Runnable {
     private String thisUsername;
     private final HashMap<EventView, ViewEventHandler> viewEventHandlers;
+    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in)); // used for chat message input
 
 
     public CLI(){
@@ -60,20 +64,20 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     }
 
     private void startChat() {
-        Scanner s = new Scanner(System.in);
         new Thread(() -> {
             try {
-                System.out.println("Write your message here and press enter to send it to the other players:");
+                System.out.println("Write your message and press enter to send it to the other players");
+                System.out.println("write '/showChat' and press enter to get the last 10 messages from the chat");
                 while (true) {
-                    String message = s.nextLine().trim();
+                    String message = reader.readLine();
                     if (message.equals("/showChat")) {
                         setChangedAndNotifyObservers(new MessageEvent(SHOW_CHAT, thisUsername));
-                    } else if(!message.isBlank()) {
+                    } else if (!message.isBlank()) {
                         setChangedAndNotifyObservers(new MessageEvent(NEW_MESSAGE_CHAT, thisUsername + ": " + message));
                     }
                 }
-            } finally {
-                s.close(); // Chiudi l'istanza di Scanner
+            } catch (IOException e) {
+                throw new RuntimeException(e);
             }
         }).start();
     }
