@@ -13,6 +13,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
 
@@ -159,7 +160,11 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
 
     }
 
-
+    public void receiveChat(ArrayBlockingQueue<String> chat) throws RemoteException {
+        for (String m : chat) {
+            System.out.println(m);
+        }
+    }
 
 
 }

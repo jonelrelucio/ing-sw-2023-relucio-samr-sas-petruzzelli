@@ -4,6 +4,7 @@ import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.ClientHandler;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
+import it.polimi.ingsw.distributed.events.controllerEvents.EventController;
 import it.polimi.ingsw.distributed.events.controllerEvents.MessageEvent;
 import it.polimi.ingsw.server.controller.Game;
 import it.polimi.ingsw.server.model.GameModel;
@@ -202,6 +203,15 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
      */
     @Override
     public void update( MessageEvent messageEvent) throws RemoteException{
-        gameController.handleEvent(messageEvent);
+        if (messageEvent.getEventType().equals(EventController.SHOW_CHAT)) {
+            Client client = clientHandlers.stream().filter(u -> u.getUsername().equals(messageEvent.getMessage())).map(c -> c.getClient()).findFirst().orElse(null);
+            if (client != null) {
+                client.receiveChat(gameController.getChatMessages());
+            } else {
+                System.out.println("receiveChat method call error: Client not found");
+            }
+        } else {
+            gameController.handleEvent(messageEvent);
+        }
     }
 }

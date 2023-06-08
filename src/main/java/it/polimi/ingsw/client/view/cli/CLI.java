@@ -52,12 +52,33 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
 
     private void listenToPlayer(GameModelView gameModelView) {
-            if ( isMyTurn(gameModelView)) {
-                selectCoordinates(gameModelView);
-            }
+        if ( isMyTurn(gameModelView)) {
+            selectCoordinates(gameModelView);
+        } else {
+            startChat();
         }
+    }
 
-        public int getNumInput(){
+    private void startChat() {
+        Scanner s = new Scanner(System.in);
+        new Thread(() -> {
+            try {
+                System.out.println("Write your message here and press enter to send it to the other players:");
+                while (true) {
+                    String message = s.nextLine().trim();
+                    if (message.equals("/showChat")) {
+                        setChangedAndNotifyObservers(new MessageEvent(SHOW_CHAT, thisUsername));
+                    } else if(!message.isBlank()) {
+                        setChangedAndNotifyObservers(new MessageEvent(NEW_MESSAGE_CHAT, thisUsername + ": " + message));
+                    }
+                }
+            } finally {
+                s.close(); // Chiudi l'istanza di Scanner
+            }
+        }).start();
+    }
+
+    public int getNumInput(){
         try {
             Scanner s = new Scanner(System.in) ;
             return Integer.parseInt(s.nextLine());
@@ -73,7 +94,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         String username;
         System.out.print("Please choose your username: ");
         do {
-            Scanner s = new Scanner(System.in) ;;
+            Scanner s = new Scanner(System.in);
             username = s.nextLine();
             if (username.length() < 3 || username.isBlank()) System.out.println("Invalid username, try again...");
         }   while( username.length() < 3 || username.isBlank() );
