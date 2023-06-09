@@ -84,7 +84,11 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
     @Override
     public void update(GameModelView gameModelView, EventView event) throws RemoteException {
         if (event != NEW_TURN) view.ViewEventHandler(gameModelView, event);
-        else view.newTurn(gameModelView);
+        else {
+            new Thread( () -> {
+                view.newTurn(gameModelView);
+            }).start();
+        }
     }
 
     /**
@@ -92,8 +96,10 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
      * @param message    Message received from the server.
      */
     @Override
-    public synchronized void receiveFromServer(String message) throws RemoteException {
-        view.printMessage(message);
+    public void receiveFromServer(String message) throws RemoteException {
+        new Thread( () -> {
+            view.printMessage(message);
+        });
     }
 
     /**
@@ -139,11 +145,13 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
 
         if (view instanceof CLI viewInstance) {
             viewInstance.addObserver((o, arg) -> {
-                try {
-                    server.update(arg);
-                } catch (RemoteException e) {
-                    System.err.println("Unable to update the server: " + e.getMessage() + ". Skipping the update...");
-                }
+                new Thread( () -> {
+                    try {
+                        server.update(arg);
+                    } catch (RemoteException e) {
+                        System.err.println("Unable to update the server: " + e.getMessage() + ". Skipping the update...");
+                    }
+                }).start();
             });
         } else {
             GUI viewInstance = (GUI) view;

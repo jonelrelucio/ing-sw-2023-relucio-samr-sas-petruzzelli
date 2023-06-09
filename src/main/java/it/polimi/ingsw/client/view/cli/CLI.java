@@ -19,9 +19,12 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     private String thisUsername;
     private final HashMap<EventView, ViewEventHandler> viewEventHandlers;
 
-
     public CLI(){
         viewEventHandlers = new HashMap<>();
+        initEventHandlers();
+    }
+
+    private void initEventHandlers(){
         viewEventHandlers.put(SELECT_COORDINATES_SUCCESS, this::selectedCoordinatesSuccess);
         viewEventHandlers.put(SELECT_COORDINATES_FAIL,  this::selectedCoordinatesFail);
         viewEventHandlers.put(DESELECT_COORDINATES_SUCCESS, this::deselectCoordinatesSuccess);
@@ -31,6 +34,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         viewEventHandlers.put(NEW_ORDER_FAIL, this::newOrderFail);
         viewEventHandlers.put(SELECT_COLUMN_FAIL, this::selectColumnFail);
     }
+
 
     @Override
     public void run() {
@@ -240,10 +244,8 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
 
     private void setChangedAndNotifyObservers(MessageEvent arg) {
-        new Thread(() -> {
-            setChanged();
-            notifyObservers(arg);
-        }).start();
+        setChanged();
+        notifyObservers(arg);
     }
 
     public boolean isMyTurn(GameModelView gameModelView){
