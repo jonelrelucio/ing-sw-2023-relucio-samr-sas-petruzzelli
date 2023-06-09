@@ -1,6 +1,6 @@
 package it.polimi.ingsw.server.controller;
 
-import it.polimi.ingsw.distributed.events.controllerEvents.Event;
+import it.polimi.ingsw.distributed.events.controllerEvents.EventController;
 import it.polimi.ingsw.distributed.events.controllerEvents.MessageEvent;
 import it.polimi.ingsw.server.model.Board;
 import it.polimi.ingsw.server.model.GameModel;
@@ -13,25 +13,27 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
 
-import static it.polimi.ingsw.distributed.events.controllerEvents.Event.*;
+import static it.polimi.ingsw.distributed.events.controllerEvents.EventController.*;
 
 
 public class Game {
     private final GameModel gameModel;
-    private HashMap<Event, EventManager> eventHandlers;
+    private final HashMap<EventController, EventManager> eventHandlers;
 
 
-    public Game(GameModel model) {
+    public Game( GameModel model) {
         this.gameModel = model;
+        eventHandlers = new HashMap<>();
         initEventHandler();
     }
 
     //TODO ADD MORE EVENTS
     private void initEventHandler() {
-        eventHandlers = new HashMap<>();
-        eventHandlers.put(SELECT_COORDINATES ,new SelectCoordinates());
-        eventHandlers.put(DESELECT_COORDINATES, new DeselectCoordinates());
-
+        eventHandlers.put(SELECT_COORDINATES , this::selectCoordinate);
+        eventHandlers.put(DESELECT_COORDINATES, this::deselectCoordinates);
+        eventHandlers.put(PICK_TILES, this::pickCoordinates);
+        eventHandlers.put(NEW_ORDER, this::newOrderTiles);
+        eventHandlers.put(SELECT_COLUMN, this::selectColumn);
     }
 
     public void initGameModel(ArrayList<String> usernameList) {
@@ -51,38 +53,49 @@ public class Game {
     }
 
     public void handleEvent(MessageEvent messageEvent) {
-        Event eventType = messageEvent.getEventType();
+        EventController eventType = messageEvent.getEventType();
         String message = messageEvent.getMessage();
-        eventHandlers.get(eventType).performAction(gameModel, message);
+        eventHandlers.get(eventType).performAction( message);
     }
 
-}
-
-
-interface EventManager {
-
-    void performAction(GameModel gameModel, String message);
-}
-
-
-class SelectCoordinates implements EventManager{
-
-    @Override
-    public void performAction(GameModel gameModel, String message) {
-        System.out.println(gameModel.getCurrentPlayer().getNickname() + " selected coordinates from the board.");
+    public void selectCoordinate(String message) {
         String[] coordinates = message.split(" ");
         int x = Integer.parseInt(coordinates[0]);
         int y = Integer.parseInt(coordinates[1]);
         int[] selectedCoordinates = new int[] {x, y};
         gameModel.selectCoordinates(selectedCoordinates);
     }
+
+    public void deselectCoordinates(String message ) {
+        String[] coordinates = message.split(" ");
+        int x = Integer.parseInt(coordinates[0]);
+        int y = Integer.parseInt(coordinates[1]);
+        int[] selectedCoordinates = new int[] {x, y};
+        gameModel.deselectCoordinates(selectedCoordinates);
+    }
+
+    private void pickCoordinates(String message) {
+        System.out.println(gameModel.getCurrentPlayer().getNickname() + " picked the selected tiles from the board.");
+        gameModel.pickTiles();
+    }
+
+    private void newOrderTiles(String message) {
+        String[] strArr = message.split(" ");
+        int[] newOrder = new int[strArr.length];
+        for (int i = 0; i < strArr.length; i++) {
+            newOrder[i] = Integer.parseInt(strArr[i]);
+        }
+        gameModel.rearrangeSelectedItemTiles(newOrder);
+    }
+
+    private void selectColumn(String message ) {
+        int col = Integer.parseInt(message);
+        gameModel.selectColumn(col);
+    }
+
 }
 
-class DeselectCoordinates implements EventManager{
-
-
-    @Override
-    public void performAction(GameModel gameModel, String message) {
-
-    }
+@FunctionalInterface
+interface EventManager {
+    void performAction( String message);
 }

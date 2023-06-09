@@ -1,5 +1,6 @@
 package it.polimi.ingsw.server.model;
 
+import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
 import it.polimi.ingsw.server.model.ItemTile.ItemTile;
 import it.polimi.ingsw.server.model.ItemTile.ItemTileType;
 
@@ -50,7 +51,6 @@ public class Bookshelf {
      * @param selectedColumn    selected column int
      */
     public void selectColumn(int selectedColumn) {
-        if (selectedColumn < 0 || selectedColumn >= bookshelfMatrix.length ) throw new IllegalArgumentException("Selected Column out of Bound");
         this.selectedColumn = selectedColumn;
     }
 
@@ -66,14 +66,15 @@ public class Bookshelf {
      * Fills the selected column from the bottom up with the stack of selectedTiles
      * @param selectedTiles stack of selectedTiles
      */
-    public void updateTiles(ArrayList<ItemTile> selectedTiles){
-        if (selectedTiles.size() > remainingEmptyTilesInSelectedCol(getSelectedColumn()))
-            throw new IllegalArgumentException("Selected Tiles are in larger number than available space in selected Column.");
-        for (int i = bookshelfMatrix.length-1; i >= 0; i--) {
-            if (getMatrixTile(i, getSelectedColumn()).isEmpty() ){
-                setMatrixTile(i, getSelectedColumn(), selectedTiles.remove(0));
+    public EventView updateTiles(ArrayList<ItemTile> selectedTiles){
+        if (selectedColumn < 0 || selectedColumn >= bookshelfMatrix.length || selectedTiles.size() > remainingEmptyTilesInSelectedCol(getSelectedColumn()))
+            return EventView.SELECT_COLUMN_FAIL;
+        for (int i = bookshelfMatrix.length-1; selectedTiles.size() > 0 && i >= 0; i--) {
+            if (getMatrixTile(i, selectedColumn).isEmpty() ){
+                setMatrixTile(i, selectedColumn, selectedTiles.remove(0));
             }
         }
+        return EventView.NEW_TURN;
     }
 
     /**

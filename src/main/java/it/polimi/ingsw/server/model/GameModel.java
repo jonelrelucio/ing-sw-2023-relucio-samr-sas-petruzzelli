@@ -1,15 +1,14 @@
 package it.polimi.ingsw.server.model;
 
-import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
+import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
 import it.polimi.ingsw.server.model.bag.PersonalGoalCardBag;
 import it.polimi.ingsw.server.model.commonGoalCard.CommonGoalCardDeck;
-import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.server.model.util.CircularArrayList;
 import it.polimi.ingsw.util.Observable;
 
-import java.rmi.RemoteException;
+import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
 
-public class GameModel extends Observable<GameEvent> {
+public class GameModel extends Observable<EventView> {
 
     private int numOfPlayer;
     private CircularArrayList<Player> playerList;
@@ -46,11 +45,11 @@ public class GameModel extends Observable<GameEvent> {
         this.commonGoalCardDeck = new CommonGoalCardDeck(numOfPlayer);
         this.playerList = playerList;
         this.currentPlayer = playerList.get(0);
-        setChangedAndNotifyObservers(new GameModelView(board, playerList, currentPlayer.getNickname()));
+        setChangedAndNotifyObservers(NEW_TURN);
     }
 
     public Player getWinner() { if(!currentPlayer.isWinner()) throw new IllegalCallerException(); return currentPlayer; }
-    public void updateNextPlayer() { this.currentPlayer = playerList.get(playerList.indexOf(this.currentPlayer)+1); }
+    public void updateNextPlayer() {this.currentPlayer = playerList.get(playerList.indexOf(this.currentPlayer)+1);}
     public void updateNumOfRounds() { this.numOfRounds++; }
 
     // Getters
@@ -98,19 +97,46 @@ public class GameModel extends Observable<GameEvent> {
         int score = 0;
         score += currentPlayer.getBookshelf().getScore();
         score += commonGoalCardDeck.getScore(currentPlayer);
-        score += getCurrentPlayer().getPersonalGoalCard().getScore(currentPlayer.getBookshelf().getBookshelfMatrix());
+        score += currentPlayer.getPersonalGoalCard().getScore(currentPlayer.getBookshelf().getBookshelfMatrix());
         if (currentPlayer.isWinner()) score += currentPlayer.getEndGameToken();
+        System.out.println(currentPlayer.getNickname() + " has " + score + " points.");
         currentPlayer.setScore(score);
     }
 
-    public void selectCoordinates(int[] selectedCoordinates) {
-        currentPlayer.selectCoordinates(selectedCoordinates);
-        setChangedAndNotifyObservers(new GameModelView(board, playerList, currentPlayer.getNickname()));
-
+    public void pickTiles(){
+        currentPlayer.pickSelectedItemTiles();
+        setChangedAndNotifyObservers(PICK_TILES_SUCCESS);
     }
 
+    public void selectCoordinates(int[] selectedCoordinates) {
+        EventView event = currentPlayer.selectCoordinates(selectedCoordinates);
+        setChangedAndNotifyObservers(event);
+    }
+
+    public void deselectCoordinates(int[] selectedCoordinates) {
+        EventView event = currentPlayer.deselectCoordinates(selectedCoordinates);
+        setChangedAndNotifyObservers(event);
+    }
+
+    public void rearrangeSelectedItemTiles(int[] newOrder) {
+        EventView event = currentPlayer.rearrangeSelectedItemTiles(newOrder);
+        setChangedAndNotifyObservers(event);
+    }
+
+    public void selectColumn(int col) {
+        EventView event = currentPlayer.putItemsInSelectedColumn(col);
+        updateCurrentPlayerScore();
+        updateNextPlayer();
+        setChangedAndNotifyObservers(event);
+    }
+
+    private boolean newRound() {
+        return currentPlayer.equals(playerList.get(0));
+    }
+
+
     //TODO could be private
-    public void setChangedAndNotifyObservers(GameEvent arg) {
+    public void setChangedAndNotifyObservers(EventView arg) {
         setChanged();
         notifyObservers(arg);
     }

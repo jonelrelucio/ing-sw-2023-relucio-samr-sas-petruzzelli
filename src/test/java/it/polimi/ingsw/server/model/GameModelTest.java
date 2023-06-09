@@ -175,7 +175,7 @@ public class GameModelTest {
         Board board = new Board(3);
         PersonalGoalCard personalGoalCard = PersonalGoalCardBag.drawPersonalGoalCard(3);
         gameModel.getPlayerList().add(new Player("Lucian", personalGoalCard, board));
-        gameModel.initCurrentPlayer();
+        //gameModel.initCurrentPlayer();
         assertThrows(IllegalCallerException.class, gameModel::getWinner);
     }
 
@@ -186,7 +186,7 @@ public class GameModelTest {
         PersonalGoalCard personalGoalCard = PersonalGoalCardBag.drawPersonalGoalCard(2);
         gameModel.getPlayerList().add(new Player("Lucian", personalGoalCard, board));
         gameModel.getPlayerList().add(new Player("Jonel", personalGoalCard, board));
-        gameModel.initCurrentPlayer();
+        //gameModel.initCurrentPlayer();
         Player currentPlayer = gameModel.getCurrentPlayer();
         assertEquals(currentPlayer, gameModel.getPlayerList().get(0));
         gameModel.updateNextPlayer();

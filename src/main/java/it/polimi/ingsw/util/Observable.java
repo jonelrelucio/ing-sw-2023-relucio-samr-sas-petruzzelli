@@ -2,12 +2,10 @@ package it.polimi.ingsw.util;
 
 
 
-import it.polimi.ingsw.distributed.events.GameEvent;
-
 import java.util.ArrayList;
 
 @SuppressWarnings("ALL")
-public class Observable<Event extends GameEvent> {
+public class Observable<Event> {
 
     private boolean changed = false;
     private ArrayList obs;
@@ -35,7 +33,6 @@ public class Observable<Event extends GameEvent> {
 
     public void notifyObservers (Event arg)  {
         Object[] arrLocal;
-
         synchronized (this) {
             if (!changed)
                 return;

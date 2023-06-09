@@ -3,17 +3,18 @@ package it.polimi.ingsw.server.model;
 import java.util.ArrayList;
 import java.util.Arrays;
 
-import it.polimi.ingsw.distributed.events.GameEvent;
+import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
 import it.polimi.ingsw.server.model.ItemTile.ItemTileType;
 import it.polimi.ingsw.server.model.commonGoalCard.CommonGoalCard;
 import it.polimi.ingsw.server.model.ItemTile.ItemTile;
-import it.polimi.ingsw.util.Observable;
+
+import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
 
 enum PlayerState {
     WAITING, PLAYING;
 }
 
-public class Player extends Observable<GameEvent> {
+public class Player {
 
     private static final int ENDTOKENSCORE = 1;
     private boolean winner;
@@ -76,33 +77,39 @@ public class Player extends Observable<GameEvent> {
      * Adds the given coordinates in the ArrayList of selectedTiles and updates the canBeSelectedTiles Arraylist
      * @param coordinates   selected coordinates
      */
-    public void selectCoordinates(int[] coordinates) {
+    public EventView selectCoordinates(int[] coordinates) {
         if (board.getSelectedCoordinates().size() > bookshelf.getMaxAvailableSpace())
             throw new IllegalArgumentException("Can't select more tiles.");
         for (int[] tile : board.getCanBeSelectedCoordinates()) {
             if (Arrays.equals(tile, coordinates)) {
                 board.getSelectedCoordinates().add(coordinates);
                 board.updateCanBeSelectedCoordinates();
-                return;
+                System.out.println(nickname + " selected coordinates from the board.");
+                return SELECT_COORDINATES_SUCCESS;
             }
+
         }
-        throw new RuntimeException("Item in given coordinates can't be selected");
+        System.out.println("Select coordinates fail");
+        return SELECT_COORDINATES_FAIL;
     }
 
     /**
      * Pops the given coordinates from the Arraylist of selectedTiles and updates the canBeSelectedTiles ArrayList
      * @param coordinates   coordinates to be popped from the ArrayList of selectedTiles
      */
-    public void deselectCoordinates(int[] coordinates ){
+    public EventView deselectCoordinates(int[] coordinates ){
         for (int i = 0; i < board.getSelectedCoordinates().size(); i++){
             if (coordinates[0] == board.getSelectedCoordinates().get(i)[0] && coordinates[1] == board.getSelectedCoordinates().get(i)[1]) {
                 board.getSelectedCoordinates().remove(i);
                 board.updateCanBeSelectedCoordinates();
-                return;
+                System.out.println(nickname + " deselected coordinates from the board.");
+                return DESELECT_COORDINATES_SUCCESS;
             }
         }
-        throw new RuntimeException("No coordinates in selectedTiles,");
 
+
+        System.out.println("Deselect coordinates fail");
+        return DESELECT_COORDINATES_FAIL;
     }
 
     /**
@@ -120,27 +127,34 @@ public class Player extends Observable<GameEvent> {
 
     /**
      * rearranges items in selectedItemTiles
-     * @param newOrder  the order of the selectedItemTiles to be rearranged
+     *
+     * @param newOrder the order of the selectedItemTiles to be rearranged
+     * @return  success or fail event to clients.
      */
-    public void rearrangeSelectedItemTiles(int... newOrder) {
+    public EventView rearrangeSelectedItemTiles(int... newOrder) {
         ArrayList<ItemTile> rearrangedItems = new ArrayList<ItemTile>();
 
         // Check that the new order array is valid
         if (newOrder.length != selectedItemTiles.size() || newOrder.length == 0) {
-            throw new IllegalArgumentException("Invalid new order array");
+            return NEW_ORDER_FAIL;
         }
 
         // Add the items to the new list in the specified order
         for (int index : newOrder) {
             if (index < 0 || index >= selectedItemTiles.size()) {
-                throw new IllegalArgumentException("Invalid index in new order array");
+                return NEW_ORDER_FAIL;
             }
             rearrangedItems.add(selectedItemTiles.get(index));
         }
 
         selectedItemTiles = rearrangedItems;
+        return NEW_ORDER_SUCCESS;
     }
 
 
+    public EventView putItemsInSelectedColumn(int selectedColumn){
+        bookshelf.selectColumn(selectedColumn);
+        return bookshelf.updateTiles(selectedItemTiles);
+    }
 
 }

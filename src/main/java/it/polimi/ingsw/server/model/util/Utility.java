@@ -8,6 +8,8 @@ import it.polimi.ingsw.server.model.Player;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 public class Utility {
@@ -115,6 +117,41 @@ public class Utility {
                     toReturn[i][j][k] = playerList.get(i).getBookshelf().getBookshelfMatrix()[j][k].getId();
                 }
             }
+        }
+        return toReturn;
+    }
+
+    public static ArrayList<ItemTileType> serializeArrayOfItemTiles(ArrayList<ItemTile> selectedItemTiles) {
+        ArrayList<ItemTileType> toReturn = new ArrayList<>();
+        for (ItemTile itemTile : selectedItemTiles) {
+            toReturn.add(itemTile.getItemTileType());
+        }
+        return toReturn;
+    }
+
+    public static HashMap<String, ItemTileType[][]> serializeArrayOfPersonalGoalCards(CircularArrayList<Player> playerList) {
+        int id = playerList.size();
+        int row = playerList.get(0).getPersonalGoalCard().getPersonalGoalCardMatrix().length;
+        int col = playerList.get(0).getPersonalGoalCard().getPersonalGoalCardMatrix()[0].length;
+        HashMap<String, ItemTileType[][]> toReturn = new HashMap<>();
+        for (int i = 0; i < id; i++){
+            ItemTileType[][] personalGoalCard = new ItemTileType[row][col];
+            String name = playerList.get(i).getNickname();
+            for ( int j = 0; j < row; j++) {
+                for (int k = 0; k < col; k++) {
+                    personalGoalCard[j][k] = playerList.get(i).getPersonalGoalCard().getPersonalGoalCardMatrix()[j][k].getItemTileType();
+                }
+            }
+            toReturn.put(name, personalGoalCard);
+        }
+        return toReturn;
+    }
+
+    public static int[] serializePointsList(CircularArrayList<Player> playerList) {
+        int id = playerList.size();
+        int[] toReturn = new int[id];
+        for (int i = 0; i < id; i++ ){
+            toReturn[i] = playerList.get(i).getScore();
         }
         return toReturn;
     }
