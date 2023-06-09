@@ -278,8 +278,6 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         //System.out.println("Do you want to order your Tiles? yes/no");
         if (!askYesOrNo("Do you want to order your Tiles? yes/no")) selectColumn(gameModelView);
         else {
-            System.out.println("Rearrange the tiles by setting a new array of indexes: ");
-            System.out.println("(example of new order: 2 0 1)");
             String input = getTileOrder();
             setChangedAndNotifyObservers(new MessageEvent(NEW_ORDER, input));
         }
@@ -291,7 +289,23 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         do {
             isValid = true;
             Scanner s = new Scanner(System.in) ;
-            input = s.nextLine();
+            while (true) {
+                System.out.println("Rearrange the tiles by setting a new array of indexes: ");
+                System.out.println("(example of new order: 2 0 1)");
+                input = s.nextLine();
+                if (input.equals("/chat")) {
+                    startChat();
+                    if (chatThread.isAlive()) {
+                        try {
+                            chatThread.join();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                } else {
+                    break;
+                }
+            }
             String[] strArr = input.split(" ");
             int[] intArr = new int[strArr.length];
             for (String value : strArr) {
@@ -313,15 +327,29 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     public void selectColumn(GameModelView gameModelView) {
         printBookshelves(gameModelView);
-        System.out.printf("%s select the column where you want to put your tiles. ", gameModelView.getCurrentPlayer());
-        System.out.println("Choose a number from 0 to 4: ");
         String input;
         String[] strArr;
         int x;
         do {
             x = -1;
             Scanner s = new Scanner(System.in) ;
-            input = s.nextLine();
+            while (true) {
+                System.out.printf("%s select the column where you want to put your tiles. ", gameModelView.getCurrentPlayer());
+                System.out.println("Choose a number from 0 to 4: ");
+                input = s.nextLine();
+                if (input.equals("/chat")) {
+                    startChat();
+                    if (chatThread.isAlive()) {
+                        try {
+                            chatThread.join();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                } else {
+                    break;
+                }
+            }
             strArr = input.split(" ");
             if ( !isNumeric(input) || strArr.length != 1) System.out.println("Invalid input. Try again: ");
             else {
