@@ -10,10 +10,7 @@ import it.polimi.ingsw.util.Observable;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
 import static it.polimi.ingsw.distributed.events.controllerEvents.EventController.*;
@@ -50,13 +47,24 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     public void newTurn(GameModelView gameModelView){
         new Thread(() -> {
             printAll(gameModelView);
-            System.out.printf("It's %s's turn.\n", gameModelView.getCurrentPlayer());
+            //System.out.printf("It's %s's turn.\n", gameModelView.getCurrentPlayer());
+            System.out.println("It's " + gameModelView.getCurrentPlayer() + "'s turn.");
             listenToPlayer(gameModelView);
         }).start();
     }
 
 
     private void listenToPlayer(GameModelView gameModelView) {
+        try {
+            // interrupt the prev chat thread on new turn
+            if (chatThread != null && chatThread.isAlive()) {
+                chatThread.interrupt();
+                chatThread.join();
+            }
+        } catch (InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+
         if ( isMyTurn(gameModelView)) {
             selectCoordinates(gameModelView);
         } else {
@@ -66,21 +74,37 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     private void startChat() {
         chatThread = new Thread(() -> {
+            System.out.println("Write your message and press enter to send it to the other players");
+            System.out.println("write '/showChat' and press enter to get the last 10 messages from the chat");
             try {
-                System.out.println("Write your message and press enter to send it to the other players");
-                System.out.println("write '/showChat' and press enter to get the last 10 messages from the chat");
-                while (true) {
-                    String message = reader.readLine();
-                    if (message.equals("/showChat")) {
-                        setChangedAndNotifyObservers(new MessageEvent(SHOW_CHAT, thisUsername));
-                    } else if (message.equals("/quit") && isMyTurn) {
-                        return;
-                    } else if (!message.isBlank()) {
-                        setChangedAndNotifyObservers(new MessageEvent(NEW_MESSAGE_CHAT, thisUsername + ": " + message));
-                    }
+                while (reader.ready()) {
+                    reader.readLine(); // clear buffered reader
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
+            }
+            while (!Thread.currentThread().isInterrupted()) {
+                try {
+                    String message = null;
+                    if (reader.ready()) {
+                        message = reader.readLine();
+                        if (message.equals("/showChat")) {
+                            setChangedAndNotifyObservers(new MessageEvent(SHOW_CHAT, thisUsername));
+                        } else if (message.equals("/quit")) {
+                            if (isMyTurn) {
+                                return;
+                            }
+                            System.err.println("command not found");
+                        } else if (!message.isBlank()) {
+                            setChangedAndNotifyObservers(new MessageEvent(NEW_MESSAGE_CHAT, thisUsername + ": " + message));
+                        }
+                    }
+                    Thread.sleep(100);
+                } catch (IOException e) {
+                    throw new RuntimeException(e);
+                } catch (InterruptedException e) {
+                    return;
+                }
             }
         });
 
@@ -170,9 +194,9 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
 
     public void selectCoordinates(GameModelView gameModelView) {
-        System.out.println("Do you want to select a coordinate from the board? yes/no");
+        //System.out.println("Do you want to select a coordinate from the board? yes/no");
         String coordinates;
-        if (askYesOrNo()){
+        if (askYesOrNo("Do you want to select a coordinate from the board? yes/no")){
             System.out.println("The Dotted spots on the board are the tiles that can be selected.");
             printCanBeSelectedCoordinates(gameModelView);
             coordinates = getCoordinates();
@@ -192,8 +216,8 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     public void askDeselectCoordinates(GameModelView gameModelView) {
         printSelectedCoordinates(gameModelView);
-        System.out.println("Do you want to deselect coordinates? yes/no: ");
-        if (askYesOrNo()) {
+        //System.out.println("Do you want to deselect coordinates? yes/no: ");
+        if (askYesOrNo("Do you want to deselect coordinates? yes/no: ")) {
             String coordinates = getCoordinates();
             setChangedAndNotifyObservers(new MessageEvent(DESELECT_COORDINATES, coordinates));
         }
@@ -215,6 +239,32 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         return answer.equals("yes");
     }
 
+    public boolean askYesOrNo(String text) {
+        String answer;
+        do {
+            Scanner s = new Scanner(System.in) ;
+            while (true) {
+                System.out.println(text);
+                answer = s.nextLine();
+                if (answer.equals("/chat")) {
+                    startChat();
+                    if (chatThread.isAlive()) {
+                        try {
+                            chatThread.join();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                } else {
+                    break;
+                }
+            }
+
+            if (!answer.equals("yes") && !answer.equals("no") ) System.out.println("Please select yes or no");
+        } while( !answer.equals("yes") && !answer.equals("no"));
+        return answer.equals("yes");
+    }
+
     private static boolean isNumeric(String str) {
         try {
             Integer.parseInt(str);
@@ -225,8 +275,8 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     }
 
     public void askTileOrder(GameModelView gameModelView) {
-        System.out.println("Do you want to order your Tiles? yes/no");
-        if (!askYesOrNo()) selectColumn(gameModelView);
+        //System.out.println("Do you want to order your Tiles? yes/no");
+        if (!askYesOrNo("Do you want to order your Tiles? yes/no")) selectColumn(gameModelView);
         else {
             System.out.println("Rearrange the tiles by setting a new array of indexes: ");
             System.out.println("(example of new order: 2 0 1)");
