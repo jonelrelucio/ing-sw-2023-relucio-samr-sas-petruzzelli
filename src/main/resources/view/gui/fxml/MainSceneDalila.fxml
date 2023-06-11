@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.Cursor?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Menu?>
+<?import javafx.scene.control.MenuBar?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.shape.Rectangle?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.TextFlow?>
+
+<BorderPane id=".bodybd" focusTraversable="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="1000.0" prefWidth="1200.0" styleClass="bodybg" stylesheets="@../css/background.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.gui.guiController.ControllerMainSceneDalila">
+   <top>
+      <AnchorPane prefHeight="116.0" prefWidth="1200.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fitHeight="87.0" fitWidth="97.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../publisher_material/box_noShadow.png" />
+               </image>
+            </ImageView>
+            <Button fx:id="yesButton" layoutX="719.0" layoutY="43.0" mnemonicParsing="false" text="YES" AnchorPane.topAnchor="43.0">
+               <font>
+                  <Font name="Bodoni MT Condensed" size="12.0" />
+               </font>
+            </Button>
+            <Button fx:id="noButton" layoutX="786.0" layoutY="43.0" mnemonicParsing="false" text="NO" AnchorPane.leftAnchor="786.0" AnchorPane.topAnchor="43.0" />
+            <TextFlow fx:id="textFlowGameMessages" layoutX="340.0" layoutY="11.0" prefHeight="81.0" prefWidth="356.0">
+               <effect>
+                  <Glow />
+               </effect>
+            </TextFlow>
+         </children>
+         <effect>
+            <DropShadow>
+               <input>
+                  <Glow />
+               </input>
+            </DropShadow>
+         </effect>
+      </AnchorPane>
+   </top>
+   <center>
+      <AnchorPane centerShape="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="792.0" BorderPane.alignment="CENTER">
+         <children>
+            <ImageView fx:id="boardImageView" fitHeight="517.0" fitWidth="517.0" layoutX="6.0" layoutY="-35.0" pickOnBounds="true" preserveRatio="true" styleClass="bodybg" AnchorPane.leftAnchor="39.0" AnchorPane.rightAnchor="243.0" AnchorPane.topAnchor="50.0">
+               <image>
+                  <Image url="@../boards/livingroom.png" />
+               </image>
+               <effect>
+                  <DropShadow blurType="GAUSSIAN" height="48.605000000000004" radius="18.97875" width="29.31" />
+               </effect>
+               <cursor>
+                  <Cursor fx:constant="HAND" />
+               </cursor>
+            </ImageView>
+            <GridPane fx:id="boardGrid" alignment="CENTER" gridLinesVisible="true" layoutX="62.0" layoutY="72.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="472.0" prefWidth="467.0" AnchorPane.bottomAnchor="46.0" AnchorPane.leftAnchor="62.0" AnchorPane.rightAnchor="263.0" AnchorPane.topAnchor="72.0">
+               <columnConstraints>
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="58.0" minWidth="10.0" prefWidth="53.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="53.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="53.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="0.0" prefWidth="53.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="215.0" minWidth="10.0" prefWidth="53.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="215.0" minWidth="10.0" prefWidth="53.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="215.0" minWidth="10.0" prefWidth="53.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="215.0" minWidth="10.0" prefWidth="53.0" />
+                  <ColumnConstraints hgrow="SOMETIMES" maxWidth="215.0" minWidth="10.0" prefWidth="53.0" />
+               </columnConstraints>
+               <rowConstraints>
+                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="53.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="53.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="53.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="53.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="57.0" minHeight="10.0" prefHeight="53.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="59.0" minHeight="10.0" prefHeight="53.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="60.0" minHeight="10.0" prefHeight="53.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="51.0" minHeight="10.0" prefHeight="53.0" vgrow="SOMETIMES" />
+                  <RowConstraints maxHeight="58.0" minHeight="10.0" prefHeight="53.0" vgrow="SOMETIMES" />
+               </rowConstraints>
+            </GridPane>
+         </children>
+         <BorderPane.margin>
+            <Insets />
+         </BorderPane.margin>
+      </AnchorPane>
+   </center>
+   <left>
+      <VBox prefHeight="886.0" prefWidth="539.0" BorderPane.alignment="CENTER">
+         <children>
+            <TabPane fx:id="mainPlayerFullTab" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="516.0" prefWidth="342.0" tabClosingPolicy="UNAVAILABLE">
+               <tabs>
+                  <Tab fx:id="mainPlayerTab" text="MAINPLAYER">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="536.0" prefWidth="331.0">
+                           <children>
+                              <AnchorPane fx:id="personalbookshelfmainplayerimage" layoutX="-13.0" layoutY="95.0" prefHeight="327.0" prefWidth="274.0" styleClass="bodybg" stylesheets="@../css/bookshelf.css" AnchorPane.rightAnchor="81.0" AnchorPane.topAnchor="150.0">
+                                 <children>
+                                    <GridPane fx:id="personalBookshelfGrid" layoutX="21.0" layoutY="18.0" prefHeight="270.0" prefWidth="222.0">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="61.0" minWidth="7.5" prefWidth="39.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.5" minWidth="0.0" prefWidth="39.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.5" minWidth="0.0" prefWidth="39.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.5" minWidth="0.0" prefWidth="39.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.5" minWidth="0.0" prefWidth="39.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints maxHeight="63.0" minHeight="7.25" prefHeight="38.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="63.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="63.0" minHeight="4.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="63.0" minHeight="7.25" prefHeight="38.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="63.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                          <RowConstraints maxHeight="63.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                    </GridPane>
+                                 </children>
+                              </AnchorPane>
+                              <AnchorPane fx:id="personalGoalCardPane" layoutX="247.0" layoutY="150.0" prefHeight="118.0" prefWidth="81.0" styleClass="bodybg" stylesheets="@../css/example.css" AnchorPane.leftAnchor="247.0" AnchorPane.topAnchor="150.0" />
+                              <GridPane fx:id="radioButtonChoiceGrid" layoutX="8.0" layoutY="106.0" prefHeight="40.0" prefWidth="228.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="53.0" minWidth="10.0" prefWidth="39.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="88.0" minWidth="10.0" prefWidth="39.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="110.0" minWidth="10.0" prefWidth="39.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="92.0" minWidth="0.0" prefWidth="39.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="92.0" minWidth="0.0" prefWidth="39.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <RadioButton fx:id="radioButtonChoice1" contentDisplay="RIGHT" layoutX="10.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="23.0" prefWidth="29.0" textAlignment="CENTER" textOverrun="CLIP" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </RadioButton>
+                                    <RadioButton fx:id="radioButtonChoice2" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="23.0" prefWidth="29.0" textAlignment="CENTER" textOverrun="CLIP" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </RadioButton>
+                                    <RadioButton fx:id="radioButtonChoice3" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="23.0" prefWidth="29.0" textAlignment="CENTER" textOverrun="CLIP" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </RadioButton>
+                                    <RadioButton fx:id="radioButtonChoice4" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="23.0" prefWidth="29.0" textAlignment="CENTER" textOverrun="CLIP" GridPane.columnIndex="3" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </RadioButton>
+                                    <RadioButton fx:id="radioButtonChoice5" contentDisplay="RIGHT" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="23.0" prefWidth="29.0" textAlignment="CENTER" textOverrun="CLIP" GridPane.columnIndex="4" GridPane.halignment="CENTER" GridPane.valignment="CENTER">
+                                       <cursor>
+                                          <Cursor fx:constant="HAND" />
+                                       </cursor>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                    </RadioButton>
+                                 </children>
+                              </GridPane>
+                              <Rectangle fx:id="personalRectangleChair" arcHeight="20.0" arcWidth="30.0" fill="#217aff12" height="78.0" layoutX="244.0" layoutY="281.0" smooth="false" stroke="#25252500" strokeLineCap="ROUND" strokeType="INSIDE" width="87.0" AnchorPane.leftAnchor="244.0" />
+                              <GridPane fx:id="chosenTilesGrid" gridLinesVisible="true" layoutY="14.0" prefHeight="65.0" prefWidth="300.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="175.0" minWidth="10.0" prefWidth="97.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="175.0" minWidth="10.0" prefWidth="97.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="97.0" minWidth="10.0" prefWidth="97.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="97.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <Button fx:id="chosenTilesButton1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="97.0" prefWidth="97.0" text="Button" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                    <Button fx:id="chosenTilesButton2" minWidth="-Infinity" mnemonicParsing="false" prefHeight="97.0" prefWidth="97.0" text="Button" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                    <Button fx:id="chosenTilesButton3" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" mnemonicParsing="false" prefHeight="97.0" prefWidth="97.0" text="Button" GridPane.columnIndex="2" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                    <ImageView fx:id="chosenTilesButton1Image" fitHeight="65.0" fitWidth="97.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="0" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                    <ImageView fx:id="chosenTilesButton2Image" fitHeight="65.0" fitWidth="97.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                    <ImageView fx:id="chosenTilesButton3Image" fitHeight="65.0" fitWidth="97.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="2">
+                                       <effect>
+                                          <InnerShadow />
+                                       </effect>
+                                    </ImageView>
+                                 </children>
+                                 <effect>
+                                    <DropShadow />
+                                 </effect>
+                              </GridPane>
+                              <Rectangle fx:id="personalRectangleFirstFullShelfWinner" arcHeight="20.0" arcWidth="30.0" fill="#217aff12" height="78.0" layoutX="244.0" layoutY="359.0" smooth="false" stroke="#25252500" strokeLineCap="ROUND" strokeType="INSIDE" width="87.0" AnchorPane.leftAnchor="244.0" />
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab fx:id="commongoaltab" text="COMMON GOAL CARD">
+                     <content>
+                        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="536.0" prefWidth="331.0">
+                           <children>
+                              <HBox fx:id="hboxcomgoal1" layoutX="11.0" layoutY="14.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="300.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="31.0">
+                                 <children>
+                                    <GridPane fx:id="commonCoal1Grid" alignment="CENTER" gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="300.0">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="194.0" minWidth="10.0" prefWidth="200.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                       <children>
+                                          <ImageView fx:id="imageComGoal1Square" fitHeight="100.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                          <ImageView fx:id="imageComGoal1SquarePoint" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="hboxcomgoal2" layoutX="21.0" layoutY="163.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="300.0" AnchorPane.leftAnchor="11.0" AnchorPane.rightAnchor="31.0">
+                                 <children>
+                                    <GridPane fx:id="commonGoal2Grid" alignment="CENTER" gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="300.0">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="194.0" minWidth="10.0" prefWidth="200.0" />
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="300.0" minWidth="10.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                       <children>
+                                          <ImageView fx:id="imageComGoal2Square" fitHeight="100.0" fitWidth="200.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                          <ImageView fx:id="imageComGoal2SquarePoint" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.columnIndex="1" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </HBox>
+                              <HBox fx:id="hboxfirstshelfwinner" layoutY="281.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="100.0" AnchorPane.leftAnchor="11.0">
+                                 <children>
+                                    <GridPane fx:id="gridfirstshelfwinner" alignment="CENTER" gridLinesVisible="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="100.0" prefWidth="100.0">
+                                       <columnConstraints>
+                                          <ColumnConstraints hgrow="SOMETIMES" maxWidth="194.0" minWidth="10.0" prefWidth="100.0" />
+                                       </columnConstraints>
+                                       <rowConstraints>
+                                          <RowConstraints maxHeight="-Infinity" minHeight="10.0" prefHeight="100.0" vgrow="SOMETIMES" />
+                                       </rowConstraints>
+                                       <effect>
+                                          <DropShadow />
+                                       </effect>
+                                       <children>
+                                          <ImageView fx:id="imageFirstShelfWinner" fitHeight="100.0" fitWidth="100.0" pickOnBounds="true" preserveRatio="true" GridPane.halignment="CENTER" GridPane.valignment="CENTER" />
+                                       </children>
+                                    </GridPane>
+                                 </children>
+                              </HBox>
+                           </children></AnchorPane>
+                     </content>
+                  </Tab>
+                  <Tab fx:id="commongoaltab1" text="Chat">
+                     <content>
+                        <AnchorPane fx:id="anchorPaneChat1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="254.0" prefWidth="299.0">
+                           <children>
+                              <GridPane gridLinesVisible="true" layoutX="1.0" layoutY="2.0" prefHeight="254.0" prefWidth="226.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="114.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="287.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                                 <children>
+                                    <ScrollPane GridPane.rowIndex="1">
+                                       <content>
+                                          <TextFlow fx:id="chatTextFlow1" prefHeight="237.0" prefWidth="718.0" />
+                                       </content>
+                                    </ScrollPane>
+                                    <MenuBar prefHeight="34.0" prefWidth="308.0">
+                                       <menus>
+                                          <Menu mnemonicParsing="false" text="Chat Room" />
+                                       </menus>
+                                    </MenuBar>
+                                 </children>
+                              </GridPane>
+                           </children>
+                        </AnchorPane>
+                     </content>
+                  </Tab>
+               </tabs>
+            </TabPane>
+         </children>
+      </VBox>
+   </left>
+   <right>
+      <TabPane fx:id="playersFullTab" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="530.0" prefWidth="339.0" tabClosingPolicy="UNAVAILABLE" BorderPane.alignment="TOP_CENTER">
+         <tabs>
+            <Tab fx:id="player1Tab" text="player 1">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="425.0" prefWidth="339.0">
+                     <children>
+                        <AnchorPane fx:id="bookShelfPlayer1Image" prefHeight="300.0" prefWidth="200.0" styleClass="bodybg" stylesheets="@../css/bookshelf.css" AnchorPane.leftAnchor="130.0" AnchorPane.topAnchor="20.0">
+                           <children>
+                              <GridPane fx:id="bookShelfGridPlayer1" layoutX="22.0" layoutY="19.0" prefHeight="246.0" prefWidth="156.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="58.5" minWidth="7.5" prefWidth="33.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.5" minWidth="0.0" prefWidth="33.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.5" minWidth="0.0" prefWidth="33.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.5" minWidth="0.0" prefWidth="33.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.5" minWidth="0.0" prefWidth="33.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="46.0" minHeight="7.25" prefHeight="42.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="38.5" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="60.0" minHeight="4.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="69.0" minHeight="7.25" prefHeight="42.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                              </GridPane>
+                           </children>
+                        </AnchorPane>
+                        <AnchorPane fx:id="goalCardplayer1" prefHeight="118.0" prefWidth="93.0" styleClass="backcard" stylesheets="@../css/nplayers.css" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="20.0" />
+                        <Rectangle fx:id="rectangleChairPlayer1" arcHeight="20.0" arcWidth="30.0" fill="#217aff12" height="78.0" smooth="false" stroke="#25252500" strokeLineCap="ROUND" strokeType="INSIDE" width="87.0" AnchorPane.bottomAnchor="265.0" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="160.0" />
+                        <Rectangle fx:id="player1RectangleFirstFullShelfWinner" arcHeight="20.0" arcWidth="30.0" fill="#217aff12" height="78.0" layoutX="3.0" layoutY="238.0" smooth="false" stroke="#25252500" strokeLineCap="ROUND" strokeType="INSIDE" width="87.0" AnchorPane.bottomAnchor="187.0" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="238.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="player2Tab" text="player 2">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="300.0" prefWidth="200.0">
+                     <children>
+                        <AnchorPane fx:id="personalgoalcardplayer2" prefHeight="118.0" prefWidth="93.0" styleClass="backcard" stylesheets="@../css/nplayers.css" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="20.0" />
+                        <AnchorPane fx:id="personalbookshelfiplayer2mmage" prefHeight="300.0" prefWidth="200.0" styleClass="bodybg" stylesheets="@../css/bookshelf.css" AnchorPane.leftAnchor="130.0" AnchorPane.topAnchor="20.0">
+                           <children>
+                              <GridPane fx:id="bookShelfGridPlayer2" layoutX="22.0" layoutY="19.0" prefHeight="246.0" prefWidth="156.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="58.5" minWidth="7.5" prefWidth="33.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.5" minWidth="0.0" prefWidth="33.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.5" minWidth="0.0" prefWidth="33.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.5" minWidth="0.0" prefWidth="33.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.5" minWidth="0.0" prefWidth="33.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="46.0" minHeight="7.25" prefHeight="42.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="38.5" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="60.0" minHeight="4.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="69.0" minHeight="7.25" prefHeight="42.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                              </GridPane>
+                           </children>
+                        </AnchorPane>
+                        <Rectangle fx:id="rectangleChairPlayer2" arcHeight="20.0" arcWidth="30.0" fill="#217aff12" height="78.0" smooth="false" stroke="#25252500" strokeLineCap="ROUND" strokeType="INSIDE" width="87.0" AnchorPane.bottomAnchor="187.0" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="160.0" />
+                        <Rectangle fx:id="player2RectangleFirstFullShelfWinner" arcHeight="20.0" arcWidth="30.0" fill="#217aff12" height="78.0" layoutX="3.0" layoutY="238.0" smooth="false" stroke="#25252500" strokeLineCap="ROUND" strokeType="INSIDE" width="87.0" AnchorPane.bottomAnchor="187.0" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="238.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+            <Tab fx:id="player3Tab" text="player 3">
+               <content>
+                  <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+                     <children>
+                        <AnchorPane fx:id="personalgoalcardplayer3" prefHeight="118.0" prefWidth="93.0" styleClass="backcard" stylesheets="@../css/nplayers.css" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="20.0" />
+                        <AnchorPane fx:id="personalbookshelfiplayer3mmage" prefHeight="300.0" prefWidth="200.0" styleClass="bodybg" stylesheets="@../css/bookshelf.css" AnchorPane.leftAnchor="130.0" AnchorPane.topAnchor="20.0">
+                           <children>
+                              <GridPane fx:id="bookShelfGridPlayer3" layoutX="22.0" layoutY="19.0" prefHeight="246.0" prefWidth="156.0">
+                                 <columnConstraints>
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="58.5" minWidth="7.5" prefWidth="33.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.5" minWidth="0.0" prefWidth="33.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.5" minWidth="0.0" prefWidth="33.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.5" minWidth="0.0" prefWidth="33.0" />
+                                    <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.5" minWidth="0.0" prefWidth="33.0" />
+                                 </columnConstraints>
+                                 <rowConstraints>
+                                    <RowConstraints maxHeight="46.0" minHeight="7.25" prefHeight="42.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="38.5" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="60.0" minHeight="4.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="69.0" minHeight="7.25" prefHeight="42.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                                    <RowConstraints maxHeight="69.0" minHeight="10.0" prefHeight="42.0" vgrow="SOMETIMES" />
+                                 </rowConstraints>
+                              </GridPane>
+                           </children>
+                        </AnchorPane>
+                        <Rectangle fx:id="rectangleChairPlayer3" arcHeight="20.0" arcWidth="30.0" fill="#217aff12" height="78.0" layoutX="3.0" layoutY="162.0" smooth="false" stroke="#25252500" strokeLineCap="ROUND" strokeType="INSIDE" width="87.0" AnchorPane.bottomAnchor="265.0" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="160.0" />
+                        <Rectangle fx:id="player3RectangleFirstFullShelfWinner" arcHeight="20.0" arcWidth="30.0" fill="#217aff12" height="78.0" layoutX="3.0" layoutY="238.0" smooth="false" stroke="#25252500" strokeLineCap="ROUND" strokeType="INSIDE" width="87.0" AnchorPane.bottomAnchor="265.0" AnchorPane.leftAnchor="3.0" AnchorPane.topAnchor="238.0" />
+                     </children>
+                  </AnchorPane>
+               </content>
+            </Tab>
+         </tabs>
+         <effect>
+            <DropShadow radius="10.7325" width="23.93">
+               <color>
+                  <Color red="0.2763157784938812" green="0.23410087823867798" blue="0.23410087823867798" />
+               </color>
+            </DropShadow>
+         </effect>
+      </TabPane>
+   </right>
+   <bottom>
+      <Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="235.0" prefWidth="298.0" BorderPane.alignment="CENTER_RIGHT">
+         <children>
+            <AnchorPane fx:id="anchorPaneChat" layoutX="-2.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="254.0" prefWidth="299.0">
+               <children>
+                  <GridPane gridLinesVisible="true" layoutX="1.0" layoutY="2.0" prefHeight="254.0" prefWidth="226.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="1.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="114.0" minHeight="10.0" prefHeight="37.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="287.0" minHeight="10.0" prefHeight="277.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                     <children>
+                        <ScrollPane GridPane.rowIndex="1">
+                           <content>
+                              <TextFlow fx:id="chatTextFlow" prefHeight="237.0" prefWidth="718.0" />
+                           </content>
+                        </ScrollPane>
+                        <MenuBar prefHeight="34.0" prefWidth="308.0">
+                           <menus>
+                              <Menu mnemonicParsing="false" text="Chat Room" />
+                           </menus>
+                        </MenuBar>
+                     </children>
+                  </GridPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </Pane>
+   </bottom>
+</BorderPane>
