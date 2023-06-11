@@ -21,8 +21,8 @@ public class GameModelView implements Serializable {
     private ArrayList<ItemTileType> selectedTiles;
     private HashMap<String, ItemTileType[][]> personalGoalCardList;
     private HashMap<String, int[][]> personalGooalCardListId;
+    private HashMap<Integer, Integer[]> commonGoalCardDeck;
     private int[] pointsList;
-
 
     public GameModelView(GameModel gameModel){
         this.boardMatrix = Utility.serializeBoardMatrix(gameModel.getBoard().getBoardMatrix());
@@ -33,6 +33,7 @@ public class GameModelView implements Serializable {
         this.selectedTiles = Utility.serializeArrayOfItemTiles(gameModel.getCurrentPlayer().getSelectedItemTiles());
         this.personalGoalCardList = Utility.serializeArrayOfPersonalGoalCards(gameModel.getPlayerList());
         this.personalGooalCardListId = Utility.serializeArrayOfPersonalGoalCardsId(gameModel.getPlayerList());
+        this.commonGoalCardDeck = Utility.serializeCommonGoalCardDeck(gameModel.getCommonGoalCardDeck().getDeck());
         this.pointsList = Utility.serializePointsList(gameModel.getPlayerList());
         this.canBeSelectedCoordinates = gameModel.getBoard().getCanBeSelectedCoordinates();
         this.selectedCoordinates = gameModel.getBoard().getSelectedCoordinates();
@@ -50,5 +51,6 @@ public class GameModelView implements Serializable {
     public ArrayList<ItemTileType> getSelectedTiles() { return selectedTiles; }
     public HashMap<String, ItemTileType[][]> getPersonalGoalCardList() { return personalGoalCardList; }
     public HashMap<String, int[][]> getPersonalGoalCardListId() { return personalGooalCardListId; }
+    public HashMap<Integer, Integer[]> getCommonGoalCardDeck() { return commonGoalCardDeck; }
     public int[] getPointsList() { return pointsList; }
 }

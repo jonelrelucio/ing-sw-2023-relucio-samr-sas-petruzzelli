@@ -58,4 +58,6 @@ public class CommonGoalExactShape implements CommonGoalCard {
 
         return newCoords;
     }
+
+    public int getId() { return id; }
 }
