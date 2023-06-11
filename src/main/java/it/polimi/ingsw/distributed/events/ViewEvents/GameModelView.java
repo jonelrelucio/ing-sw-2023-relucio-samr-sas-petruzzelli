@@ -49,6 +49,6 @@ public class GameModelView implements Serializable {
     public String getCurrentPlayer() { return currentPlayer; }
     public ArrayList<ItemTileType> getSelectedTiles() { return selectedTiles; }
     public HashMap<String, ItemTileType[][]> getPersonalGoalCardList() { return personalGoalCardList; }
-    public HashMap<String, int[][]> getPersonalGooalCardListId() { return personalGooalCardListId; }
+    public HashMap<String, int[][]> getPersonalGoalCardListId() { return personalGooalCardListId; }
     public int[] getPointsList() { return pointsList; }
 }
