@@ -147,6 +147,25 @@ public class Utility {
         return toReturn;
     }
 
+    public static HashMap<String,int[][]> serializeArrayOfPersonalGoalCardsId(CircularArrayList<Player> playerList) {
+        int id = playerList.size();
+        int row = playerList.get(0).getPersonalGoalCard().getPersonalGoalCardMatrix().length;
+        int col = playerList.get(0).getPersonalGoalCard().getPersonalGoalCardMatrix()[0].length;
+        HashMap<String, int[][]> toReturn = new HashMap<>();
+        for (int i = 0; i < id; i++){
+            int[][] personalGoalCardId = new int[row][col];
+            String name = playerList.get(i).getNickname();
+            for ( int j = 0; j < row; j++) {
+                for (int k = 0; k < col; k++) {
+                    personalGoalCardId[j][k] = playerList.get(i).getPersonalGoalCard().getPersonalGoalCardMatrix()[j][k].getId();
+                }
+            }
+            toReturn.put(name, personalGoalCardId);
+        }
+        return toReturn;
+    }
+
+
     public static int[] serializePointsList(CircularArrayList<Player> playerList) {
         int id = playerList.size();
         int[] toReturn = new int[id];
@@ -155,4 +174,5 @@ public class Utility {
         }
         return toReturn;
     }
+
 }

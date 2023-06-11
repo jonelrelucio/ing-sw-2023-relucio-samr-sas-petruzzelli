@@ -97,9 +97,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
      */
     @Override
     public void receiveFromServer(String message) throws RemoteException {
-        new Thread( () -> {
             view.printMessage(message);
-        });
     }
 
     /**
