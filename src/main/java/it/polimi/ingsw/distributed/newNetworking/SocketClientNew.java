@@ -1,3 +1,4 @@
+/*
 package it.polimi.ingsw.distributed.newNetworking;
 
 import it.polimi.ingsw.distributed.Client;
@@ -26,3 +27,4 @@ public class SocketClientNew implements Client {
 
     }
 }
+*/

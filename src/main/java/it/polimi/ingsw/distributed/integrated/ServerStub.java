@@ -3,6 +3,7 @@ package it.polimi.ingsw.distributed.integrated;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.Client;
+import it.polimi.ingsw.distributed.events.controllerEvents.MessageEvent;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -100,9 +101,17 @@ public class ServerStub implements Server {
     }
 
     @Override
+    public void update(MessageEvent messageEvent) throws RemoteException {
+        //TODO: sostituisce update(GameEvent event)
+
+    }
+
+    /*
+    @Override
     public void update(GameEvent arg) throws RemoteException {
 
     }
+    */
 
     public void sendObject(Object object){
         try{

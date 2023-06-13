@@ -1,3 +1,4 @@
+/*
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.client.view.View;
@@ -66,3 +67,4 @@ public class ClientMain {
 
     }
 }
+*/

@@ -18,5 +18,7 @@ public interface Client extends Remote {
 
     void start() throws RemoteException;
 
+    void startView() throws RemoteException;
+
 
 }

@@ -1,3 +1,4 @@
+/*
 package it.polimi.ingsw.distributed.newNetworking;
 
 import it.polimi.ingsw.client.view.View;
@@ -104,3 +105,4 @@ public class RMIClientNew extends UnicastRemoteObject implements Client, Runnabl
     }
 
 }
+*/

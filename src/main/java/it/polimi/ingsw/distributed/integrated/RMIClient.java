@@ -6,10 +6,13 @@ import it.polimi.ingsw.client.view.gui.GUI;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.events.GameEvent;
+import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+
+import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.NEW_TURN;
 
 public class RMIClient extends UnicastRemoteObject implements Client, Runnable {
 
@@ -48,7 +51,7 @@ public class RMIClient extends UnicastRemoteObject implements Client, Runnable {
     }
 
     private void addObserver(){
-
+        //TODO: change method
         if (view instanceof CLI viewInstance) {
             viewInstance.addObserver((o, arg) -> {
                 try {
@@ -78,13 +81,19 @@ public class RMIClient extends UnicastRemoteObject implements Client, Runnable {
             if (server.isUsernameAvailable(username)) view.printMessage("The username is not Available. Try Again.");
         } while(server.isUsernameAvailable(username));
         this.username = username;
+        view.setThisUsername(username);
     }
 
 
     @Override
-    public void update(GameEvent event) throws RemoteException {
-        if (! (event instanceof GameModelView gameModelView)) throw new RuntimeException("Game Event is not instance of GameModelView");
-        view.update(gameModelView);
+    public void update(GameModelView gameModelView, EventView event) throws RemoteException {
+        //TODO: se non funziona il problema è con le parentesi (forse)
+        if (event != NEW_TURN) view.ViewEventHandler(gameModelView, event);
+        else {
+            new Thread( () -> {
+                view.newTurn(gameModelView);
+            }).start();
+        }
     }
 
     @Override
@@ -98,6 +107,11 @@ public class RMIClient extends UnicastRemoteObject implements Client, Runnable {
     }
 
     @Override
+    public void start() throws RemoteException {
+        //TODO: non serve
+    }
+
+
     public void startView() throws RemoteException{
         view.run();
     }

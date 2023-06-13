@@ -1,3 +1,4 @@
+/*
 package it.polimi.ingsw;
 
 import it.polimi.ingsw.distributed.integrated.GameServer;
@@ -35,3 +36,4 @@ public class GameServerMainNew {
 
     }
 }
+*/

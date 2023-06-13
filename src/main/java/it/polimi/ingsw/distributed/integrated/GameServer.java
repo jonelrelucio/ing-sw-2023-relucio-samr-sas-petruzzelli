@@ -4,6 +4,7 @@ import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.ClientHandler;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.events.GameEvent;
+import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 import it.polimi.ingsw.distributed.events.controllerEvents.MessageEvent;
 import it.polimi.ingsw.distributed.integrated.messages.Message;
 import it.polimi.ingsw.distributed.integrated.messages.MessageType;
@@ -110,7 +111,7 @@ public class GameServer extends UnicastRemoteObject implements Server {
         for(Connection conn : connections){
             gameModel.addObserver((o, arg)->{
                 try{
-                    conn.updateClient(arg);
+                    conn.updateClient(new GameModelView(gameModel), arg);
                 }catch(RemoteException e){
                     System.err.println("Unable to update the client: " + e.getMessage() + ". Skipping the update...");
                 }
@@ -170,8 +171,7 @@ public class GameServer extends UnicastRemoteObject implements Server {
     }
 
     @Override
-    public void update(GameEvent arg) throws RemoteException {
-        if (!(arg instanceof MessageEvent messageEvent)) throw new RuntimeException("Game event is not of instance messageEvent.");
+    public void update(MessageEvent messageEvent) throws RemoteException {
         gameController.handleEvent(messageEvent);
     }
 }

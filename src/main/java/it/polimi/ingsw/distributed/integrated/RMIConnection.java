@@ -2,7 +2,10 @@ package it.polimi.ingsw.distributed.integrated;
 
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.events.GameEvent;
+import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
+import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 import it.polimi.ingsw.distributed.integrated.messages.Message;
+import it.polimi.ingsw.distributed.integrated.messages.SimpleTextMessage;
 
 import java.rmi.RemoteException;
 
@@ -22,7 +25,6 @@ public class RMIConnection extends Connection{
 
     @Override
     public void sendMessageToClient(String message) throws RemoteException {
-        //TODO: implementare il metodo
         client.receiveFromServer(message);
     }
 
@@ -42,13 +44,24 @@ public class RMIConnection extends Connection{
     }
 
     @Override
-    void updateClient(GameEvent event) throws RemoteException {
-        //spawnare un tnread
-        client.update(event);
+    void updateClient(GameModelView gameModelView, EventView eventView) throws RemoteException {
+        //spawnare un tnread (forse)
+        client.update(gameModelView, eventView);
     }
 
     @Override
     public void sendMessageToClient(Message message){
 
+        //client.receiveFromServer(message.processMessage());
+        if(message instanceof SimpleTextMessage){
+            try{
+                client.receiveFromServer(((SimpleTextMessage) message).getMessage());
+            }catch(RemoteException e){
+                System.err.println("Cannot send message to client, "+e);
+            }
+
+        }
     }
+
+
 }

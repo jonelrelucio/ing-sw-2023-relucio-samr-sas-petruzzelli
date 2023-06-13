@@ -1,6 +1,8 @@
 package it.polimi.ingsw.distributed;
 
 import it.polimi.ingsw.distributed.events.GameEvent;
+import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
+import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -27,8 +29,16 @@ public class ClientSkeleton implements Client{
         }
     }
 
-    @Override
+
+    /*@Override
     public void update(GameEvent event) throws RemoteException {
+
+    }
+
+     */
+
+    @Override
+    public void update(GameModelView gameModelView, EventView event) throws RemoteException {
 
     }
 
@@ -40,6 +50,11 @@ public class ClientSkeleton implements Client{
     @Override
     public int askMaxNumOfPlayers() throws RemoteException {
         return 0;
+    }
+
+    @Override
+    public void start() throws RemoteException {
+
     }
 
     @Override

@@ -6,13 +6,13 @@ import it.polimi.ingsw.client.view.gui.GUI;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.events.GameEvent;
+import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
-import it.polimi.ingsw.distributed.integrated.messages.ClientUpdateMessage;
-import it.polimi.ingsw.distributed.integrated.messages.Message;
-import it.polimi.ingsw.distributed.integrated.messages.MessageType;
-import it.polimi.ingsw.distributed.integrated.messages.SimpleTextMessage;
+import it.polimi.ingsw.distributed.integrated.messages.*;
 
 import java.rmi.RemoteException;
+
+import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.NEW_TURN;
 
 public class SocketClient implements Client, Runnable{
 
@@ -186,9 +186,11 @@ public class SocketClient implements Client, Runnable{
 
 
         //updateClientMessage
-        ClientUpdateMessage clientUpdateMessage = (ClientUpdateMessage)server.receiveObject();
+        //ClientUpdateMessage clientUpdateMessage = (ClientUpdateMessage)server.receiveObject();
+        UpdateMessage updateMessage = (UpdateMessage) server.receiveObject();
         try{
-            update(clientUpdateMessage.getGameEvent());
+            //update(clientUpdateMessage.getGameEvent());
+            update(updateMessage.getGameModelView(), updateMessage.getEventView());
 
         }catch(RemoteException e){
             System.err.println("Cannot update client, "+e);
@@ -215,10 +217,24 @@ public class SocketClient implements Client, Runnable{
         this.username = username;
     }
 
+    /*
     @Override
     public void update(GameEvent event) throws RemoteException {
         if (! (event instanceof GameModelView gameModelView)) throw new RuntimeException("Game Event is not instance of GameModelView");
         view.update(gameModelView);
+    }
+
+     */
+
+    @Override
+    public void update(GameModelView gameModelView, EventView event) throws RemoteException {
+        //serve spawnare un nuovo thread per il socket?
+        if (event != NEW_TURN) view.ViewEventHandler(gameModelView, event);
+        else {
+            new Thread( () -> {
+                view.newTurn(gameModelView);
+            }).start();
+        }
     }
 
     @Override
@@ -229,6 +245,11 @@ public class SocketClient implements Client, Runnable{
     @Override
     public int askMaxNumOfPlayers() throws RemoteException {
         return view.askMaxNumOfPlayers();
+    }
+
+    @Override
+    public void start() throws RemoteException {
+
     }
 
     @Override

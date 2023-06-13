@@ -1,10 +1,9 @@
 package it.polimi.ingsw.distributed.integrated;
 
 import it.polimi.ingsw.distributed.events.GameEvent;
-import it.polimi.ingsw.distributed.integrated.messages.ClientUpdateMessage;
-import it.polimi.ingsw.distributed.integrated.messages.Message;
-import it.polimi.ingsw.distributed.integrated.messages.MessageType;
-import it.polimi.ingsw.distributed.integrated.messages.SimpleTextMessage;
+import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
+import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
+import it.polimi.ingsw.distributed.integrated.messages.*;
 
 import java.io.IOException;
 import java.io.ObjectInputStream;
@@ -44,9 +43,19 @@ public class SocketConnection extends Connection{
         }
     }
 
+    /*
     @Override
     public void updateClient(GameEvent event) throws RemoteException {
         sendMessageToClient(new ClientUpdateMessage(event));
+    }
+    */
+
+    @Override
+    void updateClient(GameModelView gameModelView, EventView eventView) {
+        UpdateMessage updateMessage = new UpdateMessage(gameModelView, eventView);
+        sendMessageToClient(updateMessage);
+
+        sendObject(updateMessage);
     }
 
     @Override
