@@ -1,8 +1,9 @@
 package it.polimi.ingsw.client.view.gui.guiController;
 
 
+
+import it.polimi.ingsw.client.view.gui.utils.Utils;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
-import it.polimi.ingsw.server.controller.Game;
 import it.polimi.ingsw.server.model.ItemTile.ItemTileType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -11,6 +12,7 @@ import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 import javafx.scene.text.TextFlow;
@@ -67,9 +69,19 @@ public class ControllerMainSceneDalila implements Initializable {
     @FXML
     ImageView imageComGoal1Square;
     @FXML
+    ImageView imageComGoal1SquarePoint;
+    @FXML
+    Label labelComGoal1;
+    @FXML
     ImageView imageComGoal2Square;
     @FXML
+    ImageView imageComGoal2SquarePoint;
+    @FXML
+    Label labelComGoal2;
+    @FXML
     ImageView imageFirstShelfWinner;
+    @FXML
+    Label labelFirstShelfWinner;
     @FXML
     TabPane playersFullTab;
     @FXML
@@ -113,6 +125,8 @@ public class ControllerMainSceneDalila implements Initializable {
     private static final int height = 40;
     private static final int width = 35;
 
+    private HashMap<Integer, String> commonGoalCardDescriptions;
+
 
 
 
@@ -145,12 +159,34 @@ public class ControllerMainSceneDalila implements Initializable {
         player3RectangleFirstFullShelfWinner.setVisible(false);
         image = new Image(getClass().getResource("/view/gui/scoring_tokens/end_game.jpg").toString());
         imageFirstShelfWinner.setImage(image);
+        labelFirstShelfWinner.setText("The first player who completely fills\ntheir bookshelf will obtain this token\nand will score 1 additional points");
         hideYesOrNo();
+        commonGoalCardDescriptions = new HashMap<>();
+        initCommonGoalCardDescription();
     }
+
+    private void initCommonGoalCardDescription() {
+        commonGoalCardDescriptions.put(1, Utils.desc1);
+        commonGoalCardDescriptions.put(2, Utils.desc2);
+        commonGoalCardDescriptions.put(3, Utils.desc3);
+        commonGoalCardDescriptions.put(4, Utils.desc4);
+        commonGoalCardDescriptions.put(5, Utils.desc5);
+        commonGoalCardDescriptions.put(6, Utils.desc6);
+        commonGoalCardDescriptions.put(7, Utils.desc7);
+        commonGoalCardDescriptions.put(8, Utils.desc8);
+        commonGoalCardDescriptions.put(9, Utils.desc9);
+        commonGoalCardDescriptions.put(10, Utils.desc10);
+        commonGoalCardDescriptions.put(11, Utils.desc11);
+        commonGoalCardDescriptions.put(12, Utils.desc12);
+    }
+
+
+
     public void setFirstPlayerChair(Rectangle r){
-        ImageView im = new ImageView();
         image = new Image(getClass().getResource("/view/gui/background/firstPlayerToken.jpg").toString());
-        im.setImage(image);
+        r.setFill(new ImagePattern(image));
+        r.setVisible(true);
+
     };
     public void showMessage(String s){
         clearMessage();
@@ -221,10 +257,8 @@ public class ControllerMainSceneDalila implements Initializable {
             }
         }
         if(players[0].equals(viewGUI.getThisUsername())){
-            personalRectangleChair.setVisible(true);
             setFirstPlayerChair(personalRectangleChair);
         } else {
-            rectangleChairPlayer1.setVisible(true);
             setFirstPlayerChair(rectangleChairPlayer1);
         }
     }
@@ -389,8 +423,8 @@ public class ControllerMainSceneDalila implements Initializable {
     }
 
 
-    public void showColumnToogle() {
-        showMessage("%s select a toggle button on top of the column where you want to put your tiles.\n");
+    public void showColumnToggle() {
+        showMessage("select a radio button on top of the column where you want to put your tiles.\n");
         radioButtonChoiceGrid.setVisible(true);
         if (this.columnToggleGroup.getSelectedToggle().equals(radioButtonChoice1)) {
             showMessage("The column chosen is 1\n Confirm choice by selecting yes or choose another");
@@ -500,5 +534,37 @@ public class ControllerMainSceneDalila implements Initializable {
         input = input + intArr[i];
         return input;
     }
+
+    public void showPersonalGoal(GameModelView gameModelView) {
+        ItemTileType[][] personalGoalCard = gameModelView.getPersonalGoalCardList().get(viewGUI.getThisUsername());
+
+    }
+
+    public void showCommonGoalCard(GameModelView gameModelView) {
+        HashMap<Integer, Integer[]> commonGoalCardDeck = gameModelView.getCommonGoalCardDeck();
+        int i = 0;
+        for (Map.Entry<Integer, Integer[]> set : commonGoalCardDeck.entrySet()) {
+            if(i == 0){
+                initCommonGoalCard(set, imageComGoal1SquarePoint, imageComGoal1Square, labelComGoal1);
+            }else{
+                initCommonGoalCard(set, imageComGoal2SquarePoint, imageComGoal2Square, labelComGoal2);
+            }
+            i++;
+        }
+    }
+
+    public void initCommonGoalCard(Map.Entry<Integer, Integer[]> set, ImageView imageComGoalSquarePoint, ImageView imageComGoalSquare, Label labelComGoal) {
+        String description;
+        for (Integer point : set.getValue()) {
+            image = new Image(getClass().getResource("/view/gui/scoring_tokens/scoring_"+point+".jpg").toString());
+            imageComGoalSquarePoint.setImage(image);
+        }
+        image = new Image(getClass().getResource("/view/gui/common_goal_cards/"+set.getKey()+".jpg").toString());
+        imageComGoalSquare.setImage(image);
+        description = commonGoalCardDescriptions.get(set.getKey());
+        labelComGoal.setText(description);
+    }
+
+
 }
 

@@ -4,13 +4,12 @@ import com.google.gson.Gson;
 import it.polimi.ingsw.server.model.ItemTile.ItemTile;
 import it.polimi.ingsw.server.model.ItemTile.ItemTileType;
 import it.polimi.ingsw.server.model.Player;
+import it.polimi.ingsw.server.model.commonGoalCard.CommonGoalCard;
 
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
+import java.util.*;
 
 public class Utility {
 
@@ -147,6 +146,25 @@ public class Utility {
         return toReturn;
     }
 
+    public static HashMap<String,int[][]> serializeArrayOfPersonalGoalCardsId(CircularArrayList<Player> playerList) {
+        int id = playerList.size();
+        int row = playerList.get(0).getPersonalGoalCard().getPersonalGoalCardMatrix().length;
+        int col = playerList.get(0).getPersonalGoalCard().getPersonalGoalCardMatrix()[0].length;
+        HashMap<String, int[][]> toReturn = new HashMap<>();
+        for (int i = 0; i < id; i++){
+            int[][] personalGoalCardId = new int[row][col];
+            String name = playerList.get(i).getNickname();
+            for ( int j = 0; j < row; j++) {
+                for (int k = 0; k < col; k++) {
+                    personalGoalCardId[j][k] = playerList.get(i).getPersonalGoalCard().getPersonalGoalCardMatrix()[j][k].getId();
+                }
+            }
+            toReturn.put(name, personalGoalCardId);
+        }
+        return toReturn;
+    }
+
+
     public static int[] serializePointsList(CircularArrayList<Player> playerList) {
         int id = playerList.size();
         int[] toReturn = new int[id];
@@ -154,5 +172,31 @@ public class Utility {
             toReturn[i] = playerList.get(i).getScore();
         }
         return toReturn;
+    }
+
+    public static HashMap<Integer, Integer[]> serializeCommonGoalCardDeck(HashMap<CommonGoalCard, Stack<Integer>> commonGoalCardDeck) {
+        HashMap<Integer, Integer[]> toReturn = new HashMap<>();
+        int size = commonGoalCardDeck.size();
+        for (Map.Entry<CommonGoalCard, Stack<Integer>> set : commonGoalCardDeck.entrySet()) {
+            Integer key = set.getKey().getId();
+            Integer[] array = set.getValue().toArray(new Integer[set.getValue().size()]);
+            reverseArray(array);
+            toReturn.put(key, array);
+        }
+        return toReturn;
+    }
+
+    private static void reverseArray(Integer[] array) {
+        int left = 0;
+        int right = array.length - 1;
+
+        while (left < right) {
+            Integer temp = array[left];
+            array[left] = array[right];
+            array[right] = temp;
+
+            left++;
+            right--;
+        }
     }
 }

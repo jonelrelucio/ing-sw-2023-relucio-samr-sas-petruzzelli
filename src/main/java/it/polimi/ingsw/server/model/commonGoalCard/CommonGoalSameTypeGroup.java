@@ -229,4 +229,6 @@ public class CommonGoalSameTypeGroup implements CommonGoalCard{
 
         return false;
     }
+
+    public int getId() { return id; }
 }

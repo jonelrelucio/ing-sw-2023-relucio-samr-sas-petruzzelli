@@ -15,7 +15,6 @@ import java.util.ResourceBundle;
 public class ControllerConnection implements Initializable {
     @FXML
     private RadioButton RmiButton;
-
     @FXML
     private RadioButton SocketButton;
     @FXML
@@ -55,8 +54,7 @@ public class ControllerConnection implements Initializable {
         }else if(Objects.equals(getConnection(), "s")) {
             ConnectionChosen.setText("The connection mode chosen is not avalaible at the moment\nChoose a different one");
         }
-        //viewGUI.chooseUsername();
-        viewGUI.showMain();
+        viewGUI.showWaitingPlayer();
     }
 
 

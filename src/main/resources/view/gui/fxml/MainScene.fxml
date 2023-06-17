@@ -14,7 +14,7 @@
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
 
-<BorderPane fx:id="parentPane" prefHeight="800.0" prefWidth="1000.0" styleClass="bodybg" stylesheets="@../css/background.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.gui.guiController.guicontroller.ControllerMainScene">
+<BorderPane fx:id="parentPane" prefHeight="800.0" prefWidth="1000.0" styleClass="bodybg" stylesheets="@../css/background.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" >
    <center>
       <AnchorPane id=".bodybd" prefHeight="700.0" prefWidth="516.0" styleClass="bodybg" stylesheets="@../css/gameBoard.css" BorderPane.alignment="CENTER">
          <children>

@@ -137,10 +137,8 @@ public class GameModel extends Observable<EventView> {
 
     //TODO could be private
     public void setChangedAndNotifyObservers(EventView arg) {
-        new Thread(() -> {
-            setChanged();
-            notifyObservers(arg);
-        }).start();
+        setChanged();
+        notifyObservers(arg);
     }
 
 }

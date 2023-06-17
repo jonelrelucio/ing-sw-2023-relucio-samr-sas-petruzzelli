@@ -18,17 +18,17 @@ import static it.polimi.ingsw.distributed.events.controllerEvents.EventControlle
 
 public class Game {
     private final GameModel gameModel;
-    private HashMap<EventController, EventManager> eventHandlers;
+    private final HashMap<EventController, EventManager> eventHandlers;
 
 
     public Game( GameModel model) {
         this.gameModel = model;
+        eventHandlers = new HashMap<>();
         initEventHandler();
     }
 
     //TODO ADD MORE EVENTS
     private void initEventHandler() {
-        eventHandlers = new HashMap<>();
         eventHandlers.put(SELECT_COORDINATES , this::selectCoordinate);
         eventHandlers.put(DESELECT_COORDINATES, this::deselectCoordinates);
         eventHandlers.put(PICK_TILES, this::pickCoordinates);

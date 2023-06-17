@@ -1,16 +1,15 @@
 package it.polimi.ingsw.client.view.cli;
 
 import it.polimi.ingsw.client.view.View;
+import it.polimi.ingsw.client.view.gui.guiController.ControllerMainSceneDalila;
 import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 import it.polimi.ingsw.distributed.events.controllerEvents.MessageEvent;
 import it.polimi.ingsw.server.model.ItemTile.ItemTileType;
+import it.polimi.ingsw.server.model.commonGoalCard.CommonGoalCard;
 import it.polimi.ingsw.util.Observable;
 
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.Scanner;
+import java.util.*;
 
 import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
 import static it.polimi.ingsw.distributed.events.controllerEvents.EventController.*;
@@ -18,10 +17,16 @@ import static it.polimi.ingsw.distributed.events.controllerEvents.EventControlle
 public class CLI extends Observable<MessageEvent> implements View, Runnable {
     private String thisUsername;
     private final HashMap<EventView, ViewEventHandler> viewEventHandlers;
-
+    private final HashMap<Integer, String> commonGoalCardDescriptions;
 
     public CLI(){
         viewEventHandlers = new HashMap<>();
+        commonGoalCardDescriptions = new HashMap<>();
+        initEventHandlers();
+        initCommonGoalCardDescription();
+    }
+
+    private void initEventHandlers(){
         viewEventHandlers.put(SELECT_COORDINATES_SUCCESS, this::selectedCoordinatesSuccess);
         viewEventHandlers.put(SELECT_COORDINATES_FAIL,  this::selectedCoordinatesFail);
         viewEventHandlers.put(DESELECT_COORDINATES_SUCCESS, this::deselectCoordinatesSuccess);
@@ -31,6 +36,22 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         viewEventHandlers.put(NEW_ORDER_FAIL, this::newOrderFail);
         viewEventHandlers.put(SELECT_COLUMN_FAIL, this::selectColumnFail);
     }
+
+    private void initCommonGoalCardDescription() {
+        commonGoalCardDescriptions.put(1, Const.desc1);
+        commonGoalCardDescriptions.put(2, Const.desc2);
+        commonGoalCardDescriptions.put(3, Const.desc3);
+        commonGoalCardDescriptions.put(4, Const.desc4);
+        commonGoalCardDescriptions.put(5, Const.desc5);
+        commonGoalCardDescriptions.put(6, Const.desc6);
+        commonGoalCardDescriptions.put(7, Const.desc7);
+        commonGoalCardDescriptions.put(8, Const.desc8);
+        commonGoalCardDescriptions.put(9, Const.desc9);
+        commonGoalCardDescriptions.put(10, Const.desc10);
+        commonGoalCardDescriptions.put(11, Const.desc11);
+        commonGoalCardDescriptions.put(12, Const.desc12);
+    }
+
 
     @Override
     public void run() {
@@ -52,12 +73,12 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
 
     private void listenToPlayer(GameModelView gameModelView) {
-            if ( isMyTurn(gameModelView)) {
-                selectCoordinates(gameModelView);
-            }
+        if ( isMyTurn(gameModelView)) {
+            selectCoordinates(gameModelView);
         }
+    }
 
-        public int getNumInput(){
+    public int getNumInput(){
         try {
             Scanner s = new Scanner(System.in) ;
             return Integer.parseInt(s.nextLine());
@@ -240,10 +261,8 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
 
     private void setChangedAndNotifyObservers(MessageEvent arg) {
-        new Thread(() -> {
-            setChanged();
-            notifyObservers(arg);
-        }).start();
+        setChanged();
+        notifyObservers(arg);
     }
 
     public boolean isMyTurn(GameModelView gameModelView){
@@ -252,10 +271,6 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
 
     /***************************************************************************************************************/
-
-
-
-
 
     public void printSelectedTiles(GameModelView gameModelView) {
 
@@ -395,6 +410,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     public void printAll(GameModelView gameModelView){
         System.out.println(" ");
         System.out.println(" ");
+        printCommonGoalCard(gameModelView);
         printBoard(gameModelView);
         printBookshelves(gameModelView);
         printPersonalGoal(gameModelView);
@@ -419,7 +435,19 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         System.out.println(" ");
     }
 
-    /******************************************************************************************/
+    private void printCommonGoalCard(GameModelView gameModelView) {
+        HashMap<Integer, Integer[]> commonGoalCardDeck = gameModelView.getCommonGoalCardDeck();
+        for (Map.Entry<Integer, Integer[]> set : commonGoalCardDeck.entrySet()) {
+            System.out.print("      CommonGoalCard " + set.getKey() + ". Available points: ");
+            for (Integer point : set.getValue()) {
+                System.out.print(point + " ");
+            }
+            System.out.println(" ");
+            String description = commonGoalCardDescriptions.get(set.getKey());
+            System.out.println(description);
+        }
+
+    }
 
     private void selectedCoordinatesFail(GameModelView gameModelView) {
         if( !isMyTurn(gameModelView)) return;

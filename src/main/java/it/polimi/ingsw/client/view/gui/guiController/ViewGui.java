@@ -2,7 +2,9 @@ package it.polimi.ingsw.client.view.gui.guiController;
 
 
 import it.polimi.ingsw.client.view.View;
+import it.polimi.ingsw.client.view.cli.Const;
 import it.polimi.ingsw.distributed.events.controllerEvents.MessageEvent;
+import it.polimi.ingsw.server.model.ItemTile.ItemTileType;
 import it.polimi.ingsw.util.Observable;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -36,8 +38,11 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     Scene selectPlayers;
     private ControllerConnection controllerConnection;
     Scene selectConnectionScene;
+    private ControllerWaitingForPlayers controllerWaitingForPlayers;
+    Scene waitingForPlayers;
     private final Stage window;
     CountDownLatch latch;
+    private Integer change;
 
 
     /**
@@ -48,10 +53,12 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     public ViewGui( Stage window) {
         this.window = window;
         latch = new CountDownLatch(1);
+        change =0 ;
         changeSceneSelectConnection();
         changeSceneChooseUsername();
         changeSceneSelectPlayers();
         changeSceneMainSceneDalila();
+        changeSceneWaitingForPlayers();
         viewEventHandlers = new HashMap<>();
         viewEventHandlers.put(SELECT_COORDINATES_SUCCESS, this::selectedCoordinatesSuccess);
         viewEventHandlers.put(SELECT_COORDINATES_FAIL,  this::selectedCoordinatesFail);
@@ -154,6 +161,24 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
             window.setResizable(true);
         });
     }
+
+    private void changeSceneWaitingForPlayers() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gui/fxml/WaitingForOtherPlayers.fxml"));
+        try {
+            Parent boardPaneParent = loader.load();
+            waitingForPlayers = new Scene(boardPaneParent);
+            controllerWaitingForPlayers = loader.getController();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void showWaitingPlayer() {
+        Platform.runLater(() -> {
+            window.setScene(waitingForPlayers);
+            window.show();
+            change = 1;
+        });
+    }
     /**
      * Registro nome palyer e numero giocatori ancora da sistemare
      *
@@ -196,6 +221,7 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     }
 
 
+
     /**
      * From here event handlers
      * */
@@ -224,10 +250,19 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
 
 
     @Override
-    public void printMessage(String string) {
-        Platform.runLater(() -> {
-            controllerMainSceneDalila.showMessage(string);
-        });
+    public void printMessage(String s) {
+        if(Objects.equals(s, "Starting a new Game...")){
+            change=2 ;
+        Platform.runLater(this::showMain);
+        }else if(change == 2){
+            Platform.runLater(() -> {
+                controllerMainSceneDalila.showMessage(s);
+            });
+        }else if(change == 1){
+            Platform.runLater(() -> {
+                controllerWaitingForPlayers.showMessage(s);
+            });
+        }
     }
     @Override
     public void setThisUsername(String thisUsername) {
@@ -250,7 +285,7 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     }
     public void selectColumn(GameModelView gameModelView) {
         printBookshelves(gameModelView);
-        controllerMainSceneDalila.showColumnToogle();
+        controllerMainSceneDalila.showColumnToggle();
     }
     private void setChangedAndNotifyObservers(MessageEvent arg) {
         new Thread(() -> {
@@ -269,17 +304,29 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     }
 
     public void printBoard(GameModelView gameModelView) {
-       controllerMainSceneDalila.showBoard(gameModelView);
+
+        controllerMainSceneDalila.showBoard(gameModelView);
     }
 
     public void printBookshelves(GameModelView gameModelView) {
         controllerMainSceneDalila.showBookshelves(gameModelView);
     }
 
+    public void printPersonalGoal(GameModelView gameModelView){
+        controllerMainSceneDalila.showPersonalGoal(gameModelView);
+    }
+
+    private void printCommonGoalCard(GameModelView gameModelView) {
+
+        controllerMainSceneDalila.showCommonGoalCard(gameModelView);
+    }
+
     public void printAll(GameModelView gameModelView){
         Platform.runLater(() -> {
-        printBoard(gameModelView);
-        printBookshelves(gameModelView);
+            printCommonGoalCard(gameModelView);
+            printBoard(gameModelView);
+            printBookshelves(gameModelView);
+            printPersonalGoal(gameModelView);
         });
     }
 
@@ -339,7 +386,7 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     private void newOrderFail(GameModelView gameModelView) {
         if( !isMyTurn(gameModelView)) return;
         Platform.runLater(() -> {
-            System.out.println("The tile order is invalid.");
+            //System.out.println("The tile order is invalid.");
             askTileOrder(gameModelView);
         });
     }
