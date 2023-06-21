@@ -6,7 +6,10 @@ import it.polimi.ingsw.server.model.commonGoalCard.CommonGoalCardDeck;
 import it.polimi.ingsw.server.model.util.CircularArrayList;
 import it.polimi.ingsw.util.Observable;
 
-import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
+import java.util.concurrent.ArrayBlockingQueue;
+
+import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.NEW_TURN;
+import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.PICK_TILES_SUCCESS;
 
 public class GameModel extends Observable<EventView> {
 
@@ -18,6 +21,7 @@ public class GameModel extends Observable<EventView> {
     private int numOfRounds; // what is numOfRounds??? does it increment every player change or does it increment every loop of the playerlist
     private int lastRound;
     private Player currentPlayer;
+    private ArrayBlockingQueue<String> chat;
 
     public GameModel(int numOfPlayer) {
         if (numOfPlayer < 2 || numOfPlayer > 4 ) throw new IllegalArgumentException("Number of Player out of bounds");
@@ -37,6 +41,7 @@ public class GameModel extends Observable<EventView> {
         this.numOfRounds = 0;
         this.state = State.INIT;
         PersonalGoalCardBag.reset();
+        this.chat = new ArrayBlockingQueue<>(10, true);
     }
 
     public void initGame(Board board, CircularArrayList<Player> playerList) {
@@ -66,6 +71,7 @@ public class GameModel extends Observable<EventView> {
     public State getState() { return state;}
     public int getNumOfRounds() { return numOfRounds;}
     public Player getCurrentPlayer() { return currentPlayer;}
+    public ArrayBlockingQueue<String> getChat() { return chat; }
 
     // Setters
     public void setNumOfPlayer(int numOfPlayer) {
@@ -88,6 +94,12 @@ public class GameModel extends Observable<EventView> {
     }
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
+    }
+    public void addMessageToChat(String message) {
+        if (this.chat.remainingCapacity() == 0) {
+            this.chat.poll();
+        }
+        this.chat.add(message);
     }
 
     /**
