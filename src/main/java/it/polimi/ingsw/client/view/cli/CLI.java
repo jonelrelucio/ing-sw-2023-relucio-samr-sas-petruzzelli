@@ -39,6 +39,8 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         viewEventHandlers.put(NEW_ORDER_SUCCESS, this::newOrderSuccess);
         viewEventHandlers.put(NEW_ORDER_FAIL, this::newOrderFail);
         viewEventHandlers.put(SELECT_COLUMN_FAIL, this::selectColumnFail);
+        viewEventHandlers.put(NEW_TURN, this::newTurn);
+        viewEventHandlers.put(END_GAME, this::endGame);
     }
 
     private void initCommonGoalCardDescription() {
@@ -88,7 +90,10 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         }
 
         if ( isMyTurn(gameModelView)) {
-            selectCoordinates(gameModelView);
+            System.out.println("The Dotted spots on the board are the tiles that can be selected.");
+            printCanBeSelectedCoordinates(gameModelView);
+            String coordinates = getCoordinates();
+            setChangedAndNotifyObservers(new MessageEvent(SELECT_COORDINATES, coordinates));
         } else {
             startChat();
         }
@@ -224,7 +229,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
             coordinates = getCoordinates();
             setChangedAndNotifyObservers(new MessageEvent(SELECT_COORDINATES, coordinates));
         }
-        else if(gameModelView.getSelectedTiles().size() == 0) {
+        else if(gameModelView.getSelectedCoordinates().size() == 0) {
             System.out.println("You have not selected a tile. Please select at least a tile.");
             System.out.println("The Dotted spots on the board are the tiles that can be selected.");
             printCanBeSelectedCoordinates(gameModelView);
@@ -232,7 +237,6 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
             setChangedAndNotifyObservers(new MessageEvent(SELECT_COORDINATES, coordinates));
         }
         else pickTiles();
-
     }
 
 
@@ -396,6 +400,24 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     /***************************************************************************************************************/
 
 
+    private void printLeaderboard(GameModelView gameModel) {
+        int[] pointsList = gameModel.getPointsList();
+        int[] sortedList = Arrays.copyOf(pointsList, pointsList.length);
+        Arrays.sort(sortedList);
+        int[] changedPositions = new int[pointsList.length];
+        for (int i = 0; i < pointsList.length; i++) {
+            int element = pointsList[i];
+            int position = Arrays.binarySearch(sortedList, element);
+            changedPositions[i] = position;
+        }
+
+        System.out.println("Leaderboard:");
+        int i = 0;
+        for (Integer position : changedPositions) {
+            System.out.println(gameModel.getPlayerList()[position] + ": " + pointsList[position]);
+        }
+
+    }
 
 
 
@@ -582,7 +604,14 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         if( !isMyTurn(gameModelView)) return;
         printAll(gameModelView);
         System.out.println("The selected coordinates are not available");
-        selectCoordinates(gameModelView);
+        if(gameModelView.getSelectedCoordinates().size() == 0) {
+            System.out.println("You have not selected a tile. Please select at least a tile.");
+            System.out.println("The Dotted spots on the board are the tiles that can be selected.");
+            printCanBeSelectedCoordinates(gameModelView);
+            String coordinates = getCoordinates();
+            setChangedAndNotifyObservers(new MessageEvent(SELECT_COORDINATES, coordinates));
+        }
+        else selectCoordinates(gameModelView);
     }
 
     private void selectedCoordinatesSuccess(GameModelView gameModelView) {
@@ -611,7 +640,6 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         else askTileOrder(gameModelView);
     }
 
-
     private void newOrderSuccess(GameModelView gameModelView) {
         if( !isMyTurn(gameModelView)) return;
         printSelectedTiles(gameModelView);
@@ -629,8 +657,14 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         System.out.println("The selected column is invalid.");
         selectColumn(gameModelView);
     }
-}
 
+    private void endGame(GameModelView gameModel) {
+        System.out.println("The Game has ended.");
+        printLeaderboard(gameModel);
+    }
+
+
+}
 
 @FunctionalInterface
 interface ViewEventHandler {

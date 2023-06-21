@@ -18,8 +18,8 @@ public class GameModel extends Observable<EventView> {
     private CommonGoalCardDeck commonGoalCardDeck;
     private Board board;
     private State state;
-    private int numOfRounds; // what is numOfRounds??? does it increment every player change or does it increment every loop of the playerlist
-    private int lastRound;
+    private int numOfRounds;
+    private boolean endGame;
     private Player currentPlayer;
     private ArrayBlockingQueue<String> chat;
 
@@ -35,7 +35,6 @@ public class GameModel extends Observable<EventView> {
     }
 
     public GameModel(){
-        //if (numOfPlayer < 2 || numOfPlayer > 4 ) throw new IllegalArgumentException("Number of Player out of bounds");
         this.numOfPlayer = 0;
         this.playerList = new CircularArrayList<>();
         this.numOfRounds = 0;
@@ -137,17 +136,22 @@ public class GameModel extends Observable<EventView> {
 
     public void selectColumn(int col) {
         EventView event = currentPlayer.putItemsInSelectedColumn(col);
+        if (board.checkRefill()) board.refill();
         if (event.equals(NEW_TURN)) {
-            updateCurrentPlayerScore();
-            updateNextPlayer();
+            if (currentPlayer.getBookshelf().isFull()){
+                endGame = true;
+            }
+            if ( endGame && (playerList.indexOf(this.currentPlayer)+1)%playerList.size() == 0 ) {
+                updateCurrentPlayerScore();
+                event = EventView.END_GAME;
+            }
+            else {
+                updateCurrentPlayerScore();
+                updateNextPlayer();
+            }
         }
         setChangedAndNotifyObservers(event);
     }
-
-    private boolean newRound() {
-        return currentPlayer.equals(playerList.get(0));
-    }
-
 
     //TODO could be private
     public void setChangedAndNotifyObservers(EventView arg) {

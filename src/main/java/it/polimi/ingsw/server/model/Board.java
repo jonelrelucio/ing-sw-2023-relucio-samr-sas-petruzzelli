@@ -157,7 +157,7 @@ public class Board {
     }
 
     /**
-     * given a coordinate, returns true of it is adjacent to an empty tile
+     * given a coordinate, returns true of it has an adjacent empty tile
      * @param coordinates  coordinates in int[]
      * @return              true if the given position is adjacent to an empty tile
      */
@@ -168,6 +168,15 @@ public class Board {
         else if (boardMatrix[x-1][y].isEmpty()) return true;
         else if (boardMatrix[x][y+1].isEmpty()) return true;
         else return boardMatrix[x][y - 1].isEmpty();
+    }
+
+    private boolean isAdjacent(int[] coordinates) {
+        int x = coordinates[0];
+        int y = coordinates[1];
+        if (!boardMatrix[x+1][y].isEmpty()) return true;
+        else if (!boardMatrix[x-1][y].isEmpty()) return true;
+        else if (!boardMatrix[x][y+1].isEmpty()) return true;
+        else return !boardMatrix[x][y - 1].isEmpty();
     }
 
     /**
@@ -238,6 +247,20 @@ public class Board {
             }
         }
         return intersection;
+    }
+
+    public boolean checkRefill() {
+        for (int i = 1; i < boardMatrix.length-1; i++) {
+            for (int j = 1; j < boardMatrix[0].length- 1; j++) {
+                if (!boardMatrix[i][j].isEmpty() && isAdjacent(new int[]{i, j}))
+                    return false;
+            }
+        }
+        return true;
+    }
+
+    public void refill() {
+        setItemsInCoordinates(boardCoordinates);
     }
 
 }
