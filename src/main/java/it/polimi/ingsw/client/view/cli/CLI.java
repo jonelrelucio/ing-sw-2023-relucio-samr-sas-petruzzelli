@@ -18,12 +18,18 @@ import static it.polimi.ingsw.distributed.events.controllerEvents.EventControlle
 public class CLI extends Observable<MessageEvent> implements View, Runnable {
     private String thisUsername;
     private final HashMap<EventView, ViewEventHandler> viewEventHandlers;
+    private final HashMap<Integer, String> commonGoalCardDescriptions;
     private boolean isMyTurn = false;
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in)); // used for chat message input
     Thread chatThread;
 
     public CLI(){
         viewEventHandlers = new HashMap<>();
+        commonGoalCardDescriptions = new HashMap<>();
+        initEventHandlers();
+    }
+
+    private void  initEventHandlers() {
         viewEventHandlers.put(SELECT_COORDINATES_SUCCESS, this::selectedCoordinatesSuccess);
         viewEventHandlers.put(SELECT_COORDINATES_FAIL,  this::selectedCoordinatesFail);
         viewEventHandlers.put(DESELECT_COORDINATES_SUCCESS, this::deselectCoordinatesSuccess);
@@ -362,10 +368,8 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
 
     private void setChangedAndNotifyObservers(MessageEvent arg) {
-        new Thread(() -> {
             setChanged();
             notifyObservers(arg);
-        }).start();
     }
 
     public boolean isMyTurn(GameModelView gameModelView){
