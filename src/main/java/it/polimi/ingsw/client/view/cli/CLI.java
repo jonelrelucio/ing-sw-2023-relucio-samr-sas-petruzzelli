@@ -256,9 +256,9 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         do {
             Scanner s = new Scanner(System.in) ;
             answer = s.nextLine();
-            if (!answer.equals("yes") && !answer.equals("no") ) System.out.println("Please select yes or no");
-        } while( !answer.equals("yes") && !answer.equals("no"));
-        return answer.equals("yes");
+            if (!answer.equals("yes") && !answer.equals("no") && !answer.equals("y") && !answer.equals("n") ) System.out.println("Please select yes or no");
+        } while( !answer.equals("yes") && !answer.equals("no")  && !answer.equals("y") && !answer.equals("n") );
+        return answer.equals("yes") || answer.equals("y") ;
     }
 
     public boolean askYesOrNo(String text) {
@@ -281,10 +281,9 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
                     break;
                 }
             }
-
-            if (!answer.equals("yes") && !answer.equals("no") ) System.out.println("Please select yes or no");
-        } while( !answer.equals("yes") && !answer.equals("no"));
-        return answer.equals("yes");
+            if (!answer.equals("yes") && !answer.equals("no") && !answer.equals("y") && !answer.equals("n") ) System.out.println("Please select yes or no");
+        } while( !answer.equals("yes") && !answer.equals("no")  && !answer.equals("y") && !answer.equals("n") );
+        return answer.equals("yes") || answer.equals("y") ;
     }
 
     private static boolean isNumeric(String str) {
@@ -376,9 +375,9 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
             if ( !isNumeric(input) || strArr.length != 1) System.out.println("Invalid input. Try again: ");
             else {
                 x = Integer.parseInt(input);
-                if (x < 0 ) System.out.println("Invalid input. Try Again: ");
+                if ( x < 0 || x > 4 ) System.out.println("Invalid input. Try Again: ");
             }
-        } while (!isNumeric(input) || strArr.length != 1 || x < 0);
+        } while (!isNumeric(input) || strArr.length != 1 || x < 0 || x > 4);
         setChangedAndNotifyObservers(new MessageEvent(SELECT_COLUMN, input));
     }
 
@@ -538,10 +537,25 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     public void printAll(GameModelView gameModelView){
         System.out.println(" ");
         System.out.println(" ");
+        printCommonGoalCard(gameModelView);
         printBoard(gameModelView);
         printBookshelves(gameModelView);
         printPersonalGoal(gameModelView);
         System.out.println(" ");
+    }
+
+    private void printCommonGoalCard(GameModelView gameModelView) {
+        HashMap<Integer, Integer[]> commonGoalCardDeck = gameModelView.getCommonGoalCardDeck();
+        for (Map.Entry<Integer, Integer[]> set : commonGoalCardDeck.entrySet()) {
+            System.out.print("      CommonGoalCard " + set.getKey() + ". Available points: ");
+            for (Integer point : set.getValue()) {
+                System.out.print(point + " ");
+            }
+            System.out.println(" ");
+            String description = commonGoalCardDescriptions.get(set.getKey());
+            System.out.println(description);
+        }
+
     }
 
 

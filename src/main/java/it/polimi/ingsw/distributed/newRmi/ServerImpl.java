@@ -203,15 +203,21 @@ public class ServerImpl extends UnicastRemoteObject implements Server {
      */
     @Override
     public void update( MessageEvent messageEvent) throws RemoteException{
-        if (messageEvent.getEventType().equals(EventController.SHOW_CHAT)) {
-            Client client = clientHandlers.stream().filter(u -> u.getUsername().equals(messageEvent.getMessage())).map(c -> c.getClient()).findFirst().orElse(null);
-            if (client != null) {
-                client.receiveChat(gameController.getChatMessages());
+        new Thread( () -> {
+            if (messageEvent.getEventType().equals(EventController.SHOW_CHAT)) {
+                Client client = clientHandlers.stream().filter(u -> u.getUsername().equals(messageEvent.getMessage())).map(ClientHandler::getClient).findFirst().orElse(null);
+                if (client != null) {
+                    try {
+                        client.receiveChat(gameController.getChatMessages());
+                    } catch (RemoteException e) {
+                        throw new RuntimeException(e);
+                    }
+                } else {
+                    System.out.println("receiveChat method call error: Client not found");
+                }
             } else {
-                System.out.println("receiveChat method call error: Client not found");
+                gameController.handleEvent(messageEvent);
             }
-        } else {
-            gameController.handleEvent(messageEvent);
-        }
+        }).start();
     }
 }
