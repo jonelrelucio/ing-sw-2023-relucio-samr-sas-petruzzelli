@@ -657,11 +657,11 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     }
 
     private void endGame(GameModelView gameModel) {
+        printBookshelves(gameModel);
         System.out.println(" ");
         System.out.println("The Game has ended.");
         printLeaderboard(gameModel);
     }
-
 
 }
 

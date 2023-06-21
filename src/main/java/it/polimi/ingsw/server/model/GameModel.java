@@ -109,7 +109,7 @@ public class GameModel extends Observable<EventView> {
         score += currentPlayer.getBookshelf().getScore();
         score += commonGoalCardDeck.getScore(currentPlayer);
         score += currentPlayer.getPersonalGoalCard().getScore(currentPlayer.getBookshelf().getBookshelfMatrix());
-        if (currentPlayer.isWinner()) score += currentPlayer.getEndGameToken();
+        if (currentPlayer.isFirstToFillBookshelf()) score += currentPlayer.getEndGameToken();
         System.out.println(currentPlayer.getNickname() + " has " + score + " points.");
         currentPlayer.setScore(score);
     }
@@ -139,6 +139,7 @@ public class GameModel extends Observable<EventView> {
         if (board.checkRefill()) board.refill();
         if (event.equals(NEW_TURN)) {
             if (currentPlayer.getBookshelf().isFull()){
+                currentPlayer.setFirstToFillBookshelf();
                 endGame = true;
             }
             if ( endGame && (playerList.indexOf(this.currentPlayer)+1)%playerList.size() == 0 ) {
