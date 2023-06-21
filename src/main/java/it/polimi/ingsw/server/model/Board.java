@@ -261,6 +261,7 @@ public class Board {
 
     public void refill() {
         setItemsInCoordinates(boardCoordinates);
+        updateCanBeSelectedCoordinates();
     }
 
 }

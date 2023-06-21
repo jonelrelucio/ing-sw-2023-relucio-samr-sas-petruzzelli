@@ -404,16 +404,14 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         int[] pointsList = gameModel.getPointsList();
         int[] sortedList = Arrays.copyOf(pointsList, pointsList.length);
         Arrays.sort(sortedList);
-        int[] changedPositions = new int[pointsList.length];
         for (int i = 0; i < pointsList.length; i++) {
             int element = pointsList[i];
             int position = Arrays.binarySearch(sortedList, element);
-            changedPositions[i] = position;
         }
 
         System.out.println("Leaderboard:");
         int i = 0;
-        for (Integer position : changedPositions) {
+        for (Integer position : pointsList) {
             System.out.println(gameModel.getPlayerList()[position] + ": " + pointsList[position]);
         }
 
@@ -659,6 +657,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     }
 
     private void endGame(GameModelView gameModel) {
+        System.out.println(" ");
         System.out.println("The Game has ended.");
         printLeaderboard(gameModel);
     }
