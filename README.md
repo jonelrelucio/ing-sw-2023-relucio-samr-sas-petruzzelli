@@ -16,7 +16,7 @@ Game Implementation [My Shelfie](https://www.craniocreations.it/prodotto/my-shel
 
 ### Diagramma UML
 UML Diagrams have been develped using [diagrams](https://www.diagrams.net/).  
-Main UML Diagram: [UML Diagram](src/main/umlDiagram/ClassDiagram_Model.png)
+Main UML Diagram: [UML Diagram](src/deliverables/umlDiagram/ClassDiagram_Model.png)
 
 
 
