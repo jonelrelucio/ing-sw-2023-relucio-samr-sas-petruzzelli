@@ -27,6 +27,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         viewEventHandlers = new HashMap<>();
         commonGoalCardDescriptions = new HashMap<>();
         initEventHandlers();
+        initCommonGoalCardDescription();
     }
 
     private void  initEventHandlers() {
@@ -38,6 +39,21 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         viewEventHandlers.put(NEW_ORDER_SUCCESS, this::newOrderSuccess);
         viewEventHandlers.put(NEW_ORDER_FAIL, this::newOrderFail);
         viewEventHandlers.put(SELECT_COLUMN_FAIL, this::selectColumnFail);
+    }
+
+    private void initCommonGoalCardDescription() {
+        commonGoalCardDescriptions.put(1, Const.desc1);
+        commonGoalCardDescriptions.put(2, Const.desc2);
+        commonGoalCardDescriptions.put(3, Const.desc3);
+        commonGoalCardDescriptions.put(4, Const.desc4);
+        commonGoalCardDescriptions.put(5, Const.desc5);
+        commonGoalCardDescriptions.put(6, Const.desc6);
+        commonGoalCardDescriptions.put(7, Const.desc7);
+        commonGoalCardDescriptions.put(8, Const.desc8);
+        commonGoalCardDescriptions.put(9, Const.desc9);
+        commonGoalCardDescriptions.put(10, Const.desc10);
+        commonGoalCardDescriptions.put(11, Const.desc11);
+        commonGoalCardDescriptions.put(12, Const.desc12);
     }
 
     @Override
