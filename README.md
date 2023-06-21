@@ -23,16 +23,16 @@ Main UML Diagram: [UML Diagram](src/main/umlDiagram/ClassDiagram_Model.png)
 ### Functionality
 | Functionality                | State |
 |:-----------------------------|:-----:|
-| Basic rules                  |  🟡   |
-| Complete rules               |  🟡   |
-| RMI                          |  🟡   |
+| Basic rules                  |  🟢   |
+| Complete rules               |  🟢   |
+| RMI                          |  🟢   |
 | Socket                       |  🟡   |
-| CLI                          |  🟡   |
+| CLI                          |  🟢   |
 | GUI                          |  🟡   |
 | Multiple games               |  🔴   |
 | Persistence                  |  🔴   |
 | Resilience to disconnections |  🔴   |
-| Chat                         |  🔴   |
+| Chat                         |  🟢   |
 
 
 ##### Legend
