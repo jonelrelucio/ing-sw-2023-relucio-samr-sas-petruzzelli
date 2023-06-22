@@ -154,8 +154,7 @@ public class GameModel extends Observable<EventView> {
         setChangedAndNotifyObservers(event);
     }
 
-    //TODO could be private
-    public void setChangedAndNotifyObservers(EventView arg) {
+    private void setChangedAndNotifyObservers(EventView arg) {
         setChanged();
         notifyObservers(arg);
     }

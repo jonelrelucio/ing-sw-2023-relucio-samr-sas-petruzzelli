@@ -47,7 +47,6 @@ public class Bookshelf {
 
     /**
      * Selects the column
-     * after checking if selected column is not out of bound
      * @param selectedColumn    selected column int
      */
     public void selectColumn(int selectedColumn) {
@@ -89,10 +88,6 @@ public class Bookshelf {
         }
         return Math.min(max, 3);
     }
-
-
-
-
 
 
     private void buildAdjacencyMap( HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap){

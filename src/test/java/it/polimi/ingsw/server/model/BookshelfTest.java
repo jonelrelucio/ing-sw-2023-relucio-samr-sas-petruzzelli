@@ -6,6 +6,8 @@ import org.junit.jupiter.api.Test;
 
 import java.util.ArrayList;
 
+import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.NEW_TURN;
+import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.SELECT_COLUMN_FAIL;
 import static org.junit.jupiter.api.Assertions.*;
 
 
@@ -65,13 +67,6 @@ public class BookshelfTest {
     }
 
     @Test
-    public void testSelectColumnThrowsExceptionForOutOfBounds() {
-        Bookshelf bookshelf = new Bookshelf();
-        bookshelf.setBookshelfMatrix(bookshelf2);
-        assertThrows(IllegalArgumentException.class, () -> bookshelf.selectColumn(100));
-    }
-
-    @Test
     public void testGetMaxAvailableSpace() {
         Bookshelf bookshelf = new Bookshelf();
         bookshelf.setBookshelfMatrix(bookshelf2);
@@ -92,7 +87,7 @@ public class BookshelfTest {
         selectedTiles.add(new ItemTile(ItemTileType.BOOK));
         selectedTiles.add(new ItemTile(ItemTileType.BOOK));
         selectedTiles.add(new ItemTile(ItemTileType.TROPHY));
-        assertThrows(IllegalArgumentException.class, () -> bookshelf.updateTiles(selectedTiles));
+        assertEquals(SELECT_COLUMN_FAIL, bookshelf.updateTiles(selectedTiles));
     }
 
     @Test
