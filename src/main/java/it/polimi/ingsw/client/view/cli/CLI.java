@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
 import static it.polimi.ingsw.distributed.events.controllerEvents.EventController.*;
@@ -105,6 +106,12 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         chatThread = new Thread(() -> {
             System.out.println("Write your message and press enter to send it to the other players");
             System.out.println("write '/showChat' and press enter to get the last 10 messages from the chat");
+
+            setChangedAndNotifyObservers(new MessageEvent(SHOW_CHAT, thisUsername));
+            if (isMyTurn) {
+                chatAvailability = true;
+            }
+
             try {
                 while (reader.ready()) {
                     reader.readLine(); // clear buffered reader
@@ -117,10 +124,9 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
                     String message = null;
                     if (reader.ready()) {
                         message = reader.readLine();
-                        if (message.equals("/showChat")) {
-                            setChangedAndNotifyObservers(new MessageEvent(SHOW_CHAT, thisUsername));
-                        } else if (message.equals("/quit")) {
+                        if (message.equals("/quit")) {
                             if (isMyTurn) {
+                                chatAvailability = false;
                                 return;
                             }
                             System.err.println("command not found");
@@ -665,11 +671,6 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         printLeaderboard(gameModel);
     }
 
-    private void showLastMessages(GameModelView gameModelView) {
-        for (String message : gameModelView.getChat()) {
-            System.out.println(message);
-        }
-    }
     private void showChat(GameModelView gameModelView) {
         if (isMyTurn(gameModelView) && !chatAvailability) {
             return;
@@ -685,7 +686,15 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
             index = i;
         }
 
-        System.out.println(chat[index]);
+        String[] message = chat[index].split(":");
+
+        String color = "\033[0;33m";
+
+        if (message[0].equals(thisUsername)) {
+            color = "\033[0;34m";
+        }
+
+        System.out.println(color + message[0] + ":" + "\033[0m"  + message[1]);
     }
 
 }
