@@ -20,6 +20,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     private final HashMap<EventView, ViewEventHandler> viewEventHandlers;
     private final HashMap<Integer, String> commonGoalCardDescriptions;
     private boolean isMyTurn = false;
+    private boolean chatAvailability = false;
     BufferedReader reader = new BufferedReader(new InputStreamReader(System.in)); // used for chat message input
     Thread chatThread;
 
@@ -41,6 +42,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         viewEventHandlers.put(SELECT_COLUMN_FAIL, this::selectColumnFail);
         viewEventHandlers.put(NEW_TURN, this::newTurn);
         viewEventHandlers.put(END_GAME, this::endGame);
+        viewEventHandlers.put(UPDATE_CHAT, this::showChat);
     }
 
     private void initCommonGoalCardDescription() {
@@ -661,6 +663,29 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         System.out.println(" ");
         System.out.println("The Game has ended.");
         printLeaderboard(gameModel);
+    }
+
+    private void showLastMessages(GameModelView gameModelView) {
+        for (String message : gameModelView.getChat()) {
+            System.out.println(message);
+        }
+    }
+    private void showChat(GameModelView gameModelView) {
+        if (isMyTurn(gameModelView) && !chatAvailability) {
+            return;
+        }
+
+        String[] chat = gameModelView.getChat().toArray(new String[10]);
+
+        int index = 0;
+        for (int i = 0; i < 10; i++) {
+            if (chat[i] == null) {
+                break;
+            }
+            index = i;
+        }
+
+        System.out.println(chat[index]);
     }
 
 }

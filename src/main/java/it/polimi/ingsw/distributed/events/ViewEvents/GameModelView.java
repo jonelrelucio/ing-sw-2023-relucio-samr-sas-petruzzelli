@@ -7,6 +7,7 @@ import it.polimi.ingsw.server.model.util.Utility;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public class GameModelView implements Serializable {
 
@@ -23,6 +24,7 @@ public class GameModelView implements Serializable {
     private HashMap<String, int[][]> personalGooalCardListId;
     private HashMap<Integer, Integer[]> commonGoalCardDeck;
     private int[] pointsList;
+    private ArrayBlockingQueue<String> chat;
 
     public GameModelView(GameModel gameModel){
         this.boardMatrix = Utility.serializeBoardMatrix(gameModel.getBoard().getBoardMatrix());
@@ -38,6 +40,7 @@ public class GameModelView implements Serializable {
         this.canBeSelectedCoordinates = gameModel.getBoard().getCanBeSelectedCoordinates();
         this.selectedCoordinates = gameModel.getBoard().getSelectedCoordinates();
         this.currentPlayer = gameModel.getCurrentPlayer().getNickname();
+        this.chat = gameModel.getChat();
     }
 
     public ItemTileType[][] getBoardMatrix() { return boardMatrix; }
@@ -53,4 +56,7 @@ public class GameModelView implements Serializable {
     public HashMap<String, int[][]> getPersonalGoalCardListId() { return personalGooalCardListId; }
     public HashMap<Integer, Integer[]> getCommonGoalCardDeck() { return commonGoalCardDeck; }
     public int[] getPointsList() { return pointsList; }
+
+    public ArrayBlockingQueue<String> getChat() { return chat; }
+
 }

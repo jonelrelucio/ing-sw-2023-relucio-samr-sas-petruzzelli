@@ -8,8 +8,7 @@ import it.polimi.ingsw.util.Observable;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
-import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.NEW_TURN;
-import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.PICK_TILES_SUCCESS;
+import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
 
 public class GameModel extends Observable<EventView> {
 
@@ -99,6 +98,7 @@ public class GameModel extends Observable<EventView> {
             this.chat.poll();
         }
         this.chat.add(message);
+        setChangedAndNotifyObservers(UPDATE_CHAT);
     }
 
     /**
