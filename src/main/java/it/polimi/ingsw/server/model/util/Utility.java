@@ -199,4 +199,12 @@ public class Utility {
             right--;
         }
     }
+
+    public static HashMap<String, Integer> serializeArrayPersonalGoalCardPlaterListId(CircularArrayList<Player> playerList) {
+        HashMap<String, Integer> personalGoalCardPlayerListId = new HashMap<>();
+        for (int i = 0; i < playerList.size(); i++) {
+            personalGoalCardPlayerListId.put(playerList.get(i).getNickname(), playerList.get(i).getPersonalGoalCard().getPersonalGoalCardId());
+        }
+        return personalGoalCardPlayerListId;
+    }
 }

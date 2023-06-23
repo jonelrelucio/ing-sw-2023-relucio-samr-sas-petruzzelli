@@ -51,7 +51,9 @@ public abstract class PersonalGoalCardBag {
         ItemTile[][] personalGoalMatrix = new ItemTile[ROW][COL];
         initCard(personalGoalMatrix);
         buildPersonalGoalCard(personalGoalMatrix, key);
-        return new PersonalGoalCard(personalGoalMatrix);
+        PersonalGoalCard psg = new PersonalGoalCard(personalGoalMatrix);
+        psg.setPersonalGoalCardId(key);
+        return psg;
     }
 
     /**
