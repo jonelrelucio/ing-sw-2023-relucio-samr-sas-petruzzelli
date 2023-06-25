@@ -9,5 +9,7 @@ public enum EventView {
     NEW_ORDER_SUCCESS,
     NEW_ORDER_FAIL,
     SELECT_COLUMN_FAIL,
-    END_GAME, NEW_TURN
+    END_GAME,
+    NEW_TURN,
+    UPDATE_CHAT
 }

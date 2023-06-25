@@ -1,4 +1,4 @@
-package it.polimi.ingsw.client.view.gui.guiController.guicontroller;
+package it.polimi.ingsw.client.view.gui.guiController;
 
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -38,9 +38,12 @@ public class ControllerUsername implements Initializable {
 
     public void goToNextScene(){
         nickNameTextLabel.setText(nickName);
-        viewGUI.showMain();
+        viewGUI.selectNPlayers();
     }
 
+    public void showButton(){
+        goToNext.setVisible(true);
+    }
 
     /**
      * setters
@@ -53,8 +56,8 @@ public class ControllerUsername implements Initializable {
             nickNameTextLabel.setText("insert a username in the text field above.");
             nickName = nickNameTextField.getText();
         }
-        goToNext.setDisable(false);
         signInButton.setVisible(false);
+        viewGUI.unLock();
     }
 
 
@@ -80,10 +83,7 @@ public class ControllerUsername implements Initializable {
         nickNameTextLabel.setText("");
         goToNext.setDisable(true);
     }
-    /**
-     * switch to main scene
-     *
-     */
+
 
 
 }

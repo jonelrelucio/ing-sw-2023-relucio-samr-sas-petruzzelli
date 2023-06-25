@@ -30,12 +30,14 @@ public class Game {
 
     //TODO ADD MORE EVENTS
     private void initEventHandler() {
+        eventHandlers = new HashMap<>();
         eventHandlers.put(SELECT_COORDINATES , this::selectCoordinate);
         eventHandlers.put(DESELECT_COORDINATES, this::deselectCoordinates);
         eventHandlers.put(PICK_TILES, this::pickCoordinates);
         eventHandlers.put(NEW_ORDER, this::newOrderTiles);
         eventHandlers.put(SELECT_COLUMN, this::selectColumn);
         eventHandlers.put(NEW_MESSAGE_CHAT, this::addMessageToChat);
+
     }
 
     public void initGameModel(ArrayList<String> usernameList) {
@@ -102,6 +104,9 @@ public class Game {
     public ArrayBlockingQueue<String> getChatMessages() {
         return gameModel.getChat();
     }
+
+
+
 
 }
 

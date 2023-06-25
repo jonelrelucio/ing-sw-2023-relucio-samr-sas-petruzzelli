@@ -71,12 +71,15 @@ public class Player {
     public int getEndGameToken() { return ENDTOKENSCORE; }
 
 
+
+
+
     /**
      * Adds the given coordinates in the ArrayList of selectedTiles and updates the canBeSelectedTiles Arraylist
      * @param coordinates   selected coordinates
      */
     public EventView selectCoordinates(int[] coordinates) {
-        if (board.getSelectedCoordinates().size() + 1 > bookshelf.getMaxAvailableSpace())
+        if (board.getSelectedCoordinates().size()+1 > bookshelf.getMaxAvailableSpace())
             return SELECT_COORDINATES_FAIL;
         for (int[] tile : board.getCanBeSelectedCoordinates()) {
             if (Arrays.equals(tile, coordinates)) {

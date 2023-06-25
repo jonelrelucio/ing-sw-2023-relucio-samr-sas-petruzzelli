@@ -2,3 +2,13 @@
     -fx-background-image:url('../publisher_material/Display_3.jpg') ;
     -fx-background-size:100% 100% ;
 }
+
+
+.backcard{
+    -fx-background-image:url('../personalgoalcards/back.jpg') ;
+    -fx-background-size:100% 100% ;
+}
+.chair{
+    -fx-background-image:url('../background/firstplayertoken.jpg') ;
+    -fx-background-size:100% 100% ;
+}

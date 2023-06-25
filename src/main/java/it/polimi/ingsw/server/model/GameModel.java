@@ -8,7 +8,8 @@ import it.polimi.ingsw.util.Observable;
 
 import java.util.concurrent.ArrayBlockingQueue;
 
-import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
+import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.NEW_TURN;
+import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.PICK_TILES_SUCCESS;
 
 public class GameModel extends Observable<EventView> {
 
@@ -22,6 +23,7 @@ public class GameModel extends Observable<EventView> {
     private Player currentPlayer;
     private ArrayBlockingQueue<String> chat;
 
+
     public GameModel(int numOfPlayer) {
         if (numOfPlayer < 2 || numOfPlayer > 4 ) throw new IllegalArgumentException("Number of Player out of bounds");
         this.numOfPlayer = numOfPlayer;
@@ -34,12 +36,15 @@ public class GameModel extends Observable<EventView> {
     }
 
     public GameModel(){
+        //if (numOfPlayer < 2 || numOfPlayer > 4 ) throw new IllegalArgumentException("Number of Player out of bounds");
         this.numOfPlayer = 0;
         this.playerList = new CircularArrayList<>();
         this.numOfRounds = 0;
         this.state = State.INIT;
         PersonalGoalCardBag.reset();
         this.chat = new ArrayBlockingQueue<>(10, true);
+
+
     }
 
     public void initGame(Board board, CircularArrayList<Player> playerList) {
@@ -69,6 +74,7 @@ public class GameModel extends Observable<EventView> {
     public State getState() { return state;}
     public int getNumOfRounds() { return numOfRounds;}
     public Player getCurrentPlayer() { return currentPlayer;}
+
     public ArrayBlockingQueue<String> getChat() { return chat; }
 
     // Setters
@@ -98,7 +104,9 @@ public class GameModel extends Observable<EventView> {
             this.chat.poll();
         }
         this.chat.add(message);
+
     }
+
 
     /**
      * Updates the score of the current player
@@ -150,12 +158,21 @@ public class GameModel extends Observable<EventView> {
                 updateNextPlayer();
             }
         }
+
         setChangedAndNotifyObservers(event);
     }
 
+    private boolean newRound() {
+        return currentPlayer.equals(playerList.get(0));
+    }
+
+
+    //TODO could be private
     private void setChangedAndNotifyObservers(EventView arg) {
+
         setChanged();
         notifyObservers(arg);
+
     }
 
 }

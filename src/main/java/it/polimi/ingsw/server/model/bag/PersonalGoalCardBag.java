@@ -128,4 +128,3 @@ class PersonalGoalCardCoordinates {
         return itemCoordinates[key-1];
     }
 }
-

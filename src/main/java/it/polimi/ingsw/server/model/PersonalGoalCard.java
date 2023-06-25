@@ -46,4 +46,3 @@ public class PersonalGoalCard {
         return matchingTiles;
     }
 }
-

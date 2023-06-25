@@ -1,0 +1,172 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.effect.ColorAdjust?>
+<?import javafx.scene.effect.DropShadow?>
+<?import javafx.scene.effect.Glow?>
+<?import javafx.scene.effect.InnerShadow?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.Pane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.text.Font?>
+
+<Pane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="743.0" prefWidth="743.0" styleClass="bodybg" stylesheets="@../css/background.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.gui.guiController.ControllerEndGame">
+   <children>
+      <AnchorPane layoutX="10.0" layoutY="10.0" prefHeight="116.0" prefWidth="700.0">
+         <children>
+            <ImageView fitHeight="87.0" fitWidth="97.0" pickOnBounds="true">
+               <image>
+                  <Image url="@../publisher_material/box_noShadow.png" />
+               </image>
+            </ImageView>
+            <Label layoutX="158.0" prefHeight="122.0" prefWidth="542.0" text="The game has ended" textFill="#000000de">
+               <font>
+                  <Font name="Century Schoolbook" size="47.0" />
+               </font>
+               <effect>
+                  <ColorAdjust />
+               </effect>
+            </Label>
+         </children>
+         <effect>
+            <DropShadow>
+               <input>
+                  <Glow />
+               </input>
+            </DropShadow>
+         </effect>
+      </AnchorPane>
+      <GridPane fx:id="gameResultGridPane" focusTraversable="true" gridLinesVisible="true" layoutX="41.0" layoutY="550.0" prefHeight="183.0" prefWidth="693.0" styleClass="bodybg" stylesheets="@../css/background.css">
+        <columnConstraints>
+            <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+            <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <effect>
+            <InnerShadow />
+         </effect>
+         <children>
+            <Label fx:id="rankFirst" text="1st">
+               <font>
+                  <Font name="Century Schoolbook" size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="rankSecond" text="2nd" GridPane.rowIndex="1">
+               <font>
+                  <Font name="Century Schoolbook" size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="rankThird" text="3rd" GridPane.rowIndex="2">
+               <font>
+                  <Font name="Century Schoolbook" size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="rankFourth" text="4th" GridPane.rowIndex="3">
+               <font>
+                  <Font name="Century Schoolbook" size="36.0" />
+               </font>
+            </Label>
+            <Label fx:id="nameFirstPlaceLabel" text="Label" GridPane.columnIndex="1">
+               <font>
+                  <Font name="Century Schoolbook" size="40.0" />
+               </font>
+            </Label>
+            <Label fx:id="nameSecondPlaceLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <font>
+                  <Font name="Century Schoolbook" size="40.0" />
+               </font>
+            </Label>
+            <Label fx:id="nameThirdPlaceLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="2">
+               <font>
+                  <Font name="Century Schoolbook" size="40.0" />
+               </font>
+            </Label>
+            <Label fx:id="nameFourthPlaceLabel" text="Label" GridPane.columnIndex="1" GridPane.rowIndex="3">
+               <font>
+                  <Font name="Century Schoolbook" size="40.0" />
+               </font>
+            </Label>
+            <Label fx:id="scoreFirstPlaceLabel" text="Label" GridPane.columnIndex="2">
+               <font>
+                  <Font name="Century Schoolbook" size="40.0" />
+               </font>
+            </Label>
+            <Label fx:id="scoreSecondPlaceLabel" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <font>
+                  <Font name="Century Schoolbook" size="40.0" />
+               </font>
+            </Label>
+            <Label fx:id="scoreThirdPlaceLabel" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="2">
+               <font>
+                  <Font name="Century Schoolbook" size="40.0" />
+               </font>
+            </Label>
+            <Label fx:id="scoreFourthPlaceLabel" text="Label" GridPane.columnIndex="2" GridPane.rowIndex="3">
+               <font>
+                  <Font name="Century Schoolbook" size="40.0" />
+               </font>
+            </Label>
+         </children>
+      </GridPane>
+      <AnchorPane layoutX="11.0" layoutY="119.0" prefHeight="305.0" prefWidth="711.0">
+         <children>
+            <Label fx:id="theWinnerIsLabel" layoutX="10.0" layoutY="14.0" prefHeight="189.0" prefWidth="437.0" text="The winner is :" textFill="#170d0d">
+               <font>
+                  <Font name="Century Schoolbook" size="35.0" />
+               </font>
+               <effect>
+                  <DropShadow>
+                     <color>
+                        <Color red="0.8986111283302307" green="1.0" blue="0.32407405972480774" />
+                     </color>
+                  </DropShadow>
+               </effect>
+            </Label>
+            <AnchorPane fx:id="personalbookshelfmainplayerimage" layoutX="437.0" prefHeight="327.0" prefWidth="274.0" styleClass="bodybg" stylesheets="@../css/bookshelf.css">
+               <children>
+                  <GridPane fx:id="winnerBookshelfGrid" layoutX="21.0" layoutY="18.0" prefHeight="270.0" prefWidth="222.0" AnchorPane.leftAnchor="21.0" AnchorPane.topAnchor="18.0">
+                     <columnConstraints>
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="61.0" minWidth="7.5" prefWidth="39.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.5" minWidth="0.0" prefWidth="39.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.5" minWidth="0.0" prefWidth="39.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.5" minWidth="0.0" prefWidth="39.0" />
+                        <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.5" minWidth="0.0" prefWidth="39.0" />
+                     </columnConstraints>
+                     <rowConstraints>
+                        <RowConstraints maxHeight="63.0" minHeight="7.25" prefHeight="38.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="63.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="63.0" minHeight="4.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="63.0" minHeight="7.25" prefHeight="38.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="63.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                        <RowConstraints maxHeight="63.0" minHeight="10.0" prefHeight="38.0" vgrow="SOMETIMES" />
+                     </rowConstraints>
+                  </GridPane>
+               </children>
+            </AnchorPane>
+         </children>
+      </AnchorPane>
+      <Label layoutX="54.0" layoutY="435.0" prefHeight="87.0" prefWidth="612.0" text="Game result">
+         <font>
+            <Font name="Century Schoolbook" size="49.0" />
+         </font>
+         <effect>
+            <DropShadow height="123.58" radius="70.085" spread="0.33" width="158.76">
+               <color>
+                  <Color red="1.0" green="0.9074074029922485" blue="0.9074074029922485" />
+               </color>
+            </DropShadow>
+         </effect>
+      </Label>
+   </children>
+</Pane>

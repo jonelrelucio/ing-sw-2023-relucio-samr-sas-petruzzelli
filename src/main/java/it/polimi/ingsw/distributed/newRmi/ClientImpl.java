@@ -2,7 +2,7 @@ package it.polimi.ingsw.distributed.newRmi;
 
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.view.cli.CLI;
-import it.polimi.ingsw.client.view.gui.GUI;
+import it.polimi.ingsw.client.view.gui.guiController.ViewGui;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
@@ -103,7 +103,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
      */
     @Override
     public void receiveFromServer(String message) throws RemoteException {
-            view.printMessage(message);
+        view.printMessage(message);
     }
 
     /**
@@ -158,24 +158,27 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
                 }).start();
             });
         } else {
-            GUI viewInstance = (GUI) view;
-            //TODO: GUI view does not extend Observable yet
-//            viewInstance.addObserver((o, arg) -> {
-//                try {
-//                    server.update(arg);
-//                } catch (RemoteException e) {
-//                    System.err.println("Unable to update the server: " + e.getMessage() + ". Skipping the update...");
-//                }
-//            });
+            ViewGui viewInstance = (ViewGui) view;
+            viewInstance.addObserver((o, arg) -> {
+                try {
+                    server.update(arg);
+                } catch (RemoteException e) {
+                    System.err.println("Unable to update the server: " + e.getMessage() + ". Skipping the update...");
+                }
+            });
         }
 
     }
-
     public void receiveChat(ArrayBlockingQueue<String> chat) throws RemoteException {
         for (String m : chat) {
-            System.out.println(m);
+            String[] message = m.split(":");
+
+            String color = "\033[0;33m";
+            if (message[0].equals(username)) {
+                color = "\033[0;34m";
+            }
+
+            System.out.println(color + message[0] + ":" + "\033[0m" + message[1]);
         }
     }
-
-
 }
