@@ -30,7 +30,6 @@ public class Game {
 
     //TODO ADD MORE EVENTS
     private void initEventHandler() {
-        eventHandlers = new HashMap<>();
         eventHandlers.put(SELECT_COORDINATES , this::selectCoordinate);
         eventHandlers.put(DESELECT_COORDINATES, this::deselectCoordinates);
         eventHandlers.put(PICK_TILES, this::pickCoordinates);

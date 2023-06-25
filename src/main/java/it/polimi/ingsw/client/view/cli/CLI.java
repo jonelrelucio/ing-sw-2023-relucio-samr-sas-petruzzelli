@@ -166,6 +166,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
      * @see #setChangedAndNotifyObservers(MessageEvent)
      */
     private void startChat() {
+        /*
         chatThread = new Thread(() -> {
             System.out.println("Write your message and press enter to send it to the other players");
             System.out.println("write '/showChat' and press enter to get the last 10 messages from the chat");
@@ -207,6 +208,8 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         });
 
         chatThread.start();
+
+         */
     }
 
     /**
