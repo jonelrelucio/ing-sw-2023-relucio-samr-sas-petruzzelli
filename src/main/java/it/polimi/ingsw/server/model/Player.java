@@ -77,7 +77,7 @@ public class Player {
      */
     public EventView selectCoordinates(int[] coordinates) {
         if (board.getSelectedCoordinates().size() + 1 > bookshelf.getMaxAvailableSpace())
-            throw new IllegalArgumentException("Can't select more tiles.");
+            return SELECT_COORDINATES_FAIL;
         for (int[] tile : board.getCanBeSelectedCoordinates()) {
             if (Arrays.equals(tile, coordinates)) {
                 board.getSelectedCoordinates().add(coordinates);
