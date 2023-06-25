@@ -76,6 +76,11 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
         }
     }
 
+    @Override
+    public void startView() throws RemoteException {
+
+    }
+
     // TODO: change observer and observable classes to remove the use of instance of
     /**
      * Method called remotely by the observer in the server that observes its game model.

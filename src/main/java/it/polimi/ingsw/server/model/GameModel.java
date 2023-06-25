@@ -6,6 +6,8 @@ import it.polimi.ingsw.server.model.commonGoalCard.CommonGoalCardDeck;
 import it.polimi.ingsw.server.model.util.CircularArrayList;
 import it.polimi.ingsw.util.Observable;
 
+import java.util.concurrent.ArrayBlockingQueue;
+
 import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
 
 public class GameModel extends Observable<EventView> {
@@ -15,9 +17,10 @@ public class GameModel extends Observable<EventView> {
     private CommonGoalCardDeck commonGoalCardDeck;
     private Board board;
     private State state;
-    private int numOfRounds; // what is numOfRounds??? does it increment every player change or does it increment every loop of the playerlist
-    private int lastRound;
+    private int numOfRounds;
+    private boolean endGame;
     private Player currentPlayer;
+    private ArrayBlockingQueue<String> chat;
 
     public GameModel(int numOfPlayer) {
         if (numOfPlayer < 2 || numOfPlayer > 4 ) throw new IllegalArgumentException("Number of Player out of bounds");
@@ -31,12 +34,12 @@ public class GameModel extends Observable<EventView> {
     }
 
     public GameModel(){
-        //if (numOfPlayer < 2 || numOfPlayer > 4 ) throw new IllegalArgumentException("Number of Player out of bounds");
         this.numOfPlayer = 0;
         this.playerList = new CircularArrayList<>();
         this.numOfRounds = 0;
         this.state = State.INIT;
         PersonalGoalCardBag.reset();
+        this.chat = new ArrayBlockingQueue<>(10, true);
     }
 
     public void initGame(Board board, CircularArrayList<Player> playerList) {
@@ -66,6 +69,7 @@ public class GameModel extends Observable<EventView> {
     public State getState() { return state;}
     public int getNumOfRounds() { return numOfRounds;}
     public Player getCurrentPlayer() { return currentPlayer;}
+    public ArrayBlockingQueue<String> getChat() { return chat; }
 
     // Setters
     public void setNumOfPlayer(int numOfPlayer) {
@@ -89,6 +93,12 @@ public class GameModel extends Observable<EventView> {
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
+    public void addMessageToChat(String message) {
+        if (this.chat.remainingCapacity() == 0) {
+            this.chat.poll();
+        }
+        this.chat.add(message);
+    }
 
     /**
      * Updates the score of the current player
@@ -98,7 +108,7 @@ public class GameModel extends Observable<EventView> {
         score += currentPlayer.getBookshelf().getScore();
         score += commonGoalCardDeck.getScore(currentPlayer);
         score += currentPlayer.getPersonalGoalCard().getScore(currentPlayer.getBookshelf().getBookshelfMatrix());
-        if (currentPlayer.isWinner()) score += currentPlayer.getEndGameToken();
+        if (currentPlayer.isFirstToFillBookshelf()) score += currentPlayer.getEndGameToken();
         System.out.println(currentPlayer.getNickname() + " has " + score + " points.");
         currentPlayer.setScore(score);
     }
@@ -125,20 +135,25 @@ public class GameModel extends Observable<EventView> {
 
     public void selectColumn(int col) {
         EventView event = currentPlayer.putItemsInSelectedColumn(col);
-        if(event ==  NEW_TURN){
-            updateCurrentPlayerScore();
-            updateNextPlayer();
+        if (board.checkRefill()) board.refill();
+        if (event.equals(NEW_TURN)) {
+            if (currentPlayer.getBookshelf().isFull()){
+                currentPlayer.setFirstToFillBookshelf();
+                endGame = true;
+            }
+            if ( endGame && (playerList.indexOf(this.currentPlayer)+1)%playerList.size() == 0 ) {
+                updateCurrentPlayerScore();
+                event = EventView.END_GAME;
+            }
+            else {
+                updateCurrentPlayerScore();
+                updateNextPlayer();
+            }
         }
         setChangedAndNotifyObservers(event);
     }
 
-    private boolean newRound() {
-        return currentPlayer.equals(playerList.get(0));
-    }
-
-
-    //TODO could be private
-    public void setChangedAndNotifyObservers(EventView arg) {
+    private void setChangedAndNotifyObservers(EventView arg) {
         setChanged();
         notifyObservers(arg);
     }

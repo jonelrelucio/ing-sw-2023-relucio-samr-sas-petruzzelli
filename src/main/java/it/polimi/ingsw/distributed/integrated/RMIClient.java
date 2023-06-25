@@ -11,6 +11,7 @@ import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.NEW_TURN;
 
@@ -101,6 +102,11 @@ public class RMIClient extends UnicastRemoteObject implements Client, Runnable {
     @Override
     public void receiveFromServer(String message) throws RemoteException {
         view.printMessage(message);
+    }
+
+    @Override
+    public void receiveChat(ArrayBlockingQueue<String> chat) throws RemoteException {
+
     }
 
     @Override

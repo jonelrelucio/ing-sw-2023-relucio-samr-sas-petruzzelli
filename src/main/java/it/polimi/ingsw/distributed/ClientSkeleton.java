@@ -9,6 +9,7 @@ import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.net.Socket;
 import java.rmi.RemoteException;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public class ClientSkeleton implements Client{
 
@@ -44,6 +45,11 @@ public class ClientSkeleton implements Client{
 
     @Override
     public void receiveFromServer(String message) throws RemoteException {
+
+    }
+
+    @Override
+    public void receiveChat(ArrayBlockingQueue<String> chat) throws RemoteException {
 
     }
 

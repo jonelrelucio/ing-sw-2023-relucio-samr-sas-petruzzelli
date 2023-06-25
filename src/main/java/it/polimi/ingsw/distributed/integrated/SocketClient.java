@@ -11,6 +11,7 @@ import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 import it.polimi.ingsw.distributed.integrated.messages.*;
 
 import java.rmi.RemoteException;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.NEW_TURN;
 
@@ -28,29 +29,6 @@ public class SocketClient implements Client, Runnable{
 
     @Override
     public void run() {
-        /*
-        try {
-            if (!server.canJoin()) System.out.println("The game has already started. Come back later.");
-            else if (!connectionError) {
-                try {
-                    askUsername();
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
-                try {
-                    server.register(this, username);
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
-                addObserver();
-            }
-            else System.out.println("Can't connect to server");
-        } catch (RemoteException e) {
-            throw new RuntimeException(e);
-        }
-
-         */
-        //il server.canJoin fa un socket (in questo caso il server è il serverStub).
         try {
             if(!server.canJoin()){
                 System.out.println("The game has already started. Come back later");
@@ -65,15 +43,9 @@ public class SocketClient implements Client, Runnable{
                 }catch(RemoteException e){
                     throw new RuntimeException(e);
                 }
-
-                //Non so cosa va prima
                 if(!waitForPlayers()) return;
                 addObserver();
-
-                //da qui in poi il gioco è iniziato
                 listenGameEvents();
-
-
             }
         } catch (RemoteException e) {
             throw new RuntimeException(e);
@@ -127,38 +99,6 @@ public class SocketClient implements Client, Runnable{
                 return false;
             }
         }
-
-
-        //updateClientMessage
-        //ClientUpdateMessage clientUpdateMessage = (ClientUpdateMessage)server.receiveObject();
-
-
-        /*
-        UpdateMessage updateMessage = (UpdateMessage) server.receiveObject();
-        try{
-            //update(clientUpdateMessage.getGameEvent());
-            update(updateMessage.getGameModelView(), updateMessage.getEventView());
-
-        }catch(RemoteException e){
-            System.err.println("Cannot update client, "+e);
-        }
-
-         */
-
-        /*
-        SimpleTextMessage startViewMessage = (SimpleTextMessage) server.receiveObject();
-        if(startViewMessage.getMessageType() == MessageType.START_VIEW_MESSAGE){
-            try{
-                startView();
-            }catch(RemoteException e){
-                System.err.println("Cannot start view");
-            }
-        }
-         */
-
-
-
-
     }
 
     private void listenGameEvents(){
@@ -185,14 +125,6 @@ public class SocketClient implements Client, Runnable{
         view.setThisUsername(username);
     }
 
-    /*
-    @Override
-    public void update(GameEvent event) throws RemoteException {
-        if (! (event instanceof GameModelView gameModelView)) throw new RuntimeException("Game Event is not instance of GameModelView");
-        view.update(gameModelView);
-    }
-
-     */
 
     @Override
     public void update(GameModelView gameModelView, EventView event) throws RemoteException {
@@ -207,6 +139,11 @@ public class SocketClient implements Client, Runnable{
 
     @Override
     public void receiveFromServer(String message) throws RemoteException {
+
+    }
+
+    @Override
+    public void receiveChat(ArrayBlockingQueue<String> chat) throws RemoteException {
 
     }
 
