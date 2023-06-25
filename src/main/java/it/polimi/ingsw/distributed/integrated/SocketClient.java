@@ -67,7 +67,7 @@ public class SocketClient implements Client, Runnable{
                 }
 
                 //Non so cosa va prima
-                waitForPlayers();
+                if(!waitForPlayers()) return;
                 addObserver();
 
                 //da qui in poi il gioco è iniziato
@@ -102,41 +102,30 @@ public class SocketClient implements Client, Runnable{
         }
     }
 
-    private void waitForPlayers(){
+    private boolean waitForPlayers(){
 
-        SimpleTextMessage message = (SimpleTextMessage) server.receiveObject();
-        while(message.getMessageType() != MessageType.START_GAME_MESSAGE){
+        while(true){
+            SimpleTextMessage message = (SimpleTextMessage) server.receiveObject();
+            if(message.getMessageType() == MessageType.START_GAME_MESSAGE) return true;
             if(message.getMessageType() == MessageType.FIRST_PLAYER_MESSAGE){
                 SimpleTextMessage numOfPlayersMessage = (SimpleTextMessage) server.receiveObject();  //SE NON VA COSì CAMBIARE DA numOfPlayersMessage a message dichiarato sopra
                 if(numOfPlayersMessage.getMessageType() == MessageType.NUM_OF_PLAYERS_MESSAGE){
-                    try{
-                        int numOfPlayers = askMaxNumOfPlayers();
-                        server.sendObject(numOfPlayers);
-                    }catch(RemoteException e){
-                        throw new RuntimeException(e);
-                    }
+                    new Thread( () -> {
+                        try{
+                            int numOfPlayers = askMaxNumOfPlayers();
+                            server.sendObject(numOfPlayers);
+                        }catch(RemoteException e){
+                            throw new RuntimeException(e);
+                        }
+                    }).start();
                 }
-                //waiting for x to set the number of players
-                SimpleTextMessage waitToSetNumOfPlayers = (SimpleTextMessage) server.receiveObject();
-                view.printMessage(waitToSetNumOfPlayers.getMessage());
-                //inviare alla cli per la stampa
-                //enter maximum number of players
-                SimpleTextMessage enterMaximumNumOfPlayers = (SimpleTextMessage) server.receiveObject();    //forse è da togliere
-                view.printMessage(enterMaximumNumOfPlayers.getMessage());
-                if(enterMaximumNumOfPlayers.getMessageType() == MessageType.START_GAME_MESSAGE){
-                    break;
-                }
-
             }
-            if(message.getMessageType() == MessageType.REMAINING_PLAYERS_MESSAGE){
+            if(message.getMessageType() == MessageType.REMAINING_PLAYERS_MESSAGE) view.printMessage(message.getMessage());
+            if(message.getMessageType() == MessageType.DEFAULT_MESSAGE) view.printMessage(message.getMessage());
+            if(message.getMessageType() == MessageType.KICK_MESSAGE) {
                 view.printMessage(message.getMessage());
+                return false;
             }
-
-
-
-
-
-            message = (SimpleTextMessage) server.receiveObject();
         }
 
 

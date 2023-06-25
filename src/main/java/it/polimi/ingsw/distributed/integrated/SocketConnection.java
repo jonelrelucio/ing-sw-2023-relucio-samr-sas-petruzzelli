@@ -37,6 +37,8 @@ public class SocketConnection extends Connection{
         try{
             oos.writeObject(message);
             oos.flush();
+            oos.reset();
+
 
         }catch(IOException e){
             System.err.println("Could not send message "+ e);
@@ -75,6 +77,7 @@ public class SocketConnection extends Connection{
 
             oos.writeObject(object);
             oos.flush();
+            oos.reset();
 
         }catch(IOException e){
             System.err.println("Cannot send message to client");

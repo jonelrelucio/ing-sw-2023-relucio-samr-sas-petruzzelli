@@ -43,40 +43,37 @@ public class GameServer extends UnicastRemoteObject implements Server {
     public void manageConnection(Connection connection) throws RemoteException{
         if(!alreadyAsked){
             alreadyAsked = true;
-            //connection.sendMessageToClient("You are the first client to enter");
             connection.sendMessageToClient(new SimpleTextMessage(MessageType.FIRST_PLAYER_MESSAGE, "You are the first client to enter"));
-
-            //maxConnections = clientHandlers.get(0).getClient().askMaxNumOfPlayers();
             maxConnections = connection.askMaxNumOfPlayers();
+            if ( connections.size() >= maxConnections){
+                startGame();
+                return;
+            }
         }
-
-
-
-
         for(Connection conn : connections){
             if(maxConnections == 0){
                 //connection.sendMessageToClient(String.format("%s joined the waiting list. Waiting for %s to set number of players.", conn.getUsername(), conn.getUsername()));
-                MessageType messageType = MessageType.DEFAULT_MESSAGE;
-                String messageText = String.format("%s joined the waiting list. Waiting for %s to set number of players.", conn.getUsername(), conn.getUsername());
-                connection.sendMessageToClient(new SimpleTextMessage(messageType, messageText));
+                MessageType messageType = MessageType.REMAINING_PLAYERS_MESSAGE;
+                String messageText = String.format("%s joined the waiting list. Waiting for %s to set number of players.", connection.getUsername(), connections.get(0).getUsername());
+                System.out.println(messageText);
+                conn.sendMessageToClient(new SimpleTextMessage(messageType, messageText));
             }else if(connections.size() < maxConnections){
                 //connection.sendMessageToClient(String.format("%s joined the waiting list. %d more players remaining", conn.getUsername(), maxConnections - connections.size()));
                 MessageType messageType = MessageType.REMAINING_PLAYERS_MESSAGE;
-                String messageText = String.format("%s joined the waiting list. %d more players remaining", conn.getUsername(), maxConnections - connections.size());
-                connection.sendMessageToClient(new SimpleTextMessage(messageType, messageText));
+                String messageText = String.format("%s joined the waiting list. %d more players remaining", connection.getUsername(), maxConnections - connections.size());
+                System.out.println(messageText);
+                conn.sendMessageToClient(new SimpleTextMessage(messageType, messageText));
             }
         }
 
         if(maxConnections == 0){
-            //connection.sendMessageToClient("Please enter a maximum number of players: ");
             MessageType messageType = MessageType.DEFAULT_MESSAGE;
             String messageText = "Please enter a maximum number of players: ";
-            connection.sendMessageToClient(new SimpleTextMessage(messageType, messageText));
+            connections.get(0).sendMessageToClient(new SimpleTextMessage(messageType, messageText));
         }
-        if(maxConnections != 0 && maxConnections == connections.size()){
+        if(maxConnections != 0 && connections.size() >= maxConnections){
             startGame();
         }
-
 
     }
 
@@ -132,7 +129,7 @@ public class GameServer extends UnicastRemoteObject implements Server {
 
     private void removeFromWaitingList() throws RemoteException {
         while(connections.size() != maxConnections){
-            connections.get(connections.size()-1).sendMessageToClient("Lobby is Full. You have been kicked from the waiting list.");
+            connections.get(connections.size()-1).sendMessageToClient(new SimpleTextMessage(MessageType.KICK_MESSAGE, "Lobby is Full. You have been kicked from the waiting list."));
             connections.remove(connections.size()-1);
         }
     }
@@ -160,8 +157,6 @@ public class GameServer extends UnicastRemoteObject implements Server {
             conn.sendMessageToClient(message);
         }
     }
-
-
 
     @Override
     public boolean isUsernameAvailable(String username) throws RemoteException {
