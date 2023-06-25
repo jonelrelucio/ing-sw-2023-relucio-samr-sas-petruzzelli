@@ -10,6 +10,8 @@ import java.util.HashMap;
 
 public class GameModelView implements Serializable {
 
+    private static final long serialVersionUID = 1234567L;
+
     private ItemTileType[][] boardMatrix;
     private int[][] boardItemId;
     private String[] playerList;

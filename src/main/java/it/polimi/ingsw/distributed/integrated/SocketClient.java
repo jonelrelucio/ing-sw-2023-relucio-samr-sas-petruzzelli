@@ -70,6 +70,8 @@ public class SocketClient implements Client, Runnable{
                 waitForPlayers();
                 addObserver();
 
+                //da qui in poi il gioco è iniziato
+                listenGameEvents();
 
 
             }
@@ -101,53 +103,6 @@ public class SocketClient implements Client, Runnable{
     }
 
     private void waitForPlayers(){
-        /*
-        Message message = (Message) server.receiveObject();
-        //cambiare la condizione nel while
-        while (message.getMessageType() == MessageType.FIRST_PLAYER_MESSAGE){
-            message = (Message) server.receiveObject();
-            if(message.getMessageType() == MessageType.NUM_OF_PLAYERS_MESSAGE){
-                try {
-                    int numOfPlayers = askMaxNumOfPlayers();
-                    server.sendObject(numOfPlayers);
-                } catch (RemoteException e) {
-                    throw new RuntimeException(e);
-                }
-
-                //ricevuta stringa che dice quanti rimangono
-
-            }
-        }
-
-         */
-        /*
-        SimpleTextMessage message;
-        do{
-            message = (SimpleTextMessage) server.receiveObject();
-            if(message.getMessageType() == MessageType.FIRST_PLAYER_MESSAGE){
-                SimpleTextMessage numOfPlayersMessage = (SimpleTextMessage) server.receiveObject();  //SE NON VA COSì CAMBIARE DA numOfPlayersMessage a message dichiarato sopra
-                if(numOfPlayersMessage.getMessageType() == MessageType.NUM_OF_PLAYERS_MESSAGE){
-                    try{
-                        int numOfPlayers = askMaxNumOfPlayers();
-                        server.sendObject(numOfPlayers);
-                    }catch(RemoteException e){
-                        throw new RuntimeException(e);
-                    }
-                }
-                //waiting for x to set the number of players
-                SimpleTextMessage waitToSetNumOfPlayers = (SimpleTextMessage) server.receiveObject();
-                view.printMessage(waitToSetNumOfPlayers.getMessage());
-                //inviare alla cli per la stampa
-                //enter maximum number of players
-                SimpleTextMessage enterMaximumNumOfPlayers = (SimpleTextMessage) server.receiveObject();    //forse è da togliere
-                view.printMessage(enterMaximumNumOfPlayers.getMessage());
-
-
-            }
-            if(message.getMessageType() == MessageType.REMAINING_PLAYERS_MESSAGE){
-                view.printMessage(message.getMessage());
-            }
-        }while (message.getMessageType() != MessageType.START_GAME_MESSAGE);*/
 
         SimpleTextMessage message = (SimpleTextMessage) server.receiveObject();
         while(message.getMessageType() != MessageType.START_GAME_MESSAGE){
@@ -187,6 +142,9 @@ public class SocketClient implements Client, Runnable{
 
         //updateClientMessage
         //ClientUpdateMessage clientUpdateMessage = (ClientUpdateMessage)server.receiveObject();
+
+
+        /*
         UpdateMessage updateMessage = (UpdateMessage) server.receiveObject();
         try{
             //update(clientUpdateMessage.getGameEvent());
@@ -196,6 +154,9 @@ public class SocketClient implements Client, Runnable{
             System.err.println("Cannot update client, "+e);
         }
 
+         */
+
+        /*
         SimpleTextMessage startViewMessage = (SimpleTextMessage) server.receiveObject();
         if(startViewMessage.getMessageType() == MessageType.START_VIEW_MESSAGE){
             try{
@@ -204,7 +165,24 @@ public class SocketClient implements Client, Runnable{
                 System.err.println("Cannot start view");
             }
         }
+         */
 
+
+
+
+    }
+
+    private void listenGameEvents(){
+        //fare un ciclo
+        //TODO: modificare il ciclo affinchè esca quando gli arriva un particolare messaggio
+        while(true){
+            UpdateMessage updateMessage = (UpdateMessage) server.receiveObject();
+            try{
+                update(updateMessage.getGameModelView(), updateMessage.getEventView());
+            }catch(RemoteException e){
+                System.err.println("Cannot update client "+e);
+            }
+        }
 
     }
 
@@ -215,6 +193,7 @@ public class SocketClient implements Client, Runnable{
             if (server.isUsernameAvailable(username)) view.printMessage("The username is not Available. Try Again.");
         } while(server.isUsernameAvailable(username));
         this.username = username;
+        view.setThisUsername(username);
     }
 
     /*

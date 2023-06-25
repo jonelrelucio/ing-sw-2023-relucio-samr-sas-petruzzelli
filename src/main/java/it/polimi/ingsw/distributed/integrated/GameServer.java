@@ -90,12 +90,15 @@ public class GameServer extends UnicastRemoteObject implements Server {
         gameController = new Game(gameModel);
         gameController.initGameModel(playerList);
         gameController.start();
+        /*
         for(Connection conn : connections){
             conn.startView();
         }
+         */
+        startClientSocketEventListenerThreads();
     }
 
-    private void updateClients(){
+    public void updateClients(){
         /*
         for(Connection conn : connections){
             gameModel.addObserver((o, arg) -> {
@@ -139,6 +142,16 @@ public class GameServer extends UnicastRemoteObject implements Server {
     private void sendMessageToAllClients(String message) throws RemoteException {
         for(Connection conn : connections){
             conn.sendMessageToClient(message);
+        }
+    }
+
+    private void startClientSocketEventListenerThreads(){
+        for(Connection conn : getConnections()){
+            if(conn instanceof SocketConnection){
+                //Make thread and start it
+                Thread socketClientListener = new Thread(new ClientSocketEventListener(this, (SocketConnection) conn));
+                socketClientListener.start();
+            }
         }
     }
 

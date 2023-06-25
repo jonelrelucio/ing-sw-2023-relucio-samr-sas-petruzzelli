@@ -54,11 +54,13 @@ public class RMIClient extends UnicastRemoteObject implements Client, Runnable {
         //TODO: change method
         if (view instanceof CLI viewInstance) {
             viewInstance.addObserver((o, arg) -> {
-                try {
-                    server.update(arg);
-                } catch (RemoteException e) {
-                    System.err.println("Unable to update the server: " + e.getMessage() + ". Skipping the update...");
-                }
+                new Thread(()->{
+                    try {
+                        server.update(arg);
+                    } catch (RemoteException e) {
+                        System.err.println("Unable to update the server: " + e.getMessage() + ". Skipping the update...");
+                    }
+                }).start();
             });
         } else {
             GUI viewInstance = (GUI) view;

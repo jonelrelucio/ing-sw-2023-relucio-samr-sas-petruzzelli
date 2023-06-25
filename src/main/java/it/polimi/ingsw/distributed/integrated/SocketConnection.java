@@ -55,7 +55,7 @@ public class SocketConnection extends Connection{
         UpdateMessage updateMessage = new UpdateMessage(gameModelView, eventView);
         sendMessageToClient(updateMessage);
 
-        sendObject(updateMessage);
+        //sendObject(updateMessage);
     }
 
     @Override
@@ -75,6 +75,7 @@ public class SocketConnection extends Connection{
 
             oos.writeObject(object);
             oos.flush();
+
         }catch(IOException e){
             System.err.println("Cannot send message to client");
         }
@@ -97,8 +98,11 @@ public class SocketConnection extends Connection{
     @Override
     public void sendMessageToClient(Message message){
         try{
+
             oos.writeObject(message);
             oos.flush();
+            oos.reset();//TODO: poi toglierlo se non va
+
         }catch(IOException e){
             System.err.println("Cannot send message to client");
         }

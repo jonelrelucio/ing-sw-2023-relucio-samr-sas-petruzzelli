@@ -103,7 +103,7 @@ public class ServerStub implements Server {
     @Override
     public void update(MessageEvent messageEvent) throws RemoteException {
         //TODO: sostituisce update(GameEvent event)
-
+        sendObject(messageEvent);
     }
 
     /*
@@ -115,9 +115,10 @@ public class ServerStub implements Server {
 
     public void sendObject(Object object){
         try{
-
+            oos.reset();
             oos.writeObject(object);
             oos.flush();
+
         }catch(IOException e){
             System.err.println("Cannot send message, error "+ e);
         }

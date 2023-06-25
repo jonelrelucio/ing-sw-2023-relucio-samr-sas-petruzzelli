@@ -33,6 +33,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         viewEventHandlers.put(NEW_ORDER_SUCCESS, this::newOrderSuccess);
         viewEventHandlers.put(NEW_ORDER_FAIL, this::newOrderFail);
         viewEventHandlers.put(SELECT_COLUMN_FAIL, this::selectColumnFail);
+        viewEventHandlers.put(NEW_TURN, this::newTurn);
     }
 
 
@@ -47,11 +48,10 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
 
     public void newTurn(GameModelView gameModelView){
-        new Thread(() -> {
+            //TODO: forse mettere il thread
             printAll(gameModelView);
             System.out.printf("It's %s's turn.\n", gameModelView.getCurrentPlayer());
             listenToPlayer(gameModelView);
-        }).start();
     }
 
 
@@ -130,6 +130,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
 
     public void selectCoordinates(GameModelView gameModelView) {
+        /*
         System.out.println("Do you want to select a coordinate from the board? yes/no");
         String coordinates;
         if (askYesOrNo()){
@@ -146,14 +147,42 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
             setChangedAndNotifyObservers(new MessageEvent(SELECT_COORDINATES, coordinates));
         }
         else pickTiles();
+         */
+        //System.out.println("Do you want to select a coordinate from the board? yes/no");
+        String coordinates;
+        if (askYesOrNo("Do you want to select a coordinate from the board? yes/no")){
+            System.out.println("The Dotted spots on the board are the tiles that can be selected.");
+            printCanBeSelectedCoordinates(gameModelView);
+            coordinates = getCoordinates();
+            setChangedAndNotifyObservers(new MessageEvent(SELECT_COORDINATES, coordinates));
+        }
+        else if(gameModelView.getSelectedCoordinates().size() == 0) {
+            System.out.println("You have not selected a tile. Please select at least a tile.");
+            System.out.println("The Dotted spots on the board are the tiles that can be selected.");
+            printCanBeSelectedCoordinates(gameModelView);
+            coordinates = getCoordinates();
+            setChangedAndNotifyObservers(new MessageEvent(SELECT_COORDINATES, coordinates));
+        }
+        else pickTiles();
 
     }
 
 
     public void askDeselectCoordinates(GameModelView gameModelView) {
+        /*
         printSelectedCoordinates(gameModelView);
         System.out.println("Do you want to deselect coordinates? yes/no: ");
         if (askYesOrNo()) {
+            String coordinates = getCoordinates();
+            setChangedAndNotifyObservers(new MessageEvent(DESELECT_COORDINATES, coordinates));
+        }
+        else if  (gameModelView.getSelectedCoordinates().size() == 3 || gameModelView.getCanBeSelectedCoordinates().size() == 0) pickTiles();
+        else selectCoordinates(gameModelView);
+
+         */
+        printSelectedCoordinates(gameModelView);
+        //System.out.println("Do you want to deselect coordinates? yes/no: ");
+        if (askYesOrNo("Do you want to deselect coordinates? yes/no: ")) {
             String coordinates = getCoordinates();
             setChangedAndNotifyObservers(new MessageEvent(DESELECT_COORDINATES, coordinates));
         }
@@ -173,6 +202,35 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
             if (!answer.equals("yes") && !answer.equals("no") ) System.out.println("Please select yes or no");
         } while( !answer.equals("yes") && !answer.equals("no"));
         return answer.equals("yes");
+    }
+
+    public boolean askYesOrNo(String text) {
+        String answer;
+        do {
+            Scanner s = new Scanner(System.in) ;
+
+            while (true) {
+                System.out.println(text);
+                answer = s.nextLine();
+
+                if (answer.equals("/chat")) {
+                    /*
+                    startChat();
+                    if (chatThread.isAlive()) {
+                        try {
+                            chatThread.join();
+                        } catch (InterruptedException e) {
+                            throw new RuntimeException(e);
+                        }
+                    }
+                     */
+                } else {
+                    break;
+                }
+            }
+            if (!answer.equals("yes") && !answer.equals("no") && !answer.equals("y") && !answer.equals("n") ) System.out.println("Please select yes or no");
+        } while( !answer.equals("yes") && !answer.equals("no")  && !answer.equals("y") && !answer.equals("n") );
+        return answer.equals("yes") || answer.equals("y") ;
     }
 
     private static boolean isNumeric(String str) {

@@ -125,8 +125,10 @@ public class GameModel extends Observable<EventView> {
 
     public void selectColumn(int col) {
         EventView event = currentPlayer.putItemsInSelectedColumn(col);
-        updateCurrentPlayerScore();
-        updateNextPlayer();
+        if(event ==  NEW_TURN){
+            updateCurrentPlayerScore();
+            updateNextPlayer();
+        }
         setChangedAndNotifyObservers(event);
     }
 
