@@ -70,6 +70,53 @@ public class BoardTest{
 //        assertEquals(21, board.getCanBeSelectedCoordinates().size());
 //    }
 
+
+    @Test
+    public void testCheckRefillFalse() {
+        Board board = new Board(2);
+
+        ItemTile[][] boardItemTileMatrix = {
+                {new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.EMPTY)},
+                {new ItemTile(ItemTileType.BOOK), new ItemTile(ItemTileType.FRAME), new ItemTile(ItemTileType.EMPTY)},
+                {new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.EMPTY)}
+        };
+
+        board.setBoardMatrix(boardItemTileMatrix);
+        assertFalse(board.checkRefill());
+
+    }
+
+    @Test
+    public void testCheckRefillTrue1() {
+        Board board = new Board(2);
+
+        ItemTile[][] boardItemTileMatrix = {
+                {new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.EMPTY)},
+                {new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.FRAME), new ItemTile(ItemTileType.EMPTY)},
+                {new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.EMPTY)}
+        };
+
+        board.setBoardMatrix(boardItemTileMatrix);
+        assertTrue(board.checkRefill());
+
+    }
+
+    @Test
+    public void testCheckRefillTrue2() {
+        Board board = new Board(2);
+
+        ItemTile[][] boardItemTileMatrix = {
+                {new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.EMPTY)},
+                {new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.FRAME), new ItemTile(ItemTileType.EMPTY)},
+                {new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.FRAME), new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.EMPTY)},
+                {new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.EMPTY), new ItemTile(ItemTileType.EMPTY)}
+        };
+
+        board.setBoardMatrix(boardItemTileMatrix);
+        assertTrue(board.checkRefill());
+
+    }
+
     @Test
     public void testSetters(){
         Board board = new Board(2);
@@ -100,6 +147,7 @@ public class BoardTest{
 
 
     }
+
 
 
 

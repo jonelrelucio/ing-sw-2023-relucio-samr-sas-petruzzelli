@@ -52,4 +52,6 @@ public class CommonGoalDifferentType implements CommonGoalCard{
 
         return false;
     }
+
+    public int getId() { return id; }
 }

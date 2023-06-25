@@ -231,5 +231,6 @@ public class CommonGoalShape implements CommonGoalCard{
         return newCoords;
     }
 
+    public int getId() { return id; }
 }
 

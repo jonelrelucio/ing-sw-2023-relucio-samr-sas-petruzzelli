@@ -5,6 +5,7 @@ import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public interface Client extends Remote {
 
@@ -13,6 +14,8 @@ public interface Client extends Remote {
     void update(GameModelView gameModelView, EventView event) throws RemoteException;
 
     void receiveFromServer(String message) throws RemoteException;
+
+    void receiveChat(ArrayBlockingQueue<String> chat) throws RemoteException;
 
     int askMaxNumOfPlayers() throws RemoteException;
 

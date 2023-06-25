@@ -22,8 +22,10 @@ public class GameModelView implements Serializable {
     private String currentPlayer;
     private ArrayList<ItemTileType> selectedTiles;
     private HashMap<String, ItemTileType[][]> personalGoalCardList;
+    private HashMap<String, int[][]> personalGooalCardListId;
+    private HashMap<Integer, Integer[]> commonGoalCardDeck;
+    private HashMap<String, Integer> personalGoalCardPlayerListId;
     private int[] pointsList;
-
 
     public GameModelView(GameModel gameModel){
         this.boardMatrix = Utility.serializeBoardMatrix(gameModel.getBoard().getBoardMatrix());
@@ -33,7 +35,10 @@ public class GameModelView implements Serializable {
         this.bookshelfListItemId = Utility.serializeArrayOfItemId(gameModel.getPlayerList());
         this.selectedTiles = Utility.serializeArrayOfItemTiles(gameModel.getCurrentPlayer().getSelectedItemTiles());
         this.personalGoalCardList = Utility.serializeArrayOfPersonalGoalCards(gameModel.getPlayerList());
+        this.personalGooalCardListId = Utility.serializeArrayOfPersonalGoalCardsId(gameModel.getPlayerList());
+        this.commonGoalCardDeck = Utility.serializeCommonGoalCardDeck(gameModel.getCommonGoalCardDeck().getDeck());
         this.pointsList = Utility.serializePointsList(gameModel.getPlayerList());
+        this.personalGoalCardPlayerListId = Utility.serializeArrayPersonalGoalCardPlaterListId(gameModel.getPlayerList());
         this.canBeSelectedCoordinates = gameModel.getBoard().getCanBeSelectedCoordinates();
         this.selectedCoordinates = gameModel.getBoard().getSelectedCoordinates();
         this.currentPlayer = gameModel.getCurrentPlayer().getNickname();
@@ -49,5 +54,8 @@ public class GameModelView implements Serializable {
     public String getCurrentPlayer() { return currentPlayer; }
     public ArrayList<ItemTileType> getSelectedTiles() { return selectedTiles; }
     public HashMap<String, ItemTileType[][]> getPersonalGoalCardList() { return personalGoalCardList; }
+    public HashMap<String, int[][]> getPersonalGoalCardListId() { return personalGooalCardListId; }
+    public HashMap<Integer, Integer[]> getCommonGoalCardDeck() { return commonGoalCardDeck; }
+    public HashMap<String, Integer> getPersonalGoalCardPlayerListId() { return personalGoalCardPlayerListId; }
     public int[] getPointsList() { return pointsList; }
 }

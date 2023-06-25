@@ -97,4 +97,6 @@ public class CommonGoalCardDeck {
         return player.getObtainedCommonGoalPoints();
     }
 
+    public HashMap<CommonGoalCard, Stack<Integer>> getCommonGoalCardDeck() { return deck; }
+
 }

@@ -13,6 +13,7 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
 
@@ -75,11 +76,6 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
         }
     }
 
-    @Override
-    public void startView() throws RemoteException {
-
-    }
-
     // TODO: change observer and observable classes to remove the use of instance of
     /**
      * Method called remotely by the observer in the server that observes its game model.
@@ -102,9 +98,7 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
      */
     @Override
     public void receiveFromServer(String message) throws RemoteException {
-
-        view.printMessage(message);
-
+            view.printMessage(message);
     }
 
     /**
@@ -172,7 +166,11 @@ public class ClientImpl extends UnicastRemoteObject implements Client, Runnable{
 
     }
 
-
+    public void receiveChat(ArrayBlockingQueue<String> chat) throws RemoteException {
+        for (String m : chat) {
+            System.out.println(m);
+        }
+    }
 
 
 }

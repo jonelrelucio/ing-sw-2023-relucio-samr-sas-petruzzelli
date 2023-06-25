@@ -174,7 +174,11 @@ public class GameModelTest {
         GameModel gameModel = new GameModel(3);
         Board board = new Board(3);
         PersonalGoalCard personalGoalCard = PersonalGoalCardBag.drawPersonalGoalCard(3);
-        gameModel.getPlayerList().add(new Player("Lucian", personalGoalCard, board));
+        CircularArrayList<Player> playerList = new CircularArrayList<>();
+        playerList.add(new Player("Dalila", personalGoalCard, board));
+        playerList.add(new Player("Lucian", personalGoalCard, board));
+        playerList.add(new Player("Jonel", personalGoalCard, board));
+        gameModel.initGame(board, playerList);
         //gameModel.initCurrentPlayer();
         assertThrows(IllegalCallerException.class, gameModel::getWinner);
     }
@@ -184,9 +188,10 @@ public class GameModelTest {
         GameModel gameModel = new GameModel(2);
         Board board = new Board(2);
         PersonalGoalCard personalGoalCard = PersonalGoalCardBag.drawPersonalGoalCard(2);
-        gameModel.getPlayerList().add(new Player("Lucian", personalGoalCard, board));
-        gameModel.getPlayerList().add(new Player("Jonel", personalGoalCard, board));
-        //gameModel.initCurrentPlayer();
+        CircularArrayList<Player> playerList = new CircularArrayList<>();
+        playerList.add(new Player("Lucian", personalGoalCard, board));
+        playerList.add(new Player("Jonel", personalGoalCard, board));
+        gameModel.initGame(board, playerList);
         Player currentPlayer = gameModel.getCurrentPlayer();
         assertEquals(currentPlayer, gameModel.getPlayerList().get(0));
         gameModel.updateNextPlayer();
@@ -200,6 +205,29 @@ public class GameModelTest {
         int numOfRounds = gameModel.getNumOfRounds();
         gameModel.updateNumOfRounds();
         assertEquals(numOfRounds + 1, gameModel.getNumOfRounds());
+    }
+
+    @Test
+    public void testGameModel() {
+        GameModel gameModel = new GameModel();
+        assertEquals(0, gameModel.getNumOfPlayer());
+        assertEquals(0 , gameModel.getPlayerList().size());
+        assertNull(gameModel.getBoard());
+        assertNull(gameModel.getCommonGoalCardDeck());
+    }
+
+    @Test
+    public void testInitGameModel() {
+        GameModel gameModel = new GameModel();
+        Board board = new Board(2);
+        CircularArrayList<Player> playerList = new CircularArrayList<>();
+        PersonalGoalCard personalGoalCard = PersonalGoalCardBag.drawPersonalGoalCard(2);
+        playerList.add(new Player("Lucian", personalGoalCard, board));
+        playerList.add(new Player("Jonel", personalGoalCard, board));
+        gameModel.initGame(board, playerList);
+        assertEquals(2, gameModel.getNumOfPlayer());
+        assertEquals(2 , gameModel.getPlayerList().size());
+        assertEquals(board, gameModel.getBoard());
     }
 
     @Test
