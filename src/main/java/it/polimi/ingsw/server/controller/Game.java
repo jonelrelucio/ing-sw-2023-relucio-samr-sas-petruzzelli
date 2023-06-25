@@ -12,6 +12,7 @@ import it.polimi.ingsw.server.model.util.CircularArrayList;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashMap;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import static it.polimi.ingsw.distributed.events.controllerEvents.EventController.*;
 
@@ -34,6 +35,8 @@ public class Game {
         eventHandlers.put(PICK_TILES, this::pickCoordinates);
         eventHandlers.put(NEW_ORDER, this::newOrderTiles);
         eventHandlers.put(SELECT_COLUMN, this::selectColumn);
+        eventHandlers.put(NEW_MESSAGE_CHAT, this::addMessageToChat);
+
     }
 
     public void initGameModel(ArrayList<String> usernameList) {
@@ -92,6 +95,17 @@ public class Game {
         int col = Integer.parseInt(message);
         gameModel.selectColumn(col);
     }
+
+    private void addMessageToChat(String message) {
+        gameModel.addMessageToChat(message);
+    }
+
+    public ArrayBlockingQueue<String> getChatMessages() {
+        return gameModel.getChat();
+    }
+
+
+
 
 }
 

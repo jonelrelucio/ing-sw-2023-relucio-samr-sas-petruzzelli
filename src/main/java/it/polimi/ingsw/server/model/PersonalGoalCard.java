@@ -5,13 +5,16 @@ import it.polimi.ingsw.server.model.ItemTile.ItemTile;
 public class PersonalGoalCard {
 
     private ItemTile[][] personalGoalCardMatrix;
+    private int personalGoalCardId;
 
     public PersonalGoalCard(ItemTile[][] personalGoalMatrix){
         this.personalGoalCardMatrix = personalGoalMatrix;
     }
-
     public ItemTile[][] getPersonalGoalCardMatrix() { return personalGoalCardMatrix; }
+    public int getPersonalGoalCardId() { return personalGoalCardId; }
+
     public void setPersonalGoalCardMatrix(ItemTile[][] personalGoalCardMatrix) { this.personalGoalCardMatrix = personalGoalCardMatrix; }
+    public void setPersonalGoalCardId(int id) { this.personalGoalCardId = id; };
     private static final int[] pointsMapping = {0, 1, 2, 3, 4, 6, 9, 12};
 
     /**
@@ -43,4 +46,3 @@ public class PersonalGoalCard {
         return matchingTiles;
     }
 }
-

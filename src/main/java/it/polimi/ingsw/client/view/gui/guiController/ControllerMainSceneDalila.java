@@ -12,6 +12,7 @@ import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.GridPane;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
@@ -51,6 +52,10 @@ public class ControllerMainSceneDalila implements Initializable {
     @FXML
     Rectangle personalRectangleChair;
     @FXML
+    ImageView personalGoalImage;
+    @FXML
+    Button personalGoalButton;
+    @FXML
     GridPane chosenTilesGrid;
     @FXML
     Button chosenTilesButton1;
@@ -64,6 +69,12 @@ public class ControllerMainSceneDalila implements Initializable {
     ImageView chosenTilesButton2Image;
     @FXML
     ImageView chosenTilesButton3Image;
+    @FXML
+    Label chosenTilesButton1Label;
+    @FXML
+    Label chosenTilesButton2Label;
+    @FXML
+    Label chosenTilesButton3Label;
     @FXML
     Rectangle personalRectangleFirstFullShelfWinner;
     @FXML
@@ -82,6 +93,12 @@ public class ControllerMainSceneDalila implements Initializable {
     ImageView imageFirstShelfWinner;
     @FXML
     Label labelFirstShelfWinner;
+    @FXML
+    TextFlow chatTextFlow;
+    @FXML
+    Button chatButtonSend;
+    @FXML
+    TextField chatTextField;
     @FXML
     TabPane playersFullTab;
     @FXML
@@ -110,12 +127,12 @@ public class ControllerMainSceneDalila implements Initializable {
     Rectangle player3RectangleFirstFullShelfWinner;
     @FXML
     Image image;
-    @FXML
-    TextFlow chatTextFlow1;
 
     private  ArrayList<Button> buttons;
 
     private  ArrayList<Button> chosenTilesButtons;
+
+    private  ArrayList<Label> chosenTilesLabels;
 
     private  ArrayList<Button> allChosenTilesButtons;
     private ImageView[][] cells;
@@ -161,8 +178,16 @@ public class ControllerMainSceneDalila implements Initializable {
         imageFirstShelfWinner.setImage(image);
         labelFirstShelfWinner.setText("The first player who completely fills\ntheir bookshelf will obtain this token\nand will score 1 additional points");
         hideYesOrNo();
+        chatTextField.setText("Write your message here");
         commonGoalCardDescriptions = new HashMap<>();
         initCommonGoalCardDescription();
+        initLabelPersonalTiles();
+    }
+
+    private void initLabelPersonalTiles() {
+        chosenTilesButton1Label.setText("");
+        chosenTilesButton3Label.setText("");
+        chosenTilesButton2Label.setText("");
     }
 
     private void initCommonGoalCardDescription() {
@@ -189,11 +214,14 @@ public class ControllerMainSceneDalila implements Initializable {
 
     };
     public void showMessage(String s){
+        textChat = new Text(s + "\n");
+        chatTextFlow.getChildren().add(textChat);
+    }
+
+    public void showGameMessage(String s){
         clearMessage();
         text = new Text(s + "\n");
         textFlowGameMessages.getChildren().add(text);
-        textChat = new Text(s + "\n");
-        chatTextFlow1.getChildren().add(textChat);
     }
 
     public void clearMessage(){
@@ -208,32 +236,37 @@ public class ControllerMainSceneDalila implements Initializable {
         return false;
     }
 
+    public void setChatButtonSend(){
+
+    }
+
 
     public void showBoard(GameModelView gameModelView){
-        showMessage("trying to print");
         clearBoard();
         ItemTileType[][] board = gameModelView.getBoardMatrix();
+        int[][] boardId = gameModelView.getBoardItemId();
         buttons = new ArrayList<>();
         for (int i = 1; i < board.length-1; i++){
             for (int j = 1; j < board.length-1; j++) {
                 if (containsCoordinates( gameModelView.getCanBeSelectedCoordinates(), i, j))
-                    setNodeBoardTileButton(boardGrid,i-1,j-1, board[i][j]);
+                    setNodeBoardTileButton(boardGrid,i-1,j-1, board[i][j],boardId[i][j]);
                 else if (containsCoordinates(gameModelView.getSelectedCoordinates(), i, j))
-                    boardGrid.add(createImageTile(board[i][j],false),j-1,i-1);
+                    boardGrid.add(createImageTile(board[i][j],boardId[i][j],false),j-1,i-1);
                 else if( board[i][j] != ItemTileType.EMPTY)
-                    boardGrid.add(createImageTile(board[i][j],true),j-1,i-1);
+                    boardGrid.add(createImageTile(board[i][j],boardId[i][j],true),j-1,i-1);
             }
         }
-        showMessage("It's "+ gameModelView.getCurrentPlayer() + "'s turn.\n");
     }
 
 
 
 
-    private void setNodeBoardTileButton (GridPane gridPane,int row, int col,ItemTileType t){
+    private void setNodeBoardTileButton (GridPane gridPane,int row, int col,ItemTileType t,int id){
         Button button = new Button();
         button.setPrefSize(height,width);
-        button.setGraphic(createImageTile(t,false));
+        button.setGraphic(createImageTile(t,id,false));
+        button.setStyle("-fx-background-color: transparent; -fx-padding: 0;");
+        button.setMaxSize(Double.MAX_VALUE, Double.MAX_VALUE);
         gridPane.add(button,col,row);
         buttons.add(button);
     }
@@ -249,11 +282,18 @@ public class ControllerMainSceneDalila implements Initializable {
     public void showBookshelves(GameModelView gameModelView) {
         String[] players = gameModelView.getPlayerList();
         showTabPlayers(players);
+        int j = 0;
         for (int i = 0; i < players.length; i++) {
             if(players[i].equals(viewGUI.getThisUsername())){
-                setDetailesPlayer(mainPlayerTab, personalBookshelfGrid, players[i],gameModelView.getBookshelfList()[i]);
-            } else {
-                setDetailesPlayer(player1Tab,bookShelfGridPlayer1, players[i],gameModelView.getBookshelfList()[i]);
+                setDetailesPlayer(mainPlayerTab, personalBookshelfGrid, players[i],gameModelView.getBookshelfList()[i],gameModelView.getBookshelfListItemId()[i]);
+            } else if(j == 0) {
+                j++;
+                setDetailesPlayer(player1Tab,bookShelfGridPlayer1, players[i],gameModelView.getBookshelfList()[i],gameModelView.getBookshelfListItemId()[i]);
+            }else if(j== 1) {
+                j++;
+                setDetailesPlayer(player2Tab,bookShelfGridPlayer2, players[i],gameModelView.getBookshelfList()[i],gameModelView.getBookshelfListItemId()[i]);
+            }else if(j == 2){
+                setDetailesPlayer(player3Tab,bookShelfGridPlayer3, players[i],gameModelView.getBookshelfList()[i],gameModelView.getBookshelfListItemId()[i]);
             }
         }
         if(players[0].equals(viewGUI.getThisUsername())){
@@ -263,33 +303,31 @@ public class ControllerMainSceneDalila implements Initializable {
         }
     }
 
-    public void setDetailesPlayer(Tab t,GridPane g, String name, ItemTileType [][] bookShelf){
+    public void setDetailesPlayer(Tab t,GridPane g, String name, ItemTileType [][] bookShelf,int [][] bookShelfId){
         t.setText(name);
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {
                 if(bookShelf[i][j] != ItemTileType.EMPTY) {
-                    g.add(createImageTile(bookShelf[i][j],false),j,i);
+                    g.add(createImageTile(bookShelf[i][j],bookShelfId[i][j],false),j,i);
                 }
             }
         }
     }
 
     public void selectCoordinates(GameModelView gameModelView,String s){
-        showMessage(s);
+        showGameMessage(s);
         askYesOrNo();
-        for (int [] i: gameModelView.getCanBeSelectedCoordinates()) {
-            showMessage(i[0]+ " " + i[1]);
-        }
         yesButton.setOnAction(event -> {
             hideYesOrNo();
-            showMessage("The Glowing tiles are the one that can be selected");
+            showGameMessage("Please Select a Tile.\nThe Glowing tiles are the one that can be selected");
             printCanBeSelectedCoordinates();
-
         });
         noButton.setOnAction(event -> {
             if(gameModelView.getSelectedTiles().size() == 0){
-                showMessage("You have not selected a tile. Please select at least a tile.\nThe Glowing tiles are the one that can be selected");
+                hideYesOrNo();
+                showGameMessage("You have not selected a tile.\nPlease select at least a tile.\nThe Glowing tiles are the one that can be selected");
             }else{
+                hideYesOrNo();
                 viewGUI.pickTiles();
             }
         });
@@ -305,16 +343,13 @@ public class ControllerMainSceneDalila implements Initializable {
     }
 
     public void printCanBeSelectedCoordinates() {
-        showMessage("Select a tile from the board");
         for ( Button b : buttons){
             b.setEffect(getInnerGlow(50));
             b.setOnAction(event -> {
                 int [] coor = new int[2];
                 coor [0] = GridPane.getRowIndex(b)==null ? 1 : GridPane.getRowIndex(b)+1;
                 coor [1] = GridPane.getColumnIndex(b) == null ? 1 : GridPane.getColumnIndex(b)+1;
-                showMessage("Coordinata scelta:" + coor[0] + " "+ coor[1]);
                 String coordinates = getCoordinates(coor);
-                showMessage(coordinates);
                 viewGUI.setCoordinates(coordinates);
             });
         }
@@ -341,67 +376,78 @@ public class ControllerMainSceneDalila implements Initializable {
     }
 
     public void deselectCoordinates(GameModelView gameModelView) {
-        printSelectedTiles(gameModelView);
-        showMessage("Do you want to deselect coordinates?");
+        showGameMessage("Do you want to deselect coordinates?");
         askYesOrNo();
         yesButton.setOnAction(event -> {
             printSelectedTiles(gameModelView);
         });
         noButton.setOnAction(event -> {
-            //if (gameModelView.getSelectedCoordinates().size() == 3 || gameModelView.getCanBeSelectedCoordinates().size() == 0) {
-            //hideYesOrNo();
-            viewGUI.pickTiles();
-            //} else {
-            //hideYesOrNo();
-            //selectCoordinates(gameModelView,"Do you want to deselect coordinates?");
-            //}
+            if (gameModelView.getSelectedCoordinates().size() == 3 || gameModelView.getCanBeSelectedCoordinates().size() == 0) {
+                viewGUI.pickTiles();
+            } else {
+                selectCoordinates(gameModelView,"Do you want to select a coordinate from the board?");
+            }
         });
 
     }
 
     public void printSelectedTiles(GameModelView gameModelView) {
-        showMessage("These are the tiles you have selected:");
+        showGameMessage("In your tab will be shown the tiles you have selected.\nPlease select the one that you want to remove");
         hideYesOrNo();
         chosenTilesGrid.setVisible(true);
-        for (int i = 0; i < gameModelView.getSelectedTiles().size(); i++) {
-            ItemTileType t = gameModelView.getSelectedTiles().get(i);
+        hideSelectedTilesButtons();
+        for (int i = 0; i < gameModelView.getSelectedCoordinates().size(); i++) {
+            ItemTileType[][] board = gameModelView.getBoardMatrix();
+            int [][] boardId = gameModelView.getBoardItemId();
+            ItemTileType t = board[gameModelView.getSelectedCoordinates().get(i)[0]][gameModelView.getSelectedCoordinates().get(i)[1]];
+            int id = boardId[gameModelView.getSelectedCoordinates().get(i)[0]][gameModelView.getSelectedCoordinates().get(i)[1]];
             if (i == 0) {
-                insertImageTile(chosenTilesButton1Image,t);
+                chosenTilesButton1.setVisible(true);
+                insertImageTile(chosenTilesButton1Image,t,id);
                 chosenTilesButton1.setOnAction(event -> {
                     String coordinates = getCoordinates(gameModelView.getSelectedCoordinates().get(GridPane.getColumnIndex(chosenTilesButton1)));
                     viewGUI.setDeselectedCoordinates(coordinates);
+                    chosenTilesGrid.setVisible(false);
                 });
             } else if (i == 1) {
-                insertImageTile(chosenTilesButton2Image,t);
+                chosenTilesButton2.setVisible(true);
+                insertImageTile(chosenTilesButton2Image,t,id);
                 chosenTilesButton2.setOnAction(event -> {
                     String coordinates = getCoordinates(gameModelView.getSelectedCoordinates().get(GridPane.getColumnIndex(chosenTilesButton2)));
                     viewGUI.setDeselectedCoordinates(coordinates);
+                    chosenTilesGrid.setVisible(false);
                 });
             } else {
-                insertImageTile(chosenTilesButton3Image,t);
+                chosenTilesButton3.setVisible(true);
+                insertImageTile(chosenTilesButton3Image,t,id);
                 chosenTilesButton3.setOnAction(event -> {
                     String coordinates = getCoordinates(gameModelView.getSelectedCoordinates().get(GridPane.getColumnIndex(chosenTilesButton3)));
                     viewGUI.setDeselectedCoordinates(coordinates);
+                    chosenTilesGrid.setVisible(false);
                 });
             }
-
         }
-
     }
 
-    private void insertImageTile(ImageView im,ItemTileType t){
-        Random random = new Random();
-        int ran = random.nextInt(4 - 1) + 1;
-        image = new Image(getClass().getResource("/view/gui/item_tiles/" + t + "1."+ ran +".png").toString());
+    private void hideSelectedTilesButtons() {
+        chosenTilesButton1.setVisible(false);
+        chosenTilesButton2.setVisible(false);
+        chosenTilesButton3.setVisible(false);
+    }
+
+    private void insertImageTile(ImageView im,ItemTileType t,int id){
+        //Random random = new Random();
+        //int ran = random.nextInt(4 - 1) + 1;
+        image = new Image(getClass().getResource("/view/gui/item_tiles/" + t + "1."+ id +".png").toString());
         im.setImage(image);
     }
 
-    private ImageView createImageTile(ItemTileType t,Boolean b){
+    private ImageView createImageTile(ItemTileType t,int id,Boolean b){
         ImageView imageView = new ImageView();
         imageView.setFitHeight(height);
         imageView.setFitWidth(width);
         imageView.setPreserveRatio(true);
-        insertImageTile(imageView,t);
+        insertImageTile(imageView,t,id);
         if(b)
             imageView.setOpacity(0.5);
         return imageView;
@@ -412,46 +458,60 @@ public class ControllerMainSceneDalila implements Initializable {
         int x, y;
         String[] coordinates = input.split(" ");
         if (coordinates.length != 2 || !isNumeric(coordinates[0]) || !isNumeric(coordinates[1])) {
-            showMessage("Invalid coordinates, try again..." + input + "\n");
+            showGameMessage("Invalid coordinates, try again..." + input + "\n");
         }
         x = Integer.parseInt(coordinates[0]);
         y = Integer.parseInt(coordinates[1]);
         if(x<0 || y<0) {
-            showMessage("x or y less than 0 => " + input + "\n");
+            showGameMessage("x or y less than 0 => " + input + "\n");
         }
         return input;
     }
 
 
     public void showColumnToggle() {
-        showMessage("select a radio button on top of the column where you want to put your tiles.\n");
+        showGameMessage("select a radio button on top of the column where you want to put your tiles.\n");
         radioButtonChoiceGrid.setVisible(true);
         if (this.columnToggleGroup.getSelectedToggle().equals(radioButtonChoice1)) {
-            showMessage("The column chosen is 1\n Confirm choice by selecting yes or choose another");
+            showGameMessage("The column chosen is 1\n Confirm choice by selecting yes or choose another");
             setColumn("0");
         }
         if (this.columnToggleGroup.getSelectedToggle().equals(radioButtonChoice2)) {
-            showMessage("The column chosen is 2\n Confirm choice by selecting yes or choose another");
+            showGameMessage("The column chosen is 2\n Confirm choice by selecting yes or choose another");
             setColumn("1");
         }
         if (this.columnToggleGroup.getSelectedToggle().equals(radioButtonChoice3)) {
-            showMessage("The column chosen is 3\n Confirm choice by selecting yes or choose another");
+            showGameMessage("The column chosen is 3\n Confirm choice by selecting yes or choose another");
             setColumn("2");
         }
         if (this.columnToggleGroup.getSelectedToggle().equals(radioButtonChoice4)) {
-            showMessage("The column chosen is 4\n Confirm choice by selecting yes or choose another");
+            showGameMessage("The column chosen is 4\n Confirm choice by selecting yes or choose another");
             setColumn("3");
         }
         if (this.columnToggleGroup.getSelectedToggle().equals(radioButtonChoice5)) {
-            showMessage("The column chosen is 5\n Confirm choice by selecting yes or choose another");
+            showGameMessage("The column chosen is 5\n Confirm choice by selecting yes or choose another");
             setColumn("4");
         }
+    }
+
+    public void resetColumToggle(){
+        radioButtonChoice1.setSelected(false);
+        radioButtonChoice2.setSelected(false);
+        radioButtonChoice3.setSelected(false);
+        radioButtonChoice4.setSelected(false);
+        radioButtonChoice5.setSelected(false);
     }
 
     private void setColumn(String s) {
         yesButton.setVisible(true);
         noButton.setVisible(false);
-        yesButton.setOnAction(event -> viewGUI.setSelectedColumn(s));
+        yesButton.setOnAction(event -> {
+            viewGUI.setSelectedColumn(s);
+            resetColumToggle();
+            radioButtonChoiceGrid.setVisible(false);
+            chosenTilesGrid.setVisible(false);
+            hideYesOrNo();
+        });
     }
 
     public void clearBoard() {
@@ -459,37 +519,40 @@ public class ControllerMainSceneDalila implements Initializable {
             boardGrid.getChildren().clear();
     }
 
-    public void showSelectedTiles(GameModelView gameModelView) {
-        showMessage("in Your tab are the tiles you have selected");
+    public void showSelectedTiles(GameModelView gameModelView,String s) {
+        showGameMessage(s);
         chosenTilesGrid.setVisible(true);
         int size = gameModelView.getSelectedTiles().size();
         chosenTilesButtons = new ArrayList<>();
+        chosenTilesLabels  = new ArrayList<>();
         boolean bool = size > 0;
         size--;
-        setSelectedTile(chosenTilesButton1Image,gameModelView.getSelectedTiles().get(0),chosenTilesButton1,bool);
+        setSelectedTile(chosenTilesButton1Image,gameModelView.getSelectedTiles().get(0),chosenTilesButton1,chosenTilesButton1Label,bool);
         bool = size > 0;
         size--;
-        setSelectedTile(chosenTilesButton2Image,gameModelView.getSelectedTiles().get(0),chosenTilesButton2,bool);
+        setSelectedTile(chosenTilesButton2Image,gameModelView.getSelectedTiles().get(0),chosenTilesButton2,chosenTilesButton2Label,bool);
         bool = size > 0;
-        setSelectedTile(chosenTilesButton3Image,gameModelView.getSelectedTiles().get(0),chosenTilesButton3,bool);
-
+        setSelectedTile(chosenTilesButton3Image,gameModelView.getSelectedTiles().get(0),chosenTilesButton3,chosenTilesButton3Label,bool);
     }
-    private void setSelectedTile(ImageView im, ItemTileType t, Button b, Boolean cond){
+    private void setSelectedTile(ImageView im, ItemTileType t, Button b,Label l, Boolean cond){
         if(cond){
             chosenTilesButtons.add(b);
-            insertImageTile(im,t);
+            chosenTilesLabels.add(l);
+            insertImageTile(im,t,1);
         }else{
             b.setVisible(false);
         }
     }
 
-    public void askTileOrder(GameModelView gameModelView) {
-        showMessage("Do you want to order your Tiles?");
+    public void askTileOrder(GameModelView gameModelView,String s) {
+        radioButtonChoiceGrid.setVisible(false);
+        showSelectedTiles(gameModelView,s);
         askYesOrNo();
         yesButton.setOnAction(event -> {
-            showMessage("Rearrange the tiles by setting a new array of indexes:\n(example of new order: 2 0 1)");
+            showGameMessage("Click on the Tiles in the order you prefer:\n");
             int [] order = new int[chosenTilesButtons.size()];
             arrangeOrder(gameModelView,order);
+            hideYesOrNo();
         });
         noButton.setOnAction(event -> {
             viewGUI.selectColumn(gameModelView);
@@ -502,14 +565,21 @@ public class ControllerMainSceneDalila implements Initializable {
         for (Button b: chosenTilesButtons) {
             b.setOnAction(event -> {
                 int i = order.length - chosenTilesButtons.size() + 1;
-                b.setText(String.valueOf(i));
+                chosenTilesLabels.get(chosenTilesButtons.indexOf(b)).setText(String.valueOf(i));
                 b.setEffect(getInnerGlow(50));
                 order[i-1] = GridPane.getColumnIndex(b);
+                chosenTilesLabels.remove(chosenTilesButtons.indexOf(b));
                 chosenTilesButtons.remove(b);
+                b.setDisable(true);
+                setArrangedOrder(gameModelView,order);
             });
         }
+    }
+
+    private void setArrangedOrder(GameModelView gameModelView,int [] order){
         if(chosenTilesButtons.isEmpty()){
-            showMessage("Are you satisfied with your order?");
+            disableChosenTilesButtons();
+            showGameMessage("Are you satisfied with your order?");
             askYesOrNo();
             yesButton.setOnAction(event -> {
                 String input = getTileOrder(order);
@@ -520,10 +590,17 @@ public class ControllerMainSceneDalila implements Initializable {
                 for (Button b: allChosenTilesButtons) {
                     if(b.isVisible()) chosenTilesButtons.add(b);
                 }
-                askTileOrder(gameModelView);
+                askTileOrder(gameModelView,"In your tab are the tiles you have selected.\nDo you want to order your Tiles?");
             });
         }
     }
+
+    private void disableChosenTilesButtons() {
+        chosenTilesButton1.setDisable(true);
+        chosenTilesButton2.setDisable(true);
+        chosenTilesButton3.setDisable(true);
+    }
+
     private String getTileOrder(int [] intArr) {
         String input = null;
         int i = 0;
@@ -537,7 +614,58 @@ public class ControllerMainSceneDalila implements Initializable {
 
     public void showPersonalGoal(GameModelView gameModelView) {
         ItemTileType[][] personalGoalCard = gameModelView.getPersonalGoalCardList().get(viewGUI.getThisUsername());
+        int [][] playerCardId = gameModelView.getPersonalGoalCardListId().get(viewGUI.getThisUsername());
+        image = new Image(getClass().getResource("/view/gui/personalgoalcards/Personal_Goals"+gameModelView.getPersonalGoalCardPlayerListId().get(viewGUI.getThisUsername())+".png").toString());
+        personalGoalImage.setImage(image);
+        personalGoalButton.setGraphic(personalGoalImage);
+        personalGoalButton.setOnMouseEntered(e->{
+            for (int i = 0; i < 6; i++) {
+                for (int j = 0; j < 5; j++) {
+                    Rectangle r = new Rectangle();
+                    r.setFill( Color.valueOf(getString(personalGoalCard[i][j])));
+                    r.setEffect(setGlow(50, getString(personalGoalCard[i][j])));
+                    personalBookshelfGrid.add(r,i,j);
+                }
+            }
+        });
+        personalGoalButton.setOnMouseExited(e -> {
+            clearBookShelf();
+            String[] players = gameModelView.getPlayerList();
+            for (int i = 0; i < players.length; i++) {
+                if(players[i].equals(viewGUI.getThisUsername())){
+                    setDetailesPlayer(mainPlayerTab, personalBookshelfGrid, players[i],gameModelView.getBookshelfList()[i],gameModelView.getBookshelfListItemId()[i]);
+                }
+            }
+        });
+    }
 
+    public void clearBookShelf() {
+        if(!personalBookshelfGrid.getChildren().isEmpty())
+            personalBookshelfGrid.getChildren().clear();
+    }
+
+
+    public InnerShadow setGlow(int depth,String tileColor) {
+        Color c = Color.valueOf(tileColor);
+        InnerShadow innerGlow = new InnerShadow();
+        innerGlow.setOffsetY(5);
+        innerGlow.setOffsetX(5);
+        innerGlow.setColor(c);
+        innerGlow.setWidth(depth);
+        innerGlow.setHeight(depth);
+        return innerGlow;
+    }
+
+    private static String getString(ItemTileType type) {
+        return switch (type) {
+            case FRAME -> "purple";
+            case CAT -> "green";
+            case GAME -> "yellow";
+            case BOOK -> "white";
+            case PLANT -> "red";
+            case TROPHY -> "cyan";
+            case EMPTY -> "black";
+        };
     }
 
     public void showCommonGoalCard(GameModelView gameModelView) {
@@ -566,5 +694,8 @@ public class ControllerMainSceneDalila implements Initializable {
     }
 
 
+    public void initChat() {
+
+    }
 }
 

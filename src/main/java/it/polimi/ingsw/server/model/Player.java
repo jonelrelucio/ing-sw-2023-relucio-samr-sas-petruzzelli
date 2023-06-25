@@ -29,6 +29,7 @@ public class Player {
     private ArrayList<CommonGoalCard> obtainedCommonGoalCards;
     private int obtainedCommonGoalPoints;
     private ArrayList<ItemTile> selectedItemTiles;
+    private boolean firstToFillBookshelf;
 
 
 
@@ -67,10 +68,10 @@ public class Player {
 
     public boolean isWinner() { return winner; }
     public void setWinner() { this.winner = true; }
-    public int getEndGameToken() {
-        if(!isWinner()) throw new IllegalCallerException("Can't call EndGameToken if player is not the winner");
-        return ENDTOKENSCORE;
-    }
+    public int getEndGameToken() { return ENDTOKENSCORE; }
+
+
+
 
 
     /**
@@ -78,8 +79,8 @@ public class Player {
      * @param coordinates   selected coordinates
      */
     public EventView selectCoordinates(int[] coordinates) {
-        if (board.getSelectedCoordinates().size() > bookshelf.getMaxAvailableSpace())
-            throw new IllegalArgumentException("Can't select more tiles.");
+        if (board.getSelectedCoordinates().size()+1 > bookshelf.getMaxAvailableSpace())
+            return SELECT_COORDINATES_FAIL;
         for (int[] tile : board.getCanBeSelectedCoordinates()) {
             if (Arrays.equals(tile, coordinates)) {
                 board.getSelectedCoordinates().add(coordinates);
@@ -157,4 +158,11 @@ public class Player {
         return bookshelf.updateTiles(selectedItemTiles);
     }
 
+    public boolean isFirstToFillBookshelf() {
+        return firstToFillBookshelf;
+    }
+
+    public void setFirstToFillBookshelf() {
+        this.firstToFillBookshelf = true;
+    }
 }

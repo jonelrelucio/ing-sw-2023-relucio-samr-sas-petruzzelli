@@ -1,16 +1,44 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.net.URL?>
+<?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.paint.Color?>
+<?import javafx.scene.paint.LinearGradient?>
+<?import javafx.scene.paint.Stop?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="633.0" prefWidth="600.0" styleClass="bodybg" stylesheets="@../css/background.css" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.gui.guiController.ControllerWaitingForPlayers">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="633.0" prefWidth="600.0" styleClass="bodybg" xmlns="http://javafx.com/javafx/19" xmlns:fx="http://javafx.com/fxml/1" fx:controller="it.polimi.ingsw.client.view.gui.guiController.ControllerWaitingForPlayers">
    <children>
-      <Label layoutX="37.0" layoutY="280.0" prefHeight="74.0" prefWidth="526.0" text="Waiting for Other Players" textAlignment="CENTER" underline="true">
+      <Label layoutX="27.0" layoutY="177.0" prefHeight="74.0" prefWidth="526.0" text="Waiting for Other Players" textAlignment="CENTER" underline="true">
          <font>
-            <Font name="System Bold" size="43.0" />
+            <Font name="Bodoni MT Poster Compressed" size="82.0" />
          </font>
+         <textFill>
+            <LinearGradient endX="1.0" endY="1.0" startX="1.0">
+               <stops>
+                  <Stop>
+                     <color>
+                        <Color />
+                     </color>
+                  </Stop>
+                  <Stop offset="1.0">
+                     <color>
+                        <Color red="0.2439083755016327" green="0.6181651949882507" blue="0.6842105388641357" opacity="0.9800000190734863" />
+                     </color>
+                  </Stop>
+               </stops>
+            </LinearGradient>
+         </textFill>
       </Label>
-      <Label fx:id="messageLabel" layoutX="140.0" layoutY="375.0" prefHeight="50.0" prefWidth="320.0" text="Label" textAlignment="CENTER" wrapText="true" />
+      <Label fx:id="messageLabel" layoutX="140.0" layoutY="375.0" prefHeight="50.0" prefWidth="320.0" textAlignment="CENTER" wrapText="true" />
    </children>
+   <cursor>
+      <Cursor fx:constant="WAIT" />
+   </cursor>
+   <stylesheets>
+      <URL value="@../css/background.css" />
+      <URL value="@../css/waitingForPlayers.css" />
+   </stylesheets>
 </AnchorPane>

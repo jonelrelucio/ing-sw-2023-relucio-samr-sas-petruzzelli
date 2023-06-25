@@ -49,10 +49,10 @@ public class ControllerConnection implements Initializable {
             try {
                 AppClientRMI.run(viewGUI);
             } catch (RemoteException e) {
-                ConnectionChosen.setText("The connection mode chosen is not avalaible at the moment\nChoose a different one");
+                ConnectionChosen.setText("The connection mode chosen is not available at the moment\nChoose a different one");
             }
         }else if(Objects.equals(getConnection(), "s")) {
-            ConnectionChosen.setText("The connection mode chosen is not avalaible at the moment\nChoose a different one");
+            ConnectionChosen.setText("The connection mode chosen is not available at the moment\nChoose a different one");
         }
         viewGUI.showWaitingPlayer();
     }

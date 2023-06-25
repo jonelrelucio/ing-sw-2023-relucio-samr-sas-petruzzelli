@@ -2,9 +2,7 @@ package it.polimi.ingsw.client.view.gui.guiController;
 
 
 import it.polimi.ingsw.client.view.View;
-import it.polimi.ingsw.client.view.cli.Const;
 import it.polimi.ingsw.distributed.events.controllerEvents.MessageEvent;
-import it.polimi.ingsw.server.model.ItemTile.ItemTileType;
 import it.polimi.ingsw.util.Observable;
 import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
@@ -14,12 +12,13 @@ import javafx.stage.Stage;
 import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.util.*;
 import java.util.concurrent.CountDownLatch;
 
 import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
-import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.SELECT_COLUMN_FAIL;
 import static it.polimi.ingsw.distributed.events.controllerEvents.EventController.*;
 
 
@@ -43,6 +42,13 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     private final Stage window;
     CountDownLatch latch;
     private Integer change;
+    private boolean isMyTurn = false;
+    /**
+     * Flag used to specify if the player can join the chat
+     */
+    private boolean chatAvailability = false;
+    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in)); // used for chat message input
+    Thread chatThread;
 
 
     /**
@@ -68,6 +74,9 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
         viewEventHandlers.put(NEW_ORDER_SUCCESS, this::newOrderSuccess);
         viewEventHandlers.put(NEW_ORDER_FAIL, this::newOrderFail);
         viewEventHandlers.put(SELECT_COLUMN_FAIL, this::selectColumnFail);
+        viewEventHandlers.put(NEW_TURN, this::newTurn);
+        viewEventHandlers.put(END_GAME, this::endGame);
+        viewEventHandlers.put(UPDATE_CHAT, this::showChat);
     }
 
     /**
@@ -220,6 +229,11 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
         latch.countDown();
     }
 
+    private void startChat() {
+        controllerMainSceneDalila.initChat();
+    }
+
+
 
 
     /**
@@ -244,6 +258,10 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
         if ( isMyTurn(gameModelView)) {
             Platform.runLater(() -> {
                 selectCoordinates(gameModelView,"Do you want to select a coordinate from the board?");
+            });
+        }else {
+            Platform.runLater(()->{
+                startChat();
             });
         }
     }
@@ -280,8 +298,8 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     public void pickTiles() {
         setChangedAndNotifyObservers(new MessageEvent(PICK_TILES, " "));
     }
-    public void askTileOrder(GameModelView gameModelView) {
-        controllerMainSceneDalila.askTileOrder(gameModelView);
+    public void askTileOrder(GameModelView gameModelView,String s) {
+        controllerMainSceneDalila.askTileOrder(gameModelView,s);
     }
     public void selectColumn(GameModelView gameModelView) {
         printBookshelves(gameModelView);
@@ -299,9 +317,6 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
 
     /***************************************************************************************************************/
 
-    public void printSelectedTiles(GameModelView gameModelView) {
-        controllerMainSceneDalila.showSelectedTiles(gameModelView);
-    }
 
     public void printBoard(GameModelView gameModelView) {
 
@@ -328,6 +343,27 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
             printBookshelves(gameModelView);
             printPersonalGoal(gameModelView);
         });
+    }
+
+    /**
+     * Print the end game screen
+     * @param gameModel
+     */
+    private void printLeaderboard(GameModelView gameModel) {
+        int[] pointsList = gameModel.getPointsList();
+        int[] sortedList = Arrays.copyOf(pointsList, pointsList.length);
+        Arrays.sort(sortedList);
+        for (int i = 0; i < pointsList.length; i++) {
+            int element = pointsList[i];
+            int position = Arrays.binarySearch(sortedList, element);
+        }
+        
+        System.out.println("Leaderboard:");
+        int i = 0;
+        for (Integer position : pointsList) {
+            System.out.println(gameModel.getPlayerList()[position] + ": " + pointsList[position]);
+        }
+
     }
 
     /******************************************************************************************/
@@ -368,9 +404,8 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
         if( !isMyTurn(gameModelView)) return;
         Platform.runLater(() -> {
             printAll(gameModelView);
-            printSelectedTiles(gameModelView);
             if (gameModelView.getSelectedTiles().size() <= 1) selectColumn(gameModelView);
-            else askTileOrder(gameModelView);
+            else askTileOrder(gameModelView,"In your tab are the tiles you have selected.\nDo you want to order your Tiles?");
         });
     }
 
@@ -378,16 +413,14 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     private void newOrderSuccess(GameModelView gameModelView) {
         if( !isMyTurn(gameModelView)) return;
         Platform.runLater(() -> {
-            printSelectedTiles(gameModelView);
-            askTileOrder(gameModelView);
+            askTileOrder(gameModelView,"In your tab are the tiles you have selected.\nDo you want to order your Tiles?");
         });
     }
 
     private void newOrderFail(GameModelView gameModelView) {
         if( !isMyTurn(gameModelView)) return;
         Platform.runLater(() -> {
-            //System.out.println("The tile order is invalid.");
-            askTileOrder(gameModelView);
+            askTileOrder(gameModelView,"The tile order is invalid.\nIn your tab are the tiles you have selected.\nDo you want to order your Tiles?");
         });
     }
 
@@ -413,6 +446,50 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     public void setNewOrder(String input) {
         setChangedAndNotifyObservers(new MessageEvent(NEW_ORDER, input));
     }
+
+    /**
+     * Print the bookshelves and the end game screen
+     * @param gameModel
+     * @see #printBookshelves(GameModelView)
+     * @see #printLeaderboard(GameModelView)
+     */
+    private void endGame(GameModelView gameModel) {
+        printBookshelves(gameModel);
+        System.out.println(" ");
+        System.out.println("The Game has ended.");
+        printLeaderboard(gameModel);
+    }
+
+    /**
+     * Print the last message in the chat
+     * @param gameModelView
+     */
+    private void showChat(GameModelView gameModelView) {
+        if (isMyTurn(gameModelView) && !chatAvailability) {
+            return;
+        }
+
+        String[] chat = gameModelView.getChat().toArray(new String[10]);
+
+        int index = 0;
+        for (int i = 0; i < 10; i++) {
+            if (chat[i] == null) {
+                break;
+            }
+            index = i;
+        }
+
+        String[] message = chat[index].split(":");
+
+        String color = "\033[0;33m";
+
+        if (message[0].equals(thisUsername)) {
+            color = "\033[0;34m";
+        }
+
+        System.out.println(color + message[0] + ":" + "\033[0m"  + message[1]);
+    }
+
 }
 
 

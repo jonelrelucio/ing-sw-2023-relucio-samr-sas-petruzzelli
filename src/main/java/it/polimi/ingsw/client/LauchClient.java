@@ -6,6 +6,7 @@ import it.polimi.ingsw.AppClientRMI;
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.view.cli.CLI;
 import it.polimi.ingsw.client.view.gui.GUI;
+import it.polimi.ingsw.client.view.gui.guiController.ViewGui;
 
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
@@ -47,7 +48,7 @@ public class LauchClient {
             view = new CLI();
         }
         else if (answer.equals("g")) {
-            //view = new GUI();
+            //view = new ViewGui();
             GUI.startView();
         }
 
