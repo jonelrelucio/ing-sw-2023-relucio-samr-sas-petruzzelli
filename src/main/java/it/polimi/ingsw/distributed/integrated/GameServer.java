@@ -67,12 +67,11 @@ public class GameServer extends UnicastRemoteObject implements Server {
         if(maxConnections == 0){
             MessageType messageType = MessageType.DEFAULT_MESSAGE;
             String messageText = "Please enter a maximum number of players: ";
-            connection.sendMessageToClient(new SimpleTextMessage(messageType, messageText));
+            connections.get(0).sendMessageToClient(new SimpleTextMessage(messageType, messageText));
         }
         if(maxConnections != 0 && connections.size() >= maxConnections){
             startGame();
         }
-
 
     }
 
@@ -156,8 +155,6 @@ public class GameServer extends UnicastRemoteObject implements Server {
             conn.sendMessageToClient(message);
         }
     }
-
-
 
     @Override
     public boolean isUsernameAvailable(String username) throws RemoteException {
