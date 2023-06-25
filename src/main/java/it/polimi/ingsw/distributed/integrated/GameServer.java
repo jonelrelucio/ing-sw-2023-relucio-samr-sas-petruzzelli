@@ -53,13 +53,15 @@ public class GameServer extends UnicastRemoteObject implements Server {
         for(Connection conn : connections){
             if(maxConnections == 0){
                 //connection.sendMessageToClient(String.format("%s joined the waiting list. Waiting for %s to set number of players.", conn.getUsername(), conn.getUsername()));
-                MessageType messageType = MessageType.DEFAULT_MESSAGE;
-                String messageText = String.format("%s joined the waiting list. Waiting for %s to set number of players.", conn.getUsername(), conn.getUsername());
+                MessageType messageType = MessageType.REMAINING_PLAYERS_MESSAGE;
+                String messageText = String.format("%s joined the waiting list. Waiting for %s to set number of players.", connection.getUsername(), connections.get(0).getUsername());
+                System.out.println(messageText);
                 conn.sendMessageToClient(new SimpleTextMessage(messageType, messageText));
             }else if(connections.size() < maxConnections){
                 //connection.sendMessageToClient(String.format("%s joined the waiting list. %d more players remaining", conn.getUsername(), maxConnections - connections.size()));
                 MessageType messageType = MessageType.REMAINING_PLAYERS_MESSAGE;
-                String messageText = String.format("%s joined the waiting list. %d more players remaining", conn.getUsername(), maxConnections - connections.size());
+                String messageText = String.format("%s joined the waiting list. %d more players remaining", connection.getUsername(), maxConnections - connections.size());
+                System.out.println(messageText);
                 conn.sendMessageToClient(new SimpleTextMessage(messageType, messageText));
             }
         }
@@ -127,7 +129,7 @@ public class GameServer extends UnicastRemoteObject implements Server {
 
     private void removeFromWaitingList() throws RemoteException {
         while(connections.size() != maxConnections){
-            connections.get(connections.size()-1).sendMessageToClient("Lobby is Full. You have been kicked from the waiting list.");
+            connections.get(connections.size()-1).sendMessageToClient(new SimpleTextMessage(MessageType.KICK_MESSAGE, "Lobby is Full. You have been kicked from the waiting list."));
             connections.remove(connections.size()-1);
         }
     }
