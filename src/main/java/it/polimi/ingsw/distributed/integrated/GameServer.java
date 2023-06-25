@@ -43,37 +43,33 @@ public class GameServer extends UnicastRemoteObject implements Server {
     public void manageConnection(Connection connection) throws RemoteException{
         if(!alreadyAsked){
             alreadyAsked = true;
-            //connection.sendMessageToClient("You are the first client to enter");
             connection.sendMessageToClient(new SimpleTextMessage(MessageType.FIRST_PLAYER_MESSAGE, "You are the first client to enter"));
-
-            //maxConnections = clientHandlers.get(0).getClient().askMaxNumOfPlayers();
             maxConnections = connection.askMaxNumOfPlayers();
+            if ( connections.size() >= maxConnections){
+                startGame();
+                return;
+            }
         }
-
-
-
-
         for(Connection conn : connections){
             if(maxConnections == 0){
                 //connection.sendMessageToClient(String.format("%s joined the waiting list. Waiting for %s to set number of players.", conn.getUsername(), conn.getUsername()));
                 MessageType messageType = MessageType.DEFAULT_MESSAGE;
                 String messageText = String.format("%s joined the waiting list. Waiting for %s to set number of players.", conn.getUsername(), conn.getUsername());
-                connection.sendMessageToClient(new SimpleTextMessage(messageType, messageText));
+                conn.sendMessageToClient(new SimpleTextMessage(messageType, messageText));
             }else if(connections.size() < maxConnections){
                 //connection.sendMessageToClient(String.format("%s joined the waiting list. %d more players remaining", conn.getUsername(), maxConnections - connections.size()));
                 MessageType messageType = MessageType.REMAINING_PLAYERS_MESSAGE;
                 String messageText = String.format("%s joined the waiting list. %d more players remaining", conn.getUsername(), maxConnections - connections.size());
-                connection.sendMessageToClient(new SimpleTextMessage(messageType, messageText));
+                conn.sendMessageToClient(new SimpleTextMessage(messageType, messageText));
             }
         }
 
         if(maxConnections == 0){
-            //connection.sendMessageToClient("Please enter a maximum number of players: ");
             MessageType messageType = MessageType.DEFAULT_MESSAGE;
             String messageText = "Please enter a maximum number of players: ";
             connection.sendMessageToClient(new SimpleTextMessage(messageType, messageText));
         }
-        if(maxConnections != 0 && maxConnections == connections.size()){
+        if(maxConnections != 0 && connections.size() >= maxConnections){
             startGame();
         }
 
