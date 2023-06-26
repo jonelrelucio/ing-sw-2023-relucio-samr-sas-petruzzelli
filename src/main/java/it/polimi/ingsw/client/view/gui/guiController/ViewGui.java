@@ -28,13 +28,9 @@ import static it.polimi.ingsw.distributed.events.controllerEvents.EventControlle
 public class ViewGui  extends Observable<MessageEvent> implements View, Runnable {
 
     private final HashMap<EventView, ViewEventHandler> viewEventHandlers;
-    private ControllerUsername controllerUsername;
     private String thisUsername;
-    Scene chooseUsernameScene;
     private ControllerMainSceneDalila controllerMainSceneDalila;
     Scene mainSceneDalila;
-    private ControllerNplayers controllerNplayers;
-    Scene selectPlayers;
     private ControllerConnection controllerConnection;
     Scene selectConnectionScene;
     private ControllerWaitingForPlayers controllerWaitingForPlayers;
@@ -59,8 +55,6 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
         this.window = window;
         change =0 ;
         changeSceneSelectConnection();
-        changeSceneChooseUsername();
-        changeSceneSelectPlayers();
         changeSceneMainSceneDalila();
         changeSceneWaitingForPlayers();
         viewEventHandlers = new HashMap<>();
@@ -97,52 +91,6 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     public void selectConnection() {
         Platform.runLater(() -> {
             window.setScene(selectConnectionScene);
-            window.show();
-        });
-    }
-
-    /**
-     * changes to scene in which the player chooses the username
-     */
-    public void changeSceneChooseUsername() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gui/fxml/SelectNickName.fxml"));
-        try {
-            Parent parentPane = loader.load();
-            chooseUsernameScene = new Scene(parentPane);
-            controllerUsername = loader.getController();
-            controllerUsername.setViewGui(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-
-    public void chooseUsername() {
-        Platform.runLater(() -> {
-            window.setScene(chooseUsernameScene);
-            window.show();
-        });
-    }
-
-    /**
-     * changes to scene in which the player chosees the number of players
-     */
-
-    public void changeSceneSelectPlayers() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gui/fxml/SelectPlayers.fxml"));
-        try {
-            Parent boardPaneParent = loader.load();
-            selectPlayers = new Scene(boardPaneParent);
-            controllerNplayers = loader.getController();
-            controllerNplayers.setViewGui(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void selectNPlayers() {
-        Platform.runLater(() -> {
-            window.setScene(selectPlayers);
             window.show();
         });
     }
@@ -240,9 +188,9 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
 
     @Override
     public void printMessage(String s) {
-        if(Objects.equals(s, "Starting a new Game...")){
+        if(Objects.equals(s, "Starting a new game...")){
             change=2 ;
-        Platform.runLater(this::showMain);
+            Platform.runLater(this::showMain);
         }else if(change == 2){
             Platform.runLater(() -> {
                 controllerMainSceneDalila.showMessage(s);
@@ -408,7 +356,7 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
         setChangedAndNotifyObservers(new MessageEvent(DESELECT_COORDINATES, coordinates));
     }
     public void setSelectedColumn(String input) {
-    setChangedAndNotifyObservers(new MessageEvent(SELECT_COLUMN, input));
+        setChangedAndNotifyObservers(new MessageEvent(SELECT_COLUMN, input));
     }
     public void setNewOrder(String input) {
         setChangedAndNotifyObservers(new MessageEvent(NEW_ORDER, input));

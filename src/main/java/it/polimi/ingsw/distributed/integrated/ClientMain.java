@@ -3,7 +3,6 @@ package it.polimi.ingsw.distributed.integrated;
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.view.cli.CLI;
 import it.polimi.ingsw.client.view.gui.GUI;
-import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
 
 
@@ -29,7 +28,8 @@ public class ClientMain {
         if(viewChoice.equals("c")){
             view = new CLI();
         }else if(viewChoice.equals("g")){
-            view = new GUI();
+            //view = new ViewGui();
+            GUI.startView();
         }
 
 

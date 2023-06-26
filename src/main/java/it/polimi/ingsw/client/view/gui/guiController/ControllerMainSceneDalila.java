@@ -319,7 +319,7 @@ public class ControllerMainSceneDalila implements Initializable {
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {
                 if(bookShelf[i][j] != ItemTileType.EMPTY) {
-                    g.add(createImageTile(bookShelf[i][j],bookShelfId[i][j]+1,false),j,i);
+                    g.add(createImageTile(bookShelf[i][j],bookShelfId[i][j],false),j,i);
                 }
             }
         }
@@ -538,20 +538,20 @@ public class ControllerMainSceneDalila implements Initializable {
         chosenTilesLabels  = new ArrayList<>();
         boolean bool = size > 0;
         size--;
-        setSelectedTile(chosenTilesButton1Image,gameModelView.getSelectedTiles(),0,chosenTilesButton1,chosenTilesButton1Label,bool);
+        setSelectedTile(chosenTilesButton1Image,gameModelView.getSelectedTiles(),gameModelView.getSelectedTilesId(),0,chosenTilesButton1,chosenTilesButton1Label,bool);
         bool = size > 0;
         size--;
-        setSelectedTile(chosenTilesButton2Image,gameModelView.getSelectedTiles(),1,chosenTilesButton2,chosenTilesButton2Label,bool);
+        setSelectedTile(chosenTilesButton2Image,gameModelView.getSelectedTiles(),gameModelView.getSelectedTilesId(),1,chosenTilesButton2,chosenTilesButton2Label,bool);
         bool = size > 0;
-        setSelectedTile(chosenTilesButton3Image,gameModelView.getSelectedTiles(),2,chosenTilesButton3,chosenTilesButton3Label,bool);
+        setSelectedTile(chosenTilesButton3Image,gameModelView.getSelectedTiles(),gameModelView.getSelectedTilesId(),2,chosenTilesButton3,chosenTilesButton3Label,bool);
     }
 
     //TODO GET ID FOR SELECTED TILES
-    private void setSelectedTile(ImageView im, ArrayList<ItemTileType> t,int i, Button b,Label l, Boolean cond){
+    private void setSelectedTile(ImageView im, ArrayList<ItemTileType> t,ArrayList<Integer> id,int i, Button b,Label l, Boolean cond){
         if(cond){
             chosenTilesButtons.add(b);
             chosenTilesLabels.add(l);
-            insertImageTile(im,t.get(i),1);
+            insertImageTile(im,t.get(i),id.get(i));
         }else{
             b.setVisible(false);
         }
