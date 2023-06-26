@@ -999,6 +999,10 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         System.out.println(color + message[0] + ":" + "\033[0m"  + message[1]);
     }
 
+    /**
+     * This method retrieve the last 10 messages in the chat and print them
+     * @param gameModelView
+     */
     public void printChat(GameModelView gameModelView) {
 
         for (String m : gameModelView.getChat()) {
