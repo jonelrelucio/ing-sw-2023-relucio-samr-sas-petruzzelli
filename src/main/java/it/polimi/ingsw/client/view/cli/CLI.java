@@ -623,6 +623,29 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     }
 
+    public void printSelectedTilesId(GameModelView gameModelView) {
+        System.out.println("These are the tiles you have selected:");
+        System.out.println(" ");
+        int size = 5;
+
+        System.out.print("      ┌");
+        for (int i = 0; i < size; i++){
+            if ( i != size-1) System.out.print("───┬");
+            else System.out.print("───┐");
+        }
+        System.out.print("\n      │");
+        for (int i = 0; i < size ; i++){
+            if ( i < gameModelView.getSelectedTiles().size() )System.out.print(" " + gameModelView.getSelectedTilesId().get(i) + " " + Const.TILE + Const.RESET + "│");
+            else System.out.print("   │");
+        }
+        System.out.print("\n      └");
+        for (int i = 0; i < size; i++){
+            if ( i != size-1) System.out.print("───┴");
+            else System.out.print("───┘\n");
+        }
+    }
+
+
     /**
      * Check if the 'list' parameter contains the coordinates of {i, j}
      * @param list
@@ -725,6 +748,30 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         System.out.println(" ");
     }
 
+    public void printBookshelvesId(GameModelView gameModelView) {
+        int numRows = gameModelView.getBookshelfListItemId()[0].length;
+        StringBuilder[] rows = new StringBuilder[numRows];
+        for (int i = 0; i < numRows; i++) {
+            rows[i] = new StringBuilder();
+            for (int j = 0; j < gameModelView.getBookshelfListItemId().length; j++ ) {
+                int[] temp = gameModelView.getBookshelfListItemId()[j][i];
+                rows[i].append("      │");
+                for (int k = 0; k < gameModelView.getBookshelfListItemId()[j][0].length; k++) {
+                    rows[i].append(" "+ temp[k] + " ").append(Const.RESET).append("│");
+                }
+                rows[i].append(" ");
+            }
+        }
+        System.out.println("      " + getPlayerNickname(gameModelView));
+        System.out.println("      " + getTopBorder(gameModelView.getBookshelfList().length));
+        for (StringBuilder row : rows) {
+            System.out.println(row.toString());
+            if (rows[rows.length-1] != row) System.out.println("      " + getMidBorder(gameModelView.getBookshelfListItemId().length));
+        }
+        System.out.println("      " + getBotBorder(gameModelView.getBookshelfListItemId().length));
+        System.out.println(" ");
+    }
+
     /**
      * Build the header of the bookshelves with the players name
      * @param gameModelView
@@ -792,8 +839,10 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     public void printAll(GameModelView gameModelView){
         System.out.println(" ");
         System.out.println(" ");
+        printCommonGoalCard(gameModelView);
         printBoard(gameModelView);
         printBookshelves(gameModelView);
+        printBookshelvesId(gameModelView);
         printPersonalGoal(gameModelView);
         System.out.println(" ");
     }
@@ -921,6 +970,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         if( !isMyTurn(gameModelView)) return;
         printAll(gameModelView);
         printSelectedTiles(gameModelView);
+        printSelectedTilesId(gameModelView);
         if (gameModelView.getSelectedTiles().size() <= 1) selectColumn(gameModelView);
         else askTileOrder(gameModelView);
     }

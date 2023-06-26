@@ -111,8 +111,8 @@ public class Utility {
         int col = playerList.get(0).getBookshelf().getBookshelfMatrix()[0].length;
         int[][][] toReturn = new int[id][row][col];
         for (int i = 0; i < id; i++){
-            for ( int j = 0; i < row; i++) {
-                for (int k = 0; j < col; j++) {
+            for ( int j = 0; j < row; j++) {
+                for (int k = 0; k < col; k++) {
                     toReturn[i][j][k] = playerList.get(i).getBookshelf().getBookshelfMatrix()[j][k].getId();
                 }
             }
@@ -147,16 +147,16 @@ public class Utility {
     }
 
     public static HashMap<String,int[][]> serializeArrayOfPersonalGoalCardsId(CircularArrayList<Player> playerList) {
-        int id = playerList.size();
+        int playerSize = playerList.size();
         int row = playerList.get(0).getPersonalGoalCard().getPersonalGoalCardMatrix().length;
         int col = playerList.get(0).getPersonalGoalCard().getPersonalGoalCardMatrix()[0].length;
         HashMap<String, int[][]> toReturn = new HashMap<>();
-        for (int i = 0; i < id; i++){
+        for (Player player : playerList) {
             int[][] personalGoalCardId = new int[row][col];
-            String name = playerList.get(i).getNickname();
-            for ( int j = 0; j < row; j++) {
+            String name = player.getNickname();
+            for (int j = 0; j < row; j++) {
                 for (int k = 0; k < col; k++) {
-                    personalGoalCardId[j][k] = playerList.get(i).getPersonalGoalCard().getPersonalGoalCardMatrix()[j][k].getId();
+                    personalGoalCardId[j][k] = player.getPersonalGoalCard().getPersonalGoalCardMatrix()[j][k].getId();
                 }
             }
             toReturn.put(name, personalGoalCardId);
@@ -206,5 +206,13 @@ public class Utility {
             personalGoalCardPlayerListId.put(playerList.get(i).getNickname(), playerList.get(i).getPersonalGoalCard().getPersonalGoalCardId());
         }
         return personalGoalCardPlayerListId;
+    }
+
+    public static ArrayList<Integer> serializeArrayOfItemTilesId(ArrayList<ItemTile> selectedItemTiles) {
+        ArrayList<Integer> toReturn = new ArrayList<>();
+        for( ItemTile item : selectedItemTiles ){
+            toReturn.add(item.getId());
+        }
+        return toReturn;
     }
 }

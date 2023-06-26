@@ -22,6 +22,7 @@ public class GameModelView implements Serializable {
     private ArrayList<int[]> selectedCoordinates;
     private String currentPlayer;
     private ArrayList<ItemTileType> selectedTiles;
+    private ArrayList<Integer> selectedTilesId;
     private HashMap<String, ItemTileType[][]> personalGoalCardList;
     private HashMap<String, int[][]> personalGooalCardListId;
     private HashMap<Integer, Integer[]> commonGoalCardDeck;
@@ -36,6 +37,7 @@ public class GameModelView implements Serializable {
         this.bookshelfList = Utility.serializeArrayOfBookshelves(gameModel.getPlayerList());
         this.bookshelfListItemId = Utility.serializeArrayOfItemId(gameModel.getPlayerList());
         this.selectedTiles = Utility.serializeArrayOfItemTiles(gameModel.getCurrentPlayer().getSelectedItemTiles());
+        this.selectedTilesId = Utility.serializeArrayOfItemTilesId(gameModel.getCurrentPlayer().getSelectedItemTiles());
         this.personalGoalCardList = Utility.serializeArrayOfPersonalGoalCards(gameModel.getPlayerList());
         this.personalGooalCardListId = Utility.serializeArrayOfPersonalGoalCardsId(gameModel.getPlayerList());
         this.commonGoalCardDeck = Utility.serializeCommonGoalCardDeck(gameModel.getCommonGoalCardDeck().getDeck());
@@ -62,4 +64,5 @@ public class GameModelView implements Serializable {
     public HashMap<String, Integer> getPersonalGoalCardPlayerListId() { return personalGoalCardPlayerListId; }
     public int[] getPointsList() { return pointsList; }
     public ArrayBlockingQueue<String> getChat() { return chat; }
+    public ArrayList<Integer> getSelectedTilesId() { return selectedTilesId; }
 }
