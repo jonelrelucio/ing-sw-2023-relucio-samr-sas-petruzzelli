@@ -98,6 +98,7 @@ public class GameModel extends Observable<EventView> {
             this.chat.poll();
         }
         this.chat.add(message);
+        setChangedAndNotifyObservers(UPDATE_CHAT);
     }
 
     /**

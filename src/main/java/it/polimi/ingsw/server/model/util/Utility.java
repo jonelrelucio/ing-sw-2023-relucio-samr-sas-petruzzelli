@@ -44,8 +44,8 @@ public class Utility {
     }
 
     /**
-     * Converts A List<List<Integer>> to an int[][]
-     * @param list  is a List<List<Integer>>
+     * Converts A {@code List<List<Integer>>} to an int[][]
+     * @param list  is a {@code List<List<Integer>>}
      * @return      converted int[][]
      */
     public static int[][] convertListListToArrayArray(List<List<Integer>> list) {
