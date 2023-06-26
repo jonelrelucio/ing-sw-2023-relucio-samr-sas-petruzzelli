@@ -4,6 +4,7 @@ package it.polimi.ingsw.client.view;
 import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
 
 public interface View extends Runnable{
@@ -19,5 +20,4 @@ public interface View extends Runnable{
     void setThisUsername(String thisUsername);
 
     void newTurn(GameModelView gameModelView);
-
 }

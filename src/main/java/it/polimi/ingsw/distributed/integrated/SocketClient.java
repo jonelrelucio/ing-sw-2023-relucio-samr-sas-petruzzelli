@@ -14,6 +14,7 @@ import java.rmi.RemoteException;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.NEW_TURN;
+import static it.polimi.ingsw.distributed.events.controllerEvents.EventController.SHOW_CHAT;
 
 public class SocketClient implements Client, Runnable{
 
@@ -139,11 +140,6 @@ public class SocketClient implements Client, Runnable{
 
     @Override
     public void receiveFromServer(String message) throws RemoteException {
-
-    }
-
-    @Override
-    public void receiveChat(ArrayBlockingQueue<String> chat) throws RemoteException {
 
     }
 

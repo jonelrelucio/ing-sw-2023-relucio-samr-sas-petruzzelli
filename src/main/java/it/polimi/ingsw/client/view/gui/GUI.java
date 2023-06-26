@@ -11,6 +11,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.CountDownLatch;
 
 public class GUI extends Application implements View {
@@ -68,5 +69,8 @@ public class GUI extends Application implements View {
 
     }
 
+    public void printChat(ArrayBlockingQueue<String> chat) {
+
+    }
 
 }

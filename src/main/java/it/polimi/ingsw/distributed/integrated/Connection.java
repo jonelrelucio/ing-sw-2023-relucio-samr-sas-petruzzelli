@@ -6,6 +6,7 @@ import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 import it.polimi.ingsw.distributed.integrated.messages.Message;
 
 import java.rmi.RemoteException;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public abstract class Connection {
 
@@ -24,5 +25,4 @@ public abstract class Connection {
 
 
     abstract int askMaxNumOfPlayers() throws RemoteException;
-
 }

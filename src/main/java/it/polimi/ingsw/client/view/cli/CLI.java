@@ -11,6 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
+import java.util.concurrent.ArrayBlockingQueue;
 
 import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
 import static it.polimi.ingsw.distributed.events.controllerEvents.EventController.*;
@@ -75,6 +76,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         viewEventHandlers.put(NEW_TURN, this::newTurn);
         viewEventHandlers.put(END_GAME, this::endGame);
         viewEventHandlers.put(UPDATE_CHAT, this::showChat);
+        viewEventHandlers.put(SHOW_LAST_MESSAGES, this::printChat);
     }
 
     /**
@@ -167,7 +169,6 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     private void startChat() {
         chatThread = new Thread(() -> {
             System.out.println("Write your message and press enter to send it to the other players");
-            System.out.println("write '/showChat' and press enter to get the last 10 messages from the chat");
 
             setChangedAndNotifyObservers(new MessageEvent(SHOW_CHAT, thisUsername));
             if (isMyTurn) {
@@ -996,6 +997,20 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         }
 
         System.out.println(color + message[0] + ":" + "\033[0m"  + message[1]);
+    }
+
+    public void printChat(GameModelView gameModelView) {
+
+        for (String m : gameModelView.getChat()) {
+            String[] message = m.split(":");
+
+            String color = "\033[0;33m";
+            if (message[0].equals(thisUsername)) {
+                color = "\033[0;34m";
+            }
+
+            System.out.println(color + message[0] + ":" + "\033[0m"  + message[1]);
+        }
     }
 
 }

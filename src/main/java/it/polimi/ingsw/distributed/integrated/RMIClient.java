@@ -105,11 +105,6 @@ public class RMIClient extends UnicastRemoteObject implements Client, Runnable {
     }
 
     @Override
-    public void receiveChat(ArrayBlockingQueue<String> chat) throws RemoteException {
-
-    }
-
-    @Override
     public int askMaxNumOfPlayers() throws RemoteException{
         return view.askMaxNumOfPlayers();
     }

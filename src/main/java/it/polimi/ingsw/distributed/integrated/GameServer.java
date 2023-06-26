@@ -5,6 +5,7 @@ import it.polimi.ingsw.distributed.ClientHandler;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
+import it.polimi.ingsw.distributed.events.controllerEvents.EventController;
 import it.polimi.ingsw.distributed.events.controllerEvents.MessageEvent;
 import it.polimi.ingsw.distributed.integrated.messages.Message;
 import it.polimi.ingsw.distributed.integrated.messages.MessageType;
@@ -16,6 +17,9 @@ import it.polimi.ingsw.server.model.util.CircularArrayList;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Optional;
+
+import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.SHOW_LAST_MESSAGES;
 
 public class GameServer extends UnicastRemoteObject implements Server {
 
@@ -180,6 +184,13 @@ public class GameServer extends UnicastRemoteObject implements Server {
 
     @Override
     public void update(MessageEvent messageEvent) throws RemoteException {
-        gameController.handleEvent(messageEvent);
+        if (messageEvent.getEventType() == EventController.SHOW_CHAT) {
+            Connection connection = connections.stream().filter(c -> c.getUsername().equals(messageEvent.getMessage())).findFirst().orElse(null);
+            if (connection != null) {
+                connection.updateClient(new GameModelView(gameModel), SHOW_LAST_MESSAGES);
+            }
+        } else {
+            gameController.handleEvent(messageEvent);
+        }
     }
 }

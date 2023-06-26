@@ -15,8 +15,6 @@ public interface Client extends Remote {
 
     void receiveFromServer(String message) throws RemoteException;
 
-    void receiveChat(ArrayBlockingQueue<String> chat) throws RemoteException;
-
     int askMaxNumOfPlayers() throws RemoteException;
 
     void start() throws RemoteException;

@@ -8,6 +8,7 @@ import it.polimi.ingsw.distributed.integrated.messages.Message;
 import it.polimi.ingsw.distributed.integrated.messages.SimpleTextMessage;
 
 import java.rmi.RemoteException;
+import java.util.concurrent.ArrayBlockingQueue;
 
 public class RMIConnection extends Connection{
     private Client client;//Provare a fare RMIClient
@@ -62,6 +63,5 @@ public class RMIConnection extends Connection{
 
         }
     }
-
 
 }

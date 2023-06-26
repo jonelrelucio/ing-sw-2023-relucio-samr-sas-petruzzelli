@@ -1,4 +1,4 @@
-package it.polimi.ingsw;
-
-public class ServerStub {
-}
+//package it.polimi.ingsw;
+//
+//public class ServerStub {
+//}
