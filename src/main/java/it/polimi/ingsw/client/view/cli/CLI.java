@@ -171,9 +171,6 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
             System.out.println("Write your message and press enter to send it to the other players");
 
             setChangedAndNotifyObservers(new MessageEvent(SHOW_CHAT, thisUsername));
-            if (isMyTurn) {
-                chatAvailability = true;
-            }
 
             try {
                 while (reader.ready()) {
@@ -1004,7 +1001,6 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
      * @param gameModelView
      */
     public void printChat(GameModelView gameModelView) {
-
         for (String m : gameModelView.getChat()) {
             String[] message = m.split(":");
 
@@ -1014,6 +1010,9 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
             }
 
             System.out.println(color + message[0] + ":" + "\033[0m"  + message[1]);
+        }
+        if (isMyTurn) {
+            chatAvailability = true;
         }
     }
 

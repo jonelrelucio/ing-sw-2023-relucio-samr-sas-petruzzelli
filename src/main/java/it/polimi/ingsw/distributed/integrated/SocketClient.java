@@ -129,8 +129,11 @@ public class SocketClient implements Client, Runnable{
 
     @Override
     public void update(GameModelView gameModelView, EventView event) throws RemoteException {
-        //serve spawnare un nuovo thread per il socket?
-        if (event != NEW_TURN) view.ViewEventHandler(gameModelView, event);
+        if (event != NEW_TURN) {
+            new Thread(() -> {
+                view.ViewEventHandler(gameModelView, event);
+            }).start();
+        }
         else {
             new Thread( () -> {
                 view.newTurn(gameModelView);
