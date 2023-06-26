@@ -63,7 +63,11 @@ public class ControllerNplayers implements Initializable {
      */
 
     public void setNumberOfPlayers(){
+<<<<<<< Updated upstream:src/main/java/it/polimi/ingsw/client/view/gui/guiController/guicontroller/ControllerNplayers.java
         this.gotoChooseNickName.setDisable(false);
+=======
+        gotoMainScene.setDisable(false);
+>>>>>>> Stashed changes:src/main/java/it/polimi/ingsw/client/view/gui/guiController/ControllerNplayers.java
     }
 
 
