@@ -12,7 +12,7 @@ public class RMIRunnable implements Runnable{
     private CircularArrayList<Connection> connections;
     private GameServer server;
 
-    public RMIRunnable(GameServer server){
+    public RMIRunnable(GameServer server) {
         this.server = server;
     }
     @Override

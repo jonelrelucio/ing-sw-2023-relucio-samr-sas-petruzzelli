@@ -20,6 +20,9 @@ public class ClientMain {
         Server server = null;
         Scanner scanner = new Scanner(System.in);
 
+        System.out.println("Scegli l'indirizzo Ip: ");
+        String ip = scanner.nextLine();
+
         do{
             System.out.println("Scegli il tipo di view:\nc <- CLI\ng <- GUI");
             viewChoice = scanner.nextLine();
@@ -42,7 +45,7 @@ public class ClientMain {
         if(clientChoice.equals("r")){
             System.out.println("Scelto un client di tipo RMI");
             try{
-                Registry reg = LocateRegistry.getRegistry();
+                Registry reg = LocateRegistry.getRegistry(ip, 1099);
                 server = (Server) reg.lookup("server");
                 //client = new RMIClient(server);//passare il server a RMIClient
                 RMIClient client = new RMIClient(view, server);
@@ -55,7 +58,7 @@ public class ClientMain {
             }
         }else{
             System.out.println("Scelto un client di tipo socket");
-            server = new ServerStub("localhost", 1234);
+            server = new ServerStub(ip, 1234);
             SocketClient client = new SocketClient((ServerStub) server, view);
             client.run();
         }

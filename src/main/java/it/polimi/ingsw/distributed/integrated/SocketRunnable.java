@@ -10,13 +10,14 @@ import java.net.Socket;
 public class SocketRunnable implements Runnable{
     private GameServer server;
 
-    public SocketRunnable(GameServer server){
+
+    public SocketRunnable(GameServer server) {
         this.server = server;
     }
 
     @Override
     public void run() {
-        try(ServerSocket serverSocket = new ServerSocket(1234)){
+        try(ServerSocket serverSocket = new ServerSocket( 1234)){
             while(true){
                 Socket socket = serverSocket.accept();
                 /*
