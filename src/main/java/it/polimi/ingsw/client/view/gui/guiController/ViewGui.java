@@ -114,6 +114,7 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
             window.setScene(mainSceneDalila);
             window.show();
             window.setResizable(true);
+            change=2;
         });
     }
 
@@ -141,11 +142,41 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
      */
     @Override
     public String askUsername() {
-        return "Dalila";
+        String username;
+        System.out.print("Please choose your username: ");
+        do {
+            Scanner s = new Scanner(System.in);
+            username = s.nextLine();
+            if (username.length() < 3 || username.isBlank()) System.out.println("Invalid username, try again...");
+        }   while( username.length() < 3 || username.isBlank() );
+        return username;
+       // return "Dalila";
+    }
+    /**
+     * Read the user input and check its validity.
+     * @return the number inserted by the user as int or recall getNumInput() if was not inserted a number
+     */
+    public int getNumInput(){
+        try {
+            Scanner s = new Scanner(System.in) ;
+            return Integer.parseInt(s.nextLine());
+        }
+        catch (NumberFormatException ex) {
+            System.out.println("Invalid input. Enter a number.");
+            return getNumInput();
+        }
     }
     @Override
     public int askMaxNumOfPlayers() {
-        return 2;
+        int maxNumOfPlayers;
+        System.out.println("Please choose maximum number of players (from 2 to 4 players can join):");
+        do {
+            Scanner s = new Scanner(System.in) ;
+            maxNumOfPlayers = getNumInput();
+            if (maxNumOfPlayers < 2 || maxNumOfPlayers > 4) System.out.println("Only from 2 to 4 players can join. Selected a number again:");
+        }   while( maxNumOfPlayers < 2 || maxNumOfPlayers > 4 );
+        return maxNumOfPlayers;
+        //return 2;
     }
 
     private void startChat() {
@@ -180,6 +211,7 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
             });
         }else {
             Platform.runLater(()->{
+                controllerMainSceneDalila.showGameMessage("It's " + gameModelView.getCurrentPlayer() + "'s turn.");
                 startChat();
             });
         }
@@ -189,7 +221,6 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     @Override
     public void printMessage(String s) {
         if(Objects.equals(s, "Starting a new game...")){
-            change=2 ;
             Platform.runLater(this::showMain);
         }else if(change == 2){
             Platform.runLater(() -> {

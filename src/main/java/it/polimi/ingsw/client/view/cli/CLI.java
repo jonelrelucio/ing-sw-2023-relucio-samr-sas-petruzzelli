@@ -11,7 +11,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
-import java.util.concurrent.ArrayBlockingQueue;
+
 
 import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
 import static it.polimi.ingsw.distributed.events.controllerEvents.EventController.*;
@@ -123,7 +123,6 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     public void newTurn(GameModelView gameModelView){
         new Thread(() -> {
             printAll(gameModelView);
-            //System.out.printf("It's %s's turn.\n", gameModelView.getCurrentPlayer());
             System.out.println("It's " + gameModelView.getCurrentPlayer() + "'s turn.");
             listenToPlayer(gameModelView);
         }).start();

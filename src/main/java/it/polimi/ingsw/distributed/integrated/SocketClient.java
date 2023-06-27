@@ -139,7 +139,6 @@ public class SocketClient implements Client, Runnable{
 
     @Override
     public void receiveFromServer(String message) throws RemoteException {
-
     }
 
     @Override

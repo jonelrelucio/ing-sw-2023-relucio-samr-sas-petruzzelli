@@ -60,6 +60,7 @@ public class ControllerConnection implements Initializable {
                 //client = new RMIClient(server);//passare il server a RMIClient
                 RMIClient client = new RMIClient(viewGUI, server);
                 client.run();
+                viewGUI.showWaitingPlayer();
             } catch (RemoteException e) {
                 ConnectionChosen.setText("The connection mode chosen is not available at the moment\nChoose a different one");
             } catch (NotBoundException e) {
@@ -70,8 +71,9 @@ public class ControllerConnection implements Initializable {
             server = new ServerStub("localhost", 1234);
             SocketClient client = new SocketClient((ServerStub) server, viewGUI);
             client.run();
+            viewGUI.showMain();
         }
-        viewGUI.showWaitingPlayer();
+
     }
 
 
