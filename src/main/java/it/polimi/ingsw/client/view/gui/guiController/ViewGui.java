@@ -59,6 +59,7 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
         changeSceneSelectConnection();
         changeSceneMainSceneDalila();
         changeSceneWaitingForPlayers();
+        changeSceneEndGame();
         viewEventHandlers = new HashMap<>();
         viewEventHandlers.put(SELECT_COORDINATES_SUCCESS, this::selectedCoordinatesSuccess);
         viewEventHandlers.put(SELECT_COORDINATES_FAIL,  this::selectedCoordinatesFail);
@@ -304,6 +305,7 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
      * @param gameModel
      */
     private void printLeaderboard(GameModelView gameModel) {
+        controllerEndGame.init(gameModel);
         controllerEndGame.setLeaderBookShelf(gameModel);
     }
 

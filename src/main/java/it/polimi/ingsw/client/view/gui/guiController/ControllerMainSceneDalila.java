@@ -236,9 +236,9 @@ public class ControllerMainSceneDalila implements Initializable {
         r.setVisible(true);
 
     };
-    public void showMessage(String s,Color c){
+    public void showMessage(String s,String c){
         textChat = new Text(s + "\n");
-        String style = "-fx-text-fill " + c + ";";
+        String style = "-fx-text-fill: " + c + ";";
         textChat.setStyle(style);
         chatTextFlow.getChildren().add(textChat);
     }
@@ -349,7 +349,7 @@ public class ControllerMainSceneDalila implements Initializable {
             printCanBeSelectedCoordinates();
         });
         noButton.setOnAction(event -> {
-            if(gameModelView.getSelectedTiles().size() == 0){
+            if(gameModelView.getSelectedCoordinates().size() == 0){
                 hideYesOrNo();
                 showGameMessage("You have not selected a tile.\nPlease select at least a tile.\nThe Glowing tiles are the one that can be selected");
                 printCanBeSelectedCoordinates();
@@ -726,11 +726,11 @@ public class ControllerMainSceneDalila implements Initializable {
 
     }
     
-    public Color returnColor(String[] players, String player ) {
-        Color c = null;
+    public String returnColor(String[] players, String player ) {
+        String c = null;
         for (int i = 0; i < players.length;i++) {
             if(player.equals(players[i])){
-                c = Color.valueOf(chatColors[i]);
+                c = chatColors[i];
             }
         }
         return c;
