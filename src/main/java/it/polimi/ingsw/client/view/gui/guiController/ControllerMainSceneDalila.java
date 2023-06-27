@@ -159,6 +159,7 @@ public class ControllerMainSceneDalila implements Initializable {
     private static final int height = 40;
     private static final int width = 35;
     private static Boolean clicked;
+    private String[] chatColors = new String[]{"red","blue","orange","green"};
 
     private HashMap<Integer, String> commonGoalCardDescriptions;
 
@@ -171,7 +172,6 @@ public class ControllerMainSceneDalila implements Initializable {
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
-        showMessage("Il gioco è iniziato");
         columnToggleGroup = new ToggleGroup();
         this.radioButtonChoice1.setToggleGroup(columnToggleGroup);
         this.radioButtonChoice2.setToggleGroup(columnToggleGroup);
@@ -200,6 +200,10 @@ public class ControllerMainSceneDalila implements Initializable {
         commonGoalCardDescriptions = new HashMap<>();
         initCommonGoalCardDescription();
         initLabelPersonalTiles();
+        imageComGoal1Square.setCache(false);
+        imageComGoal1SquarePoint.setCache(false);
+        imageComGoal2Square.setCache(false);
+        imageComGoal2SquarePoint.setCache(false);
         clicked = false;
     }
 
@@ -232,8 +236,10 @@ public class ControllerMainSceneDalila implements Initializable {
         r.setVisible(true);
 
     };
-    public void showMessage(String s){
+    public void showMessage(String s,Color c){
         textChat = new Text(s + "\n");
+        String style = "-fx-text-fill " + c + ";";
+        textChat.setStyle(style);
         chatTextFlow.getChildren().add(textChat);
     }
 
@@ -257,7 +263,8 @@ public class ControllerMainSceneDalila implements Initializable {
     }
 
     public void setChatButtonSend(){
-
+        if(!chatTextField.getText().isEmpty())
+            viewGUI.setNewMessage(chatTextField.getText());
     }
 
 
@@ -323,6 +330,7 @@ public class ControllerMainSceneDalila implements Initializable {
     public void setDetailesPlayer(Tab t,GridPane g, Label scoreLabel, int score, String name, ItemTileType [][] bookShelf,int [][] bookShelfId){
         t.setText(name);
         scoreLabel.setText("Score: " + score);
+        clearBookShelf(g);
         for (int i = 0; i < 6; i++) {
             for (int j = 0; j < 5; j++) {
                 if(bookShelf[i][j] != ItemTileType.EMPTY) {
@@ -627,7 +635,7 @@ public class ControllerMainSceneDalila implements Initializable {
 
     public void showPersonalGoal(GameModelView gameModelView) {
         ItemTileType[][] personalGoalCard = gameModelView.getPersonalGoalCardList().get(viewGUI.getThisUsername());
-        int [][] playerCardId = gameModelView.getPersonalGoalCardListId().get(viewGUI.getThisUsername());
+       // int [][] playerCardId = gameModelView.getPersonalGoalCardListId().get(viewGUI.getThisUsername());
         image = new Image(getClass().getResource("/view/gui/personalgoalcards/Personal_Goals"+gameModelView.getPersonalGoalCardPlayerListId().get(viewGUI.getThisUsername())+".png").toString());
         personalGoalImage.setImage(image);
         personalGoalButton.setGraphic(personalGoalImage);
@@ -643,7 +651,7 @@ public class ControllerMainSceneDalila implements Initializable {
                 }
                 clicked = true;
             }else{
-                clearBookShelf();
+                clearBookShelf(personalBookshelfGrid);
                 String[] players = gameModelView.getPlayerList();
                 for (int i = 0; i < players.length; i++) {
                     if(players[i].equals(viewGUI.getThisUsername())){
@@ -655,9 +663,9 @@ public class ControllerMainSceneDalila implements Initializable {
         });
     }
 
-    public void clearBookShelf() {
-        if(!personalBookshelfGrid.getChildren().isEmpty())
-            personalBookshelfGrid.getChildren().clear();
+    public void clearBookShelf(GridPane g) {
+        if(!g.getChildren().isEmpty())
+            g.getChildren().clear();
     }
 
 
@@ -699,8 +707,8 @@ public class ControllerMainSceneDalila implements Initializable {
 
     public void initCommonGoalCard(Map.Entry<Integer, Integer[]> set, ImageView imageComGoalSquarePoint, ImageView imageComGoalSquare, Label labelComGoal) {
         String description;
-        //TODO penso vada preso in posizione 0
-        image = new Image(getClass().getResource("/view/gui/scoring_tokens/scoring_"+set.getValue()[0]+".jpg").toString());
+        int score = set.getValue().length == 0 ? 0 : set.getValue()[0];
+        image = new Image(getClass().getResource("/view/gui/scoring_tokens/scoring_"+score+".jpg").toString());
         imageComGoalSquarePoint.setImage(image);
         image = new Image(getClass().getResource("/view/gui/common_goal_cards/"+set.getKey()+".jpg").toString());
         imageComGoalSquare.setImage(image);
@@ -709,8 +717,23 @@ public class ControllerMainSceneDalila implements Initializable {
     }
 
 
-    public void initChat() {
+    public void addToChat(GameModelView gameModelView) {
+        textFlowGameMessages.getChildren().clear();
+        for (String m : gameModelView.getChat()) {
+            String[] message = m.split(":");
+            showMessage(message[0]+ ":" + message[1],returnColor(gameModelView.getPlayerList(),message[0]));
+        }
 
+    }
+    
+    public Color returnColor(String[] players, String player ) {
+        Color c = null;
+        for (int i = 0; i < players.length;i++) {
+            if(player.equals(players[i])){
+                c = Color.valueOf(chatColors[i]);
+            }
+        }
+        return c;
     }
 }
 

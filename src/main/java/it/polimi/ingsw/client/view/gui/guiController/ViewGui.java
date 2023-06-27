@@ -35,6 +35,8 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     Scene selectConnectionScene;
     private ControllerWaitingForPlayers controllerWaitingForPlayers;
     Scene waitingForPlayers;
+    private ControllerEndGame controllerEndGame;
+    Scene endGameScene;
     private final Stage window;
     private Integer change;
     private boolean isMyTurn = false;
@@ -118,6 +120,27 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
         });
     }
 
+    /**
+     * changes to End Game
+     */
+    private void changeSceneEndGame() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gui/fxml/EndGameScene.fxml"));
+        try {
+            Parent boardPaneParent = loader.load();
+            endGameScene = new Scene(boardPaneParent);
+            controllerEndGame = loader.getController();
+            controllerEndGame.setViewGui(this);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    public void showEndGame() {
+        Platform.runLater(() -> {
+            window.setScene(endGameScene);
+            window.show();
+        });
+    }
+
     private void changeSceneWaitingForPlayers() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gui/fxml/WaitingForOtherPlayers.fxml"));
         try {
@@ -179,12 +202,9 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
         //return 2;
     }
 
-    private void startChat() {
-        controllerMainSceneDalila.initChat();
+    private void updateChat(GameModelView gameModelView) {
+        controllerMainSceneDalila.addToChat(gameModelView);
     }
-
-
-
 
     /**
      * From here event handlers
@@ -212,7 +232,6 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
         }else {
             Platform.runLater(()->{
                 controllerMainSceneDalila.showGameMessage("It's " + gameModelView.getCurrentPlayer() + "'s turn.");
-                startChat();
             });
         }
     }
@@ -222,10 +241,6 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     public void printMessage(String s) {
         if(Objects.equals(s, "Starting a new game...")){
             Platform.runLater(this::showMain);
-        }else if(change == 2){
-            Platform.runLater(() -> {
-                controllerMainSceneDalila.showMessage(s);
-            });
         }else if(change == 1){
             Platform.runLater(() -> {
                 controllerWaitingForPlayers.showMessage(s);
@@ -284,6 +299,14 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
         controllerMainSceneDalila.showCommonGoalCard(gameModelView);
     }
 
+    /**
+     * Print the end game screen
+     * @param gameModel
+     */
+    private void printLeaderboard(GameModelView gameModel) {
+        controllerEndGame.setLeaderBookShelf(gameModel);
+    }
+
     public void printAll(GameModelView gameModelView){
         Platform.runLater(() -> {
             printCommonGoalCard(gameModelView);
@@ -291,25 +314,6 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
             printBookshelves(gameModelView);
             printPersonalGoal(gameModelView);
         });
-    }
-
-    /**
-     * Print the end game screen
-     * @param gameModel
-     */
-    private void printLeaderboard(GameModelView gameModel) {
-        int[] pointsList = gameModel.getPointsList();
-        int[] sortedList = Arrays.copyOf(pointsList, pointsList.length);
-        Arrays.sort(sortedList);
-        for (int i = 0; i < pointsList.length; i++) {
-            int element = pointsList[i];
-            int position = Arrays.binarySearch(sortedList, element);
-        }
-        System.out.println("Leaderboard:");
-        int i = 0;
-        for (Integer position : pointsList) {
-            System.out.println(gameModel.getPlayerList()[position] + ": " + pointsList[position]);
-        }
     }
 
     /******************************************************************************************/
@@ -393,6 +397,9 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
         setChangedAndNotifyObservers(new MessageEvent(NEW_ORDER, input));
     }
 
+    public void setNewMessage(String message){
+        setChangedAndNotifyObservers(new MessageEvent(NEW_MESSAGE_CHAT, thisUsername + ": " + message));
+    }
     /**
      * Print the bookshelves and the end game screen
      * @param gameModel
@@ -401,6 +408,7 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
      */
     private void endGame(GameModelView gameModel) {
         Platform.runLater(() -> {
+            showEndGame();
             printLeaderboard(gameModel);
         });
     }
@@ -410,27 +418,9 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
      * @param gameModelView
      */
     private void showChat(GameModelView gameModelView) {
-        if (isMyTurn(gameModelView) && !chatAvailability) {
-            return;
-        }
-        String[] chat = gameModelView.getChat().toArray(new String[10]);
-        int index = 0;
-        for (int i = 0; i < 10; i++) {
-            if (chat[i] == null) {
-                break;
-            }
-            index = i;
-        }
-
-        String[] message = chat[index].split(":");
-
-        String color = "\033[0;33m";
-
-        if (message[0].equals(thisUsername)) {
-            color = "\033[0;34m";
-        }
-
-        System.out.println(color + message[0] + ":" + "\033[0m"  + message[1]);
+        Platform.runLater(() -> {
+            updateChat(gameModelView);
+        });
     }
 
 }

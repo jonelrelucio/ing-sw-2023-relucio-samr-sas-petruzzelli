@@ -135,7 +135,7 @@
             </Label>
             <AnchorPane fx:id="personalbookshelfmainplayerimage" layoutX="437.0" prefHeight="327.0" prefWidth="274.0" styleClass="bodybg" stylesheets="@../css/bookshelf.css">
                <children>
-                  <GridPane fx:id="winnerBookshelfGrid" layoutX="21.0" layoutY="18.0" prefHeight="270.0" prefWidth="222.0" AnchorPane.leftAnchor="21.0" AnchorPane.topAnchor="18.0">
+                  <GridPane fx:id="winnerBookShelfGrid" layoutX="21.0" layoutY="18.0" prefHeight="270.0" prefWidth="222.0" AnchorPane.leftAnchor="21.0" AnchorPane.topAnchor="18.0">
                      <columnConstraints>
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="61.0" minWidth="7.5" prefWidth="39.0" />
                         <ColumnConstraints hgrow="SOMETIMES" maxWidth="85.5" minWidth="0.0" prefWidth="39.0" />
