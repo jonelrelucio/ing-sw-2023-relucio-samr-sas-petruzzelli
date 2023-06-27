@@ -344,6 +344,7 @@ public class ControllerMainSceneDalila implements Initializable {
             if(gameModelView.getSelectedTiles().size() == 0){
                 hideYesOrNo();
                 showGameMessage("You have not selected a tile.\nPlease select at least a tile.\nThe Glowing tiles are the one that can be selected");
+                printCanBeSelectedCoordinates();
             }else{
                 hideYesOrNo();
                 viewGUI.pickTiles();
@@ -614,10 +615,10 @@ public class ControllerMainSceneDalila implements Initializable {
     }
 
     private String getTileOrder(int [] intArr) {
-        String input = null;
+        String input = "";
         int i = 0;
         while( i < intArr.length -  1) {
-            input = intArr[i] + " ";
+            input = input + intArr[i] + " ";
             i++;
         }
         input = input + intArr[i];

@@ -57,7 +57,7 @@
    <center>
       <AnchorPane centerShape="false" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="590.0" prefWidth="792.0" BorderPane.alignment="CENTER">
          <children>
-            <ImageView fx:id="boardImageView" fitHeight="517.0" fitWidth="517.0" layoutX="6.0" layoutY="-35.0" pickOnBounds="true" preserveRatio="true" styleClass="bodybg" AnchorPane.leftAnchor="39.0" AnchorPane.rightAnchor="243.0" AnchorPane.topAnchor="50.0">
+            <ImageView fx:id="boardImageView" fitHeight="517.0" fitWidth="517.0" layoutX="6.0" layoutY="-35.0" pickOnBounds="true" preserveRatio="true" styleClass="bodybg" AnchorPane.leftAnchor="130.0" AnchorPane.rightAnchor="240.0" AnchorPane.topAnchor="50.0">
                <image>
                   <Image url="@../boards/livingroom.png" />
                </image>
@@ -68,7 +68,7 @@
                   <Cursor fx:constant="HAND" />
                </cursor>
             </ImageView>
-            <GridPane fx:id="boardGrid" alignment="CENTER" gridLinesVisible="true" layoutX="62.0" layoutY="72.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="472.0" prefWidth="467.0" AnchorPane.bottomAnchor="46.0" AnchorPane.leftAnchor="62.0" AnchorPane.rightAnchor="263.0" AnchorPane.topAnchor="72.0">
+            <GridPane fx:id="boardGrid" alignment="CENTER" gridLinesVisible="true" layoutX="62.0" layoutY="72.0" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="472.0" prefWidth="467.0" AnchorPane.bottomAnchor="46.0" AnchorPane.leftAnchor="150.0" AnchorPane.rightAnchor="170.0" AnchorPane.topAnchor="72.0">
                <columnConstraints>
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="58.0" minWidth="10.0" prefWidth="53.0" />
                   <ColumnConstraints hgrow="SOMETIMES" maxWidth="148.0" minWidth="10.0" prefWidth="53.0" />
@@ -99,7 +99,7 @@
       </AnchorPane>
    </center>
    <left>
-      <VBox prefHeight="886.0" prefWidth="539.0" BorderPane.alignment="CENTER">
+      <VBox prefHeight="641.0" prefWidth="349.0" BorderPane.alignment="CENTER">
          <children>
             <TabPane fx:id="mainPlayerFullTab" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="649.0" prefWidth="342.0" tabClosingPolicy="UNAVAILABLE">
                <tabs>
@@ -136,7 +136,8 @@
                                           <ImageView fx:id="personalGoalImage" fitHeight="120.0" fitWidth="81.0" pickOnBounds="true" preserveRatio="true" />
                                        </children>
                                     </StackPane>
-                                 </children></AnchorPane>
+                                 </children>
+                              </AnchorPane>
                               <GridPane fx:id="radioButtonChoiceGrid" layoutX="8.0" layoutY="106.0" prefHeight="40.0" prefWidth="241.0">
                                  <columnConstraints>
                                     <ColumnConstraints hgrow="SOMETIMES" maxWidth="53.0" minWidth="10.0" prefWidth="39.0" />
@@ -235,7 +236,8 @@
                                           <Label fx:id="chosenTilesButton3Label" text="3">
                                              <font>
                                                 <Font name="System Bold" size="37.0" />
-                                             </font></Label>
+                                             </font>
+                                          </Label>
                                        </children>
                                     </StackPane>
                                  </children>
@@ -321,7 +323,8 @@
                               <Label fx:id="labelComGoal1" layoutX="14.0" layoutY="124.0" prefHeight="55.0" prefWidth="325.0" text="Label" wrapText="true" />
                               <Label fx:id="labelComGoal2" layoutX="14.0" layoutY="297.0" prefHeight="55.0" prefWidth="324.0" text="Label" wrapText="true" />
                               <Label fx:id="labelFirstShelfWinner" layoutX="128.0" layoutY="358.0" prefHeight="96.0" prefWidth="209.0" text="Label" wrapText="true" />
-                           </children></AnchorPane>
+                           </children>
+                        </AnchorPane>
                      </content>
                   </Tab>
                   <Tab fx:id="chatTab" text="Chat">
