@@ -40,8 +40,12 @@ public class GameServer extends UnicastRemoteObject implements Server {
     @Override
     public void register(Client client, String username) throws RemoteException {
         RMIConnection connection = new RMIConnection(client, username);
+        try{
+            System.out.println("Connected rmi client with ip: " + getClientHost()); // display message
+        }catch(Exception e){}
         connections.add(connection);
         manageConnection(connection);
+
     }
 
     public void manageConnection(Connection connection) throws RemoteException{

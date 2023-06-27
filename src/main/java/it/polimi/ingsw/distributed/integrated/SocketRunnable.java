@@ -4,6 +4,7 @@ import it.polimi.ingsw.distributed.integrated.GameServer;
 import it.polimi.ingsw.distributed.integrated.SocketConnection;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -20,6 +21,10 @@ public class SocketRunnable implements Runnable{
         try(ServerSocket serverSocket = new ServerSocket( 1234)){
             while(true){
                 Socket socket = serverSocket.accept();
+                InetSocketAddress socketAddress = (InetSocketAddress) socket.getRemoteSocketAddress();
+                String clientIpAddress = socketAddress.getAddress()
+                        .getHostAddress();
+                System.out.println("Connected socket client with ip: " + clientIpAddress);
                 /*
                 //spawn a thread to handle the new connected socket
                 new Thread(){

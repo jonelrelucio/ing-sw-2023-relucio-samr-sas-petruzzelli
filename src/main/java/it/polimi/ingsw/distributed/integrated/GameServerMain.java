@@ -19,6 +19,7 @@ public class GameServerMain {
         try{
             GameServer server = new GameServer();
             ArrayList<String> ipAddresses = new ArrayList<>();
+            ArrayList<InetAddress> ips = new ArrayList<>();
 
             Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
             int count = 0;
@@ -29,8 +30,10 @@ public class GameServerMain {
                 Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
                 for (InetAddress inetAddress : Collections.list(inetAddresses)) {
 
-                    if(inetAddress instanceof Inet4Address)
+                    if(inetAddress instanceof Inet4Address){
                         ipAddresses.add(inetAddress.getHostAddress());
+                        ips.add(inetAddress);
+                    }
 
                 }
                 count++;
@@ -39,19 +42,18 @@ public class GameServerMain {
             out.println("Choose server ip:");
             Scanner s = new Scanner(System.in);
             int id = Integer.parseInt(s.nextLine());
+            InetAddress ip = ips.get(id);
             String ipAddress = ipAddresses.get(id);
             out.println("chosen: " + ipAddress);
 
+            MySocketFactory mySocketFactory = new MySocketFactory(ipAddress);
             System.setProperty("java.rmi.server.hostname", ipAddress);
 
             //start the RMI thread
             Thread socketThread = new Thread(new SocketRunnable(server));
-            Thread rmiThread = new Thread(new RMIRunnable(server));
+            Thread rmiThread = new Thread(new RMIRunnable(server, 1099, ipAddress));
 
             rmiThread.start();
-
-
-            //start the socket thread
             socketThread.start();
 
             try{
