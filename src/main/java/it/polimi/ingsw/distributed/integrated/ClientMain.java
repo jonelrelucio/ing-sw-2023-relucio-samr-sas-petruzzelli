@@ -6,22 +6,62 @@ import it.polimi.ingsw.client.view.gui.GUI;
 import it.polimi.ingsw.distributed.Server;
 
 
+import java.net.Inet4Address;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.rmi.NotBoundException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.Enumeration;
 import java.util.Scanner;
 
+import static it.polimi.ingsw.distributed.integrated.GameServerMain.displayInterfaceInformation;
+import static java.lang.System.out;
+
 public class ClientMain {
-    public static void main(String[] args) {
+    public static void main(String[] args) throws SocketException {
         View view = null;
         String clientChoice;
         String viewChoice;
         Server server = null;
         Scanner scanner = new Scanner(System.in);
 
-        System.out.println("Scegli l'indirizzo Ip: ");
+        System.out.println("Scegli l'indirizzo Ip del server: ");
         String ip = scanner.nextLine();
+
+        ArrayList<String> ipAddresses = new ArrayList<>();
+        ArrayList<InetAddress> ips = new ArrayList<>();
+
+        Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
+        int count = 0;
+        for (NetworkInterface netint : Collections.list(nets)) {
+
+            out.println("id: " + count);
+            displayInterfaceInformation(netint);
+            Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
+            for (InetAddress inetAddress : Collections.list(inetAddresses)) {
+
+                if(inetAddress instanceof Inet4Address){
+                    ipAddresses.add(inetAddress.getHostAddress());
+                    ips.add(inetAddress);
+                }
+
+            }
+            count++;
+        }
+        out.println("Choose Client ip:");
+        Scanner s = new Scanner(System.in);
+        int id = Integer.parseInt(s.nextLine());
+        InetAddress ipClientAddress = ips.get(id);
+        String ipAddress = ipAddresses.get(id);
+        out.println("Client Ip Address: " + ipAddress);
+
+        System.setProperty("java.rmi.server.hostname", ipAddress);
+
 
         do{
             System.out.println("Scegli il tipo di view:\nc <- CLI\ng <- GUI");
@@ -71,4 +111,16 @@ public class ClientMain {
         Il metodo startClient() deve essere nell'interfaccia client.
          */
     }
+
+    static void displayInterfaceInformation(NetworkInterface netint) throws SocketException {
+        out.printf("Display name: %s\n", netint.getDisplayName());
+        out.printf("Name: %s\n", netint.getName());
+        Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
+        for (InetAddress inetAddress : Collections.list(inetAddresses)) {
+            if(inetAddress instanceof Inet4Address)
+                out.printf("InetAddress: %s\n", inetAddress);
+        }
+        out.printf("\n");
+    }
+
 }

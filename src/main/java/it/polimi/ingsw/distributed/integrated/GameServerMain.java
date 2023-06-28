@@ -44,10 +44,10 @@ public class GameServerMain {
             int id = Integer.parseInt(s.nextLine());
             InetAddress ip = ips.get(id);
             String ipAddress = ipAddresses.get(id);
-            out.println("chosen: " + ipAddress);
+            out.println("Server Ip Address: " + ipAddress);
 
-            MySocketFactory mySocketFactory = new MySocketFactory(ipAddress);
             System.setProperty("java.rmi.server.hostname", ipAddress);
+            System.setProperty("java.rmi.server.useLocalHostname", "true");
 
             //start the RMI thread
             Thread socketThread = new Thread(new SocketRunnable(server));
