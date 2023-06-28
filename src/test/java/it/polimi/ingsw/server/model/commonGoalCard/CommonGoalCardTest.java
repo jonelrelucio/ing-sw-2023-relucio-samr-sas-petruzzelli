@@ -81,6 +81,14 @@ public class CommonGoalCardTest {
                     {new ItemTile(ItemTileType.BOOK),   new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.PLANT),   new ItemTile(ItemTileType.PLANT),   new ItemTile(ItemTileType.BOOK)},
                     {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.TROPHY),  new ItemTile(ItemTileType.BOOK),    new ItemTile(ItemTileType.PLANT),   new ItemTile(ItemTileType.FRAME)}};
 
+    private final ItemTile[][] x =
+            {       {new ItemTile(ItemTileType.EMPTY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                    {new ItemTile(ItemTileType.EMPTY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                    {new ItemTile(ItemTileType.EMPTY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                    {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.FRAME),   new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                    {new ItemTile(ItemTileType.BOOK),   new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.FRAME),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                    {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.TROPHY),  new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)}};
+
     @Test
     public void testStair() {
         int[][] coords = {  {0, 0, 0, 0, 0},
@@ -134,6 +142,7 @@ public class CommonGoalCardTest {
         CommonGoalCard card = new CommonGoalShape(6, 3, 3, coords, 1, false, false, false, false, false);
         assertTrue(card.checkPattern(diagonal));
         assertFalse(card.checkPattern(stair));
+        assertTrue(card.checkPattern(x));
     }
 
     @Test

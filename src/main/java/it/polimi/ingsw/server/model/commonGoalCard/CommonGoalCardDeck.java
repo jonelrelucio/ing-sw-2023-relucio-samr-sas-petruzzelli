@@ -5,11 +5,14 @@ import it.polimi.ingsw.server.model.ItemTile.ItemTile;
 import it.polimi.ingsw.server.model.Player;
 
 import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Reader;
 import java.lang.reflect.Type;
 import java.nio.file.Files;
 import java.nio.file.*;
 import java.util.*;
+import java.io.BufferedReader;
 
 public class CommonGoalCardDeck {
     private final HashMap<CommonGoalCard, Stack<Integer>> deck = new HashMap<>();
@@ -34,11 +37,9 @@ public class CommonGoalCardDeck {
         builder.registerTypeAdapter(CommonGoalCard.class, new CommonGoalCardDeserializer());
         Gson gson = builder.create();
         Reader reader;
-        try {
-            reader = Files.newBufferedReader(Paths.get("src/main/resources/json/CommonGoalCard.json"));
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+
+        InputStream inputStream = getClass().getResourceAsStream("/json/CommonGoalCard.json");
+        reader = new BufferedReader(new InputStreamReader(inputStream));
 
         List<CommonGoalCard> completeDeck = new ArrayList<>(Arrays.asList(gson.fromJson(reader, CommonGoalCard[].class)));
 
