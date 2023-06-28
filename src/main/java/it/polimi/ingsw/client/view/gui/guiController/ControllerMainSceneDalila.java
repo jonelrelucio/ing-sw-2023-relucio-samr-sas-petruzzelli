@@ -718,7 +718,7 @@ public class ControllerMainSceneDalila implements Initializable {
 
 
     public void addToChat(GameModelView gameModelView) {
-        textFlowGameMessages.getChildren().clear();
+        chatTextFlow.getChildren().clear();
         for (String m : gameModelView.getChat()) {
             String[] message = m.split(":");
             showMessage(message[0]+ ":" + message[1],returnColor(gameModelView.getPlayerList(),message[0]));
