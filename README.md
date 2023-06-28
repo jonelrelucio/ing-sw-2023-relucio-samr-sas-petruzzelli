@@ -39,4 +39,33 @@ Main UML Diagram: [UML Diagram](src/deliverables/umlDiagram/ClassDiagram_Model.p
 🔴 Not Implemented | 🟢 Implemented |🟡 Being Implemented...
 
 
+## How to run the jar files
+Before running either server-softeng-gc25.jar or client-softeng-gc25.jar be sure to have disabled the firewall for both of them.
+
+##### Server
+To run the server type: java -Djava.rmi.server.hostname=serverIp -jar server-softeng-gc25.jar
+where serverIp is the Ip Address of the server
+When the server is running, choose the id (int value) that corresponds to the serverIp used running the jar file.
+
+##### Client
+To run the client type: java -jar client-softeng-gc25.jar
+when the client is running, set the ip address of the server interface.
+Then select the the id (int value) that corresponds to the ip address of your chosen NIC
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
