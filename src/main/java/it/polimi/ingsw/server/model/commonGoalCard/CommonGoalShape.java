@@ -7,19 +7,64 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
-
+/**
+ * This class represents a type of common goal card that has a defined shape and occurrence
+ */
 public class CommonGoalShape implements CommonGoalCard{
-    private final int id; // unique id
-    private final int width; // width of the matrix containing the shape
-    private final int height; // height of the matrix containing the shape
-    private final int[][] coords; // coordinates of the cell that have to match their type
-    private final int occurrence; // occurrences of the shape to be found
+    /**
+     * Unique card's id
+     */
+    private final int id;
+    /**
+     * Width of the matrix containing the shape
+     */
+    private final int width;
+    /**
+     * Height of the matrix containing the shape
+     */
+    private final int height;
+    /**
+     * Coordinates of the cell that have to match their type
+     */
+    private final int[][] coords;
+    /**
+     * Occurrences of the shape to be found
+     */
+    private final int occurrence;
+    /**
+     * Flag that indicates to check if there is the shape flipped horizontally
+     */
     private final boolean verticalSymmetric;
+    /**
+     * Flag that indicates to check if there is the shape flipped vertically
+     */
     private final boolean horizontalSymmetric;
+    /**
+     * Flag that indicates to check if there is the shape flipped diagonally
+     */
     private final boolean diagonalSymmetric;
+    /**
+     * Flag that indicates to check if the shape is made of the same tile type
+     */
     private final boolean groupsOfSameType;
+    /**
+     * Flag that indicates to check if the occurrences have to not be adjacent
+     */
     private final boolean separated;
 
+    /**
+     * Initialize the card
+     * @param id
+     * @param width
+     * @param height
+     * @param coords
+     * @param occurrence
+     * @param verticalSymmetric
+     * @param horizontalSymmetric
+     * @param diagonalSymmetric
+     * @param groupsOfSameType
+     * @param separated
+     */
     public CommonGoalShape(int id, int width, int height, int[][] coords, int occurrence, boolean verticalSymmetric, boolean horizontalSymmetric, boolean diagonalSymmetric, boolean groupsOfSameType, boolean separated) {
         this.id = id;
         this.width = width;
@@ -33,6 +78,16 @@ public class CommonGoalShape implements CommonGoalCard{
         this.separated = separated;
     }
 
+    /**
+     * The method check if the card's shape is present with at least one transformation based on the corresponding field value:
+     * no transformation, flipped vertical, flipped horizontal, flipped diagonally
+     * @param bookshelf
+     * @return true if the shape is found
+     * @see #findShape(ItemTile[][], int[][], HashMap, HashMap)
+     * @see #flipDiagonal()
+     * @see #flipVertical()
+     * @see #flipHorizontal()
+     */
     public boolean checkPattern(ItemTile[][] bookshelf) {
         HashMap<ItemTileType, ArrayList<int[]>> locked = new HashMap<>();
         HashMap<ItemTileType, ArrayList<int[]>> lockedAdjacent = new HashMap<>();
@@ -89,6 +144,15 @@ public class CommonGoalShape implements CommonGoalCard{
         return false;
     }
 
+    /**
+     * This method inspect the bookshelf matrix and fill a hashmap with the tiles type and their occurrences.
+     * Fill the hashmaps 'locked' and 'lockedAdjacent' with the tiles to not inspect
+     * @param bookshelf
+     * @param coords
+     * @param locked
+     * @param lockedAdjacent
+     * @return the hashmap with tile's type as keys and the occurrences of the tiles as value
+     */
     public HashMap<ItemTileType, Integer> findShape(ItemTile[][] bookshelf, int[][] coords, HashMap<ItemTileType, ArrayList<int[]>> locked, HashMap<ItemTileType, ArrayList<int[]>> lockedAdjacent) {
         ItemTileType matchingType;
         boolean found;
@@ -206,6 +270,10 @@ public class CommonGoalShape implements CommonGoalCard{
         return map;
     }
 
+    /**
+     * This method flip horizontally the coordinates of coords field
+     * @return the new coordinates
+     */
     private int[][] flipHorizontal() {
         int[][] newCoords = coords;
         for (int[] c : newCoords) {
@@ -214,6 +282,10 @@ public class CommonGoalShape implements CommonGoalCard{
         return newCoords;
     }
 
+    /**
+     * This method flip vertically the coordinates of coords field
+     * @return the new coordinates
+     */
     private int[][] flipVertical() {
         int[][] newCoords = coords;
         for (int[] c : newCoords) {
@@ -222,6 +294,10 @@ public class CommonGoalShape implements CommonGoalCard{
         return newCoords;
     }
 
+    /**
+     * This method flip diagonally the coordinates of coords field
+     * @return the new coordinates
+     */
     private int[][] flipDiagonal() {
         int[][] newCoords = coords;
         for (int[] c : newCoords) {
@@ -231,6 +307,10 @@ public class CommonGoalShape implements CommonGoalCard{
         return newCoords;
     }
 
+    /**
+     * Getter for 'id' field
+     * @return the card's id
+     */
     public int getId() { return id; }
 }
 
