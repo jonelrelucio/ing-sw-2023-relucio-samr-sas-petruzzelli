@@ -36,6 +36,7 @@ public class Game {
         eventHandlers.put(NEW_ORDER, this::newOrderTiles);
         eventHandlers.put(SELECT_COLUMN, this::selectColumn);
         eventHandlers.put(NEW_MESSAGE_CHAT, this::addMessageToChat);
+        eventHandlers.put(NEW_MESSAGE_TO, this::addPrivateMessage);
     }
 
     public void initGameModel(ArrayList<String> usernameList) {
@@ -97,6 +98,16 @@ public class Game {
 
     private void addMessageToChat(String message) {
         gameModel.addMessageToChat(message);
+    }
+
+    private void addPrivateMessage(String message) {
+        String[] splittedMessage = message.split(" ");
+        String username = splittedMessage[0];
+        String reassembledMessage = splittedMessage[1];
+        for (int i = 2; i < splittedMessage.length; i++) {
+            reassembledMessage = reassembledMessage + " " + splittedMessage[i];
+        }
+        gameModel.addPrivateMessageToMap(username, reassembledMessage);
     }
 
     public ArrayBlockingQueue<String> getChatMessages() {
