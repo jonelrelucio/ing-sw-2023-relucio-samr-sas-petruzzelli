@@ -248,7 +248,7 @@ public class ControllerMainSceneDalila implements Initializable {
     public void showGameMessage(String s){
         clearMessage();
         text = new Text(s + "\n");
-        text.setFont(Font.font("Century Schoolbook", FontWeight.NORMAL,25));
+        text.setFont(Font.font("Century Schoolbook", FontWeight.NORMAL,20));
         textFlowGameMessages.getChildren().add(text);
     }
 
