@@ -632,7 +632,9 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
      * @see #containsCoordinates(ArrayList, int, int)
      */
     public void printBoard(GameModelView gameModelView) {
+        int n = 1;
         System.out.println("      Game Board with "+ gameModelView.getPlayerList().length + " players");
+        System.out.println("             1   2   3   4   5   6   7   8   9");
         System.out.println("      ┌────────────────────────────────────────────┐");
         System.out.println("      │                                            │");
         for (int i = 1; i < gameModelView.getBoardMatrix().length-1; i++){
@@ -645,7 +647,8 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
                     System.out.print(" "+Const.getHighlightedItemColor(gameModelView.getBoardMatrix()[i][j])+Const.SELECTED_TILE +Const.RESET );
                 else System.out.print(" "+Const.getItemColor(gameModelView.getBoardMatrix()[i][j])+Const.TILE+Const.RESET);
             }
-            System.out.println("│");
+            System.out.println("│  " + n);
+            n++;
             System.out.println("      │                                            │");
         }
         System.out.println("      └────────────────────────────────────────────┘");
