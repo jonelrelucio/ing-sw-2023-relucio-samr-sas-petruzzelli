@@ -28,7 +28,7 @@ Main UML Diagram: [UML Diagram](src/deliverables/umlDiagram/ClassDiagram_Model.p
 | RMI                          |  🟢   |
 | Socket                       |  🟢   |
 | CLI                          |  🟢   |
-| GUI                          |  🟡   |
+| GUI                          |  🟢   |
 | Multiple games               |  🔴   |
 | Persistence                  |  🔴   |
 | Resilience to disconnections |  🔴   |
