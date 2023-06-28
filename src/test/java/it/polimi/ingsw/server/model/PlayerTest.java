@@ -15,24 +15,36 @@ public class PlayerTest {
     PersonalGoalCard personalGoalCardTest;
     Board boardTest;
 
-    @BeforeEach
-    void setUp(){
+//    @BeforeEach
+//    void setUp(){
+//        boardTest = new Board(2);
+//        PersonalGoalCardBag.reset();
+//        personalGoalCardTest = PersonalGoalCardBag.drawPersonalGoalCard(2);
+//        playerTest = new Player("Test Player", personalGoalCardTest, boardTest );
+//        System.out.println("");
+//        PersonalGoalCardBag.reset();
+//    }
+
+    @Test
+    public void testGetEndGameToken() {
         boardTest = new Board(2);
         PersonalGoalCardBag.reset();
         personalGoalCardTest = PersonalGoalCardBag.drawPersonalGoalCard(2);
         playerTest = new Player("Test Player", personalGoalCardTest, boardTest );
         System.out.println("");
         PersonalGoalCardBag.reset();
-    }
-
-    @Test
-    public void testGetEndGameToken() {
         playerTest.setWinner();
         assertEquals(1, playerTest.getEndGameToken());
     }
 
     @Test
     public void testDeselectTile() {
+        boardTest = new Board(2);
+        PersonalGoalCardBag.reset();
+        personalGoalCardTest = PersonalGoalCardBag.drawPersonalGoalCard(2);
+        playerTest = new Player("Test Player", personalGoalCardTest, boardTest );
+        System.out.println("");
+        PersonalGoalCardBag.reset();
         playerTest.selectCoordinates(new int[]{2, 4});
         playerTest.selectCoordinates(new int[]{3, 4});
         assertEquals(2, playerTest.getBoard().getSelectedCoordinates().size());
@@ -43,6 +55,12 @@ public class PlayerTest {
 
     @Test
     public void testSelectedTile() {
+        boardTest = new Board(2);
+        PersonalGoalCardBag.reset();
+        personalGoalCardTest = PersonalGoalCardBag.drawPersonalGoalCard(2);
+        playerTest = new Player("Test Player", personalGoalCardTest, boardTest );
+        System.out.println("");
+        PersonalGoalCardBag.reset();
         playerTest.selectCoordinates(new int[]{2, 4});
         playerTest.selectCoordinates(new int[]{3, 4});
         assertEquals(2, playerTest.getBoard().getSelectedCoordinates().size());
@@ -50,6 +68,12 @@ public class PlayerTest {
 
     @Test
     public void testGetSelectedItemTiles() {
+        boardTest = new Board(2);
+        PersonalGoalCardBag.reset();
+        personalGoalCardTest = PersonalGoalCardBag.drawPersonalGoalCard(2);
+        playerTest = new Player("Test Player", personalGoalCardTest, boardTest );
+        System.out.println("");
+        PersonalGoalCardBag.reset();
         playerTest.selectCoordinates(new int[]{2, 4});
         playerTest.selectCoordinates(new int[]{3, 4});
         playerTest.pickSelectedItemTiles();
@@ -64,6 +88,12 @@ public class PlayerTest {
 
     @Test
     public void TestRearrangeItems() {
+        boardTest = new Board(2);
+        PersonalGoalCardBag.reset();
+        personalGoalCardTest = PersonalGoalCardBag.drawPersonalGoalCard(2);
+        playerTest = new Player("Test Player", personalGoalCardTest, boardTest );
+        System.out.println("");
+        PersonalGoalCardBag.reset();
         playerTest.selectCoordinates(new int[]{2, 4});
         playerTest.selectCoordinates(new int[]{3, 4});
         playerTest.pickSelectedItemTiles();
@@ -83,6 +113,12 @@ public class PlayerTest {
 
     @Test
     public void testGetEndGameTokenWithoutWinning() {
+        boardTest = new Board(2);
+        PersonalGoalCardBag.reset();
+        personalGoalCardTest = PersonalGoalCardBag.drawPersonalGoalCard(2);
+        playerTest = new Player("Test Player", personalGoalCardTest, boardTest );
+        System.out.println("");
+        PersonalGoalCardBag.reset();
         try {
             playerTest.getEndGameToken();
         } catch (IllegalCallerException ignored) {System.out.println("IllegalCallerExpetion in getEndGameToken() captured.");}
@@ -90,6 +126,12 @@ public class PlayerTest {
 
     @Test
     public void TestSelectCoordinatesException() {
+        boardTest = new Board(2);
+        PersonalGoalCardBag.reset();
+        personalGoalCardTest = PersonalGoalCardBag.drawPersonalGoalCard(2);
+        playerTest = new Player("Test Player", personalGoalCardTest, boardTest );
+        System.out.println("");
+        PersonalGoalCardBag.reset();
         try {
             playerTest.selectCoordinates(new int[]{0, 0});
         } catch (RuntimeException ignore)  {System.out.println("RuntimeException in selectCoordinates() captured.");};
@@ -97,6 +139,12 @@ public class PlayerTest {
 
     @Test
     public void TestDeselectCoordinatesException() {
+        boardTest = new Board(2);
+        PersonalGoalCardBag.reset();
+        personalGoalCardTest = PersonalGoalCardBag.drawPersonalGoalCard(2);
+        playerTest = new Player("Test Player", personalGoalCardTest, boardTest );
+        System.out.println("");
+        PersonalGoalCardBag.reset();
         try {
             playerTest.deselectCoordinates(new int[]{0, 0});
         } catch (RuntimeException ignore)  {System.out.println("RuntimeException in deselectCoordinates() captured.");};
@@ -104,6 +152,12 @@ public class PlayerTest {
 
     @Test
     public void TestRearrangeSelectedItems() {
+        boardTest = new Board(2);
+        PersonalGoalCardBag.reset();
+        personalGoalCardTest = PersonalGoalCardBag.drawPersonalGoalCard(2);
+        playerTest = new Player("Test Player", personalGoalCardTest, boardTest );
+        System.out.println("");
+        PersonalGoalCardBag.reset();
         playerTest.selectCoordinates(new int[]{2, 4});
         playerTest.selectCoordinates(new int[]{3, 4});
         try {
@@ -116,6 +170,12 @@ public class PlayerTest {
 
     @Test
     public void TestRearrangeSelectedItems2() {
+        boardTest = new Board(2);
+        PersonalGoalCardBag.reset();
+        personalGoalCardTest = PersonalGoalCardBag.drawPersonalGoalCard(2);
+        playerTest = new Player("Test Player", personalGoalCardTest, boardTest );
+        System.out.println("");
+        PersonalGoalCardBag.reset();
         playerTest.selectCoordinates(new int[]{2, 4});
         playerTest.selectCoordinates(new int[]{3, 4});
         try {
@@ -132,6 +192,12 @@ public class PlayerTest {
 
     @Test
     public void testGetters() {
+        boardTest = new Board(2);
+        PersonalGoalCardBag.reset();
+        personalGoalCardTest = PersonalGoalCardBag.drawPersonalGoalCard(2);
+        playerTest = new Player("Test Player", personalGoalCardTest, boardTest );
+        System.out.println("");
+        PersonalGoalCardBag.reset();
         assertEquals("Test Player", playerTest.getNickname());
         assertEquals(0, playerTest.getScore());
         assertNotNull(playerTest.getBookshelf());
@@ -146,6 +212,12 @@ public class PlayerTest {
 
     @Test
     public void testSetters() {
+        boardTest = new Board(2);
+        PersonalGoalCardBag.reset();
+        personalGoalCardTest = PersonalGoalCardBag.drawPersonalGoalCard(2);
+        playerTest = new Player("Test Player", personalGoalCardTest, boardTest );
+        System.out.println("");
+        PersonalGoalCardBag.reset();
         playerTest.setScore(10);
         assertEquals(10, playerTest.getScore());
 
