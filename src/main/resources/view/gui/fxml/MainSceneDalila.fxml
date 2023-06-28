@@ -338,8 +338,8 @@
                               </ScrollPane>
                               <HBox layoutX="2.0" layoutY="470.0" prefHeight="77.0" prefWidth="338.0">
                                  <children>
-                                    <TextField fx:id="chatTextField" prefHeight="77.0" prefWidth="242.0" />
-                                    <Button fx:id="chatButtonSend" mnemonicParsing="false" prefHeight="74.0" prefWidth="98.0" text="Send" />
+                                    <TextField fx:id="chatTextField" prefHeight="77.0" prefWidth="242.0" promptText="Write your message here" />
+                                    <Button fx:id="chatButtonSend" onAction="#setChatButtonSend" mnemonicParsing="false" prefHeight="74.0" prefWidth="98.0" text="Send" />
                                  </children>
                               </HBox>
                            </children>
