@@ -83,7 +83,7 @@ public class Const {
     public static final String CYAN_BACKGROUND_BRIGHT = "\033[46;30m";   // CYAN
     public static final String WHITE_BACKGROUND_BRIGHT = "\033[47;30m";  // WHITE
 
-    public static final String desc1 = """
+    public static final String desc7 = """
                       ┌─────────────────────┬─────────────────────────────────────────────┐
                       │                     │  Six groups each containing at least        │
                       │          ■          │  2 tiles of the same type (not necessarily  │
@@ -93,7 +93,7 @@ public class Const {
                       │                     │                                             │
                       └─────────────────────┴─────────────────────────────────────────────┘
                  """;
-    public static final String desc2 = """
+    public static final String desc8 = """
                       ┌─────────────────────┬─────────────────────────────────────────────┐
                       │                     │  Four groups each containing at least       │
                       │         ■           │  4 tiles of the same type (not necessarily  │
@@ -113,7 +113,7 @@ public class Const {
                       │                     │                                             │
                       └─────────────────────┴─────────────────────────────────────────────┘
                 """;
-    public static final String desc4 = """
+    public static final String desc2 = """
                       ┌─────────────────────┬─────────────────────────────────────────────┐
                       │                     │  Eight tiles of the same type. There’s no   │
                       │        ■   ■        │  restriction about the position of these    │
@@ -123,7 +123,7 @@ public class Const {
                       │                     │                                             │
                       └─────────────────────┴─────────────────────────────────────────────┘
                  """;
-    public static final String desc5 = """
+    public static final String desc4 = """
                       ┌─────────────────────┬─────────────────────────────────────────────┐
                       │                     │  Four tiles of the same type in the four    │
                       │      ■-------■      │  corners of the bookshelf.                  │
@@ -133,7 +133,7 @@ public class Const {
                       │                     │                                             │
                       └─────────────────────┴─────────────────────────────────────────────┘
                  """;
-    public static final String desc6 = """
+    public static final String desc5 = """
                       ┌─────────────────────┬─────────────────────────────────────────────┐
                       │    ■                │  Five tiles of the same type forming a      │
                       │       ■             │  diagonal.                                  │
@@ -143,7 +143,7 @@ public class Const {
                       │                     │                                             │
                       └─────────────────────┴─────────────────────────────────────────────┘
                 """;
-    public static final String desc7 = """
+    public static final String desc1 = """
                       ┌─────────────────────┬─────────────────────────────────────────────┐
                       │    ■                │  Five columns of increasing or decreasing   │
                       │    ■  ■             │  height. Starting from the first column on  │
@@ -153,7 +153,7 @@ public class Const {
                       │                     │                                             │
                       └─────────────────────┴─────────────────────────────────────────────┘
                 """;
-    public static final String desc8 = """
+    public static final String desc6 = """
                       ┌─────────────────────┬─────────────────────────────────────────────┐
                       │                     │  Five tiles of the same type forming an X.  │
                       │       ■     ■       │                                             │
