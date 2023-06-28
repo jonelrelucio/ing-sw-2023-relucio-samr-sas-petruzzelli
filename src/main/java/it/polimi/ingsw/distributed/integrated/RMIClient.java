@@ -17,7 +17,7 @@ public class RMIClient extends UnicastRemoteObject implements Client, Runnable {
 
     private View view;
     private Server server;
-    private String username;   //TODO: perchè l'username?
+    private String username;
     private boolean connectionError = false;
 
     public RMIClient(View view, Server server) throws RemoteException{

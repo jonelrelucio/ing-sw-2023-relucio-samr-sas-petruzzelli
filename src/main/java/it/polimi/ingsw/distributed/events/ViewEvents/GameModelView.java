@@ -1,5 +1,6 @@
 package it.polimi.ingsw.distributed.events.ViewEvents;
 
+import it.polimi.ingsw.distributed.integrated.UtilitySerializer;
 import it.polimi.ingsw.server.model.GameModel;
 import it.polimi.ingsw.server.model.ItemTile.ItemTileType;
 import it.polimi.ingsw.server.model.util.Utility;
@@ -31,18 +32,18 @@ public class GameModelView implements Serializable {
     private ArrayBlockingQueue<String> chat;
 
     public GameModelView(GameModel gameModel){
-        this.boardMatrix = Utility.serializeBoardMatrix(gameModel.getBoard().getBoardMatrix());
-        this.boardItemId = Utility.serializeItemId(gameModel.getBoard().getBoardMatrix());
-        this.playerList = Utility.serializeStringList(gameModel.getPlayerList());
-        this.bookshelfList = Utility.serializeArrayOfBookshelves(gameModel.getPlayerList());
-        this.bookshelfListItemId = Utility.serializeArrayOfItemId(gameModel.getPlayerList());
-        this.selectedTiles = Utility.serializeArrayOfItemTiles(gameModel.getCurrentPlayer().getSelectedItemTiles());
-        this.selectedTilesId = Utility.serializeArrayOfItemTilesId(gameModel.getCurrentPlayer().getSelectedItemTiles());
-        this.personalGoalCardList = Utility.serializeArrayOfPersonalGoalCards(gameModel.getPlayerList());
-        this.personalGooalCardListId = Utility.serializeArrayOfPersonalGoalCardsId(gameModel.getPlayerList());
-        this.commonGoalCardDeck = Utility.serializeCommonGoalCardDeck(gameModel.getCommonGoalCardDeck().getDeck());
-        this.pointsList = Utility.serializePointsList(gameModel.getPlayerList());
-        this.personalGoalCardPlayerListId = Utility.serializeArrayPersonalGoalCardPlaterListId(gameModel.getPlayerList());
+        this.boardMatrix = UtilitySerializer.serializeBoardMatrix(gameModel.getBoard().getBoardMatrix());
+        this.boardItemId = UtilitySerializer.serializeItemId(gameModel.getBoard().getBoardMatrix());
+        this.playerList = UtilitySerializer.serializeStringList(gameModel.getPlayerList());
+        this.bookshelfList = UtilitySerializer.serializeArrayOfBookshelves(gameModel.getPlayerList());
+        this.bookshelfListItemId = UtilitySerializer.serializeArrayOfItemId(gameModel.getPlayerList());
+        this.selectedTiles = UtilitySerializer.serializeArrayOfItemTiles(gameModel.getCurrentPlayer().getSelectedItemTiles());
+        this.selectedTilesId = UtilitySerializer.serializeArrayOfItemTilesId(gameModel.getCurrentPlayer().getSelectedItemTiles());
+        this.personalGoalCardList = UtilitySerializer.serializeArrayOfPersonalGoalCards(gameModel.getPlayerList());
+        this.personalGooalCardListId = UtilitySerializer.serializeArrayOfPersonalGoalCardsId(gameModel.getPlayerList());
+        this.commonGoalCardDeck = UtilitySerializer.serializeCommonGoalCardDeck(gameModel.getCommonGoalCardDeck().getDeck());
+        this.pointsList = UtilitySerializer.serializePointsList(gameModel.getPlayerList());
+        this.personalGoalCardPlayerListId = UtilitySerializer.serializeArrayPersonalGoalCardPlaterListId(gameModel.getPlayerList());
         this.canBeSelectedCoordinates = gameModel.getBoard().getCanBeSelectedCoordinates();
         this.selectedCoordinates = gameModel.getBoard().getSelectedCoordinates();
         this.currentPlayer = gameModel.getCurrentPlayer().getNickname();
