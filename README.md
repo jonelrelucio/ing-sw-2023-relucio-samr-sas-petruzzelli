@@ -26,7 +26,7 @@ Main UML Diagram: [UML Diagram](src/deliverables/umlDiagram/ClassDiagram_Model.p
 | Basic rules                  |  🟢   |
 | Complete rules               |  🟢   |
 | RMI                          |  🟢   |
-| Socket                       |  🟡   |
+| Socket                       |  🟢   |
 | CLI                          |  🟢   |
 | GUI                          |  🟡   |
 | Multiple games               |  🔴   |
