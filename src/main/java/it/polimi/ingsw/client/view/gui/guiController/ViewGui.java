@@ -39,13 +39,7 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     Scene endGameScene;
     private final Stage window;
     private Integer change;
-    private boolean isMyTurn = false;
-    /**
-     * Flag used to specify if the player can join the chat
-     */
-    private boolean chatAvailability = false;
-    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in)); // used for chat message input
-    Thread chatThread;
+
 
 
     /**
@@ -174,7 +168,6 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
             if (username.length() < 3 || username.isBlank()) System.out.println("Invalid username, try again...");
         }   while( username.length() < 3 || username.isBlank() );
         return username;
-       // return "Dalila";
     }
     /**
      * Read the user input and check its validity.
@@ -200,7 +193,6 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
             if (maxNumOfPlayers < 2 || maxNumOfPlayers > 4) System.out.println("Only from 2 to 4 players can join. Selected a number again:");
         }   while( maxNumOfPlayers < 2 || maxNumOfPlayers > 4 );
         return maxNumOfPlayers;
-        //return 2;
     }
 
     private void updateChat(GameModelView gameModelView) {
