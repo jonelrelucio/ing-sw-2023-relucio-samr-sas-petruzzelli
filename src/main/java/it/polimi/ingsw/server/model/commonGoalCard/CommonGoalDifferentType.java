@@ -32,18 +32,23 @@ public class CommonGoalDifferentType implements CommonGoalCard{
                     // iterate over the sub matrix representing the pattern scheme
                     for (int patternRow = displayRow; patternRow <= displayRow + row - 1; patternRow++) {
                         for (int patternCol = displayCol; patternCol <= displayCol + col - 1; patternCol++) {
-
-                            // if the HashMap has not a key of the current tile type then initialize a new key with value of 1
-                            if (patternControl.isEmpty() || patternControl.get(bookshelf[patternRow][patternCol].getItemTileType()) == null) {
-                                patternControl.put(bookshelf[patternRow][patternCol].getItemTileType(), 1);
-                            } else {
-                                patternControl.put(bookshelf[patternRow][patternCol].getItemTileType(), patternControl.get(bookshelf[patternRow][patternCol].getItemTileType()) + 1);
+                            if (bookshelf[patternRow][patternCol].getItemTileType() != ItemTileType.EMPTY) {
+                                // if the HashMap has not a key of the current tile type then initialize a new key with value of 1
+                                if (patternControl.isEmpty() || patternControl.get(bookshelf[patternRow][patternCol].getItemTileType()) == null) {
+                                    patternControl.put(bookshelf[patternRow][patternCol].getItemTileType(), 1);
+                                } else {
+                                    patternControl.put(bookshelf[patternRow][patternCol].getItemTileType(), patternControl.get(bookshelf[patternRow][patternCol].getItemTileType()) + 1);
+                                }
                             }
-
                         }
                     }
 
-                    if (patternControl.size() >= minDifferentType && patternControl.size() <= maxDifferentType) occurrenceControl++;
+                    // count the number of elements into the patternControl hashmap, there must be exactly row * col elements.
+                    int count = 0;
+                    for (ItemTileType key : patternControl.keySet()) {
+                        count = count + patternControl.get(key);
+                    }
+                    if (count == row * col && patternControl.size() >= minDifferentType && patternControl.size() <= maxDifferentType) occurrenceControl++;
                     if (occurrenceControl == occurrence) return true;
                     patternControl.clear();
                 }

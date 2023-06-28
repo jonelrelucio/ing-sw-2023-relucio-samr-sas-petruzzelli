@@ -89,6 +89,23 @@ public class CommonGoalCardTest {
                     {new ItemTile(ItemTileType.BOOK),   new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.FRAME),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
                     {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.TROPHY),  new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)}};
 
+    private final ItemTile[][] none =
+            {       {new ItemTile(ItemTileType.EMPTY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                    {new ItemTile(ItemTileType.EMPTY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                    {new ItemTile(ItemTileType.TROPHY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                    {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.FRAME),   new ItemTile(ItemTileType.EMPTY),     new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                    {new ItemTile(ItemTileType.BOOK),   new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                    {new ItemTile(ItemTileType.PLANT),    new ItemTile(ItemTileType.BOOK),  new ItemTile(ItemTileType.EMPTY),     new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)}};
+
+    private final ItemTile[][] eightPiece =
+            {       {new ItemTile(ItemTileType.EMPTY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                    {new ItemTile(ItemTileType.EMPTY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                    {new ItemTile(ItemTileType.EMPTY),  new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                    {new ItemTile(ItemTileType.EMPTY),    new ItemTile(ItemTileType.CAT),   new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                    {new ItemTile(ItemTileType.CAT),   new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.CAT),   new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)},
+                    {new ItemTile(ItemTileType.CAT),    new ItemTile(ItemTileType.CAT),  new ItemTile(ItemTileType.CAT),     new ItemTile(ItemTileType.EMPTY),   new ItemTile(ItemTileType.EMPTY)}};
+
+
     @Test
     public void testStair() {
         int[][] coords = {  {0, 0, 0, 0, 0},
@@ -109,6 +126,7 @@ public class CommonGoalCardTest {
         CommonGoalCard card = new CommonGoalShape(2, 1, 1, coords, 8, false, false, false, true, false);
         assertTrue(card.checkPattern(eightPieces));
         assertFalse(card.checkPattern(stair));
+        assertTrue(card.checkPattern(eightPiece));
     }
 
     @Test
@@ -171,6 +189,7 @@ public class CommonGoalCardTest {
         CommonGoalCard card = new CommonGoalDifferentType(10, 1, 5, 4, 1, 3);
         assertTrue(card.checkPattern(rowMax3Types));
         assertFalse(card.checkPattern(stair));
+        assertFalse(card.checkPattern(none));
     }
 
     @Test
@@ -178,6 +197,7 @@ public class CommonGoalCardTest {
         CommonGoalCard card = new CommonGoalDifferentType(11, 6, 1, 2, 6, 6);
         assertTrue(card.checkPattern(colMax3Types));
         assertFalse(card.checkPattern(stair));
+        assertFalse(card.checkPattern(none));
     }
 
     @Test

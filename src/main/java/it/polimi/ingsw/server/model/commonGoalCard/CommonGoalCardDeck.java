@@ -92,7 +92,9 @@ public class CommonGoalCardDeck {
         for (CommonGoalCard card : deck.keySet()) {
             if(!player.getObtainedCommonGoalCards().contains(card) && card.checkPattern(bookshelf)) {
                 player.setObtainedCommonGoalCards(card);
-                player.setScore(player.getObtainedCommonGoalPoints()+getScoringToken(card));
+                int points = player.getObtainedCommonGoalPoints() + getScoringToken(card);
+                //player.setScore(points);
+                player.setObtainedCommonGoalPoints(points);
             }
         }
         return player.getObtainedCommonGoalPoints();
