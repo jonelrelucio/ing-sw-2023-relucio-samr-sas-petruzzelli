@@ -2,6 +2,7 @@ package it.polimi.ingsw.client.view.gui.guiController;
 
 
 import it.polimi.ingsw.client.view.View;
+import it.polimi.ingsw.client.view.gui.GUI;
 import it.polimi.ingsw.distributed.events.controllerEvents.MessageEvent;
 import it.polimi.ingsw.util.Observable;
 import javafx.application.Platform;
@@ -27,7 +28,7 @@ import static it.polimi.ingsw.distributed.events.controllerEvents.EventControlle
 
 public class ViewGui  extends Observable<MessageEvent> implements View, Runnable {
 
-    private final HashMap<EventView, ViewEventHandler> viewEventHandlers;
+    private final HashMap<EventView, ViewEventHandler> viewEventHandlers = new HashMap<>();;
     private String thisUsername;
     private ControllerMainSceneDalila controllerMainSceneDalila;
     Scene mainSceneDalila;
@@ -37,9 +38,11 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     Scene waitingForPlayers;
     private ControllerEndGame controllerEndGame;
     Scene endGameScene;
-    private final Stage window;
+    private Stage window;
     private Integer change;
     private boolean isMyTurn = false;
+    private boolean isWindowOpen = false;
+    private boolean settedScenes = false;
     /**
      * Flag used to specify if the player can join the chat
      */
@@ -56,11 +59,18 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     public ViewGui( Stage window) {
         this.window = window;
         change =0 ;
-        changeSceneSelectConnection();
+        //changeSceneSelectConnection();
         changeSceneMainSceneDalila();
-        changeSceneWaitingForPlayers();
+        //changeSceneWaitingForPlayers();
         changeSceneEndGame();
-        viewEventHandlers = new HashMap<>();
+        initHandlers();
+    }
+
+    public ViewGui() {
+        initHandlers();
+    }
+
+    private void initHandlers() {
         viewEventHandlers.put(SELECT_COORDINATES_SUCCESS, this::selectedCoordinatesSuccess);
         viewEventHandlers.put(SELECT_COORDINATES_FAIL,  this::selectedCoordinatesFail);
         viewEventHandlers.put(DESELECT_COORDINATES_SUCCESS, this::deselectCoordinatesSuccess);
@@ -74,10 +84,13 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
         viewEventHandlers.put(UPDATE_CHAT, this::showChat);
     }
 
+    public void setWindow(Stage window) {
+        this.window = window;
+    }
+
     /**
      * changes to scene in which the player chooses the connection
      */
-
     public void changeSceneSelectConnection() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gui/fxml/SelectConnection.fxml"));
         try {
@@ -220,11 +233,26 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
      */
 
     public void newTurn(GameModelView gameModelView){
-        new Thread(() -> {
-            printAll(gameModelView);
-            listenToPlayer(gameModelView);
-        }).start();
+        if (!isWindowOpen) {
+            isWindowOpen = true;
+            GUI.setViewGUI(this, gameModelView);
+            GUI.startView();
+        }
+        else {
+            if(!settedScenes) {
+                settedScenes = true;
+                changeSceneMainSceneDalila();
+                changeSceneEndGame();
+                window.setScene(mainSceneDalila);
+                window.show();
+            }
+            new Thread(() -> {
+                printAll(gameModelView);
+                listenToPlayer(gameModelView);
+            }).start();
+        }
     }
+
     private void listenToPlayer(GameModelView gameModelView) {
         if ( isMyTurn(gameModelView)) {
             Platform.runLater(() -> {
@@ -240,13 +268,7 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
 
     @Override
     public void printMessage(String s) {
-        if(Objects.equals(s, "Starting a new game...")){
-            Platform.runLater(this::showMain);
-        }else if(change == 1){
-            Platform.runLater(() -> {
-                controllerWaitingForPlayers.showMessage(s);
-            });
-        }
+        System.out.println(s);
     }
     @Override
     public void setThisUsername(String thisUsername) {

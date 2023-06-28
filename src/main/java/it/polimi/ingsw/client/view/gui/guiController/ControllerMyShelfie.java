@@ -21,6 +21,6 @@ public class ControllerMyShelfie {
 
     public void letsPlay(ActionEvent actionEvent) {
         viewGUI = new ViewGui((Stage)letsPlay.getScene().getWindow());
-        viewGUI.selectConnection();
+        viewGUI.showMain();
     }
 }

@@ -231,7 +231,7 @@ public class ControllerMainSceneDalila implements Initializable {
 
 
     public void setFirstPlayerChair(Rectangle r){
-        image = new Image(getClass().getResource("/view/gui/background/firstPlayerToken.jpg").toString());
+        image = new Image(getClass().getResource("/view/gui/background/firstplayertoken.jpg").toString());
         r.setFill(new ImagePattern(image));
         r.setVisible(true);
 

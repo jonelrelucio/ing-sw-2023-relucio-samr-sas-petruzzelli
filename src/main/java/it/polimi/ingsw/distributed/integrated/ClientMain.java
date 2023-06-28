@@ -3,9 +3,15 @@ package it.polimi.ingsw.distributed.integrated;
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.view.cli.CLI;
 import it.polimi.ingsw.client.view.gui.GUI;
+import it.polimi.ingsw.client.view.gui.guiController.ViewGui;
 import it.polimi.ingsw.distributed.Server;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.Node;
+import javafx.scene.layout.Pane;
+import javafx.stage.Stage;
 
 
+import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -19,7 +25,7 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Scanner;
 
-import static it.polimi.ingsw.distributed.integrated.GameServerMain.displayInterfaceInformation;
+import it.polimi.ingsw.client.view.gui.guiController.ViewGui;
 import static java.lang.System.out;
 
 public class ClientMain {
@@ -71,8 +77,8 @@ public class ClientMain {
         if(viewChoice.equals("c")){
             view = new CLI();
         }else if(viewChoice.equals("g")){
-            //view = new ViewGui();
-            GUI.startView();
+            view = new ViewGui();
+
         }
 
 
