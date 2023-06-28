@@ -205,6 +205,7 @@ public class ControllerMainSceneDalila implements Initializable {
         imageComGoal2Square.setCache(false);
         imageComGoal2SquarePoint.setCache(false);
         clicked = false;
+        chatTextField.clear();
     }
 
     private void initLabelPersonalTiles() {
@@ -238,15 +239,16 @@ public class ControllerMainSceneDalila implements Initializable {
     };
     public void showMessage(String s,String c){
         textChat = new Text(s + "\n");
-        String style = "-fx-text-fill: " + c + ";";
-        textChat.setStyle(style);
+        //String style = "-fx-text-fill: " + c + ";";
+        //textChat.setStyle(style);
+        textChat.setFill(Color.valueOf(c));
         chatTextFlow.getChildren().add(textChat);
     }
 
     public void showGameMessage(String s){
         clearMessage();
         text = new Text(s + "\n");
-        text.setFont(Font.font("Century Schoolbook", FontWeight.NORMAL,25));
+        text.setFont(Font.font("Century Schoolbook", FontWeight.NORMAL,20));
         textFlowGameMessages.getChildren().add(text);
     }
 
@@ -263,8 +265,10 @@ public class ControllerMainSceneDalila implements Initializable {
     }
 
     public void setChatButtonSend(){
-        if(!chatTextField.getText().isEmpty())
+        if(!chatTextField.getText().isEmpty()) {
             viewGUI.setNewMessage(chatTextField.getText());
+            chatTextField.clear();
+        }
     }
 
 
@@ -718,12 +722,16 @@ public class ControllerMainSceneDalila implements Initializable {
 
 
     public void addToChat(GameModelView gameModelView) {
-        chatTextFlow.getChildren().clear();
-        for (String m : gameModelView.getChat()) {
-            String[] message = m.split(":");
-            showMessage(message[0]+ ":" + message[1],returnColor(gameModelView.getPlayerList(),message[0]));
+        String[] chat = gameModelView.getChat().toArray(new String[10]);
+        int index = 0;
+        for (int i = 0; i < 10; i++) {
+            if (chat[i] == null) {
+                break;
+            }
+            index = i;
         }
-
+        String[] message = chat[index].split(":");
+        showMessage(message[0]+ ":" + message[1],returnColor(gameModelView.getPlayerList(),message[0]));
     }
     
     public String returnColor(String[] players, String player ) {
