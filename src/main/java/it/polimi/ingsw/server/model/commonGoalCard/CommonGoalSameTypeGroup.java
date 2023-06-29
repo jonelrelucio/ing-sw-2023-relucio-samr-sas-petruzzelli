@@ -7,13 +7,40 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
 
+/**
+ * This class represents a type of common goal card that not has a defined shape
+ * but has a defined occurrence value
+ */
 public class CommonGoalSameTypeGroup implements CommonGoalCard{
+    /**
+     * Unique card's id
+     */
     int id;
+    /**
+     * Number of tiles in the group
+     */
     int num;
+    /**
+     * Occurrences of the shape to be found
+     */
     int occurrence;
+    /**
+     * Flag that indicates to check if the occurrences have to not be adjacent
+     */
     boolean separated;
+    /**
+     * Flag that indicates to check if the groups have to be of the same tile type
+     */
     boolean sameType;
 
+    /**
+     * Initialize the card
+     * @param id
+     * @param num
+     * @param occurrence
+     * @param separated
+     * @param sameType
+     */
     public CommonGoalSameTypeGroup(int id, int num, int occurrence, boolean separated, boolean sameType) {
         this.id = id;
         this.num = num;
@@ -209,6 +236,14 @@ public class CommonGoalSameTypeGroup implements CommonGoalCard{
         return false;
     }
 
+    /**
+     * This method check if the current coordinates tile is present in the 'locked' ArrayList by its type
+     * @param matchingType
+     * @param locked
+     * @param row
+     * @param col
+     * @return
+     */
     private boolean findCoordsByType(ItemTileType matchingType, HashMap<ItemTileType, HashMap<Integer, ArrayList<int[]>>> locked, int row, int col) {
         if (locked.get(matchingType) != null) {
             for (Integer i : locked.get(matchingType).keySet()) {
@@ -220,6 +255,14 @@ public class CommonGoalSameTypeGroup implements CommonGoalCard{
         return false;
     }
 
+    /**
+     * This method check if the current coordinates are present in the 'locked' ArrayList of the selected group
+     * @param locked
+     * @param row
+     * @param col
+     * @param groupID
+     * @return if the coordinates are present in the 'locked' ArrayList
+     */
     private boolean findCoordsById(HashMap<Integer, ArrayList<int[]>> locked, int row, int col, int groupID) {
         if (locked != null && locked.containsKey(groupID)) {
             for (int[] x : locked.get(groupID)) {
@@ -230,5 +273,9 @@ public class CommonGoalSameTypeGroup implements CommonGoalCard{
         return false;
     }
 
+    /**
+     * Getter for 'id' field
+     * @return the card's id
+     */
     public int getId() { return id; }
 }

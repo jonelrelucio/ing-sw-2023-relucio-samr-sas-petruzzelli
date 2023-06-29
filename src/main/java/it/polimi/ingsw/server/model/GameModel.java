@@ -6,6 +6,7 @@ import it.polimi.ingsw.server.model.commonGoalCard.CommonGoalCardDeck;
 import it.polimi.ingsw.server.model.util.CircularArrayList;
 import it.polimi.ingsw.util.Observable;
 
+import java.util.HashMap;
 import java.util.concurrent.ArrayBlockingQueue;
 
 import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
@@ -20,7 +21,14 @@ public class GameModel extends Observable<EventView> {
     private int numOfRounds;
     private boolean endGame;
     private Player currentPlayer;
+    /**
+     * List of the last 10 chat messages
+     */
     private ArrayBlockingQueue<String> chat;
+    /**
+     * HashMap with players username as keys and a message as value
+     */
+    private HashMap<String, String> privateMessage;
 
     public GameModel(int numOfPlayer) {
         if (numOfPlayer < 2 || numOfPlayer > 4 ) throw new IllegalArgumentException("Number of Player out of bounds");
@@ -40,6 +48,7 @@ public class GameModel extends Observable<EventView> {
         this.state = State.INIT;
         PersonalGoalCardBag.reset();
         this.chat = new ArrayBlockingQueue<>(10, true);
+        this.privateMessage = new HashMap<>();
     }
 
     public void initGame(Board board, CircularArrayList<Player> playerList) {
@@ -71,6 +80,8 @@ public class GameModel extends Observable<EventView> {
     public Player getCurrentPlayer() { return currentPlayer;}
     public ArrayBlockingQueue<String> getChat() { return chat; }
 
+    public HashMap<String, String> getPrivateMessageMap() { return privateMessage; }
+
     // Setters
     public void setNumOfPlayer(int numOfPlayer) {
         this.numOfPlayer = numOfPlayer;
@@ -93,12 +104,30 @@ public class GameModel extends Observable<EventView> {
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
     }
+
+    /**
+     * Add the message to the list of the last 10 chat messages and notify the clients
+     * @param message
+     */
     public void addMessageToChat(String message) {
         if (this.chat.remainingCapacity() == 0) {
             this.chat.poll();
         }
         this.chat.add(message);
         setChangedAndNotifyObservers(UPDATE_CHAT);
+    }
+
+    /**
+     * Add the received message to the hashmap 'privateMessage' to the corresponding key (recipient username) and notify the clients
+     * @param username
+     * @param message
+     * @see #setChangedAndNotifyObservers(EventView)
+     */
+    public void addPrivateMessageToMap(String username, String message) {
+        if (playerList.stream().anyMatch(p -> p.getNickname().equals(username))) {
+            this.privateMessage.put(username, message);
+        }
+        setChangedAndNotifyObservers(UPDATE_PRIVATE_CHAT);
     }
 
     /**

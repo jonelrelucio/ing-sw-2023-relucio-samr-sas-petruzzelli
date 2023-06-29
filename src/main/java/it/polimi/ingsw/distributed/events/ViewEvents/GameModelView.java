@@ -29,6 +29,7 @@ public class GameModelView implements Serializable {
     private HashMap<String, Integer> personalGoalCardPlayerListId;
     private int[] pointsList;
     private ArrayBlockingQueue<String> chat;
+    private HashMap<String, String> privateMessage;
 
     public GameModelView(GameModel gameModel){
         this.boardMatrix = Utility.serializeBoardMatrix(gameModel.getBoard().getBoardMatrix());
@@ -47,6 +48,7 @@ public class GameModelView implements Serializable {
         this.selectedCoordinates = gameModel.getBoard().getSelectedCoordinates();
         this.currentPlayer = gameModel.getCurrentPlayer().getNickname();
         this.chat = gameModel.getChat();
+        this.privateMessage = gameModel.getPrivateMessageMap();
     }
 
     public ItemTileType[][] getBoardMatrix() { return boardMatrix; }
@@ -65,4 +67,5 @@ public class GameModelView implements Serializable {
     public int[] getPointsList() { return pointsList; }
     public ArrayBlockingQueue<String> getChat() { return chat; }
     public ArrayList<Integer> getSelectedTilesId() { return selectedTilesId; }
+    public HashMap<String, String> getPrivateMessage() { return privateMessage; }
 }
