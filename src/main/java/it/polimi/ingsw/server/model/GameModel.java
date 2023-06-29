@@ -11,15 +11,41 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
 
+/**
+ * This class represents all the game element and the states of the game
+ */
 public class GameModel extends Observable<EventView> {
-
+    /**
+     * Number of player in game, minimum 2 and maximum 4
+     */
     private int numOfPlayer;
+    /**
+     * List of the players
+     */
     private CircularArrayList<Player> playerList;
+    /**
+     * List of the two common goal card with their available points
+     */
     private CommonGoalCardDeck commonGoalCardDeck;
+    /**
+     * The main board that represents the available item tile which the current player could take
+     */
     private Board board;
+    /**
+     * The current state of the game
+     */
     private State state;
+    /**
+     * The current number of played rounds
+     */
     private int numOfRounds;
+    /**
+     * Flag that indicates that a player has filled its bookshelf and the last round will be played
+     */
     private boolean endGame;
+    /**
+     * The current playing player
+     */
     private Player currentPlayer;
     /**
      * List of the last 10 chat messages
@@ -41,6 +67,9 @@ public class GameModel extends Observable<EventView> {
         PersonalGoalCardBag.reset();
     }
 
+    /**
+     * Initialize the GameModel
+     */
     public GameModel(){
         this.numOfPlayer = 0;
         this.playerList = new CircularArrayList<>();
@@ -51,6 +80,12 @@ public class GameModel extends Observable<EventView> {
         this.privateMessage = new HashMap<>();
     }
 
+    /**
+     * Setup the game once the players are ready to start the first turn
+     * @param board
+     * @param playerList
+     * @see #setChangedAndNotifyObservers(EventView)
+     */
     public void initGame(Board board, CircularArrayList<Player> playerList) {
         this.numOfPlayer = playerList.size();
         this.board = board;
@@ -60,47 +95,137 @@ public class GameModel extends Observable<EventView> {
         setChangedAndNotifyObservers(NEW_TURN);
     }
 
+    /**
+     * @return the winner as Player
+     */
     public Player getWinner() { if(!currentPlayer.isWinner()) throw new IllegalCallerException(); return currentPlayer; }
+
+    /**
+     * Set the current playing player
+     */
     public void updateNextPlayer() {this.currentPlayer = playerList.get(playerList.indexOf(this.currentPlayer)+1);}
+
+    /**
+     * Increment the numOfRound field by 1
+     */
     public void updateNumOfRounds() { this.numOfRounds++; }
 
     // Getters
+
+    /**
+     * Getter for the number of player
+     * @return the number of player as int
+     */
     public int getNumOfPlayer() {
         return numOfPlayer;
     }
+
+    /**
+     * Getter for the list of player
+     * @return the list of player as {@code CircularArrayList<Player>}
+     */
     public CircularArrayList<Player> getPlayerList() {return playerList;}
+
+    /**
+     * Getter for the list of two common goal card
+     * @return the two common goal cards with their available points as CommonGoalCardDeck
+     */
     public CommonGoalCardDeck getCommonGoalCardDeck() {
         return commonGoalCardDeck;
     }
+
+    /**
+     * Getter for the main game board
+     * @return the game board as Board
+     */
     public Board getBoard() {
         return board;
     }
+
+    /**
+     * Getter for the current game state
+     * @return the state as State
+     */
     public State getState() { return state;}
+
+    /**
+     * Getter for the current number of rounds
+     * @return the number of played rounds
+     */
     public int getNumOfRounds() { return numOfRounds;}
+
+    /**
+     * Getter for the current playing player
+     * @return current player
+     */
     public Player getCurrentPlayer() { return currentPlayer;}
+
+    /**
+     * Getter for the list of chat messages
+     * @return the last 10 messages in the chat
+     */
     public ArrayBlockingQueue<String> getChat() { return chat; }
 
+    /**
+     * Getter for the list of the private messages
+     * @return an HashMap that contains a player username as key and its last private message as value
+     */
     public HashMap<String, String> getPrivateMessageMap() { return privateMessage; }
 
     // Setters
+
+    /**
+     * Set the number of player
+     * @param numOfPlayer
+     */
     public void setNumOfPlayer(int numOfPlayer) {
         this.numOfPlayer = numOfPlayer;
     }
+
+    /**
+     * Set the list of players
+     * @param playerList
+     */
     public void setPlayerList(CircularArrayList<Player> playerList) {
         this.playerList = playerList;
     }
+
+    /**
+     * Set the list of the two common goal card with their initial available points
+     * @param commonGoalCardDeck
+     */
     public void setCommonGoalCardDeck(CommonGoalCardDeck commonGoalCardDeck) {
         this.commonGoalCardDeck = commonGoalCardDeck;
     }
+
+    /**
+     * Set the main board of the game
+     * @param board
+     */
     public void setBoard(Board board) {
         this.board = board;
     }
+
+    /**
+     * Set the current state of the game
+     * @param state
+     */
     public void setState(State state) {
         this.state = state;
     }
+
+    /**
+     * Set the numOfRounds field
+     * @param numOfRounds
+     */
     public void setNumOfRounds(int numOfRounds) {
         this.numOfRounds = numOfRounds;
     }
+
+    /**
+     * Set the currentPlayer field
+     * @param currentPlayer
+     */
     public void setCurrentPlayer(Player currentPlayer) {
         this.currentPlayer = currentPlayer;
     }

@@ -14,15 +14,28 @@ import java.nio.file.*;
 import java.util.*;
 import java.io.BufferedReader;
 
+/**
+ * This class represents a deck of two common goal cards with the corresponding available stack of points
+ */
 public class CommonGoalCardDeck {
+    /**
+     * HashMap that has a common goal card as key and a stack of integer that represents the available point as value
+     */
     private final HashMap<CommonGoalCard, Stack<Integer>> deck = new HashMap<>();
-
+    /**
+     * Array of int[] that contains the possible list of available point per card
+     */
     private static final int[][] scoringTokenArray = {
             {4, 8},
             {4, 6, 8},
             {2, 4, 6, 8}
     };
 
+    /**
+     * This method build the stack of integer that represents the available points based on the number of players
+     * @param key
+     * @return a stack of Integer filled with the available points
+     */
     private Stack<Integer> buildScoringStack(int key){
         Stack<Integer> scoringTokenStack = new Stack<>();
         for (int i = 0; i < scoringTokenArray[key-2].length; i++){
@@ -31,7 +44,12 @@ public class CommonGoalCardDeck {
         return scoringTokenStack;
     }
 
-    public CommonGoalCardDeck(int numOfPlayers) {
+    /**
+     * This method deserialize the json containing the list of common goal cards and create an Arraylist of common goal card
+     * @return an {@code ArrayList<CommonGoalCard>}
+     */
+    public List<CommonGoalCard> getCommonGoalCardList() {
+
         GsonBuilder builder = new GsonBuilder();
 
         builder.registerTypeAdapter(CommonGoalCard.class, new CommonGoalCardDeserializer());
@@ -40,8 +58,19 @@ public class CommonGoalCardDeck {
 
         InputStream inputStream = getClass().getResourceAsStream("/json/CommonGoalCard.json");
         reader = new BufferedReader(new InputStreamReader(inputStream));
+        return new ArrayList<>(Arrays.asList(gson.fromJson(reader, CommonGoalCard[].class)));
+    }
 
-        List<CommonGoalCard> completeDeck = new ArrayList<>(Arrays.asList(gson.fromJson(reader, CommonGoalCard[].class)));
+    /**
+     * This constructor deserialize the json that contains a list of common goal cards calling getCommonGoalCardList() method
+     * and extract two of them randomly, then fill the 'deck' with the two cards and their stack of available points
+     * @param numOfPlayers
+     * @see #buildScoringStack(int)
+     * @see #getCommonGoalCardList()
+     */
+    public CommonGoalCardDeck(int numOfPlayers) {
+
+        List<CommonGoalCard> completeDeck = getCommonGoalCardList();
 
         Collections.shuffle(completeDeck);
         CommonGoalCard card1 = completeDeck.remove(0);
@@ -51,15 +80,28 @@ public class CommonGoalCardDeck {
         deck.put(card2, buildScoringStack(numOfPlayers));
     }
 
+    /**
+     * Getter for 'deck'
+     * @return the HashMap with the two common goal cards and their available points
+     */
     public HashMap<CommonGoalCard, Stack<Integer>> getDeck() {
         return deck;
     }
 
+    /**
+     * Remove the first available point from the stack of integer of the selected card
+     * @param card
+     * @return the first point available as int
+     */
     public int getScoringToken(CommonGoalCard card) {
         if (deck.get(card).isEmpty()) return 0;
         else return deck.get(card).pop();
     }
 
+    /**
+     * Custom deserializer for common goal card.
+     * Build the target class name based on the field "cardType" of the json objects
+     */
     public static class CommonGoalCardDeserializer implements JsonDeserializer<CommonGoalCard> {
         @Override
         public CommonGoalCard deserialize(JsonElement json, Type typeOf, JsonDeserializationContext context) throws JsonParseException {
@@ -99,7 +141,4 @@ public class CommonGoalCardDeck {
         }
         return player.getObtainedCommonGoalPoints();
     }
-
-    public HashMap<CommonGoalCard, Stack<Integer>> getCommonGoalCardDeck() { return deck; }
-
 }
