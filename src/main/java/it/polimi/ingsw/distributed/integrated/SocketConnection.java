@@ -10,9 +10,20 @@ import java.io.ObjectOutputStream;
 import java.net.Socket;
 
 public class SocketConnection extends Connection{
+    /**
+     * The outputstream used by this socket connection to communicate with the client
+     */
     private final ObjectOutputStream oos;
+    /**
+     * The inputstream used to communicate with the client
+     */
     private final ObjectInputStream ois;
 
+
+    /**
+     * Creates a new socketConnection given the socket
+     * @param socket
+     */
     public SocketConnection(Socket socket){
         try{
             this.oos = new ObjectOutputStream(socket.getOutputStream());
@@ -26,6 +37,10 @@ public class SocketConnection extends Connection{
         }
     }
 
+    /**
+     * Sends a message to the client
+     * @param message           message to be sent
+     */
     @Override
     public void sendMessageToClient(String message) {
         try{
@@ -37,17 +52,29 @@ public class SocketConnection extends Connection{
         }
     }
 
+    /**
+     * Updates the client
+     * @param gameModelView     the updated game model view
+     * @param eventView         the type of event
+     */
     @Override
     void updateClient(GameModelView gameModelView, EventView eventView) {
         UpdateMessage updateMessage = new UpdateMessage(gameModelView, eventView);
         sendMessageToClient(updateMessage);
     }
 
+    /**
+     * Start view
+     */
     @Override
     void startView()  {
         sendMessageToClient(new SimpleTextMessage(MessageType.START_VIEW_MESSAGE, ""));
     }
 
+    /**
+     * Send a message to the client to inform it what it must give the number of players
+     * @return
+     */
     @Override
     int askMaxNumOfPlayers() {
         sendObject(new SimpleTextMessage(MessageType.NUM_OF_PLAYERS_MESSAGE, ""));
@@ -55,6 +82,10 @@ public class SocketConnection extends Connection{
         return numOfPlayers;
     }
 
+    /**
+     * Sends an object to the client
+     * @param object The object to be sent
+     */
     public void sendObject(Object object){
         try{
 
@@ -67,6 +98,10 @@ public class SocketConnection extends Connection{
         }
     }
 
+    /**
+     * Receives an object from the client
+     * @return the received object
+     */
     public Object receiveObject(){
         try {
             return ois.readObject();
@@ -77,10 +112,18 @@ public class SocketConnection extends Connection{
         }
     }
 
+    /**
+     * Sets the username of this connection
+     * @param username the username
+     */
     public void setUsername(String username) {
         this.username = username;
     }
 
+    /**
+     * Sends a message to the client
+     * @param message           message of type Message
+     */
     @Override
     public void sendMessageToClient(Message message){
         try{
