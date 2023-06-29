@@ -3,17 +3,41 @@ package it.polimi.ingsw.server.model.commonGoalCard;
 import it.polimi.ingsw.server.model.ItemTile.ItemTile;
 import it.polimi.ingsw.server.model.ItemTile.ItemTileType;
 
+/**
+ * This class represents a type of common goal card that has a defined shape
+ */
 public class CommonGoalExactShape implements CommonGoalCard {
+    /**
+     * Unique card's id
+     */
     private final int id;
+    /**
+     * Coordinates of the cell that have to match their type
+     */
     private final int[][] coords;
+    /**
+     * Flag that indicates to check if there is the shape flipped horizontally
+     */
     private final boolean verticalSymmetric;
 
+    /**
+     * Initialize the card
+     * @param id
+     * @param coords
+     * @param verticalSymmetric
+     */
     public CommonGoalExactShape(int id, int[][] coords, boolean verticalSymmetric) {
         this.id = id;
         this.coords = coords;
         this.verticalSymmetric = verticalSymmetric;
     }
 
+    /**
+     * This method inspect the bookshelf matrix and check if the card's shape is present.
+     * @param bookshelf
+     * @return true if the shape is found
+     * @see #flipHorizontal()
+     */
     @Override
     public boolean checkPattern(ItemTile[][] bookshelf) {
         boolean found = true;
@@ -47,6 +71,10 @@ public class CommonGoalExactShape implements CommonGoalCard {
         return found;
     }
 
+    /**
+     * This method flip horizontally the coordinates of coords field
+     * @return the new coordinates
+     */
     private int[][] flipHorizontal() {
         int[][] newCoords = new int[coords.length][coords[0].length];
 
@@ -59,5 +87,9 @@ public class CommonGoalExactShape implements CommonGoalCard {
         return newCoords;
     }
 
+    /**
+     * Getter for 'id' field
+     * @return the card's id
+     */
     public int getId() { return id; }
 }

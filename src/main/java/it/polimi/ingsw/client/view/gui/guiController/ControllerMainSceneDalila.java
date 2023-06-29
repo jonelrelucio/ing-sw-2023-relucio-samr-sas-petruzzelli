@@ -5,8 +5,11 @@ package it.polimi.ingsw.client.view.gui.guiController;
 import it.polimi.ingsw.client.view.gui.utils.Utils;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 import it.polimi.ingsw.server.model.ItemTile.ItemTileType;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
@@ -101,6 +104,10 @@ public class ControllerMainSceneDalila implements Initializable {
     @FXML
     TextFlow chatTextFlow;
     @FXML
+    ChoiceBox playersListChat;
+    @FXML
+    Label choiceBoxLabel;
+    @FXML
     Button chatButtonSend;
     @FXML
     TextField chatTextField;
@@ -145,6 +152,7 @@ public class ControllerMainSceneDalila implements Initializable {
     @FXML
     Image image;
 
+
     private  ArrayList<Button> buttons;
 
     private  ArrayList<Button> chosenTilesButtons;
@@ -159,9 +167,12 @@ public class ControllerMainSceneDalila implements Initializable {
     private static final int height = 40;
     private static final int width = 35;
     private static Boolean clicked;
-    private String[] chatColors = new String[]{"red","blue","orange","green"};
+    private String[] chatColors = new String[]{"blue","orange","green"};
+    private String personalChatColor = "black";
 
     private HashMap<Integer, String> commonGoalCardDescriptions;
+
+    private String lastPrivateMessage = null;
 
 
 
@@ -197,6 +208,7 @@ public class ControllerMainSceneDalila implements Initializable {
         labelFirstShelfWinner.setText("The first player who completely fills\ntheir bookshelf will obtain this token\nand will score 1 additional points");
         hideYesOrNo();
         chatTextField.setText("Write your message here");
+        choiceBoxLabel.setText("");
         commonGoalCardDescriptions = new HashMap<>();
         initCommonGoalCardDescription();
         initLabelPersonalTiles();
@@ -204,7 +216,14 @@ public class ControllerMainSceneDalila implements Initializable {
         imageComGoal1SquarePoint.setCache(false);
         imageComGoal2Square.setCache(false);
         imageComGoal2SquarePoint.setCache(false);
+        personalGoalImage.setCache(false);
+        chosenTilesButton1Image.setCache(false);
+        chosenTilesButton2Image.setCache(false);
+        chosenTilesButton3Image.setCache(false);
+        imageFirstShelfWinner.setCache(false);
+
         clicked = false;
+        chatTextField.clear();
     }
 
     private void initLabelPersonalTiles() {
@@ -229,7 +248,6 @@ public class ControllerMainSceneDalila implements Initializable {
     }
 
 
-
     public void setFirstPlayerChair(Rectangle r){
         image = new Image(getClass().getResource("/view/gui/background/firstplayertoken.jpg").toString());
         r.setFill(new ImagePattern(image));
@@ -238,15 +256,16 @@ public class ControllerMainSceneDalila implements Initializable {
     };
     public void showMessage(String s,String c){
         textChat = new Text(s + "\n");
-        String style = "-fx-text-fill: " + c + ";";
-        textChat.setStyle(style);
+        //String style = "-fx-text-fill: " + c + ";";
+        //textChat.setStyle(style);
+        textChat.setFill(Color.valueOf(c));
         chatTextFlow.getChildren().add(textChat);
     }
 
     public void showGameMessage(String s){
         clearMessage();
         text = new Text(s + "\n");
-        text.setFont(Font.font("Century Schoolbook", FontWeight.NORMAL,25));
+        text.setFont(Font.font("Century Schoolbook", FontWeight.NORMAL,20));
         textFlowGameMessages.getChildren().add(text);
     }
 
@@ -263,8 +282,24 @@ public class ControllerMainSceneDalila implements Initializable {
     }
 
     public void setChatButtonSend(){
-        if(!chatTextField.getText().isEmpty())
+        if(!chatTextField.getText().isEmpty()) {
+            if(playersListChat.getValue().equals("All")){
             viewGUI.setNewMessage(chatTextField.getText());
+            chatTextField.clear();
+            }else{
+                viewGUI.setNewPrivateMessage((String) playersListChat.getValue(),chatTextField.getText());
+                showMessage("(private) From "+ viewGUI.getThisUsername() +  " to " + playersListChat.getValue() + ": "+ chatTextField.getText(), personalChatColor);
+                chatTextField.clear();}
+        }
+    }
+
+    public void initChat(String[] players){
+        playersListChat.getItems().clear();
+        ObservableList<String> listPlayers = FXCollections.observableArrayList();
+        listPlayers.addAll(players);
+        playersListChat.setItems(listPlayers);
+        playersListChat.getItems().add("All");
+        playersListChat.setValue("All");
     }
 
 
@@ -643,10 +678,13 @@ public class ControllerMainSceneDalila implements Initializable {
             if(!clicked){
                 for (int i = 0; i < 6; i++) {
                     for (int j = 0; j < 5; j++) {
-                        Rectangle r = new Rectangle();
-                        r.setFill( Color.valueOf(getString(personalGoalCard[i][j])));
-                        r.setEffect(setGlow(50, getString(personalGoalCard[i][j])));
-                        personalBookshelfGrid.add(r,i,j);
+                        if(personalGoalCard[i][j] != ItemTileType.EMPTY) {
+                            Rectangle r = new Rectangle(40, 40);
+                            r.setFill(Color.valueOf(getString(personalGoalCard[i][j])));
+                            r.setEffect(setGlow(50, getString(personalGoalCard[i][j])));
+                            personalBookshelfGrid.add(r, j, i);
+                            GridPane.setMargin(r,new Insets(0,0,0,5));
+                        }
                     }
                 }
                 clicked = true;
@@ -682,11 +720,11 @@ public class ControllerMainSceneDalila implements Initializable {
 
     private static String getString(ItemTileType type) {
         return switch (type) {
-            case FRAME -> "purple";
-            case CAT -> "green";
-            case GAME -> "yellow";
+            case FRAME -> "MIDNIGHTBLUE";//"purple";
+            case CAT -> "CHARTREUSE";//"green";
+            case GAME -> "DARKORANGE";//"yellow";
             case BOOK -> "white";
-            case PLANT -> "red";
+            case PLANT -> "HOTPINK";//"red";
             case TROPHY -> "cyan";
             case EMPTY -> "black";
         };
@@ -718,18 +756,38 @@ public class ControllerMainSceneDalila implements Initializable {
 
 
     public void addToChat(GameModelView gameModelView) {
-        chatTextFlow.getChildren().clear();
-        for (String m : gameModelView.getChat()) {
-            String[] message = m.split(":");
-            showMessage(message[0]+ ":" + message[1],returnColor(gameModelView.getPlayerList(),message[0]));
+        String[] chat = gameModelView.getChat().toArray(new String[10]);
+        int index = 0;
+        for (int i = 0; i < 10; i++) {
+            if (chat[i] == null) {
+                break;
+            }
+            index = i;
         }
-
+        String[] message = chat[index].split(":");
+        showMessage("From " + message[0]+ " to All :" + message[1],returnColor(gameModelView.getPlayerList(),message[0]));
     }
-    
+
+    public void addToChatPrivateMessage(GameModelView gameModelView) {
+        String message = gameModelView.getPrivateMessage().get(viewGUI.getThisUsername());
+        if (message != null) {
+            String[] splittedMessage = message.split(":");
+            String[] splittedLastPrivateMessage = null;
+            if (lastPrivateMessage != null) {
+                splittedLastPrivateMessage = lastPrivateMessage.split(":");
+            }
+            if (lastPrivateMessage == null || !splittedLastPrivateMessage[0].equals(splittedMessage[0]) || !message.equals(lastPrivateMessage)) {
+                showMessage("(private) From " + splittedMessage[0] + " to " + viewGUI.getThisUsername() +": "+ splittedMessage[1],returnColor(gameModelView.getPlayerList(),splittedMessage[0]));
+                lastPrivateMessage = message;
+            }
+        }
+    }
     public String returnColor(String[] players, String player ) {
         String c = null;
         for (int i = 0; i < players.length;i++) {
-            if(player.equals(players[i])){
+            if(player.equals(viewGUI.getThisUsername())){
+                c = "black";
+            }else if(player.equals(players[i])){
                 c = chatColors[i];
             }
         }

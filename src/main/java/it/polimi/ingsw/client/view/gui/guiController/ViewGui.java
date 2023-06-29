@@ -17,7 +17,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.*;
-import java.util.concurrent.CountDownLatch;
+
 
 import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
 import static it.polimi.ingsw.distributed.events.controllerEvents.EventController.*;
@@ -82,6 +82,7 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
         viewEventHandlers.put(NEW_TURN, this::newTurn);
         viewEventHandlers.put(END_GAME, this::endGame);
         viewEventHandlers.put(UPDATE_CHAT, this::showChat);
+        viewEventHandlers.put(UPDATE_PRIVATE_CHAT, this::printPrivateMessage);
     }
 
     public void setWindow(Stage window) {
@@ -91,6 +92,7 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     /**
      * changes to scene in which the player chooses the connection
      */
+
     public void changeSceneSelectConnection() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gui/fxml/SelectConnection.fxml"));
         try {
@@ -187,7 +189,6 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
             if (username.length() < 3 || username.isBlank()) System.out.println("Invalid username, try again...");
         }   while( username.length() < 3 || username.isBlank() );
         return username;
-       // return "Dalila";
     }
     /**
      * Read the user input and check its validity.
@@ -213,11 +214,14 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
             if (maxNumOfPlayers < 2 || maxNumOfPlayers > 4) System.out.println("Only from 2 to 4 players can join. Selected a number again:");
         }   while( maxNumOfPlayers < 2 || maxNumOfPlayers > 4 );
         return maxNumOfPlayers;
-        //return 2;
     }
 
     private void updateChat(GameModelView gameModelView) {
         controllerMainSceneDalila.addToChat(gameModelView);
+    }
+
+    private void updatePrivateChat(GameModelView gameModelView) {
+        controllerMainSceneDalila.addToChatPrivateMessage(gameModelView);
     }
 
     /**
@@ -256,11 +260,13 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     private void listenToPlayer(GameModelView gameModelView) {
         if ( isMyTurn(gameModelView)) {
             Platform.runLater(() -> {
+                controllerMainSceneDalila.initChat(gameModelView.getPlayerList());
                 selectCoordinates(gameModelView,"Do you want to select a coordinate from the board?");
             });
         }else {
             Platform.runLater(()->{
                 controllerMainSceneDalila.showGameMessage("It's " + gameModelView.getCurrentPlayer() + "'s turn.");
+                controllerMainSceneDalila.initChat(gameModelView.getPlayerList());
             });
         }
     }
@@ -424,6 +430,9 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     public void setNewMessage(String message){
         setChangedAndNotifyObservers(new MessageEvent(NEW_MESSAGE_CHAT, thisUsername + ": " + message));
     }
+    public void setNewPrivateMessage(String receiver,String message){
+        setChangedAndNotifyObservers(new MessageEvent(NEW_MESSAGE_TO, receiver + " " + thisUsername + ": " + message));
+    }
     /**
      * Print the bookshelves and the end game screen
      * @param gameModel
@@ -444,6 +453,16 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     private void showChat(GameModelView gameModelView) {
         Platform.runLater(() -> {
             updateChat(gameModelView);
+        });
+    }
+
+    /**
+     * This method prints the last private message
+     * @param gameModelView
+     */
+    public void printPrivateMessage(GameModelView gameModelView) {
+        Platform.runLater(() -> {
+            updatePrivateChat(gameModelView);
         });
     }
 

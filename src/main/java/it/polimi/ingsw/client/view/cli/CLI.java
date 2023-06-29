@@ -48,6 +48,10 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
      * Chat thread
      */
     private Thread chatThread;
+    /**
+     * Contains the last private message received
+     */
+    private String lastPrivateMessage = null;
 
     /**
      * Initialize the CLI and call:
@@ -77,6 +81,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         viewEventHandlers.put(END_GAME, this::endGame);
         viewEventHandlers.put(UPDATE_CHAT, this::showChat);
         viewEventHandlers.put(SHOW_LAST_MESSAGES, this::printChat);
+        viewEventHandlers.put(UPDATE_PRIVATE_CHAT, this::printPrivateMessage);
     }
 
     /**
@@ -162,6 +167,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
      * create a new thread that manage the message exchange between the players.
      * The client notify the server in order to retrieve the last 10 messages in the chat.
      * While the thread is active it checks if the current player is typing '/quit', if so the thread stops.
+     * If the player types '/private recipient message' is sent a private message to the specified player.
      * @throws RuntimeException
      * @see #setChangedAndNotifyObservers(MessageEvent)
      */
@@ -183,12 +189,22 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
                     String message;
                     if (reader.ready()) {
                         message = reader.readLine();
-                        if (message.equals("/quit")) {
+                        String[] splittedMessage = message.split(" ");
+                        if (splittedMessage[0].toLowerCase().equals("/quit")) {
                             if (isMyTurn) {
                                 chatAvailability = false;
                                 return;
                             }
                             System.err.println("command not found");
+                        } else if (splittedMessage[0].toLowerCase().equals("/private") && splittedMessage.length > 2) {
+                            // the word after "/private" must be the username of the target
+                            message = splittedMessage[2];
+                            for (int i = 3; i < splittedMessage.length; i++) {
+                                message = message + " " + splittedMessage[i];
+                            }
+                            if (!splittedMessage[1].equals(thisUsername)) {
+                                setChangedAndNotifyObservers(new MessageEvent(NEW_MESSAGE_TO, splittedMessage[1] + " " + thisUsername + ": " + message));
+                            }
                         } else if (!message.isBlank()) {
                             setChangedAndNotifyObservers(new MessageEvent(NEW_MESSAGE_CHAT, thisUsername + ": " + message));
                         }
@@ -563,24 +579,26 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     /***************************************************************************************************************/
 
     /**
-     * Print the end game screen
+     * This method prints the end game screen with the name of the players and their points from the highest score to the lowest
      * @param gameModel
      */
     private void printLeaderboard(GameModelView gameModel) {
         int[] pointsList = gameModel.getPointsList();
         int[] sortedList = Arrays.copyOf(pointsList, pointsList.length);
+        String[] nicknames = new String[pointsList.length];
         Arrays.sort(sortedList);
-        for (int i = 0; i < pointsList.length; i++) {
-            int element = pointsList[i];
-            int position = Arrays.binarySearch(sortedList, element);
+
+        int i = 0;
+        for (int point : pointsList) {
+            int position = Arrays.binarySearch(sortedList, point);
+            nicknames[position] = gameModel.getPlayerList()[i];
+            i++;
         }
 
         System.out.println("Leaderboard:");
-        int i = 0;
-        for (Integer position : pointsList) {
-            System.out.println(gameModel.getPlayerList()[position] + ": " + pointsList[position]);
+        for (int j = nicknames.length - 1; j >= 0; j--) {
+            System.out.println(nicknames[j] + ": " + sortedList[j]);
         }
-
     }
 
     /**
@@ -1015,6 +1033,26 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         }
         if (isMyTurn) {
             chatAvailability = true;
+        }
+    }
+
+    /**
+     * This method prints the last private message
+     * @param gameModelView
+     */
+    public void printPrivateMessage(GameModelView gameModelView) {
+        String message = gameModelView.getPrivateMessage().get(thisUsername);
+
+        if (message != null) {
+            String[] splittedMessage = message.split(":");
+            String[] splittedLastPrivateMessage = null;
+            if (lastPrivateMessage != null) {
+                splittedLastPrivateMessage = lastPrivateMessage.split(":");
+            }
+            if (lastPrivateMessage == null || !splittedLastPrivateMessage[0].equals(splittedMessage[0]) || !message.equals(lastPrivateMessage)) {
+                System.out.println("\033[0;33m" + "(private) " + splittedMessage[0] + ":" + "\033[0m" + splittedMessage[1]);
+                lastPrivateMessage = message;
+            }
         }
     }
 

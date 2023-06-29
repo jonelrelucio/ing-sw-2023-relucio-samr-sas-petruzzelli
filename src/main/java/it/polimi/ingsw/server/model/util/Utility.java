@@ -5,7 +5,7 @@ import com.google.gson.Gson;
 import java.io.IOException;
 import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.List;
+import java.util.*;
 
 public class Utility {
 
@@ -53,6 +53,5 @@ public class Utility {
         return arr;
 
     }
-
 
 }

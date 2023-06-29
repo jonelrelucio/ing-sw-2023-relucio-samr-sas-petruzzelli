@@ -71,7 +71,6 @@ public class ControllerConnection implements Initializable {
             server = new ServerStub("localhost", 1234);
             SocketClient client = new SocketClient((ServerStub) server, viewGUI);
             client.run();
-            viewGUI.showMain();
         }
 
     }

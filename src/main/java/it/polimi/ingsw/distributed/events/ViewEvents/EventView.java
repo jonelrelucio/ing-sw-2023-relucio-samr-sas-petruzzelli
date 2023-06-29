@@ -1,5 +1,8 @@
 package it.polimi.ingsw.distributed.events.ViewEvents;
 
+/**
+ * This enum represents all the events that the client could be notified of and has to handle
+ */
 public enum EventView {
     SELECT_COORDINATES_SUCCESS,
     SELECT_COORDINATES_FAIL,
@@ -12,5 +15,6 @@ public enum EventView {
     END_GAME,
     NEW_TURN,
     UPDATE_CHAT,
-    SHOW_LAST_MESSAGES
+    SHOW_LAST_MESSAGES,
+    UPDATE_PRIVATE_CHAT
 }

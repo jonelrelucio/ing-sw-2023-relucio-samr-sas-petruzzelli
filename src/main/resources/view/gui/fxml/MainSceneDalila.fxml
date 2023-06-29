@@ -3,6 +3,7 @@
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.Cursor?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ChoiceBox?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.RadioButton?>
 <?import javafx.scene.control.ScrollPane?>
@@ -331,7 +332,7 @@
                      <content>
                         <AnchorPane fx:id="anchorPaneChat1" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="554.0" prefWidth="342.0">
                            <children>
-                              <ScrollPane layoutX="1.0" layoutY="-1.0" prefHeight="471.0" prefWidth="344.0">
+                              <ScrollPane layoutX="1.0" layoutY="-1.0" prefHeight="431.0" prefWidth="344.0">
                                  <content>
                                     <TextFlow fx:id="chatTextFlow" prefHeight="441.0" prefWidth="342.0" />
                                  </content>
@@ -339,7 +340,14 @@
                               <HBox layoutX="2.0" layoutY="470.0" prefHeight="77.0" prefWidth="338.0">
                                  <children>
                                     <TextField fx:id="chatTextField" prefHeight="77.0" prefWidth="242.0" promptText="Write your message here" />
-                                    <Button fx:id="chatButtonSend" onAction="#setChatButtonSend" mnemonicParsing="false" prefHeight="74.0" prefWidth="98.0" text="Send" />
+                                    <Button fx:id="chatButtonSend" mnemonicParsing="false" onAction="#setChatButtonSend" prefHeight="74.0" prefWidth="98.0" text="Send" />
+                                 </children>
+                              </HBox>
+                              <HBox layoutX="-1.0" layoutY="431.0" prefHeight="38.0" prefWidth="342.0">
+                                 <children>
+                                    <Label prefHeight="38.0" prefWidth="73.0" text="  Send to :" />
+                                    <ChoiceBox fx:id="playersListChat" prefHeight="38.0" prefWidth="181.0" />
+                                    <Label fx:id="choiceBoxLabel" prefHeight="38.0" prefWidth="128.0" text="Label" />
                                  </children>
                               </HBox>
                            </children>
