@@ -36,7 +36,7 @@ public interface Server extends Remote {
     /**
      * Method called by the client if it can still join the game
      * @return  true if can join, false if the game has already started
-     * @throws RemoteException
+     * @throws RemoteException if fails to call the method
      */
     boolean canJoin() throws RemoteException;
 
