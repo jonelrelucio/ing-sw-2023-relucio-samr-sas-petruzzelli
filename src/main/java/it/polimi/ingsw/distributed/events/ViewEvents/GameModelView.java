@@ -15,24 +15,90 @@ import java.util.concurrent.ArrayBlockingQueue;
  */
 public class GameModelView implements Serializable {
 
+    /**
+     * An identifier that is used to serialize/deserialize an object of a Serializable class.
+     */
     private static final long serialVersionUID = 1234567L;
 
-    private ItemTileType[][] boardMatrix;
-    private int[][] boardItemId;
-    private String[] playerList;
-    private ItemTileType[][][] bookshelfList;
-    private int[][][] bookshelfListItemId;
-    private ArrayList<int[]> canBeSelectedCoordinates;
-    private ArrayList<int[]> selectedCoordinates;
-    private String currentPlayer;
-    private ArrayList<ItemTileType> selectedTiles;
-    private ArrayList<Integer> selectedTilesId;
-    private HashMap<String, ItemTileType[][]> personalGoalCardList;
-    private HashMap<Integer, Integer[]> commonGoalCardDeck;
-    private HashMap<String, Integer> personalGoalCardPlayerListId;
-    private int[] pointsList;
-    private ArrayBlockingQueue<String> chat;
-    private HashMap<String, String> privateMessage;
+    /**
+     * the serializable board matrix
+     */
+    private final ItemTileType[][] boardMatrix;
+
+    /**
+     * the serializable board matrix id
+     */
+    private final int[][] boardItemId;
+
+    /**
+     * the serializable player list
+     */
+    private final String[] playerList;
+
+    /**
+     * the serializable bookshelf list
+     */
+    private final ItemTileType[][][] bookshelfList;
+
+    /**
+     * the serializable bookshelf list id
+     */
+    private final int[][][] bookshelfListItemId;
+
+    /**
+     * the serializable can be selected coordinates
+     */
+    private final ArrayList<int[]> canBeSelectedCoordinates;
+
+    /**
+     * the serializable selected coordinates
+     */
+    private final ArrayList<int[]> selectedCoordinates;
+
+    /**
+     * the current player
+     */
+    private final String currentPlayer;
+
+    /**
+     * the serializable selected tiles
+     */
+    private final ArrayList<ItemTileType> selectedTiles;
+
+    /**
+     * the serializable selected tiles id
+     */
+    private final ArrayList<Integer> selectedTilesId;
+
+    /**
+     * the serializable personal goal card list
+     */
+    private final HashMap<String, ItemTileType[][]> personalGoalCardList;
+
+    /**
+     * the serializable common goal card deck
+     */
+    private final HashMap<Integer, Integer[]> commonGoalCardDeck;
+
+    /**
+     * the serializable personal goal player list id
+     */
+    private final HashMap<String, Integer> personalGoalCardPlayerListId;
+
+    /**
+     * the serializable points list
+     */
+    private final int[] pointsList;
+
+    /**
+     * chat
+     */
+    private final ArrayBlockingQueue<String> chat;
+
+    /**
+     * private message for chat
+     */
+    private final HashMap<String, String> privateMessage;
 
     /**
      * Initialize the GameModelView
@@ -112,7 +178,17 @@ public class GameModelView implements Serializable {
      * @return an HashMap filled with two common goal cards and their available points as Integer[]
      */
     public HashMap<Integer, Integer[]> getCommonGoalCardDeck() { return commonGoalCardDeck; }
+
+    /**
+     * Getter for the hashmap with the player and its personal goal card list
+     * @return  a hashmap with the player and its personal goal card list
+     */
     public HashMap<String, Integer> getPersonalGoalCardPlayerListId() { return personalGoalCardPlayerListId; }
+
+    /**
+     * Getter for the points list of each player
+     * @return  an array of points
+     */
     public int[] getPointsList() { return pointsList; }
 
     /**
@@ -123,7 +199,7 @@ public class GameModelView implements Serializable {
 
     /**
      * Getter for the ids of the tiles selected by the player
-     * @return
+     * @return the ids of the tiles selected by the player
      */
     public ArrayList<Integer> getSelectedTilesId() { return selectedTilesId; }
 

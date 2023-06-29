@@ -20,7 +20,16 @@ import java.util.Scanner;
 
 import static java.lang.System.out;
 
+/**
+ * The Class that starts the client
+ */
 public class ClientMain {
+
+    /**
+     * The main method to start the client
+     * @param args              the default arguments of main
+     * @throws SocketException  throws socket exception if failed connection
+     */
     public static void main(String[] args) throws SocketException {
         View view = null;
         String clientChoice;
@@ -53,7 +62,6 @@ public class ClientMain {
         out.println("Choose Client ip:");
         Scanner s = new Scanner(System.in);
         int id = Integer.parseInt(s.nextLine());
-        InetAddress ipClientAddress = ips.get(id);
         String ipAddress = ipAddresses.get(id);
         out.println("Client Ip Address: " + ipAddress);
         System.setProperty("java.rmi.server.hostname", ipAddress);
@@ -98,7 +106,11 @@ public class ClientMain {
         }
     }
 
-    static void displayInterfaceInformation(NetworkInterface netint) throws SocketException {
+    /**
+     * Utility method to display the available ip address of the client
+     * @param netint            NetWorkInterface
+     */
+    static void displayInterfaceInformation(NetworkInterface netint){
         out.printf("Display name: %s\n", netint.getDisplayName());
         out.printf("Name: %s\n", netint.getName());
         Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
