@@ -37,4 +37,6 @@ public class ItemTileBag {
     }
 
     public ItemTile drawItemTile() {return itemTilesBag.pop();}
+
+    public Stack<ItemTile> getItemTilesBag() { return itemTilesBag; }
 }

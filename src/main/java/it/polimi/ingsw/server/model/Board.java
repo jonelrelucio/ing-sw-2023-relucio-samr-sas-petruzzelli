@@ -198,6 +198,37 @@ public class Board {
             if (x2 >= 0 && x2 < boardMatrix.length && y2 >= 0 && y2 < boardMatrix[0].length) {
                 if (!boardMatrix[x2][y2].isEmpty() && isAdjacentEmpty(new int[]{x2, y2})) {
                     adjacentCoordinates.add(new int[] {x2, y2});
+                    int x3 = x2 + direction[0];
+                    int y3 = y2 + direction[1];
+                    if (!boardMatrix[x3][y3].isEmpty() &&  isAdjacentEmpty(new int[]{x3, y3})) {
+                        adjacentCoordinates.add(new int[] {x3, y3});
+                    }
+                }
+            }
+        }
+
+        return adjacentCoordinates;
+    }
+
+    /**
+     * Returns an ArrayList of all non-empty adjacent coordinates of given coordinates
+     * @param coordinates   coordinates in int[]
+     * @return              ArrayList of Int[] of all the non-empty coordinates of given coordinates
+     */
+    private ArrayList<int[]> getAdjacentCoordinates2(int[] coordinates) {
+        ArrayList<int[]> adjacentCoordinates = new ArrayList<>();
+        int x = coordinates[0];
+        int y = coordinates[1];
+        int[][] directions = new int[][] {
+                {-1, 0}, {1, 0}, {0, -1}, {0, 1}
+        };
+        for ( int[] direction : directions ){
+            int x2 = x + direction[0];
+            int y2 = y + direction[1];
+
+            if (x2 >= 0 && x2 < boardMatrix.length && y2 >= 0 && y2 < boardMatrix[0].length) {
+                if (!boardMatrix[x2][y2].isEmpty() && isAdjacentEmpty(new int[]{x2, y2})) {
+                    adjacentCoordinates.add(new int[] {x2, y2});
                 }
             }
         }
@@ -218,7 +249,7 @@ public class Board {
                 }
             }
         } else if (selectedCoordinates.size() == 1 ) {
-            canBeSelectedCoordinates = getAdjacentCoordinates(selectedCoordinates.get(0));
+            canBeSelectedCoordinates = getAdjacentCoordinates2(selectedCoordinates.get(0));
         } else if (selectedCoordinates.size() == 2) {
             canBeSelectedCoordinates = getCommonCoordinates(selectedCoordinates.get(0), selectedCoordinates.get(1));
         }
