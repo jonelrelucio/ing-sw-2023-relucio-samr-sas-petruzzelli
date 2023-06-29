@@ -12,11 +12,9 @@ import javafx.stage.Stage;
 import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
-import java.util.concurrent.CountDownLatch;
+
 
 import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
 import static it.polimi.ingsw.distributed.events.controllerEvents.EventController.*;
@@ -39,6 +37,7 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     Scene endGameScene;
     private final Stage window;
     private Integer change;
+
 
 
 
@@ -66,6 +65,7 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
         viewEventHandlers.put(NEW_TURN, this::newTurn);
         viewEventHandlers.put(END_GAME, this::endGame);
         viewEventHandlers.put(UPDATE_CHAT, this::showChat);
+        viewEventHandlers.put(UPDATE_PRIVATE_CHAT, this::printPrivateMessage);
     }
 
     /**
@@ -199,6 +199,10 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
         controllerMainSceneDalila.addToChat(gameModelView);
     }
 
+    private void updatePrivateChat(GameModelView gameModelView) {
+        controllerMainSceneDalila.addToChatPrivateMessage(gameModelView);
+    }
+
     /**
      * From here event handlers
      * */
@@ -220,11 +224,13 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     private void listenToPlayer(GameModelView gameModelView) {
         if ( isMyTurn(gameModelView)) {
             Platform.runLater(() -> {
+                controllerMainSceneDalila.initChat(gameModelView.getPlayerList());
                 selectCoordinates(gameModelView,"Do you want to select a coordinate from the board?");
             });
         }else {
             Platform.runLater(()->{
                 controllerMainSceneDalila.showGameMessage("It's " + gameModelView.getCurrentPlayer() + "'s turn.");
+                controllerMainSceneDalila.initChat(gameModelView.getPlayerList());
             });
         }
     }
@@ -394,6 +400,9 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     public void setNewMessage(String message){
         setChangedAndNotifyObservers(new MessageEvent(NEW_MESSAGE_CHAT, thisUsername + ": " + message));
     }
+    public void setNewPrivateMessage(String receiver,String message){
+        setChangedAndNotifyObservers(new MessageEvent(NEW_MESSAGE_TO, receiver + " " + thisUsername + ": " + message));
+    }
     /**
      * Print the bookshelves and the end game screen
      * @param gameModel
@@ -414,6 +423,16 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     private void showChat(GameModelView gameModelView) {
         Platform.runLater(() -> {
             updateChat(gameModelView);
+        });
+    }
+
+    /**
+     * This method prints the last private message
+     * @param gameModelView
+     */
+    public void printPrivateMessage(GameModelView gameModelView) {
+        Platform.runLater(() -> {
+            updatePrivateChat(gameModelView);
         });
     }
 
