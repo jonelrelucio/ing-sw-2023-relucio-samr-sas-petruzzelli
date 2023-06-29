@@ -13,8 +13,8 @@ import java.rmi.server.UnicastRemoteObject;
 
 import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.NEW_TURN;
 
-/*
-RMI Client
+/**
+ * RMI class client that implements the Client interface
  */
 public class RMIClient extends UnicastRemoteObject implements Client, Runnable {
     /**
