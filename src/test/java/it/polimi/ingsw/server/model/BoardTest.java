@@ -62,14 +62,6 @@ public class BoardTest{
         } catch (InvalidParameterException ignored) {};
     }
 
-//    TODO fix the can be selected testings
-//    @Test
-//    public void testCanBeSelectedTiles4() {
-//        board = new Board(4);
-//        System.out.println(board.getCanBeSelectedCoordinates());
-//        assertEquals(21, board.getCanBeSelectedCoordinates().size());
-//    }
-
 
     @Test
     public void testCheckRefillFalse() {
