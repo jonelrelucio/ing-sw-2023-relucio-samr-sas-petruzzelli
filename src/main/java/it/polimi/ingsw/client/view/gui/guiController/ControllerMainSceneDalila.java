@@ -5,6 +5,8 @@ package it.polimi.ingsw.client.view.gui.guiController;
 import it.polimi.ingsw.client.view.gui.utils.Utils;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 import it.polimi.ingsw.server.model.ItemTile.ItemTileType;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.geometry.Insets;
@@ -102,6 +104,10 @@ public class ControllerMainSceneDalila implements Initializable {
     @FXML
     TextFlow chatTextFlow;
     @FXML
+    ChoiceBox playersListChat;
+    @FXML
+    Label choiceBoxLabel;
+    @FXML
     Button chatButtonSend;
     @FXML
     TextField chatTextField;
@@ -166,6 +172,8 @@ public class ControllerMainSceneDalila implements Initializable {
 
     private HashMap<Integer, String> commonGoalCardDescriptions;
 
+    private String lastPrivateMessage = null;
+
 
 
 
@@ -200,6 +208,7 @@ public class ControllerMainSceneDalila implements Initializable {
         labelFirstShelfWinner.setText("The first player who completely fills\ntheir bookshelf will obtain this token\nand will score 1 additional points");
         hideYesOrNo();
         chatTextField.setText("Write your message here");
+        choiceBoxLabel.setText("");
         commonGoalCardDescriptions = new HashMap<>();
         initCommonGoalCardDescription();
         initLabelPersonalTiles();
@@ -274,9 +283,22 @@ public class ControllerMainSceneDalila implements Initializable {
 
     public void setChatButtonSend(){
         if(!chatTextField.getText().isEmpty()) {
+            if(playersListChat.getValue().equals("All")){
             viewGUI.setNewMessage(chatTextField.getText());
             chatTextField.clear();
+            }else{
+                viewGUI.setNewPrivateMessage((String) playersListChat.getValue(),chatTextField.getText());
+                chatTextField.clear();}
         }
+    }
+
+    public void initChat(String[] players){
+        playersListChat.getItems().clear();
+        ObservableList<String> listPlayers = FXCollections.observableArrayList();
+        listPlayers.addAll(players);
+        playersListChat.setItems(listPlayers);
+        playersListChat.getItems().add("All");
+        playersListChat.setValue("All");
     }
 
 
@@ -744,7 +766,21 @@ public class ControllerMainSceneDalila implements Initializable {
         String[] message = chat[index].split(":");
         showMessage(message[0]+ ":" + message[1],returnColor(gameModelView.getPlayerList(),message[0]));
     }
-    
+
+    public void addToChatPrivateMessage(GameModelView gameModelView) {
+        String message = gameModelView.getPrivateMessage().get(viewGUI.getThisUsername());
+        if (message != null) {
+            String[] splittedMessage = message.split(":");
+            String[] splittedLastPrivateMessage = null;
+            if (lastPrivateMessage != null) {
+                splittedLastPrivateMessage = lastPrivateMessage.split(":");
+            }
+            if (lastPrivateMessage == null || !splittedLastPrivateMessage[0].equals(splittedMessage[0]) || !message.equals(lastPrivateMessage)) {
+                showMessage("(private) " + splittedMessage[0] + ":" + splittedMessage[1],returnColor(gameModelView.getPlayerList(),splittedMessage[0]));
+                lastPrivateMessage = message;
+            }
+        }
+    }
     public String returnColor(String[] players, String player ) {
         String c = null;
         for (int i = 0; i < players.length;i++) {
