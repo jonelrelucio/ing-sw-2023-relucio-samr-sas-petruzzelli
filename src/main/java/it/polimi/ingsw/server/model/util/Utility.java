@@ -164,13 +164,15 @@ public class Utility {
         return toReturn;
     }
 
-
+    /**
+     * Create an array of int that contains the score of each player
+     * @param playerList
+     * @return the list of score of each player as int[]
+     */
     public static int[] serializePointsList(CircularArrayList<Player> playerList) {
-        int id = playerList.size();
-        int[] toReturn = new int[id];
-        for (int i = 0; i < id; i++ ){
-            toReturn[i] = playerList.get(i).getScore();
-        }
+        ArrayList<Integer> result = new ArrayList<>();
+        playerList.stream().forEach(p -> result.add(p.getScore()));
+        int[] toReturn = result.stream().mapToInt(i -> i).toArray();
         return toReturn;
     }
 

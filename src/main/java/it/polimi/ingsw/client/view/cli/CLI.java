@@ -579,24 +579,26 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     /***************************************************************************************************************/
 
     /**
-     * Print the end game screen
+     * This method prints the end game screen with the name of the players and their points from the highest score to the lowest
      * @param gameModel
      */
     private void printLeaderboard(GameModelView gameModel) {
         int[] pointsList = gameModel.getPointsList();
         int[] sortedList = Arrays.copyOf(pointsList, pointsList.length);
+        String[] nicknames = new String[pointsList.length];
         Arrays.sort(sortedList);
-        for (int i = 0; i < pointsList.length; i++) {
-            int element = pointsList[i];
-            int position = Arrays.binarySearch(sortedList, element);
+
+        int i = 0;
+        for (int point : pointsList) {
+            int position = Arrays.binarySearch(sortedList, point);
+            nicknames[position] = gameModel.getPlayerList()[i];
+            i++;
         }
 
         System.out.println("Leaderboard:");
-        int i = 0;
-        for (Integer position : pointsList) {
-            System.out.println(gameModel.getPlayerList()[position] + ": " + pointsList[position]);
+        for (int j = nicknames.length - 1; j >= 0; j--) {
+            System.out.println(nicknames[j] + ": " + sortedList[j]);
         }
-
     }
 
     /**
