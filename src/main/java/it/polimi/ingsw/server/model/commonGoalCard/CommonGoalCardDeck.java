@@ -45,12 +45,11 @@ public class CommonGoalCardDeck {
     }
 
     /**
-     * This constructor deserialize the json that contains a list of common goal cards and extract two of them randomly,
-     * then fill the 'deck' with the two cards and their stack of available points
-     * @param numOfPlayers
-     * @see #buildScoringStack(int)
+     * This method deserialize the json containing the list of common goal cards and create an Arraylist of common goal card
+     * @return an {@code ArrayList<CommonGoalCard>}
      */
-    public CommonGoalCardDeck(int numOfPlayers) {
+    public List<CommonGoalCard> getCommonGoalCardList() {
+
         GsonBuilder builder = new GsonBuilder();
 
         builder.registerTypeAdapter(CommonGoalCard.class, new CommonGoalCardDeserializer());
@@ -59,8 +58,19 @@ public class CommonGoalCardDeck {
 
         InputStream inputStream = getClass().getResourceAsStream("/json/CommonGoalCard.json");
         reader = new BufferedReader(new InputStreamReader(inputStream));
+        return new ArrayList<>(Arrays.asList(gson.fromJson(reader, CommonGoalCard[].class)));
+    }
 
-        List<CommonGoalCard> completeDeck = new ArrayList<>(Arrays.asList(gson.fromJson(reader, CommonGoalCard[].class)));
+    /**
+     * This constructor deserialize the json that contains a list of common goal cards calling getCommonGoalCardList() method
+     * and extract two of them randomly, then fill the 'deck' with the two cards and their stack of available points
+     * @param numOfPlayers
+     * @see #buildScoringStack(int)
+     * @see #getCommonGoalCardList()
+     */
+    public CommonGoalCardDeck(int numOfPlayers) {
+
+        List<CommonGoalCard> completeDeck = getCommonGoalCardList();
 
         Collections.shuffle(completeDeck);
         CommonGoalCard card1 = completeDeck.remove(0);
