@@ -14,10 +14,13 @@ Game Implementation [My Shelfie](https://www.craniocreations.it/prodotto/my-shel
 - [Lucian Sas](https://github.com/LucianSasPolimi) 
 - [Alessandro Petruzzelli](https://github.com/AlessandroPetruzzelli) 
 
-### Diagramma UML
+### UML Diagrams
 UML Diagrams have been develped using [diagrams](https://www.diagrams.net/).  
-Main UML Diagram: [UML Diagram](src/deliverables/umlDiagram/ClassDiagram_Model.png)
+Initial UML Diagrams of the application: [UML Diagram](deliverables/final/uml/Diagramma UML iniziale dell'applicazione.png)
 
+### Dependencies
+- Gson: used for serialization and deserialization of certain class objects
+- JavaFX: used for the GUI Implementation
 
 
 ### Functionality
@@ -43,14 +46,24 @@ Main UML Diagram: [UML Diagram](src/deliverables/umlDiagram/ClassDiagram_Model.p
 Before running either server-softeng-gc25.jar or client-softeng-gc25.jar be sure to have disabled the firewall for both of them.
 
 ##### Server
-To run the server type: java -Djava.rmi.server.hostname=serverIp -jar server-softeng-gc25.jar
-where serverIp is the Ip Address of the server
+To run the server run the command in the terminal:
+```
+$ java -Djava.rmi.server.hostname=serverIp -jar server-softeng-gc25.jar
+```
+where serverIp is the IP Address of the server.
 When the server is running, choose the id (int value) that corresponds to the serverIp used running the jar file.
+Be sure to not select local host.
+
 
 ##### Client
-To run the client type: java -jar client-softeng-gc25.jar
+To run the client run the command in the terminal:
+```
+$ java -jar client-softeng-gc25.jar
+```
 when the client is running, set the ip address of the server interface.
-Then select the the id (int value) that corresponds to the ip address of your chosen NIC
+Be sure to select the correct IP Address of the server where the game is running, otherwise the client will have to be restarted.
+Then select the id (int value) that corresponds to the ip address of your chosen Network Interface
+
 
 
 
