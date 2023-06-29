@@ -1,7 +1,6 @@
 package it.polimi.ingsw.distributed.integrated;
 
 import it.polimi.ingsw.distributed.Client;
-import it.polimi.ingsw.distributed.ClientHandler;
 import it.polimi.ingsw.distributed.Server;
 import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;

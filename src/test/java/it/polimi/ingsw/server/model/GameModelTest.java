@@ -55,17 +55,6 @@ public class GameModelTest {
         assertEquals(23, gameModel.getCurrentPlayer().getScore());
     }
 
-    @Test
-    public void testUpdatePlayerPointsWinner() {
-        int numOfPlayers = 2;
-        gameModel = new GameModel(3);
-        gameModel.setCommonGoalCardDeck(new CommonGoalCardDeck(numOfPlayers));
-        gameModel.setCurrentPlayer(new Player("Alessandro", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers, 2), new Board(numOfPlayers)));
-        gameModel.getCurrentPlayer().getBookshelf().setBookshelfMatrix(bookshelf1);
-        gameModel.getCurrentPlayer().setWinner();
-        gameModel.updateCurrentPlayerScore();
-        System.out.println(gameModel.getCurrentPlayer().getScore());
-    }
 
     @Test
     public void testLoop() {

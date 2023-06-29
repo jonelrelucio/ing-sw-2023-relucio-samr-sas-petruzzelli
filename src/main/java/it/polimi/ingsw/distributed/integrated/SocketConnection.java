@@ -46,12 +46,6 @@ public class SocketConnection extends Connection{
         }
     }
 
-    /*
-    @Override
-    public void updateClient(GameEvent event) throws RemoteException {
-        sendMessageToClient(new ClientUpdateMessage(event));
-    }
-    */
 
     @Override
     void updateClient(GameModelView gameModelView, EventView eventView) {

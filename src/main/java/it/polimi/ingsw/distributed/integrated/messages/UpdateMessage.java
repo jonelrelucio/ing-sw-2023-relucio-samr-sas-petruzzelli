@@ -6,7 +6,6 @@ import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 import java.io.Serializable;
 
 public class UpdateMessage extends Message implements Serializable {
-    //TODO: va a sostituire ClientUpdateMessage
     private EventView eventView;
     private GameModelView gameModelView;
 
