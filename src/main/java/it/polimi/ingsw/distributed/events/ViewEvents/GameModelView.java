@@ -36,7 +36,7 @@ public class GameModelView implements Serializable {
 
     /**
      * Initialize the GameModelView
-     * @param gameModel
+     * @param gameModel the reference to the gameModel
      */
     public GameModelView(GameModel gameModel){
         this.boardMatrix = UtilitySerializer.serializeBoardMatrix(gameModel.getBoard().getBoardMatrix());
