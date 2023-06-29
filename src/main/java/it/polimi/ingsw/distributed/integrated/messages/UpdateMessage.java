@@ -22,8 +22,4 @@ public class UpdateMessage extends Message implements Serializable {
         return gameModelView;
     }
 
-    @Override
-    public void processMessage() {
-
-    }
 }

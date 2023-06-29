@@ -9,5 +9,4 @@ public abstract class Message implements Serializable {
     public MessageType getMessageType(){
         return messageType;
     }
-    public abstract void processMessage();
 }

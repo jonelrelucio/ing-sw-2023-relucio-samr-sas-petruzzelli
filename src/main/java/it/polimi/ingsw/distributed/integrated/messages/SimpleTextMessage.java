@@ -7,10 +7,6 @@ public class SimpleTextMessage extends Message{
         this.messageType = messageType;
         this.message = message;
     }
-    @Override
-    public void processMessage() {
-        getMessage();
-    }
 
     public String getMessage(){
         return message;
