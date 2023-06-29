@@ -9,7 +9,14 @@ import java.util.Scanner;
 
 import static java.lang.System.out;
 
+/**
+ * The main class that starts the server
+ */
 public class GameServerMain {
+    /**
+     * The main method to start the server
+     * @param args  the default arguments of the main function
+     */
     public static void main(String[] args) {
 
         try{
@@ -63,6 +70,11 @@ public class GameServerMain {
 
     }
 
+    /**
+     * Utility method to display the available ip address of the client
+     * @param netint            NetWorkInterface
+     * @throws SocketException  throws exception when cant display
+     */
     static void displayInterfaceInformation(NetworkInterface netint) throws SocketException {
         out.printf("Display name: %s\n", netint.getDisplayName());
         out.printf("Name: %s\n", netint.getName());

@@ -13,19 +13,46 @@ import java.rmi.server.UnicastRemoteObject;
 
 import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.NEW_TURN;
 
+/*
+RMI Client
+ */
 public class RMIClient extends UnicastRemoteObject implements Client, Runnable {
-
+    /**
+     * The view reference (could be CLI or ViewGui)
+     */
     private View view;
+
+    /**
+     * The reference to the server stub
+     */
     private Server server;
+
+    /**
+     * The username of the client
+     */
     private String username;
+
+    /**
+     * boolean that indicates a connection error
+     */
     private boolean connectionError = false;
 
+
+    /**
+     * The constructor
+     * @param view      The reference to the view
+     * @param server    The reference to the server stub
+     * @throws RemoteException  when fails to create rmi client
+     */
     public RMIClient(View view, Server server) throws RemoteException{
         super();
         this.view = view;
         this.server = server;
     }
 
+    /**
+     * Overrides the runnable interface
+     */
     @Override
     public void run() {
         try {
@@ -49,6 +76,9 @@ public class RMIClient extends UnicastRemoteObject implements Client, Runnable {
         }
     }
 
+    /**
+     * Adds observer to the view instance
+     */
     private void addObserver(){
         if (view instanceof CLI viewInstance) {
             viewInstance.addObserver((o, arg) -> {
@@ -73,6 +103,10 @@ public class RMIClient extends UnicastRemoteObject implements Client, Runnable {
 
     }
 
+    /**
+     * Asks username
+     * @throws RemoteException when fails to ask username
+     */
     private void askUsername() throws RemoteException {
         String username;
         do {
@@ -83,7 +117,12 @@ public class RMIClient extends UnicastRemoteObject implements Client, Runnable {
         view.setThisUsername(username);
     }
 
-
+    /**
+     * calls the view event handler after receiving
+     * @param gameModelView the game Model view received from the server
+     * @param event event received from the server
+     * @throws RemoteException if fails to update
+     */
     @Override
     public void update(GameModelView gameModelView, EventView event) throws RemoteException {
         if (event != NEW_TURN) view.ViewEventHandler(gameModelView, event);
@@ -94,22 +133,39 @@ public class RMIClient extends UnicastRemoteObject implements Client, Runnable {
         }
     }
 
+    /**
+     * receives message from server
+     * @param message   message string
+     * @throws RemoteException  throes
+     */
     @Override
     public void receiveFromServer(String message) throws RemoteException {
         view.printMessage(message);
     }
 
+    /**
+     * asks the max num of players
+     * @return the max num of players
+     * @throws RemoteException  when fails
+     */
     @Override
     public int askMaxNumOfPlayers() throws RemoteException{
         return view.askMaxNumOfPlayers();
     }
 
+    /**
+     * starts
+     * @throws RemoteException when fails to start
+     */
     @Override
     public void start() throws RemoteException {
 
     }
 
-
+    /**
+     * starts the view
+     * @throws RemoteException when fails
+     */
     public void startView() throws RemoteException{
         view.run();
     }

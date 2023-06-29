@@ -11,7 +11,7 @@ import java.util.HashMap;
  * This class represents a type of common goal card that not has a defined shape
  * but has a defined occurrence value
  */
-public class CommonGoalSameTypeGroup implements CommonGoalCard{
+public class    CommonGoalSameTypeGroup implements CommonGoalCard{
     /**
      * Unique card's id
      */
