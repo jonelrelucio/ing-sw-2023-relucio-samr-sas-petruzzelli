@@ -6,12 +6,22 @@ import java.net.ServerSocket;
 import java.net.Socket;
 
 public class SocketRunnable implements Runnable{
+    /**
+     * The instance of the game server
+     */
     private GameServer server;
 
+    /**
+     * Instantiates the SocketRunnable
+     * @param server
+     */
     public SocketRunnable(GameServer server) {
         this.server = server;
     }
 
+    /**
+     * Accepts a new socket connection
+     */
     @Override
     public void run() {
         try(ServerSocket serverSocket = new ServerSocket( 1234)){

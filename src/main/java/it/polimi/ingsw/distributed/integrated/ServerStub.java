@@ -11,40 +11,32 @@ import java.net.Socket;
 import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 
-/**
- * The server stub that implements the server interface
- */
 public class ServerStub implements Server {
-
     /**
-     * ip address of the server stub
+     * The ip of the server
      */
     String ip;
-
     /**
-     * port of the server
+     * The port used by the socket communication
      */
     int port;
-
     /**
-     * The object output stream
+     * The outputstream used to send data to the server
      */
     private ObjectOutputStream oos;
-
     /**
-     * The object Input Stream
+     * The inputstream used to receive data from the server
      */
     private ObjectInputStream ois;
-
     /**
-     * The socket
+     * The socket used to communicate with the server
      */
     private Socket socket;
 
     /**
-     * constructor
-     * @param ip    ip address of the connected server
-     * @param port  port of the ip connected ip address of the server
+     * Sets the ip and the port
+     * @param ip
+     * @param port
      */
     public ServerStub(String ip, int port){
         this.ip = ip;
@@ -53,10 +45,10 @@ public class ServerStub implements Server {
     }
 
     /**
-     * the client class this method to register itself to the server
-     * @param client    client that wants to register
-     * @param username  the username of the client
-     * @throws RemoteException  when fails to register the client
+     *
+     * @param client
+     * @param username
+     * @throws RemoteException
      */
     @Override
     public void register(Client client, String username) throws RemoteException {
@@ -69,10 +61,10 @@ public class ServerStub implements Server {
     }
 
     /**
-     * Checks if the username chosen by the client is available
-     * @param username  username of the client
-     * @return          true if the username is available
-     * @throws RemoteException  if fails to fails to check if username is available
+     * Check if the username is available
+     * @param username
+     * @return the availability of the name
+     * @throws RemoteException
      */
     @Override
     public boolean isUsernameAvailable(String username) throws RemoteException {
@@ -80,8 +72,8 @@ public class ServerStub implements Server {
     }
 
     /**
-     * starts
-     * @throws RemoteException  if fails to start
+     * start
+     * @throws RemoteException
      */
     @Override
     public void start() throws RemoteException {
@@ -89,9 +81,9 @@ public class ServerStub implements Server {
     }
 
     /**
-     * checks if the client can join the server.
-     * @return  true if the client can join, false if the server has already started the game
-     * @throws RemoteException  if fails to check if player can join
+     * Contacts the server to ask if the client can join the match
+     * @return true if the client can join the match, false otherwise
+     * @throws RemoteException
      */
     @Override
     public boolean canJoin() throws RemoteException {
@@ -126,9 +118,9 @@ public class ServerStub implements Server {
     }
 
     /**
-     * Method called by the client to to send a message of type Message Event to the server
-     * @param messageEvent      the Message event to be sent to the server
-     * @throws RemoteException  if fails to update
+     * Sends a messageEvent to the server
+     * @param messageEvent
+     * @throws RemoteException
      */
     @Override
     public void update(MessageEvent messageEvent) throws RemoteException {
@@ -136,8 +128,8 @@ public class ServerStub implements Server {
     }
 
     /**
-     * sends an object to the server by writing in the object output stream
-     * @param object
+     * Sends a generic object to the server via the Outputstream
+     * @param object The object being sent
      */
     public void sendObject(Object object){
         try{
@@ -151,7 +143,7 @@ public class ServerStub implements Server {
     }
 
     /**
-     * receives an object from the server by reading the object input stream
+     * Receives an object sent by the server
      * @return
      */
     public Object receiveObject(){
