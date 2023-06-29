@@ -152,7 +152,12 @@ public class Board {
      */
     private void setItemsInCoordinates(int[][] indices) {
         for (int[] index : indices) {
-            if (boardMatrix[index[0]][index[1]].isEmpty()) boardMatrix[index[0]][index[1]] = bag.drawItemTile();
+            if (boardMatrix[index[0]][index[1]].isEmpty()) {
+                if (bag.bagIsEmpty()) {
+                    break;
+                }
+                boardMatrix[index[0]][index[1]] = bag.drawItemTile();
+            }
         }
     }
 
@@ -213,6 +218,31 @@ public class Board {
         return adjacentCoordinates;
     }
 
+    /**
+     * Returns an ArrayList of all non-empty adjacent coordinates of given coordinates
+     * @param coordinates   coordinates in int[]
+     * @return              ArrayList of Int[] of all the non-empty coordinates of given coordinates
+     */
+    private ArrayList<int[]> getAdjacentCoordinates2(int[] coordinates) {
+        ArrayList<int[]> adjacentCoordinates = new ArrayList<>();
+        int x = coordinates[0];
+        int y = coordinates[1];
+        int[][] directions = new int[][] {
+                {-1, 0}, {1, 0}, {0, -1}, {0, 1}
+        };
+        for ( int[] direction : directions ){
+            int x2 = x + direction[0];
+            int y2 = y + direction[1];
+
+            if (x2 >= 0 && x2 < boardMatrix.length && y2 >= 0 && y2 < boardMatrix[0].length) {
+                if (!boardMatrix[x2][y2].isEmpty() && isAdjacentEmpty(new int[]{x2, y2})) {
+                    adjacentCoordinates.add(new int[] {x2, y2});
+                }
+            }
+        }
+
+        return adjacentCoordinates;
+    }
     /**
      * Returns an ArrayList of all non-empty adjacent coordinates of given coordinates
      * @param coordinates   coordinates in int[]
