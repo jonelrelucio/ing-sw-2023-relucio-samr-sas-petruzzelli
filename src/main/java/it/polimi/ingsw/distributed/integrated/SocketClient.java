@@ -2,7 +2,6 @@ package it.polimi.ingsw.distributed.integrated;
 
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.view.cli.CLI;
-import it.polimi.ingsw.client.view.gui.GUI;
 import it.polimi.ingsw.client.view.gui.guiController.ViewGui;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
@@ -37,7 +36,7 @@ public class SocketClient implements Client, Runnable{
                     throw new RuntimeException(e);
                 }
                 try{
-                    server.register(this, username);//il client non mi serve, ma lo faccio per avere un metodo comune, per poi mettere tutto in una classe padre
+                    server.register(this, username);
                 }catch(RemoteException e){
                     throw new RuntimeException(e);
                 }
@@ -77,7 +76,7 @@ public class SocketClient implements Client, Runnable{
             SimpleTextMessage message = (SimpleTextMessage) server.receiveObject();
             if(message.getMessageType() == MessageType.START_GAME_MESSAGE) return true;
             if(message.getMessageType() == MessageType.FIRST_PLAYER_MESSAGE){
-                SimpleTextMessage numOfPlayersMessage = (SimpleTextMessage) server.receiveObject();  //SE NON VA COSì CAMBIARE DA numOfPlayersMessage a message dichiarato sopra
+                SimpleTextMessage numOfPlayersMessage = (SimpleTextMessage) server.receiveObject();
                 if(numOfPlayersMessage.getMessageType() == MessageType.NUM_OF_PLAYERS_MESSAGE){
                     new Thread( () -> {
                         try{
@@ -99,8 +98,6 @@ public class SocketClient implements Client, Runnable{
     }
 
     private void listenGameEvents(){
-        //fare un ciclo
-        //TODO: modificare il ciclo affinchè esca quando gli arriva un particolare messaggio
         while(true){
             UpdateMessage updateMessage = (UpdateMessage) server.receiveObject();
             try{

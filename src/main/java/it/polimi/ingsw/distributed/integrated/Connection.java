@@ -1,12 +1,10 @@
 package it.polimi.ingsw.distributed.integrated;
 
-import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 import it.polimi.ingsw.distributed.integrated.messages.Message;
 
 import java.rmi.RemoteException;
-import java.util.concurrent.ArrayBlockingQueue;
 
 public abstract class Connection {
 
@@ -20,7 +18,6 @@ public abstract class Connection {
         return username;
     }
 
-    //abstract void updateClient(GameEvent event) throws RemoteException;
     abstract void updateClient(GameModelView gameModelView, EventView eventView) throws RemoteException;
 
 

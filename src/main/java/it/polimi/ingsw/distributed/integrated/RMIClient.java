@@ -50,7 +50,6 @@ public class RMIClient extends UnicastRemoteObject implements Client, Runnable {
     }
 
     private void addObserver(){
-        //TODO: change method
         if (view instanceof CLI viewInstance) {
             viewInstance.addObserver((o, arg) -> {
                 new Thread(()->{
@@ -87,7 +86,6 @@ public class RMIClient extends UnicastRemoteObject implements Client, Runnable {
 
     @Override
     public void update(GameModelView gameModelView, EventView event) throws RemoteException {
-        //TODO: se non funziona il problema è con le parentesi (forse)
         if (event != NEW_TURN) view.ViewEventHandler(gameModelView, event);
         else {
             new Thread( () -> {
@@ -108,7 +106,7 @@ public class RMIClient extends UnicastRemoteObject implements Client, Runnable {
 
     @Override
     public void start() throws RemoteException {
-        //TODO: non serve
+
     }
 
 

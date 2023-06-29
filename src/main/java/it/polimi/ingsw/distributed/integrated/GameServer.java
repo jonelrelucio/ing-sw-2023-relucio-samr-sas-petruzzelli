@@ -2,7 +2,6 @@ package it.polimi.ingsw.distributed.integrated;
 
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.Server;
-import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 import it.polimi.ingsw.distributed.events.controllerEvents.EventController;
 import it.polimi.ingsw.distributed.events.controllerEvents.MessageEvent;
@@ -16,7 +15,6 @@ import it.polimi.ingsw.server.model.util.CircularArrayList;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.Optional;
 
 import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.SHOW_LAST_MESSAGES;
 
@@ -40,7 +38,7 @@ public class GameServer extends UnicastRemoteObject implements Server {
     public void register(Client client, String username) throws RemoteException {
         RMIConnection connection = new RMIConnection(client, username);
         try{
-            System.out.println("Connected rmi client with ip: " + getClientHost()); // display message
+            System.out.println("Connected rmi client with ip: " + getClientHost());
         }catch(Exception e){}
         connections.add(connection);
         manageConnection(connection);
@@ -59,13 +57,11 @@ public class GameServer extends UnicastRemoteObject implements Server {
         }
         for(Connection conn : connections){
             if(maxConnections == 0){
-                //connection.sendMessageToClient(String.format("%s joined the waiting list. Waiting for %s to set number of players.", conn.getUsername(), conn.getUsername()));
                 MessageType messageType = MessageType.REMAINING_PLAYERS_MESSAGE;
                 String messageText = String.format("%s joined the waiting list. Waiting for %s to set number of players.", connection.getUsername(), connections.get(0).getUsername());
                 System.out.println(messageText);
                 conn.sendMessageToClient(new SimpleTextMessage(messageType, messageText));
             }else if(connections.size() < maxConnections){
-                //connection.sendMessageToClient(String.format("%s joined the waiting list. %d more players remaining", conn.getUsername(), maxConnections - connections.size()));
                 MessageType messageType = MessageType.REMAINING_PLAYERS_MESSAGE;
                 String messageText = String.format("%s joined the waiting list. %d more players remaining", connection.getUsername(), maxConnections - connections.size());
                 System.out.println(messageText);
@@ -86,7 +82,6 @@ public class GameServer extends UnicastRemoteObject implements Server {
 
     private void startGame() throws RemoteException{
         removeFromWaitingList();
-        //sendMessageToAllClients("Starting a new game...");
         sendMessageToAllClients(new SimpleTextMessage(MessageType.START_GAME_MESSAGE, "Starting a new game..."));
         ArrayList<String> playerList = createPlayerList();
         gameModel = new GameModel();
@@ -94,27 +89,10 @@ public class GameServer extends UnicastRemoteObject implements Server {
         gameController = new Game(gameModel);
         gameController.initGameModel(playerList);
         gameController.start();
-        /*
-        for(Connection conn : connections){
-            conn.startView();
-        }
-         */
         startClientSocketEventListenerThreads();
     }
 
     public void updateClients(){
-        /*
-        for(Connection conn : connections){
-            gameModel.addObserver((o, arg) -> {
-                try {
-                    clientHandler.getClient().update(arg);
-                } catch (RemoteException e) {
-                    System.err.println("Unable to update the client: " + e.getMessage() + ". Skipping the update...");
-                }
-            });
-        }
-
-         */
         for(Connection conn : connections){
             gameModel.addObserver((o, arg)->{
                 try{
@@ -141,18 +119,9 @@ public class GameServer extends UnicastRemoteObject implements Server {
         }
     }
 
-
-
-    private void sendMessageToAllClients(String message) throws RemoteException {
-        for(Connection conn : connections){
-            conn.sendMessageToClient(message);
-        }
-    }
-
     private void startClientSocketEventListenerThreads(){
         for(Connection conn : getConnections()){
             if(conn instanceof SocketConnection){
-                //Make thread and start it
                 Thread socketClientListener = new Thread(new ClientSocketEventListener(this, (SocketConnection) conn));
                 socketClientListener.start();
             }
@@ -177,7 +146,7 @@ public class GameServer extends UnicastRemoteObject implements Server {
 
     @Override
     public void start() throws RemoteException {
-        //SI POTREBBE ELIMINARE
+
     }
 
     @Override

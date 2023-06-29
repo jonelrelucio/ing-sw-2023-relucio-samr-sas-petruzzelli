@@ -9,8 +9,6 @@ import java.util.concurrent.ArrayBlockingQueue;
 
 public interface Client extends Remote {
 
-
-
     void update(GameModelView gameModelView, EventView event) throws RemoteException;
 
     void receiveFromServer(String message) throws RemoteException;

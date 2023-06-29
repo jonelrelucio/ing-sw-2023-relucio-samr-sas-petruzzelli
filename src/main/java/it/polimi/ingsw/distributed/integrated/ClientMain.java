@@ -2,16 +2,9 @@ package it.polimi.ingsw.distributed.integrated;
 
 import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.view.cli.CLI;
-import it.polimi.ingsw.client.view.gui.GUI;
 import it.polimi.ingsw.client.view.gui.guiController.ViewGui;
 import it.polimi.ingsw.distributed.Server;
-import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.layout.Pane;
-import javafx.stage.Stage;
 
-
-import java.io.IOException;
 import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
@@ -25,7 +18,6 @@ import java.util.Collections;
 import java.util.Enumeration;
 import java.util.Scanner;
 
-import it.polimi.ingsw.client.view.gui.guiController.ViewGui;
 import static java.lang.System.out;
 
 public class ClientMain {
@@ -55,7 +47,6 @@ public class ClientMain {
                     ipAddresses.add(inetAddress.getHostAddress());
                     ips.add(inetAddress);
                 }
-
             }
             count++;
         }
@@ -65,7 +56,6 @@ public class ClientMain {
         InetAddress ipClientAddress = ips.get(id);
         String ipAddress = ipAddresses.get(id);
         out.println("Client Ip Address: " + ipAddress);
-
         System.setProperty("java.rmi.server.hostname", ipAddress);
 
 
@@ -81,7 +71,6 @@ public class ClientMain {
 
         }
 
-
         do{
             System.out.println("Scegli il tipo di connessione:\nr <- RMI\ns <- Socket");
             clientChoice = scanner.nextLine();
@@ -93,7 +82,6 @@ public class ClientMain {
             try{
                 Registry reg = LocateRegistry.getRegistry(ip, 1099);
                 server = (Server) reg.lookup("server");
-                //client = new RMIClient(server);//passare il server a RMIClient
                 RMIClient client = new RMIClient(view, server);
                 client.run();
 
@@ -108,14 +96,6 @@ public class ClientMain {
             SocketClient client = new SocketClient((ServerStub) server, view);
             client.run();
         }
-        //server.connect(client);
-        //view.run();
-        //TODO: per evitare di fare la ripetizione di client.run() e di istanziare i due client specifici, posso fare così
-        /*
-        Nella prima riga del main faccio Client client = null;
-        e in base all'input dell'utente faccio client.startClient(), che a sua volta chiama il metodo run() del client.
-        Il metodo startClient() deve essere nell'interfaccia client.
-         */
     }
 
     static void displayInterfaceInformation(NetworkInterface netint) throws SocketException {

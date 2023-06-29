@@ -1,19 +1,15 @@
 package it.polimi.ingsw.distributed.integrated;
 
 import it.polimi.ingsw.distributed.Client;
-import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 import it.polimi.ingsw.distributed.integrated.messages.Message;
 import it.polimi.ingsw.distributed.integrated.messages.SimpleTextMessage;
 
 import java.rmi.RemoteException;
-import java.util.concurrent.ArrayBlockingQueue;
 
 public class RMIConnection extends Connection{
-    private Client client;//Provare a fare RMIClient
-
-    //TODO: trovare un altro modo per visualizzare l'username
+    private Client client;
 
     public RMIConnection(Client client, String username){
         this.client = client;
@@ -46,14 +42,12 @@ public class RMIConnection extends Connection{
 
     @Override
     void updateClient(GameModelView gameModelView, EventView eventView) throws RemoteException {
-        //spawnare un tnread (forse)
         client.update(gameModelView, eventView);
     }
 
     @Override
     public void sendMessageToClient(Message message){
 
-        //client.receiveFromServer(message.processMessage());
         if(message instanceof SimpleTextMessage){
             try{
                 client.receiveFromServer(((SimpleTextMessage) message).getMessage());

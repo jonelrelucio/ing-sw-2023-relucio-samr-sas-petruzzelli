@@ -1,7 +1,6 @@
 package it.polimi.ingsw.distributed.integrated;
 
 import it.polimi.ingsw.distributed.Server;
-import it.polimi.ingsw.distributed.events.GameEvent;
 import it.polimi.ingsw.distributed.Client;
 import it.polimi.ingsw.distributed.events.controllerEvents.MessageEvent;
 
@@ -24,27 +23,6 @@ public class ServerStub implements Server {
         this.port = port;
 
     }
-
-
-
-    /*public void connect(Client client) throws RemoteException {
-        try{
-            this.socket = new Socket(ip, port);
-            try{
-                this.oos = new ObjectOutputStream(socket.getOutputStream());
-            }catch(IOException e){
-                throw new RemoteException("Cannot create output stream", e);
-            }
-
-            try{
-                this.ois = new ObjectInputStream(socket.getInputStream());
-            }catch(IOException e){
-                throw new RemoteException("Cannot crate input stream", e);
-            }
-        }catch(IOException e){
-            throw new RemoteException("Unable to connect to the server via socket", e);
-        }
-    }*/
 
     @Override
     public void register(Client client, String username) throws RemoteException {
@@ -96,22 +74,12 @@ public class ServerStub implements Server {
         } catch(ClassNotFoundException e){
             throw new RuntimeException(e);
         }
-
-
     }
 
     @Override
     public void update(MessageEvent messageEvent) throws RemoteException {
-        //TODO: sostituisce update(GameEvent event)
         sendObject(messageEvent);
     }
-
-    /*
-    @Override
-    public void update(GameEvent arg) throws RemoteException {
-
-    }
-    */
 
     public void sendObject(Object object){
         try{

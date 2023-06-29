@@ -10,10 +10,6 @@ import java.util.*;
 
 public class UtilitySerializer {
 
-
-
-
-
     public static ItemTileType[][] serializeBoardMatrix(ItemTile[][] boardMatrix){
         ItemTileType[][] serializedBoard = new ItemTileType[boardMatrix.length][boardMatrix[0].length];
         for ( int i = 0; i < boardMatrix.length; i++) {
@@ -99,25 +95,6 @@ public class UtilitySerializer {
         }
         return toReturn;
     }
-
-    public static HashMap<String,int[][]> serializeArrayOfPersonalGoalCardsId(CircularArrayList<Player> playerList) {
-        int playerSize = playerList.size();
-        int row = playerList.get(0).getPersonalGoalCard().getPersonalGoalCardMatrix().length;
-        int col = playerList.get(0).getPersonalGoalCard().getPersonalGoalCardMatrix()[0].length;
-        HashMap<String, int[][]> toReturn = new HashMap<>();
-        for (Player player : playerList) {
-            int[][] personalGoalCardId = new int[row][col];
-            String name = player.getNickname();
-            for (int j = 0; j < row; j++) {
-                for (int k = 0; k < col; k++) {
-                    personalGoalCardId[j][k] = player.getPersonalGoalCard().getPersonalGoalCardMatrix()[j][k].getId();
-                }
-            }
-            toReturn.put(name, personalGoalCardId);
-        }
-        return toReturn;
-    }
-
 
     public static int[] serializePointsList(CircularArrayList<Player> playerList) {
         int id = playerList.size();

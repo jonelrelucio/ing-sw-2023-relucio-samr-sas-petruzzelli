@@ -1,8 +1,5 @@
 package it.polimi.ingsw.distributed.integrated;
 
-import it.polimi.ingsw.distributed.integrated.Connection;
-import it.polimi.ingsw.distributed.integrated.GameServer;
-import it.polimi.ingsw.server.model.util.CircularArrayList;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -11,7 +8,6 @@ import java.rmi.registry.Registry;
 import java.rmi.server.RMISocketFactory;
 
 public class RMIRunnable implements Runnable{
-    private CircularArrayList<Connection> connections;
     private int port;
     private String ipAddress;
     private GameServer server;

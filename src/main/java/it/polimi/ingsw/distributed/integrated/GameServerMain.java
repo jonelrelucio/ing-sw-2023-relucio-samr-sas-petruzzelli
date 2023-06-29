@@ -1,9 +1,5 @@
 package it.polimi.ingsw.distributed.integrated;
 
-import it.polimi.ingsw.distributed.integrated.GameServer;
-import it.polimi.ingsw.distributed.integrated.RMIRunnable;
-import it.polimi.ingsw.distributed.integrated.SocketRunnable;
-
 import java.net.*;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -49,7 +45,6 @@ public class GameServerMain {
             System.setProperty("java.rmi.server.hostname", ipAddress);
             System.setProperty("java.rmi.server.useLocalHostname", "true");
 
-            //start the RMI thread
             Thread socketThread = new Thread(new SocketRunnable(server));
             Thread rmiThread = new Thread(new RMIRunnable(server, 1099, ipAddress));
 
@@ -65,8 +60,6 @@ public class GameServerMain {
         }catch(RemoteException | SocketException e){
 
         }
-
-
 
     }
 
