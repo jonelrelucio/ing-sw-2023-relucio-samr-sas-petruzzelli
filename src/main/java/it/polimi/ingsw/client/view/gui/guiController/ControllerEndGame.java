@@ -50,10 +50,10 @@ public class ControllerEndGame{
         scoreSecondPlaceLabel.setText(String.valueOf(orderedPoints[size-2]));
         nameSecondPlaceLabel.setText(playerList[size-2]);
         if(playerList.length == 2){
-            gameResultGridPane.getRowConstraints().remove(3);
-            gameResultGridPane.getRowConstraints().remove(2);
+            gameResultGridPane.getChildren().remove(3);
+            gameResultGridPane.getChildren().remove(2);
         } else if (playerList.length == 3) {
-            gameResultGridPane.getRowConstraints().remove(3);
+            gameResultGridPane.getChildren().remove(3);
             scoreThirdPlaceLabel.setText(String.valueOf(orderedPoints[size-3]));
             nameThirdPlaceLabel.setText(playerList[size-3]);
         }else{
