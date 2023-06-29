@@ -168,7 +168,8 @@ public class ControllerMainSceneDalila implements Initializable {
     private static final int height = 40;
     private static final int width = 35;
     private static Boolean clicked;
-    private String[] chatColors = new String[]{"red","blue","orange","green"};
+    private String[] chatColors = new String[]{"blue","orange","green"};
+    private String personalChatColor = "black";
 
     private HashMap<Integer, String> commonGoalCardDescriptions;
 
@@ -241,12 +242,6 @@ public class ControllerMainSceneDalila implements Initializable {
         commonGoalCardDescriptions.put(12, Utils.desc12);
     }
 
-//    public void setFirstBookshelfFull(Rectangle r){
-//         image2= new Image(getClass().getResource("/view/gui/scoring_tokens/end_game.jpg").toString());
-//        r.setFill(new ImagePattern(image));
-//        r.setVisible(true);
-//
-//    };
 
     public void setFirstPlayerChair(Rectangle r){
         image = new Image(getClass().getResource("/view/gui/background/firstPlayerToken.jpg").toString());
@@ -288,6 +283,7 @@ public class ControllerMainSceneDalila implements Initializable {
             chatTextField.clear();
             }else{
                 viewGUI.setNewPrivateMessage((String) playersListChat.getValue(),chatTextField.getText());
+                showMessage("(private) From "+ viewGUI.getThisUsername() +  " to " + playersListChat.getValue() + ": "+ chatTextField.getText(), personalChatColor);
                 chatTextField.clear();}
         }
     }
@@ -764,7 +760,7 @@ public class ControllerMainSceneDalila implements Initializable {
             index = i;
         }
         String[] message = chat[index].split(":");
-        showMessage(message[0]+ ":" + message[1],returnColor(gameModelView.getPlayerList(),message[0]));
+        showMessage("From " + message[0]+ " to All :" + message[1],returnColor(gameModelView.getPlayerList(),message[0]));
     }
 
     public void addToChatPrivateMessage(GameModelView gameModelView) {
@@ -776,7 +772,7 @@ public class ControllerMainSceneDalila implements Initializable {
                 splittedLastPrivateMessage = lastPrivateMessage.split(":");
             }
             if (lastPrivateMessage == null || !splittedLastPrivateMessage[0].equals(splittedMessage[0]) || !message.equals(lastPrivateMessage)) {
-                showMessage("(private) " + splittedMessage[0] + ":" + splittedMessage[1],returnColor(gameModelView.getPlayerList(),splittedMessage[0]));
+                showMessage("(private) From " + splittedMessage[0] + " to " + viewGUI.getThisUsername() +": "+ splittedMessage[1],returnColor(gameModelView.getPlayerList(),splittedMessage[0]));
                 lastPrivateMessage = message;
             }
         }
@@ -784,7 +780,9 @@ public class ControllerMainSceneDalila implements Initializable {
     public String returnColor(String[] players, String player ) {
         String c = null;
         for (int i = 0; i < players.length;i++) {
-            if(player.equals(players[i])){
+            if(player.equals(viewGUI.getThisUsername())){
+                c = "black";
+            }else if(player.equals(players[i])){
                 c = chatColors[i];
             }
         }
