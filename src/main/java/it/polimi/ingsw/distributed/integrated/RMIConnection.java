@@ -8,9 +8,21 @@ import it.polimi.ingsw.distributed.integrated.messages.SimpleTextMessage;
 
 import java.rmi.RemoteException;
 
+/**
+ * Class that extends Connection of type RMI
+ */
 public class RMIConnection extends Connection{
+
+    /**
+     * The reference to the client
+     */
     private Client client;
 
+    /**
+     * Cons
+     * @param client
+     * @param username
+     */
     public RMIConnection(Client client, String username){
         this.client = client;
         this.username = username;
