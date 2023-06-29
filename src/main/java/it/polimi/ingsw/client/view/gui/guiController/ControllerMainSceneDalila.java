@@ -7,6 +7,7 @@ import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 import it.polimi.ingsw.server.model.ItemTile.ItemTileType;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.geometry.Insets;
 import javafx.scene.control.*;
 import javafx.scene.effect.InnerShadow;
 import javafx.scene.image.Image;
@@ -144,6 +145,8 @@ public class ControllerMainSceneDalila implements Initializable {
     StackPane chosenTilesStackPane3;
     @FXML
     Image image;
+    @FXML
+    Image image2;
 
     private  ArrayList<Button> buttons;
 
@@ -229,7 +232,12 @@ public class ControllerMainSceneDalila implements Initializable {
         commonGoalCardDescriptions.put(12, Utils.desc12);
     }
 
-
+//    public void setFirstBookshelfFull(Rectangle r){
+//         image2= new Image(getClass().getResource("/view/gui/scoring_tokens/end_game.jpg").toString());
+//        r.setFill(new ImagePattern(image));
+//        r.setVisible(true);
+//
+//    };
 
     public void setFirstPlayerChair(Rectangle r){
         image = new Image(getClass().getResource("/view/gui/background/firstPlayerToken.jpg").toString());
@@ -647,10 +655,13 @@ public class ControllerMainSceneDalila implements Initializable {
             if(!clicked){
                 for (int i = 0; i < 6; i++) {
                     for (int j = 0; j < 5; j++) {
-                        Rectangle r = new Rectangle();
-                        r.setFill( Color.valueOf(getString(personalGoalCard[i][j])));
-                        r.setEffect(setGlow(50, getString(personalGoalCard[i][j])));
-                        personalBookshelfGrid.add(r,i,j);
+                        if(personalGoalCard[i][j] != ItemTileType.EMPTY) {
+                            Rectangle r = new Rectangle(40, 40);
+                            r.setFill(Color.valueOf(getString(personalGoalCard[i][j])));
+                            r.setEffect(setGlow(50, getString(personalGoalCard[i][j])));
+                            personalBookshelfGrid.add(r, j, i);
+                            GridPane.setMargin(r,new Insets(0,0,0,5));
+                        }
                     }
                 }
                 clicked = true;
@@ -686,11 +697,11 @@ public class ControllerMainSceneDalila implements Initializable {
 
     private static String getString(ItemTileType type) {
         return switch (type) {
-            case FRAME -> "purple";
-            case CAT -> "green";
-            case GAME -> "yellow";
+            case FRAME -> "MIDNIGHTBLUE";//"purple";
+            case CAT -> "CHARTREUSE";//"green";
+            case GAME -> "DARKORANGE";//"yellow";
             case BOOK -> "white";
-            case PLANT -> "red";
+            case PLANT -> "HOTPINK";//"red";
             case TROPHY -> "cyan";
             case EMPTY -> "black";
         };
