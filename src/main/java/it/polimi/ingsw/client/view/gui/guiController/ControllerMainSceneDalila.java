@@ -221,6 +221,7 @@ public class ControllerMainSceneDalila implements Initializable {
         chosenTilesButton2Image.setCache(false);
         chosenTilesButton3Image.setCache(false);
         imageFirstShelfWinner.setCache(false);
+        textFlowGameMessages.setCache(false);
         clicked = false;
         chatTextField.clear();
     }
@@ -255,8 +256,6 @@ public class ControllerMainSceneDalila implements Initializable {
     };
     public void showMessage(String s,String c){
         textChat = new Text(s + "\n");
-        //String style = "-fx-text-fill: " + c + ";";
-        //textChat.setStyle(style);
         textChat.setFill(Color.valueOf(c));
         chatTextFlow.getChildren().add(textChat);
     }
@@ -287,7 +286,8 @@ public class ControllerMainSceneDalila implements Initializable {
             chatTextField.clear();
             }else{
                 viewGUI.setNewPrivateMessage((String) playersListChat.getValue(),chatTextField.getText());
-                showMessage("(private) From "+ viewGUI.getThisUsername() +  " to " + playersListChat.getValue() + ": "+ chatTextField.getText(), personalChatColor);
+                if (!playersListChat.getValue().equals(viewGUI.getThisUsername()))
+                    showMessage("(private) From "+ viewGUI.getThisUsername() +  " to " + playersListChat.getValue() + ": "+ chatTextField.getText(), personalChatColor);
                 chatTextField.clear();}
         }
     }
@@ -491,8 +491,6 @@ public class ControllerMainSceneDalila implements Initializable {
     }
 
     private void insertImageTile(ImageView im,ItemTileType t,int id){
-        //Random random = new Random();
-        //int ran = random.nextInt(4 - 1) + 1;
         image = new Image(getClass().getResource("/view/gui/item_tiles/" + t + "1."+ id +".png").toString());
         im.setImage(image);
     }
@@ -592,7 +590,7 @@ public class ControllerMainSceneDalila implements Initializable {
             chosenTilesButtons.add(b);
             chosenTilesLabels.add(l);
             l.setText("");
-            b.setDisable(false);
+            b.setDisable(true);
             insertImageTile(im,t.get(i),id.get(i));
         }else{
             sp.setVisible(false);
@@ -605,6 +603,7 @@ public class ControllerMainSceneDalila implements Initializable {
         askYesOrNo();
         yesButton.setOnAction(event -> {
             showGameMessage("Click on the Tiles in the order you prefer:\n");
+            enableButtons();
             int [] order = new int[chosenTilesButtons.size()];
             arrangeOrder(gameModelView,order);
             hideYesOrNo();
@@ -613,6 +612,11 @@ public class ControllerMainSceneDalila implements Initializable {
             viewGUI.selectColumn(gameModelView);
         });
 
+    }
+    public void enableButtons(){
+        for (Button b: chosenTilesButtons) {
+            b.setDisable(false);
+        }
     }
 
     public void arrangeOrder(GameModelView gameModelView,int [] order){
@@ -775,7 +779,8 @@ public class ControllerMainSceneDalila implements Initializable {
             if (lastPrivateMessage != null) {
                 splittedLastPrivateMessage = lastPrivateMessage.split(":");
             }
-            if (lastPrivateMessage == null || !splittedLastPrivateMessage[0].equals(splittedMessage[0]) || !message.equals(lastPrivateMessage)) {
+
+            if (lastPrivateMessage == null ||!splittedLastPrivateMessage[0].equals(splittedMessage[0]) || !message.equals(lastPrivateMessage)) {
                 showMessage("(private) From " + splittedMessage[0] + " to " + viewGUI.getThisUsername() +": "+ splittedMessage[1],returnColor(gameModelView.getPlayerList(),splittedMessage[0]));
                 lastPrivateMessage = message;
             }

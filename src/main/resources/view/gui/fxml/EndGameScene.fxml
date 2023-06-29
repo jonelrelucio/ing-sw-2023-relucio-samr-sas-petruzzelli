@@ -57,7 +57,7 @@
             <InnerShadow />
          </effect>
          <children>
-            <Label fx:id="rankFirst" text="1st">
+            <Label fx:id="rankFirst" text="1st"  GridPane.columnIndex="0" GridPane.rowIndex="0">
                <font>
                   <Font name="Century Schoolbook" size="36.0" />
                </font>
