@@ -10,7 +10,9 @@ import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Stack;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -37,14 +39,20 @@ public class GameModelTest {
     public void testUpdatePlayerPoints1() {
         int numOfPlayers = 2;
         gameModel = new GameModel(numOfPlayers);
-        //gameModel.setCommonGoalCardDeck(new CommonGoalCardDeck(numOfPlayers));
+
         CommonGoalCardDeck commonGoalCardDeck = new CommonGoalCardDeck(2);
-        //commonGoalCardDeck.getDeck() = new HashMap<CommonGoalCard, Stack<Integer>>();
+        List<CommonGoalCard> commonGoalCardList = commonGoalCardDeck.getCommonGoalCardList();
+        HashMap<CommonGoalCard, Stack<Integer>> deck = new HashMap<>();
+        deck.put(commonGoalCardList.get(1), commonGoalCardDeck.buildScoringStack(2));
+        deck.put(commonGoalCardList.get(2), commonGoalCardDeck.buildScoringStack(2));
+        commonGoalCardDeck.setDeck(deck);
+
+        gameModel.setCommonGoalCardDeck(commonGoalCardDeck);
+
         gameModel.setCurrentPlayer(new Player("Alessandro", PersonalGoalCardBag.drawPersonalGoalCard(numOfPlayers, 2), new Board(numOfPlayers)));
         gameModel.getCurrentPlayer().getBookshelf().setBookshelfMatrix(bookshelf1);
-        //gameModel.getCommonGoalCardDeck().getCommonGoalCardLIst().get(0);
         gameModel.updateCurrentPlayerScore();
-        System.out.println(gameModel.getCurrentPlayer().getScore());
+        assertEquals(23, gameModel.getCurrentPlayer().getScore());
     }
 
     @Test

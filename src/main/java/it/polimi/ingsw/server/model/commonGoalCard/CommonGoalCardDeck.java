@@ -15,7 +15,7 @@ import java.util.*;
 import java.io.BufferedReader;
 
 public class CommonGoalCardDeck {
-    private final HashMap<CommonGoalCard, Stack<Integer>> deck = new HashMap<>();
+    private HashMap<CommonGoalCard, Stack<Integer>> deck = new HashMap<>();
 
     private static final int[][] scoringTokenArray = {
             {4, 8},
@@ -23,7 +23,7 @@ public class CommonGoalCardDeck {
             {2, 4, 6, 8}
     };
 
-    private Stack<Integer> buildScoringStack(int key){
+    public Stack<Integer> buildScoringStack(int key){
         Stack<Integer> scoringTokenStack = new Stack<>();
         for (int i = 0; i < scoringTokenArray[key-2].length; i++){
             scoringTokenStack.push(scoringTokenArray[key-2][i]);
@@ -31,7 +31,7 @@ public class CommonGoalCardDeck {
         return scoringTokenStack;
     }
 
-    public List<CommonGoalCard> getCommonGoalCardLIst() {
+    public List<CommonGoalCard> getCommonGoalCardList() {
 
         GsonBuilder builder = new GsonBuilder();
 
@@ -46,7 +46,7 @@ public class CommonGoalCardDeck {
 
     public CommonGoalCardDeck(int numOfPlayers) {
 
-        List<CommonGoalCard> completeDeck = getCommonGoalCardLIst();
+        List<CommonGoalCard> completeDeck = getCommonGoalCardList();
 
         Collections.shuffle(completeDeck);
         CommonGoalCard card1 = completeDeck.remove(0);
@@ -93,16 +93,16 @@ public class CommonGoalCardDeck {
      */
     public int getScore(Player player) {
         ItemTile[][] bookshelf = player.getBookshelf().getBookshelfMatrix();
-
         for (CommonGoalCard card : deck.keySet()) {
             if(!player.getObtainedCommonGoalCards().contains(card) && card.checkPattern(bookshelf)) {
                 player.setObtainedCommonGoalCards(card);
-                player.setScore(player.getObtainedCommonGoalPoints()+getScoringToken(card));
+                player.setObtainedCommonGoalPoints(player.getObtainedCommonGoalPoints()+getScoringToken(card));
             }
         }
         return player.getObtainedCommonGoalPoints();
     }
-
     public HashMap<CommonGoalCard, Stack<Integer>> getCommonGoalCardDeck() { return deck; }
-
+    public void setDeck(HashMap<CommonGoalCard, Stack<Integer>> deck ){
+        this.deck = deck;
+    }
 }
