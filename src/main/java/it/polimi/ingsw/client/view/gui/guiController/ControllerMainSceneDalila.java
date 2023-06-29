@@ -151,8 +151,7 @@ public class ControllerMainSceneDalila implements Initializable {
     StackPane chosenTilesStackPane3;
     @FXML
     Image image;
-    @FXML
-    Image image2;
+
 
     private  ArrayList<Button> buttons;
 
@@ -217,6 +216,12 @@ public class ControllerMainSceneDalila implements Initializable {
         imageComGoal1SquarePoint.setCache(false);
         imageComGoal2Square.setCache(false);
         imageComGoal2SquarePoint.setCache(false);
+        personalGoalImage.setCache(false);
+        chosenTilesButton1Image.setCache(false);
+        chosenTilesButton2Image.setCache(false);
+        chosenTilesButton3Image.setCache(false);
+        imageFirstShelfWinner.setCache(false);
+
         clicked = false;
         chatTextField.clear();
     }

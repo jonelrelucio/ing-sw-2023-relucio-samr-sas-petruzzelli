@@ -198,11 +198,6 @@ public class Board {
             if (x2 >= 0 && x2 < boardMatrix.length && y2 >= 0 && y2 < boardMatrix[0].length) {
                 if (!boardMatrix[x2][y2].isEmpty() && isAdjacentEmpty(new int[]{x2, y2})) {
                     adjacentCoordinates.add(new int[] {x2, y2});
-                    int x3 = x2 + direction[0];
-                    int y3 = y2 + direction[1];
-                    if (!boardMatrix[x3][y3].isEmpty() &&  isAdjacentEmpty(new int[]{x3, y3})) {
-                        adjacentCoordinates.add(new int[] {x3, y3});
-                    }
                 }
             }
         }
