@@ -152,7 +152,12 @@ public class Board {
      */
     private void setItemsInCoordinates(int[][] indices) {
         for (int[] index : indices) {
-            if (boardMatrix[index[0]][index[1]].isEmpty()) boardMatrix[index[0]][index[1]] = bag.drawItemTile();
+            if (boardMatrix[index[0]][index[1]].isEmpty()) {
+                if (bag.bagIsEmpty()) {
+                    break;
+                }
+                boardMatrix[index[0]][index[1]] = bag.drawItemTile();
+            }
         }
     }
 

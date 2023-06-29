@@ -54,4 +54,8 @@ public class ItemTileBag {
      * @return the item tile extracted
      */
     public ItemTile drawItemTile() {return itemTilesBag.pop();}
+
+    public boolean bagIsEmpty() {
+        return itemTilesBag.isEmpty();
+    }
 }
