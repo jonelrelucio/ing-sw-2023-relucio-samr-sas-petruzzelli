@@ -221,7 +221,6 @@ public class ControllerMainSceneDalila implements Initializable {
         chosenTilesButton2Image.setCache(false);
         chosenTilesButton3Image.setCache(false);
         imageFirstShelfWinner.setCache(false);
-
         clicked = false;
         chatTextField.clear();
     }
