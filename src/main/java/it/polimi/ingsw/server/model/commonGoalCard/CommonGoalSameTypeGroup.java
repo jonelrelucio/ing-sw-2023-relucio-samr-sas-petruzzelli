@@ -71,49 +71,59 @@ public class CommonGoalSameTypeGroup implements CommonGoalCard{
         for (int row = 0; row < bookshelf.length; row++) {
             for (int col = 0; col < bookshelf[0].length; col++) {
                 ItemTileType matchingType = bookshelf[row][col].getItemTileType();
-                groupID++;
+                if (matchingType != ItemTileType.EMPTY) {
+                    ///
+                    groupID++;
 
-                int result = checkCoords(bookshelf, matchingType, locked, lockedAdjacent, row, col, groupID, 0);
+                    int result = checkCoords(bookshelf, matchingType, locked, lockedAdjacent, row, col, groupID, 0);
 
-                boolean ok = true;
-                if (separated && result == num) {
-                    lockAdjacent(bookshelf.length, bookshelf[0].length, matchingType, groupID, locked, lockedAdjacent);
+                    boolean ok = true;
+                    if (separated && result == num) {
+                        lockAdjacent(bookshelf.length, bookshelf[0].length, matchingType, groupID, locked, lockedAdjacent);
 
-                    int[] x = confrontAdjacent(lockedAdjacent.get(matchingType), groupID);
-                    if (x != null && bookshelf[x[0]][x[1]].getItemTileType() == matchingType) ok = false;
-                }
-
-                if (result == num && ok) {
-                    if (sameType) {
-                        for (ItemTileType c : locked.keySet()) {
-                            if (locked.get(c).size() == occurrence) return true;
-                        }
-                    } else {
-                        int counter = 0;
-                        for (ItemTileType c : locked.keySet()) {
-                            counter = counter + locked.get(c).size();
-                            if (counter == occurrence) return true;
+                        int[] x = confrontAdjacent(lockedAdjacent.get(matchingType), groupID);
+                        if (x != null && bookshelf[x[0]][x[1]].getItemTileType() == matchingType) {
+                            ok = false;
                         }
                     }
 
-                }
-
-                if (result != num || !ok) {
-                    // unlock the not valid group cells
-                    if (locked.containsKey(matchingType) && locked.get(matchingType).containsKey(groupID)) {
-                        locked.get(matchingType).get(groupID).clear();
-                        locked.get(matchingType).remove(groupID);
-                    }
-                    if (locked.get(matchingType) != null && locked.get(matchingType).isEmpty()) locked.remove(matchingType);
-
-                    if (separated) {
-                        if (lockedAdjacent.containsKey(matchingType) && lockedAdjacent.get(matchingType).containsKey(groupID)) {
-                            lockedAdjacent.get(matchingType).get(groupID).clear();
-                            lockedAdjacent.get(matchingType).remove(groupID);
+                    if (result == num && ok) {
+                        if (sameType) {
+                            for (ItemTileType c : locked.keySet()) {
+                                if (locked.get(c).size() == occurrence) {
+                                    return true;
+                                }
+                            }
+                        } else {
+                            int counter = 0;
+                            for (ItemTileType c : locked.keySet()) {
+                                counter = counter + locked.get(c).size();
+                                if (counter == occurrence) {
+                                    return true;
+                                }
+                            }
                         }
-                        if (lockedAdjacent.get(matchingType) != null && lockedAdjacent.get(matchingType).isEmpty()) lockedAdjacent.remove(matchingType);
+
+                    }
+
+                    if (result != num || !ok) {
+                        // unlock the not valid group cells
+                        if (locked.containsKey(matchingType) && locked.get(matchingType).containsKey(groupID)) {
+                            locked.get(matchingType).get(groupID).clear();
+                            locked.get(matchingType).remove(groupID);
+                        }
+                        if (locked.get(matchingType) != null && locked.get(matchingType).isEmpty()) locked.remove(matchingType);
+
+                        if (separated) {
+                            if (lockedAdjacent.containsKey(matchingType) && lockedAdjacent.get(matchingType).containsKey(groupID)) {
+                                lockedAdjacent.get(matchingType).get(groupID).clear();
+                                lockedAdjacent.get(matchingType).remove(groupID);
+                            }
+                            if (lockedAdjacent.get(matchingType) != null && lockedAdjacent.get(matchingType).isEmpty()) lockedAdjacent.remove(matchingType);
+                        }
                     }
                 }
+                ////
             }
         }
 
