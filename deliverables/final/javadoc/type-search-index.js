@@ -1,1 +1,0 @@
-typeSearchIndex = [{"l":"All Classes and Interfaces","u":"allclasses-index.html"},{"p":"it.polimi.ingsw.model","l":"Board"}];updateSearchResults();
