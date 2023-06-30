@@ -34,7 +34,7 @@ public class Game {
 
     /**
      * Initialize Game
-     * @param model
+     * @param model the reference to the game model
      */
     public Game( GameModel model) {
         this.gameModel = model;
@@ -57,7 +57,7 @@ public class Game {
 
     /**
      * Create the player list, the game board and call the initGame method of gameModel that initialize it
-     * @param usernameList
+     * @param usernameList  the list of usernames
      */
     public void initGameModel(ArrayList<String> usernameList) {
         System.out.println("Game is being created.");
@@ -81,7 +81,7 @@ public class Game {
     /**
      * Retrieve the event type and the attached message from the parameter 'messageEvent'
      * and call the performAction method of the event
-     * @param messageEvent
+     * @param messageEvent  Message event received from the client to be handled
      */
     public void handleEvent(MessageEvent messageEvent) {
         EventController eventType = messageEvent.getEventType();
@@ -92,7 +92,7 @@ public class Game {
     /**
      * Split the message and convert the two parts into the corresponding int value,
      * then call the selectCoordinates() method of gameModel
-     * @param message
+     * @param message   the message containing the coordinates to be selected
      */
     public void selectCoordinate(String message) {
         String[] coordinates = message.split(" ");
@@ -105,7 +105,7 @@ public class Game {
     /**
      * Split the message and convert the two parts into the corresponding int value,
      * then call the deselectCoordinates() method of gameModel
-     * @param message
+     * @param message   the message containing the coordinates to be deselected
      */
     public void deselectCoordinates(String message ) {
         String[] coordinates = message.split(" ");
@@ -117,7 +117,7 @@ public class Game {
 
     /**
      * Call the method pickTiles() of gameModel
-     * @param message
+     * @param message   an empty message
      */
     private void pickCoordinates(String message) {
         System.out.println(gameModel.getCurrentPlayer().getNickname() + " picked the selected tiles from the board.");
@@ -127,7 +127,7 @@ public class Game {
     /**
      * Split the message into the corresponding int values and add them to an array of int,
      * then call the method rearrangeSelectedItemTiles() of gameModel
-     * @param message
+     * @param message the message containing the new tiles order
      */
     private void newOrderTiles(String message) {
         String[] strArr = message.split(" ");
@@ -140,7 +140,7 @@ public class Game {
 
     /**
      * Convert the message to the corresponding int value of the selected column and call the method selectColumn of gameModel
-     * @param message
+     * @param message the message containing the selected column
      */
     private void selectColumn(String message ) {
         int col = Integer.parseInt(message);
@@ -149,7 +149,7 @@ public class Game {
 
     /**
      * Call the method addMessageToChat() of gameModel
-     * @param message
+     * @param message   the message containing the message to add to chat
      */
     private void addMessageToChat(String message) {
         gameModel.addMessageToChat(message);
@@ -158,7 +158,7 @@ public class Game {
     /**
      * Retrieve the recipient player's nickname and reassembles the message,
      * then put it into the HashMap of the private messages where the nickname is the key and the message is its value
-     * @param message
+     * @param message   the message containing the private message
      */
     private void addPrivateMessage(String message) {
         String[] splittedMessage = message.split(" ");
@@ -187,7 +187,7 @@ public class Game {
 interface EventManager {
     /**
      * Declaration of the method 'performAction()'
-     * @param message
+     * @param message   a generic message received from the client
      */
     void performAction( String message);
 }

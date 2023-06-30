@@ -15,15 +15,6 @@ public class PlayerTest {
     PersonalGoalCard personalGoalCardTest;
     Board boardTest;
 
-//    @BeforeEach
-//    void setUp(){
-//        boardTest = new Board(2);
-//        PersonalGoalCardBag.reset();
-//        personalGoalCardTest = PersonalGoalCardBag.drawPersonalGoalCard(2);
-//        playerTest = new Player("Test Player", personalGoalCardTest, boardTest );
-//        System.out.println("");
-//        PersonalGoalCardBag.reset();
-//    }
 
     @Test
     public void testGetEndGameToken() {

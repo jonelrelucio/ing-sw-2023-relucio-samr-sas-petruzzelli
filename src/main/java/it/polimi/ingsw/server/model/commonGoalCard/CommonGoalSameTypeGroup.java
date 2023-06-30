@@ -72,7 +72,6 @@ public class    CommonGoalSameTypeGroup implements CommonGoalCard{
             for (int col = 0; col < bookshelf[0].length; col++) {
                 ItemTileType matchingType = bookshelf[row][col].getItemTileType();
                 if (matchingType != ItemTileType.EMPTY) {
-                    ///
                     groupID++;
 
                     int result = checkCoords(bookshelf, matchingType, locked, lockedAdjacent, row, col, groupID, 0);
@@ -123,7 +122,6 @@ public class    CommonGoalSameTypeGroup implements CommonGoalCard{
                         }
                     }
                 }
-                ////
             }
         }
 

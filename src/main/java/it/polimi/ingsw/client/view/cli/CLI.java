@@ -111,8 +111,8 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * Execute the action related to the calling event
-     * @param gameModelView
-     * @param eventView
+     * @param gameModelView  the received game model view from the server
+     * @param eventView      the event received from the server
      */
     @Override
     public void ViewEventHandler(GameModelView gameModelView, EventView eventView) {
@@ -121,7 +121,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * Create a new thread that manage the game turn
-     * @param gameModelView
+     * @param gameModelView the game model view
      * @see #printAll(GameModelView)
      * @see #listenToPlayer(GameModelView)
      */
@@ -135,7 +135,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * If it's the player's turn starts the sequence of action that the player has must perform, otherwise starts the chat thread
-     * @param gameModelView
+     * @param gameModelView the game model view
      * @see #printCanBeSelectedCoordinates(GameModelView)
      * @see #getCoordinates()
      * @see #setChangedAndNotifyObservers(MessageEvent)
@@ -168,7 +168,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
      * The client notify the server in order to retrieve the last 10 messages in the chat.
      * While the thread is active it checks if the current player is typing '/quit', if so the thread stops.
      * If the player types '/private recipient message' is sent a private message to the specified player.
-     * @throws RuntimeException
+     * @throws RuntimeException when IOException is thrown
      * @see #setChangedAndNotifyObservers(MessageEvent)
      */
     private void startChat() {
@@ -179,7 +179,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
             try {
                 while (reader.ready()) {
-                    reader.readLine(); // clear buffered reader
+                    reader.readLine();
                 }
             } catch (IOException e) {
                 throw new RuntimeException(e);
@@ -197,7 +197,6 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
                             }
                             System.err.println("command not found");
                         } else if (splittedMessage[0].toLowerCase().equals("/private") && splittedMessage.length > 2) {
-                            // the word after "/private" must be the username of the target
                             message = splittedMessage[2];
                             for (int i = 3; i < splittedMessage.length; i++) {
                                 message = message + " " + splittedMessage[i];
@@ -331,7 +330,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * Ask the player to choose if wants to select a coordinate or not and notify the server with the selected coordinates
-     * @param gameModelView
+     * @param gameModelView the gameModelView
      * @see #askYesOrNo(String)
      * @see #printCanBeSelectedCoordinates(GameModelView)
      * @see #getCoordinates()
@@ -358,7 +357,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * Ask the player to choose if wants to deselect a coordinate or not
-     * @param gameModelView
+     * @param gameModelView the gameModelView
      * @see #printSelectedCoordinates(GameModelView)
      * @see #askYesOrNo(String)
      * @see #getCoordinates()
@@ -367,7 +366,6 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
      */
     public void askDeselectCoordinates(GameModelView gameModelView) {
         printSelectedCoordinates(gameModelView);
-        //System.out.println("Do you want to deselect coordinates? yes/no: ");
         if (askYesOrNo("Do you want to deselect coordinates? yes/no: ")) {
             String coordinates = getCoordinates();
             setChangedAndNotifyObservers(new MessageEvent(DESELECT_COORDINATES, coordinates));
@@ -384,23 +382,10 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         setChangedAndNotifyObservers(new MessageEvent(PICK_TILES, " "));
     }
 
-    /**
-     * Read the user input and check if it's valid
-     * @return true if the user answer 'yes', false if the user answer 'no'
-     */
-    public boolean askYesOrNo() {
-        String answer;
-        do {
-            Scanner s = new Scanner(System.in) ;
-            answer = s.nextLine();
-            if (!answer.equals("yes") && !answer.equals("no") && !answer.equals("y") && !answer.equals("n") ) System.out.println("Please select yes or no");
-        } while( !answer.equals("yes") && !answer.equals("no")  && !answer.equals("y") && !answer.equals("n") );
-        return answer.equals("yes") || answer.equals("y") ;
-    }
 
     /**
      * Print the question contained into the 'text' parameter and read the user's answer. If the user types '/chat' starts the chat thread
-     * @param text
+     * @param text  the message to ask the player
      * @return true if the user answer 'yes', false if the user answer 'no'
      * @see #startChat()
      */
@@ -431,7 +416,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * Check if the parameter 'str' is a number
-     * @param str
+     * @param str   the str which checks if its numeric or not
      * @return true if 'str' is a number, else false
      */
     private static boolean isNumeric(String str) {
@@ -446,7 +431,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     /**
      * Ask the player if wants to order the selected tiles,
      * if yes allow the player to select the new order and notify the server, otherwise ask the player to select a column
-     * @param gameModelView
+     * @param gameModelView the game model view
      * @see #askYesOrNo(String)
      * @see #selectColumn(GameModelView)
      * @see #getTileOrder()
@@ -513,7 +498,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
      * Ask the player to select a column to fill with the selected tiles.
      * If the user types '/chat' starts the chat thread.
      * Read the user's input and check it's validity, if is valid notify the server.
-     * @param gameModelView
+     * @param gameModelView the game model view
      * @see #printBookshelves(GameModelView)
      * @see #startChat()
      * @see #isNumeric(String)
@@ -556,7 +541,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * call setChanged() and notify all the observers with the event contained into the 'arg' parameter
-     * @param arg
+     * @param arg   the message event to send to the server
      * @see #setChanged()
      * @see #notifyObservers(MessageEvent)
      */
@@ -567,7 +552,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * Check if it's the player's turn
-     * @param gameModelView
+     * @param gameModelView the game model view
      * @return true if it is, otherwise false
      */
     public boolean isMyTurn(GameModelView gameModelView){
@@ -580,7 +565,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * This method prints the end game screen with the name of the players and their points from the highest score to the lowest
-     * @param gameModel
+     * @param gameModel the game model view
      */
     private void printLeaderboard(GameModelView gameModel) {
         int[] pointsList = gameModel.getPointsList();
@@ -611,7 +596,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * Print the selected tiles
-     * @param gameModelView
+     * @param gameModelView the game model view
      */
     public void printSelectedTiles(GameModelView gameModelView) {
 
@@ -639,9 +624,9 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * Check if the 'list' parameter contains the coordinates of {i, j}
-     * @param list
-     * @param i
-     * @param j
+     * @param list  the list of coordinates
+     * @param i     the first value of the coordinates
+     * @param j     the second value of the coordinates
      * @return true if yes, otherwise false
      */
     private boolean containsCoordinates(ArrayList<int[]> list, int i, int j){
@@ -654,7 +639,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * Print the board game
-     * @param gameModelView
+     * @param gameModelView the game model view
      * @see #containsCoordinates(ArrayList, int, int)
      */
     public void printBoard(GameModelView gameModelView) {
@@ -682,7 +667,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * Print the 'matrix' parameter
-     * @param matrix
+     * @param matrix    the matrix of item tiles
      */
     public void printMatrix(ItemTileType[][] matrix) {
         System.out.println("      ┌───┬───┬───┬───┬───┐");
@@ -700,7 +685,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * Print the personal goal card
-     * @param gameModelView
+     * @param gameModelView the game model view
      * @see #printMatrix(ItemTileType[][])
      */
     public void printPersonalGoal(GameModelView gameModelView){
@@ -711,7 +696,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * Print the bookshelves of all the players
-     * @param gameModelView
+     * @param gameModelView the game model view
      * @see #getPlayerNickname(GameModelView)
      * @see #getTopBorder(int)
      * @see #getMidBorder(int)
@@ -744,7 +729,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * Build the header of the bookshelves with the players name
-     * @param gameModelView
+     * @param gameModelView the game model view
      * @return the header as a String
      */
     private String getPlayerNickname(GameModelView gameModelView) {
@@ -758,7 +743,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * Build the top border of the bookshelf
-     * @param numMatrices
+     * @param numMatrices   the number of matrices
      * @return the top border as a String
      */
     private String getTopBorder(int numMatrices) {
@@ -772,7 +757,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * Build the middle border of the bookshelf
-     * @param numMatrices
+     * @param numMatrices   the number of matrices
      * @return the middle border as a String
      */
     private String getMidBorder(int numMatrices) {
@@ -786,7 +771,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * Build the bottom border of the bookshelf
-     * @param numMatrices
+     * @param numMatrices   the number of matrices
      * @return the bottom border as a String
      */
     private String getBotBorder(int numMatrices) {
@@ -800,7 +785,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * Print all the element of the game: deck of two common goal card, board, bookshelves and personal goal card
-     * @param gameModelView
+     * @param gameModelView the game model view
      * @see #printCommonGoalCard(GameModelView)
      * @see #printBoard(GameModelView)
      * @see #printBookshelves(GameModelView)
@@ -818,7 +803,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * Print the common goal cards and their description
-     * @param gameModelView
+     * @param gameModelView the game model view
      */
     private void printCommonGoalCard(GameModelView gameModelView) {
         HashMap<Integer, Integer[]> commonGoalCardDeck = gameModelView.getCommonGoalCardDeck();
@@ -836,7 +821,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * Print which tiles can be selected based on the game rules
-     * @param gameModelView
+     * @param gameModelView the game model view
      */
     public void printCanBeSelectedCoordinates(GameModelView gameModelView) {
         System.out.println("Can be selected Tiles coordinates: ");
@@ -848,7 +833,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * Print the selected coordinates
-     * @param gameModelView
+     * @param gameModelView the game model view
      */
     public void printSelectedCoordinates(GameModelView gameModelView) {
         if (gameModelView.getSelectedCoordinates().isEmpty()) return;
@@ -859,12 +844,11 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
         System.out.println(" ");
     }
 
-    /******************************************************************************************/
 
     /**
      * The method is called when an error occurs during the coordinates selection step.
      * If it's the player's turn ask again to select the coordinates and notify the server.
-     * @param gameModelView
+     * @param gameModelView the game model view
      * @see #isMyTurn(GameModelView)
      * @see #printAll(GameModelView)
      * @see #printCanBeSelectedCoordinates(GameModelView)
@@ -888,7 +872,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * If the coordinates selection action goes well ask if the player wants to deselect some coordinates
-     * @param gameModelView
+     * @param gameModelView the game model view
      * @see #isMyTurn(GameModelView)
      * @see #printAll(GameModelView)
      * @see #askDeselectCoordinates(GameModelView)
@@ -901,7 +885,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * If the coordinates deselection action goes well ask if the player wants to select some coordinates
-     * @param gameModelView
+     * @param gameModelView the game model view
      * @see #isMyTurn(GameModelView)
      * @see #printAll(GameModelView)
      * @see #selectCoordinates(GameModelView)
@@ -915,7 +899,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     /**
      * The method is called when an error occurs during the coordinates deselection step.
      * If it's the player's turn ask again to deselect the coordinates.
-     * @param gameModelView
+     * @param gameModelView the game model view
      * @see #isMyTurn(GameModelView)
      * @see #printAll(GameModelView)
      * @see #askDeselectCoordinates(GameModelView)
@@ -928,7 +912,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * The method is called if the action of pick the tiles from the board goes well
-     * @param gameModelView
+     * @param gameModelView the game model view
      * @see #isMyTurn(GameModelView)
      * @see #printAll(GameModelView)
      * @see #printSelectedTiles(GameModelView)
@@ -946,7 +930,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
     /**
      * If the action of set the order of the selected tiles goes well print the selected tiles
      * and ask again if the player wants to set a new order
-     * @param gameModelView
+     * @param gameModelView the game model view
      * @see #isMyTurn(GameModelView)
      * @see #printSelectedTiles(GameModelView)
      * @see #askTileOrder(GameModelView)
@@ -959,7 +943,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * If the action of set the order of the selected tiles goes wrong ask again if the player wants to set a new order
-     * @param gameModelView
+     * @param gameModelView the game model view
      * @see #isMyTurn(GameModelView)
      * @see #askTileOrder(GameModelView)
      */
@@ -971,7 +955,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * If the action of select a column goes wrong ask again to select a column
-     * @param gameModelView
+     * @param gameModelView the game model view
      * @see #isMyTurn(GameModelView)
      * @see #selectColumn(GameModelView)
      */
@@ -983,7 +967,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * Print the bookshelves and the end game screen
-     * @param gameModel
+     * @param gameModel the game model view
      * @see #printBookshelves(GameModelView)
      * @see #printLeaderboard(GameModelView)
      */
@@ -996,7 +980,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * Print the last message in the chat
-     * @param gameModelView
+     * @param gameModelView the game model view
      */
     private void showChat(GameModelView gameModelView) {
         if (isMyTurn(gameModelView) && !chatAvailability) {
@@ -1026,7 +1010,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * This method retrieve the last 10 messages in the chat and print them
-     * @param gameModelView
+     * @param gameModelView the game model view
      */
     public void printChat(GameModelView gameModelView) {
         for (String m : gameModelView.getChat()) {
@@ -1046,7 +1030,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 
     /**
      * This method prints the last private message
-     * @param gameModelView
+     * @param gameModelView the game model view
      */
     public void printPrivateMessage(GameModelView gameModelView) {
         String message = gameModelView.getPrivateMessage().get(thisUsername);
@@ -1073,7 +1057,7 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
 interface ViewEventHandler {
     /**
      * Declaration of the method 'performAction()'
-     * @param gameModelView
+     * @param gameModelView the game model view
      */
     void performAction(GameModelView gameModelView);
 }

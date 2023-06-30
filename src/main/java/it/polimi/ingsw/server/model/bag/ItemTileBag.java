@@ -55,9 +55,17 @@ public class ItemTileBag {
      */
     public ItemTile drawItemTile() {return itemTilesBag.pop();}
 
+    /**
+     * This method checks if the bag is empty
+     * @return  true if the bag is empty
+     */
     public boolean bagIsEmpty() {
         return itemTilesBag.isEmpty();
     }
 
+    /**
+     * Gets the stack of item tiles bag
+     * @return  the stack of item tiles bag
+     */
     public Stack<ItemTile> getItemTilesBag() { return itemTilesBag; }
 }

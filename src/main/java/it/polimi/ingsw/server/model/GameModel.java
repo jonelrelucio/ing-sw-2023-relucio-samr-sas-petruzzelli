@@ -56,6 +56,10 @@ public class GameModel extends Observable<EventView> {
      */
     private HashMap<String, String> privateMessage;
 
+    /**
+     * Constructor
+     * @param numOfPlayer   the number of players
+     */
     public GameModel(int numOfPlayer) {
         if (numOfPlayer < 2 || numOfPlayer > 4 ) throw new IllegalArgumentException("Number of Player out of bounds");
         this.numOfPlayer = numOfPlayer;
@@ -110,7 +114,6 @@ public class GameModel extends Observable<EventView> {
      */
     public void updateNumOfRounds() { this.numOfRounds++; }
 
-    // Getters
 
     /**
      * Getter for the number of player
@@ -172,7 +175,6 @@ public class GameModel extends Observable<EventView> {
      */
     public HashMap<String, String> getPrivateMessageMap() { return privateMessage; }
 
-    // Setters
 
     /**
      * Set the number of player
@@ -268,26 +270,45 @@ public class GameModel extends Observable<EventView> {
         currentPlayer.setScore(score);
     }
 
+    /**
+     * Picks the tiles event
+     */
     public void pickTiles(){
         currentPlayer.pickSelectedItemTiles();
         setChangedAndNotifyObservers(PICK_TILES_SUCCESS);
     }
 
+    /**
+     * Selects the tiles event
+     * @param selectedCoordinates   the selected coordinates
+     */
     public void selectCoordinates(int[] selectedCoordinates) {
         EventView event = currentPlayer.selectCoordinates(selectedCoordinates);
         setChangedAndNotifyObservers(event);
     }
 
+    /**
+     * deselect tiles event
+     * @param selectedCoordinates   the tiles to be deselected
+     */
     public void deselectCoordinates(int[] selectedCoordinates) {
         EventView event = currentPlayer.deselectCoordinates(selectedCoordinates);
         setChangedAndNotifyObservers(event);
     }
 
+    /**
+     * new order event
+     * @param newOrder  the array of new order
+     */
     public void rearrangeSelectedItemTiles(int[] newOrder) {
         EventView event = currentPlayer.rearrangeSelectedItemTiles(newOrder);
         setChangedAndNotifyObservers(event);
     }
 
+    /**
+     * the select column event
+     * @param col   the column to be selected
+     */
     public void selectColumn(int col) {
         EventView event = currentPlayer.putItemsInSelectedColumn(col);
         if (board.checkRefill()) board.refill();
@@ -308,6 +329,10 @@ public class GameModel extends Observable<EventView> {
         setChangedAndNotifyObservers(event);
     }
 
+    /**
+     * notifies its observer of the changes in the game model view
+     * @param arg   the event that will notify the observer
+     */
     private void setChangedAndNotifyObservers(EventView arg) {
         setChanged();
         notifyObservers(arg);
