@@ -39,7 +39,7 @@ Game Implementation [My Shelfie](https://www.craniocreations.it/prodotto/my-shel
 
 ### Test coverages
 These are the test coverages
-<img src="deliverables/final/testCoverage/TestCoverage.jpg">
+<img src="deliverables/testCoverage/TestCoverage.jpg">
 
 ### How to run the jar files
 Before running either server-softeng-gc25.jar or client-softeng-gc25.jar be sure to have disabled the firewall for both of them.
