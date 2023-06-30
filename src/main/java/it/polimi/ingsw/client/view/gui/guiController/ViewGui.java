@@ -12,10 +12,7 @@ import javafx.scene.Scene;
 import javafx.stage.Stage;
 import it.polimi.ingsw.distributed.events.ViewEvents.EventView;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
-
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
 import java.util.*;
 
 
@@ -30,42 +27,21 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
 
     private final HashMap<EventView, ViewEventHandler> viewEventHandlers = new HashMap<>();;
     private String thisUsername;
-    private ControllerMainSceneDalila controllerMainSceneDalila;
-    Scene mainSceneDalila;
-    private ControllerConnection controllerConnection;
-    Scene selectConnectionScene;
-    private ControllerWaitingForPlayers controllerWaitingForPlayers;
-    Scene waitingForPlayers;
+    private ControllerMainScene controllerMainScene;
+    Scene mainScene;
     private ControllerEndGame controllerEndGame;
     Scene endGameScene;
     private Stage window;
-    private Integer change;
-    private boolean isMyTurn = false;
+   ;
     private boolean isWindowOpen = false;
     private boolean settedScenes = false;
-    /**
-     * Flag used to specify if the player can join the chat
-     */
-    private boolean chatAvailability = false;
-    BufferedReader reader = new BufferedReader(new InputStreamReader(System.in)); // used for chat message input
-    Thread chatThread;
+
+
 
 
     /**
      * ViewGUI's constructor
-     *
-     * @param window
      */
-    public ViewGui( Stage window) {
-        this.window = window;
-        change =0 ;
-        //changeSceneSelectConnection();
-        changeSceneMainSceneDalila();
-        //changeSceneWaitingForPlayers();
-        changeSceneEndGame();
-        initHandlers();
-    }
-
     public ViewGui() {
         initHandlers();
     }
@@ -90,50 +66,18 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     }
 
     /**
-     * changes to scene in which the player chooses the connection
-     */
-
-    public void changeSceneSelectConnection() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gui/fxml/SelectConnection.fxml"));
-        try {
-            Parent boardPaneParent = loader.load();
-            selectConnectionScene= new Scene(boardPaneParent);
-            controllerConnection = loader.getController();
-            controllerConnection.setViewGui(this);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-
-    }
-
-    public void selectConnection() {
-        Platform.runLater(() -> {
-            window.setScene(selectConnectionScene);
-            window.show();
-        });
-    }
-
-    /**
      * changes to Main scene
      */
-    private void changeSceneMainSceneDalila() {
+    private void changeSceneMainScene() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gui/fxml/MainSceneDalila.fxml"));
         try {
             Parent boardPaneParent = loader.load();
-            mainSceneDalila = new Scene(boardPaneParent);
-            controllerMainSceneDalila = loader.getController();
-            controllerMainSceneDalila.setViewGui(this);
+            mainScene = new Scene(boardPaneParent);
+            controllerMainScene = loader.getController();
+            controllerMainScene.setViewGui(this);
         } catch (IOException e) {
             e.printStackTrace();
         }
-    }
-    public void showMain() {
-        Platform.runLater(() -> {
-            window.setScene(mainSceneDalila);
-            window.show();
-            window.setResizable(true);
-            change=2;
-        });
     }
 
     /**
@@ -157,23 +101,7 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
         });
     }
 
-    private void changeSceneWaitingForPlayers() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gui/fxml/WaitingForOtherPlayers.fxml"));
-        try {
-            Parent boardPaneParent = loader.load();
-            waitingForPlayers = new Scene(boardPaneParent);
-            controllerWaitingForPlayers = loader.getController();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
-    public void showWaitingPlayer() {
-        Platform.runLater(() -> {
-            window.setScene(waitingForPlayers);
-            window.show();
-            change = 1;
-        });
-    }
+
     /**
      * Registro nome palyer e numero giocatori ancora da sistemare
      *
@@ -217,11 +145,11 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     }
 
     private void updateChat(GameModelView gameModelView) {
-        controllerMainSceneDalila.addToChat(gameModelView);
+        controllerMainScene.addToChat(gameModelView);
     }
 
     private void updatePrivateChat(GameModelView gameModelView) {
-        controllerMainSceneDalila.addToChatPrivateMessage(gameModelView);
+        controllerMainScene.addToChatPrivateMessage(gameModelView);
     }
 
     /**
@@ -245,9 +173,9 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
         else {
             if(!settedScenes) {
                 settedScenes = true;
-                changeSceneMainSceneDalila();
+                changeSceneMainScene();
                 changeSceneEndGame();
-                window.setScene(mainSceneDalila);
+                window.setScene(mainScene);
                 window.show();
             }
             new Thread(() -> {
@@ -260,13 +188,13 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
     private void listenToPlayer(GameModelView gameModelView) {
         if ( isMyTurn(gameModelView)) {
             Platform.runLater(() -> {
-                controllerMainSceneDalila.initChat(gameModelView.getPlayerList());
+                controllerMainScene.initChat(gameModelView.getPlayerList());
                 selectCoordinates(gameModelView,"Do you want to select a coordinate from the board?");
             });
         }else {
             Platform.runLater(()->{
-                controllerMainSceneDalila.showGameMessage("It's " + gameModelView.getCurrentPlayer() + "'s turn.");
-                controllerMainSceneDalila.initChat(gameModelView.getPlayerList());
+                controllerMainScene.showGameMessage("It's " + gameModelView.getCurrentPlayer() + "'s turn.");
+                controllerMainScene.initChat(gameModelView.getPlayerList());
             });
         }
     }
@@ -284,20 +212,20 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
         return thisUsername;
     }
     public void selectCoordinates(GameModelView gameModelView,String s) {
-        controllerMainSceneDalila.selectCoordinates(gameModelView,s);
+        controllerMainScene.selectCoordinates(gameModelView,s);
     }
     public void askDeselectCoordinates(GameModelView gameModelView) {
-        controllerMainSceneDalila.deselectCoordinates(gameModelView);
+        controllerMainScene.deselectCoordinates(gameModelView);
     }
     public void pickTiles() {
         setChangedAndNotifyObservers(new MessageEvent(PICK_TILES, " "));
     }
     public void askTileOrder(GameModelView gameModelView,String s) {
-        controllerMainSceneDalila.askTileOrder(gameModelView,s);
+        controllerMainScene.askTileOrder(gameModelView,s);
     }
     public void selectColumn(GameModelView gameModelView) {
         printBookshelves(gameModelView);
-        controllerMainSceneDalila.showColumnToggle();
+        controllerMainScene.showColumnToggle();
     }
     private void setChangedAndNotifyObservers(MessageEvent arg) {
         new Thread(() -> {
@@ -313,19 +241,19 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
 
 
     public void printBoard(GameModelView gameModelView) {
-        controllerMainSceneDalila.showBoard(gameModelView);
+        controllerMainScene.showBoard(gameModelView);
     }
 
     public void printBookshelves(GameModelView gameModelView) {
-        controllerMainSceneDalila.showBookshelves(gameModelView);
+        controllerMainScene.showBookshelves(gameModelView);
     }
 
     public void printPersonalGoal(GameModelView gameModelView){
-        controllerMainSceneDalila.showPersonalGoal(gameModelView);
+        controllerMainScene.showPersonalGoal(gameModelView);
     }
 
     private void printCommonGoalCard(GameModelView gameModelView) {
-        controllerMainSceneDalila.showCommonGoalCard(gameModelView);
+        controllerMainScene.showCommonGoalCard(gameModelView);
     }
 
     /**

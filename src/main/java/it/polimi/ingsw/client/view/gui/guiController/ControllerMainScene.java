@@ -27,7 +27,7 @@ import javafx.scene.text.TextFlow;
 import java.net.URL;
 import java.util.*;
 
-public class ControllerMainSceneDalila implements Initializable {
+public class ControllerMainScene implements Initializable {
 
     @FXML
     Button yesButton;
@@ -167,8 +167,7 @@ public class ControllerMainSceneDalila implements Initializable {
     private static final int height = 40;
     private static final int width = 35;
     private static Boolean clicked;
-    private String[] chatColors = new String[]{"blue","orange","green"};
-    private String personalChatColor = "black";
+    private final String[] chatColors = new String[]{"blue","orange","green"};
 
     private HashMap<Integer, String> commonGoalCardDescriptions;
 
@@ -178,7 +177,7 @@ public class ControllerMainSceneDalila implements Initializable {
 
 
     public void setViewGui(ViewGui viewGUI) {
-        ControllerMainSceneDalila.viewGUI = viewGUI;
+        ControllerMainScene.viewGUI = viewGUI;
     }
 
     @Override
@@ -287,7 +286,7 @@ public class ControllerMainSceneDalila implements Initializable {
             }else{
                 viewGUI.setNewPrivateMessage((String) playersListChat.getValue(),chatTextField.getText());
                 if (!playersListChat.getValue().equals(viewGUI.getThisUsername()))
-                    showMessage("(private) From "+ viewGUI.getThisUsername() +  " to " + playersListChat.getValue() + ": "+ chatTextField.getText(), personalChatColor);
+                    showMessage("(private) From "+ viewGUI.getThisUsername() +  " to " + playersListChat.getValue() + ": "+ chatTextField.getText(), "black");
                 chatTextField.clear();}
         }
     }
