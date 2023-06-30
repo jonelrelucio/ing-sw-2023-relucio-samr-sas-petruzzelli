@@ -160,7 +160,6 @@ public class ControllerMainScene implements Initializable {
     private  ArrayList<Label> chosenTilesLabels;
 
     private  ArrayList<Button> allChosenTilesButtons;
-    private ImageView[][] cells;
     private ToggleGroup columnToggleGroup;
 
     private static ViewGui viewGUI;

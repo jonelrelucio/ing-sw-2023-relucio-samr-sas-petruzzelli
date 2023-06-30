@@ -20,13 +20,21 @@ import static it.polimi.ingsw.distributed.events.ViewEvents.EventView.*;
 import static it.polimi.ingsw.distributed.events.controllerEvents.EventController.*;
 
 
-
+/**
+ * This class manage all the input and all the different stages of the game using a Graphical User Interface (GUI)
+ */
 
 
 public class ViewGui  extends Observable<MessageEvent> implements View, Runnable {
-
+    /**
+     * HashMap that contain events as keys and #VireEventHandler as value, its purpose is to handle all the events triggered by the server
+     */
     private final HashMap<EventView, ViewEventHandler> viewEventHandlers = new HashMap<>();;
+    /**
+     * Player's username
+     */
     private String thisUsername;
+
     private ControllerMainScene controllerMainScene;
     Scene mainScene;
     private ControllerEndGame controllerEndGame;
