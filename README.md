@@ -14,10 +14,6 @@ Game Implementation [My Shelfie](https://www.craniocreations.it/prodotto/my-shel
 - [Lucian Sas](https://github.com/LucianSasPolimi) 
 - [Alessandro Petruzzelli](https://github.com/AlessandroPetruzzelli) 
 
-### UML Diagrams
-UML Diagrams have been develped using [diagrams](https://www.diagrams.net/).  
-Initial UML Diagrams of the application: [UML Diagram](deliverables/final/uml/Diagramma UML iniziale dell'applicazione.png)
-
 ### Dependencies
 - Gson: used for serialization and deserialization of certain class objects
 - JavaFX: used for the GUI Implementation
