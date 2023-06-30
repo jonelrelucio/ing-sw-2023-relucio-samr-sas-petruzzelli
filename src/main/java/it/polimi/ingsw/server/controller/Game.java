@@ -21,7 +21,15 @@ import static it.polimi.ingsw.distributed.events.controllerEvents.EventControlle
  * it changes the game model according to the game rules and the inner logic
  */
 public class Game {
+
+    /**
+     * the Reference to the game model
+     */
     private final GameModel gameModel;
+
+    /**
+     * a hashmap of event handlers
+     */
     private final HashMap<EventController, EventManager> eventHandlers;
 
     /**
@@ -33,8 +41,6 @@ public class Game {
         eventHandlers = new HashMap<>();
         initEventHandler();
     }
-
-    //TODO ADD MORE EVENTS
 
     /**
      * Fill the eventHandlers HashMap with the expected event that could be managed and the corresponding method's call

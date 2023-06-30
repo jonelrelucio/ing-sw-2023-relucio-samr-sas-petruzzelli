@@ -1,8 +1,5 @@
 package it.polimi.ingsw.distributed.integrated;
 
-import it.polimi.ingsw.distributed.integrated.Connection;
-import it.polimi.ingsw.distributed.integrated.GameServer;
-import it.polimi.ingsw.server.model.util.CircularArrayList;
 
 import java.io.IOException;
 import java.rmi.RemoteException;
@@ -10,18 +7,45 @@ import java.rmi.registry.LocateRegistry;
 import java.rmi.registry.Registry;
 import java.rmi.server.RMISocketFactory;
 
+/**
+ * The RMI class that implements the runnable interface
+ */
 public class RMIRunnable implements Runnable{
-    private CircularArrayList<Connection> connections;
+    /**
+     * The port of the server
+     */
     private int port;
+
+    /**
+     * The ip address of the server
+     */
     private String ipAddress;
+
+    /**
+     * The server stub
+     */
     private GameServer server;
+
+    /**
+     * The registry
+     */
     private static Registry registry;
 
+    /**
+     * Constructor
+     * @param server    the server stub
+     * @param port      the port of the server
+     * @param ipAddress the ip address of the server
+     */
     public RMIRunnable(GameServer server, int port, String ipAddress) {
         this.server = server;
         this.port = port;
         this.ipAddress = ipAddress;
     }
+
+    /**
+     * Overrides the run method of the Runnable interface
+     */
     @Override
     public void run(){
         try{

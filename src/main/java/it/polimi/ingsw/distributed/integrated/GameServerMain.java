@@ -1,9 +1,5 @@
 package it.polimi.ingsw.distributed.integrated;
 
-import it.polimi.ingsw.distributed.integrated.GameServer;
-import it.polimi.ingsw.distributed.integrated.RMIRunnable;
-import it.polimi.ingsw.distributed.integrated.SocketRunnable;
-
 import java.net.*;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
@@ -13,7 +9,14 @@ import java.util.Scanner;
 
 import static java.lang.System.out;
 
+/**
+ * The main class that starts the server
+ */
 public class GameServerMain {
+    /**
+     * The main method to start the server
+     * @param args  the default arguments of the main function
+     */
     public static void main(String[] args) {
 
         try{
@@ -24,32 +27,39 @@ public class GameServerMain {
             Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
             int count = 0;
             for (NetworkInterface netint : Collections.list(nets)) {
-
-                out.println("id: " + count);
-                displayInterfaceInformation(netint);
                 Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
                 for (InetAddress inetAddress : Collections.list(inetAddresses)) {
-
                     if(inetAddress instanceof Inet4Address){
                         ipAddresses.add(inetAddress.getHostAddress());
                         ips.add(inetAddress);
+                        out.println("id: " + count);
+                        out.printf("Display name: %s\n", netint.getDisplayName());
+                        out.printf("Name: %s\n", netint.getName());
+                        out.printf("InetAddress: %s\n", inetAddress);
+                        out.printf("\n");
+                        count++;
                     }
-
                 }
-                count++;
             }
 
             out.println("Choose server ip:");
-            Scanner s = new Scanner(System.in);
-            int id = Integer.parseInt(s.nextLine());
-            InetAddress ip = ips.get(id);
+            int id = -1;
+            do {
+                boolean valid = true;
+                Scanner s = new Scanner(System.in);
+                try {
+                    id = Integer.parseInt(s.nextLine());
+                } catch (NumberFormatException e) {
+                  valid = false;
+                }
+                if (id < 0 || id > ipAddresses.size() || !valid) out.println("Choose a valid ip address.");
+            } while (id < 0 || id > ipAddresses.size());
             String ipAddress = ipAddresses.get(id);
             out.println("Server Ip Address: " + ipAddress);
 
             System.setProperty("java.rmi.server.hostname", ipAddress);
             System.setProperty("java.rmi.server.useLocalHostname", "true");
 
-            //start the RMI thread
             Thread socketThread = new Thread(new SocketRunnable(server));
             Thread rmiThread = new Thread(new RMIRunnable(server, 1099, ipAddress));
 
@@ -66,18 +76,6 @@ public class GameServerMain {
 
         }
 
-
-
     }
 
-    static void displayInterfaceInformation(NetworkInterface netint) throws SocketException {
-        out.printf("Display name: %s\n", netint.getDisplayName());
-        out.printf("Name: %s\n", netint.getName());
-        Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
-        for (InetAddress inetAddress : Collections.list(inetAddresses)) {
-            if(inetAddress instanceof Inet4Address)
-                out.printf("InetAddress: %s\n", inetAddress);
-        }
-        out.printf("\n");
-    }
 }

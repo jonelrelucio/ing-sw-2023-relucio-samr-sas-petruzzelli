@@ -584,20 +584,28 @@ public class CLI extends Observable<MessageEvent> implements View, Runnable {
      */
     private void printLeaderboard(GameModelView gameModel) {
         int[] pointsList = gameModel.getPointsList();
+        String[] player = gameModel.getPlayerList();
+
+        HashMap<String, Integer> unsortedMap = new HashMap<>();
+        for (int i = 0; i < player.length; i++) {
+            unsortedMap.put(player[i], pointsList[i]);
+        }
+
         int[] sortedList = Arrays.copyOf(pointsList, pointsList.length);
-        String[] nicknames = new String[pointsList.length];
         Arrays.sort(sortedList);
 
-        int i = 0;
-        for (int point : pointsList) {
-            int position = Arrays.binarySearch(sortedList, point);
-            nicknames[position] = gameModel.getPlayerList()[i];
-            i++;
+        for (int i = 0; i < sortedList.length; i++) {
+            for (String key : unsortedMap.keySet()) {
+                if (unsortedMap.get(key) == sortedList[i]) {
+                    player[i] = key;
+                }
+            }
+            unsortedMap.remove(player[i]);
         }
 
         System.out.println("Leaderboard:");
-        for (int j = nicknames.length - 1; j >= 0; j--) {
-            System.out.println(nicknames[j] + ": " + sortedList[j]);
+        for (int i = sortedList.length - 1; i >= 0; i--) {
+            System.out.println(player[i] + ": " + sortedList[i]);
         }
     }
 

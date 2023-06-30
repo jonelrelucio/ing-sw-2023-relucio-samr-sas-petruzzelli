@@ -55,5 +55,9 @@ public class ItemTileBag {
      */
     public ItemTile drawItemTile() {return itemTilesBag.pop();}
 
+    public boolean bagIsEmpty() {
+        return itemTilesBag.isEmpty();
+    }
+
     public Stack<ItemTile> getItemTilesBag() { return itemTilesBag; }
 }
