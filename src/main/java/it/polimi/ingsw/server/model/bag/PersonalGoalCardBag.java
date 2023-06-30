@@ -10,11 +10,24 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.Stack;
 
-
+/**
+ * Class the represents the personal goal card bag
+ */
 public abstract class PersonalGoalCardBag {
 
+    /**
+     * The sizes of Row and Columns of personal goal card
+     */
     private static final int ROW = 6, COL = 5;
+
+    /**
+     * A stack of integers that represent the bag containing the ids of the personal goal cards
+     */
     private static final Stack<Integer> personalGoalCardBag = new Stack<>();
+
+    /**
+     * the number of draws that has been done
+     */
     private static int numOfDraws = 0;
 
     /**
@@ -105,25 +118,44 @@ public abstract class PersonalGoalCardBag {
         numOfDraws = 0;
     }
 
-
-    public static Stack<Integer> getPersonalGoalCardBag() { return personalGoalCardBag; }
+    /**
+     * Getter for the number of draws
+     * @return  the number of draws that has been done
+     */
     public static int getNumOfDraws() { return numOfDraws; }
 
 }
 
-
+/**
+ * The coordinates of the personal goal cards used for deserialization from the json file from resources
+ */
 class PersonalGoalCardCoordinates {
-
+    /**
+     * a set of matrix coordinates with serialized name coordinates
+     */
     @SerializedName("coordinates")
     private int[][][] matrixCoordinates;
 
+    /**
+     * a set of item coordinates with serialized name item coordinates
+     */
     @SerializedName("itemCoordinates")
     private ItemTileType[][] itemCoordinates;
 
-
+    /**
+     * Getter for a specific matrix coordinates given a key
+     * @param key   the key of a specific set of coordinates
+     * @return      the matrix coordinates
+     */
     public int[][] getMatrixCoordinates(int key) {
         return matrixCoordinates[key-1];
     }
+
+    /**
+     * Getter for a specific item coordinates, given a key
+     * @param key   the key
+     * @return      the item coordinates
+     */
     public ItemTileType[] getItemCoordinates(int key) {
         return itemCoordinates[key-1];
     }
