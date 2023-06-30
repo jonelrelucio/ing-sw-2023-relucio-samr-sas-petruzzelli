@@ -13,27 +13,7 @@ import static org.junit.jupiter.api.Assertions.*;
 
 public class PersonalGoalCardBagTest {
 
-//    @BeforeEach
-//    void setUp() {
-//        PersonalGoalCardBag.reset();
-//    }
 
-//    @Test
-//    public void testInitPersonalGoalCardBag() {
-//        PersonalGoalCardBag.reset();
-//        int numOfPlayers = 2;
-//        Stack<Integer> personalGoalCardBag = new Stack<>();
-//        PersonalGoalCardBag.initPersonalGoalCardBag(numOfPlayers);
-//        assertFalse(PersonalGoalCardBag.getPersonalGoalCardBag().isEmpty());
-//        assertEquals(12, PersonalGoalCardBag.getPersonalGoalCardBag().size());
-//
-//        // Test that the bag is initialized with the correct cards
-//        Integer[] expectedCards = {1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12};
-//        assertTrue(PersonalGoalCardBag.getPersonalGoalCardBag().containsAll(Arrays.asList(expectedCards)));
-//
-//        // Test that the bag is shuffled
-//        assertNotEquals(Arrays.asList(expectedCards),PersonalGoalCardBag.getPersonalGoalCardBag());
-//    }
 
     @Test
     public void testDrawPersonalGoalCard() {
