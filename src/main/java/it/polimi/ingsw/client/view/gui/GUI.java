@@ -1,13 +1,8 @@
 package it.polimi.ingsw.client.view.gui;
-
-
-import it.polimi.ingsw.client.view.View;
 import it.polimi.ingsw.client.view.gui.guiController.ViewGui;
 import it.polimi.ingsw.distributed.events.ViewEvents.GameModelView;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
-import javafx.scene.Node;
-import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.layout.Pane;
 import javafx.stage.Stage;
@@ -28,7 +23,12 @@ public class GUI extends Application {
         viewGUI = view;
         gameModelView = gmv;
     }
-
+    /**
+     * Opens the main window with the main scene.
+     *
+     * @param primaryStage is the window that will be open.
+     * @throws IOException necessary exception
+     */
     @Override
     public void start(Stage primaryStage) throws IOException {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gui/fxml/MainSceneDalila.fxml"));

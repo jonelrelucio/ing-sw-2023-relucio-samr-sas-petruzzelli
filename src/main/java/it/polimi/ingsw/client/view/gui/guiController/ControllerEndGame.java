@@ -39,7 +39,10 @@ public class ControllerEndGame{
     private int firstPlayerPosition = 0;
     private static final int height = 45;
     private static final int width = 40;
-
+    /**
+     * Fills the grid pane with the name of the players and their points from the highest score to the lowest
+     * @param gameModelView
+     */
     public void init(GameModelView gameModelView){
         int[] pointsList = gameModelView.getPointsList();
         int[] orderedPoints = Arrays.copyOf(pointsList, pointsList.length);
@@ -75,11 +78,19 @@ public class ControllerEndGame{
             nameFourthPlaceLabel.setText(playerList[size-4]);
         }
     }
-
+    
+    /**
+     * Set the field 'viewGUI'
+     * @param viewGui
+     */
     public void setViewGui(ViewGui viewGui) {
         viewGUI = viewGui;
     }
-
+    /**
+     * Fills the grid pane bookshelf with the winner book shelf
+     * @param gameModelView
+     * @see #createImageTile(ItemTileType, int) 
+     */
     public void setLeaderBookShelf(GameModelView gameModelView) {
         ItemTileType[][] t = gameModelView.getBookshelfList()[firstPlayerPosition];
         int[][] id = gameModelView.getBookshelfListItemId()[firstPlayerPosition];
@@ -93,7 +104,12 @@ public class ControllerEndGame{
             }
         }
     }
-
+    /**
+     *Returns an image view with the correspondent Item tile image set
+     * @param id
+     * @param t
+     * @return
+     */
     private ImageView createImageTile(ItemTileType t, int id){
         ImageView imageView = new ImageView();
         imageView.setFitHeight(height);

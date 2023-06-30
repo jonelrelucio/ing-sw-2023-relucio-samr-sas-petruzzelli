@@ -173,12 +173,17 @@ public class ControllerMainScene implements Initializable {
     private String lastPrivateMessage = null;
 
 
-
-
+    /**
+     * Set the field 'viewGUI'
+     * @param viewGUI
+     */
     public void setViewGui(ViewGui viewGUI) {
         ControllerMainScene.viewGUI = viewGUI;
     }
 
+    /**
+     *Initializes the main game scene.
+     */
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
         columnToggleGroup = new ToggleGroup();
@@ -224,12 +229,17 @@ public class ControllerMainScene implements Initializable {
         chatTextField.clear();
     }
 
+    /**
+     *Initializes the label that show the order of the tiles in the main player tab.
+     */
     private void initLabelPersonalTiles() {
         chosenTilesButton1Label.setText("");
         chosenTilesButton3Label.setText("");
         chosenTilesButton2Label.setText("");
     }
-
+    /**
+     * Fills the 'commonGoalCardDescriptions' HashMap with all the cards id and their description
+     */
     private void initCommonGoalCardDescription() {
         commonGoalCardDescriptions.put(1, Utils.desc1);
         commonGoalCardDescriptions.put(2, Utils.desc2);
@@ -246,18 +256,33 @@ public class ControllerMainScene implements Initializable {
     }
 
 
+    /**
+     *Set's the rectangle 'r' with the image of the first player token in the common goal card tab.
+     * @param r
+     */
     public void setFirstPlayerChair(Rectangle r){
         image = new Image(getClass().getResource("/view/gui/background/firstplayertoken.jpg").toString());
         r.setFill(new ImagePattern(image));
         r.setVisible(true);
 
     };
+
+    /**
+     * Adds the new message in the chat tab's text field.
+     * @param s message text content
+     * @param c message text color
+     */
     public void showMessage(String s,String c){
         textChat = new Text(s + "\n");
         textChat.setFill(Color.valueOf(c));
         chatTextFlow.getChildren().add(textChat);
     }
 
+    /**
+     * Show the new flow message in Game Messages' text field guiding the user's action.
+     * @param s message text content
+     * @see #clearMessage()
+     */
     public void showGameMessage(String s){
         clearMessage();
         text = new Text(s + "\n");
@@ -265,10 +290,20 @@ public class ControllerMainScene implements Initializable {
         textFlowGameMessages.getChildren().add(text);
     }
 
+    /**
+     * Clears the Game Messages' text field of the previous flow message
+     */
     public void clearMessage(){
         textFlowGameMessages.getChildren().clear();
     }
 
+    /**
+     * Check if the 'list' parameter contains the coordinates of {i, j}
+     * @param list
+     * @param i
+     * @param j
+     * @return true if yes, otherwise false
+     */
     private boolean containsCoordinates(ArrayList<int[]> list, int i, int j){
         int[] coordinates = new int[]{i, j};
         for (int[] array : list) {
@@ -277,6 +312,10 @@ public class ControllerMainScene implements Initializable {
         return false;
     }
 
+    /**
+     * After the send button is clicked call's the viewGUI method tha will notify the server of the new message or the new private message
+     * #see ShowMessage(String,Color)
+     */
     public void setChatButtonSend(){
         if(!chatTextField.getText().isEmpty()) {
             if(playersListChat.getValue().equals("All")){
@@ -290,6 +329,9 @@ public class ControllerMainScene implements Initializable {
         }
     }
 
+    /**
+     * Fill's the choice Box with all the name of the players and th 'All' option.
+     */
     public void initChat(String[] players){
         playersListChat.getItems().clear();
         ObservableList<String> listPlayers = FXCollections.observableArrayList();
@@ -300,6 +342,12 @@ public class ControllerMainScene implements Initializable {
     }
 
 
+    /**
+     * Fill's the board game with the item tiles adding buttons to the clickable ones
+     * @param gameModelView
+     * @see #containsCoordinates(ArrayList, int, int)
+     * @see #setNodeBoardTileButton(GridPane, int, int, ItemTileType, int)
+     */
     public void showBoard(GameModelView gameModelView){
         clearBoard();
         ItemTileType[][] board = gameModelView.getBoardMatrix();
@@ -317,6 +365,15 @@ public class ControllerMainScene implements Initializable {
         }
     }
 
+    /**
+     * Adds buttons to the Grid Pane
+     * @param gridPane
+     * @param row
+     * @param col
+     * @param t
+     * @param id
+     * @see #createImageTile(ItemTileType, int, Boolean)
+     */
     private void setNodeBoardTileButton (GridPane gridPane,int row, int col,ItemTileType t,int id){
         Button button = new Button();
         button.setPrefSize(height,width);
@@ -327,6 +384,10 @@ public class ControllerMainScene implements Initializable {
         buttons.add(button);
     }
 
+    /***
+     * removes player's tab based on number of players in the game
+     * @param players
+     */
     public void showTabPlayers(String [] players){
         if(players.length==2){
             playersFullTab.getTabs().remove(player2Tab);
@@ -335,6 +396,13 @@ public class ControllerMainScene implements Initializable {
             playersFullTab.getTabs().remove(player3Tab);
         }
     }
+
+    /**
+     * Fill's the palyer's tab with all the correspondent information
+     * @param gameModelView
+     * @see #setDetailesPlayer(Tab, GridPane, Label, int, String, ItemTileType[][], int[][])
+     * @see #setFirstPlayerChair(Rectangle)
+     */
     public void showBookshelves(GameModelView gameModelView) {
         String[] players = gameModelView.getPlayerList();
         showTabPlayers(players);
@@ -359,6 +427,17 @@ public class ControllerMainScene implements Initializable {
         }
     }
 
+    /**
+     * Fill's the bookshelf's grid pane in the players' tabs with the correspondent item tiles
+     * @param bookShelf
+     * @param bookShelfId
+     * @param g
+     * @param name
+     * @param score
+     * @param t
+     * @param scoreLabel
+     * @see #clearBookShelf(GridPane)
+     */
     public void setDetailesPlayer(Tab t,GridPane g, Label scoreLabel, int score, String name, ItemTileType [][] bookShelf,int [][] bookShelfId){
         t.setText(name);
         scoreLabel.setText("Score: " + score);
@@ -371,7 +450,15 @@ public class ControllerMainScene implements Initializable {
             }
         }
     }
-
+    /**
+     * Asks the player if he wants to select an item tile from board and sets action to yes/no buttons.
+     * @param gameModelView
+     * @param s
+     * @see #printCanBeSelectedCoordinates()
+     * @see #askYesOrNo()
+     * @see #showGameMessage(String)
+     * @see #hideYesOrNo()
+     */
     public void selectCoordinates(GameModelView gameModelView,String s){
         showGameMessage(s);
         askYesOrNo();
@@ -391,19 +478,31 @@ public class ControllerMainScene implements Initializable {
             }
         });
     }
+    /**
+     * sets visible the yes and no button
+     *
+     */
     public void askYesOrNo() {
         yesButton.setVisible(true);
         noButton.setVisible(true);
     }
-
+    /**
+     *hides  the yes and no button
+     *
+     */
     public void hideYesOrNo() {
         yesButton.setVisible(false);
         noButton.setVisible(false);
     }
+    /**
+     * Adds action to the button with the item tiles that can be selected highlighting them with yellow
+     * @see #setInnerGlow(int)
+     * @see #getCoordinates(int[])
+     */
 
     public void printCanBeSelectedCoordinates() {
         for ( Button b : buttons){
-            b.setEffect(getInnerGlow(50));
+            b.setEffect(setInnerGlow(50));
             b.setOnAction(event -> {
                 int [] coor = new int[2];
                 coor [0] = GridPane.getRowIndex(b)==null ? 1 : GridPane.getRowIndex(b)+1;
@@ -414,7 +513,11 @@ public class ControllerMainScene implements Initializable {
         }
     }
 
-
+    /**
+     * Check if the parameter 'str' is a number
+     * @param str
+     * @return true if 'str' is a number, else false
+     */
     private static boolean isNumeric(String str) {
         try {
             Integer.parseInt(str);
@@ -423,8 +526,12 @@ public class ControllerMainScene implements Initializable {
             return false;
         }
     }
-
-    public InnerShadow getInnerGlow(int depth) {
+    /**
+     *Returns the inner shadow that gives the effect of yellow glowing.
+     * @param depth
+     * @return
+     */
+    public InnerShadow setInnerGlow(int depth) {
         InnerShadow innerGlow = new InnerShadow();
         innerGlow.setOffsetY(5);
         innerGlow.setOffsetX(5);
@@ -433,7 +540,13 @@ public class ControllerMainScene implements Initializable {
         innerGlow.setHeight(depth);
         return innerGlow;
     }
-
+    /**
+     * Asks the player if he wants to deselect an item tile from grid pane in tab and sets action to yes/no buttons.
+     * @param gameModelView
+     * @see #printSelectedTiles(GameModelView)
+     * @see #askYesOrNo()
+     * @see #selectCoordinates(GameModelView, String)
+     */
     public void deselectCoordinates(GameModelView gameModelView) {
         showGameMessage("Do you want to deselect coordinates?");
         askYesOrNo();
@@ -450,6 +563,15 @@ public class ControllerMainScene implements Initializable {
 
     }
 
+    /**
+     * Ask the player to choose if he wants to remove a coordinate or not from the chosen ones.
+     * Hows the selected tiles in the personal tab.
+     * @param gameModelView
+     * @see #setSelectedTilesPane(GameModelView, ItemTileType, int, Button, ImageView, Label, StackPane)
+     * @see #showGameMessage(String)
+     * @see #hideYesOrNo()
+     * @see #hideSelectedTilesPanes()
+     */
     public void printSelectedTiles(GameModelView gameModelView) {
         showGameMessage("In your tab will be shown the tiles you have selected.\nPlease select the one that you want to remove");
         hideYesOrNo();
@@ -469,7 +591,18 @@ public class ControllerMainScene implements Initializable {
             }
         }
     }
-
+    /**
+     * Fill's the selected tiles' grid pane in the player's tab with the correspondent item tiles and sets the set on action buttons
+     * @param gameModelView
+     * @param id 
+     * @param sp 
+     * @param chosenTilesButton 
+     * @param chosenTilesImage
+     * @param t 
+     * @param chosenTilesLabel 
+     * @see #getCoordinates(int[]) 
+     * @see #insertImageTile(ImageView, ItemTileType, int) 
+     */
     public void setSelectedTilesPane(GameModelView gameModelView, ItemTileType t, int id, Button chosenTilesButton, ImageView chosenTilesImage, Label chosenTilesLabel,StackPane sp) {
         sp.setVisible(true);
         chosenTilesButton.setDisable(false);
@@ -481,18 +614,31 @@ public class ControllerMainScene implements Initializable {
             chosenTilesGrid.setVisible(false);
         });
     }
-
+    /**
+     * Hides the stack panes in the player tab
+     */
     private void hideSelectedTilesPanes() {
         chosenTilesStackPane1.setVisible(false);
         chosenTilesStackPane2.setVisible(false);
         chosenTilesStackPane3.setVisible(false);
     }
-
+    /**
+     * Set the image to the correspondent image view
+     * @param t 
+     * @param id 
+     * @param im 
+     */
     private void insertImageTile(ImageView im,ItemTileType t,int id){
         image = new Image(getClass().getResource("/view/gui/item_tiles/" + t + "1."+ id +".png").toString());
         im.setImage(image);
     }
-
+    /**
+     * Returns an image view
+     * @param id
+     * @param t
+     * @param b
+     * @see #insertImageTile(ImageView, ItemTileType, int)
+     */
     private ImageView createImageTile(ItemTileType t,int id,Boolean b){
         ImageView imageView = new ImageView();
         imageView.setFitHeight(height);
@@ -504,6 +650,12 @@ public class ControllerMainScene implements Initializable {
         return imageView;
     }
 
+    /**
+     * Checks the coordinates and returns a string with the correspondent coordinates
+     * @param c
+     * @return the coordinates inserted by the user as a String
+     * @see #showGameMessage(String)
+     */
     private String getCoordinates(int [] c){
         String input = String.format("%d",c[0]) + " " + String.format("%d",c[1]);
         int x, y;
@@ -520,12 +672,22 @@ public class ControllerMainScene implements Initializable {
     }
 
 
+    /**
+     *Shows the column toggle group in the players tab
+     * @see #hideYesOrNo()
+     * @see #showGameMessage(String)
+     */
     public void showColumnToggle() {
         showGameMessage("select a radio button on top of the column where you want to put your tiles.\n");
         radioButtonChoiceGrid.setVisible(true);
         hideYesOrNo();
     }
 
+    /**
+     *Sets the column toggle group action in the players tab
+     * @see #showGameMessage(String)
+     * @see #setColumn(String, RadioButton)
+     */
     public void setColumnToggle(){
         if (this.columnToggleGroup.getSelectedToggle().equals(radioButtonChoice1)) {
             showGameMessage("The column chosen is 1\n Confirm choice by selecting yes or choose another");
@@ -548,7 +710,10 @@ public class ControllerMainScene implements Initializable {
             setColumn("4",radioButtonChoice5);
         }
     }
-
+    /**
+     *Sets the column selected from the column toggle group
+     * @see #hideYesOrNo()
+     */
     private void setColumn(String s,RadioButton b) {
         yesButton.setVisible(true);
         noButton.setVisible(false);
@@ -560,12 +725,20 @@ public class ControllerMainScene implements Initializable {
             hideYesOrNo();
         });
     }
-
+    /**
+     *Removes all the children from the grid pane board
+     */
     public void clearBoard() {
         if(!boardGrid.getChildren().isEmpty())
             boardGrid.getChildren().clear();
     }
-
+    /**
+     * Show the player the selected tiles to be ordered.
+     * @param gameModelView
+     * @param s
+     * @see #showGameMessage(String)
+     * @see #setSelectedTile(ImageView, ArrayList, ArrayList, int, Button, Label, StackPane, Boolean)
+     */
     public void showSelectedTiles(GameModelView gameModelView,String s) {
         showGameMessage(s);
         chosenTilesGrid.setVisible(true);
@@ -581,7 +754,18 @@ public class ControllerMainScene implements Initializable {
         bool = size > 0;
         setSelectedTile(chosenTilesButton3Image,gameModelView.getSelectedTiles(),gameModelView.getSelectedTilesId(),2,chosenTilesButton3,chosenTilesButton3Label,chosenTilesStackPane3,bool);
     }
-
+    /**
+     * Sets the stack pane with the selected tiles information.
+     * @param t
+     * @param id
+     * @param im
+     * @param sp
+     * @param b
+     * @param cond
+     * @param i
+     * @param l
+     * @see #insertImageTile(ImageView, ItemTileType, int)
+     */
     private void setSelectedTile(ImageView im, ArrayList<ItemTileType> t,ArrayList<Integer> id,int i, Button b,Label l,StackPane sp, Boolean cond){
         if(cond){
             sp.setVisible(true);
@@ -594,7 +778,16 @@ public class ControllerMainScene implements Initializable {
             sp.setVisible(false);
         }
     }
-
+    /**
+     * Asks the player to select on the button in the preferred order,adds action to yes or no buttons.
+     * @param gameModelView
+     * @param s
+     * @see #showGameMessage(String)
+     * @see #askYesOrNo()
+     * @see #enableButtons()
+     * @see #hideYesOrNo()
+     * @see #arrangeOrder(GameModelView, int[])
+     */
     public void askTileOrder(GameModelView gameModelView,String s) {
         radioButtonChoiceGrid.setVisible(false);
         showSelectedTiles(gameModelView,s);
@@ -611,19 +804,27 @@ public class ControllerMainScene implements Initializable {
         });
 
     }
+    /**
+     * Enables all the button from the chosen button list.
+     */
     public void enableButtons(){
         for (Button b: chosenTilesButtons) {
             b.setDisable(false);
         }
     }
-
+    /**
+     * Show the player the selected tiles to be ordered.
+     * @param gameModelView
+     * @param order
+     * @see #setArrangedOrder(GameModelView, int[])
+     */
     public void arrangeOrder(GameModelView gameModelView,int [] order){
         chosenTilesGrid.setVisible(true);
         for (Button b: chosenTilesButtons) {
             b.setOnAction(event -> {
                 int i = order.length - chosenTilesButtons.size() + 1;
                 chosenTilesLabels.get(chosenTilesButtons.indexOf(b)).setText(String.valueOf(i));
-                b.setEffect(getInnerGlow(50));
+                b.setEffect(setInnerGlow(50));
                 order[i-1] = GridPane.getColumnIndex(b);
                 chosenTilesLabels.remove(chosenTilesButtons.indexOf(b));
                 chosenTilesButtons.remove(b);
@@ -632,7 +833,16 @@ public class ControllerMainScene implements Initializable {
             });
         }
     }
-
+    /**
+     * Show the player the ordered tile and set yes or no button.
+     * @param order
+     * @param gameModelView
+     * @see #showGameMessage(String)
+     * @see #disableChosenTilesButtons()
+     * @see #askYesOrNo()
+     * @see #askTileOrder(GameModelView, String)
+     * @see #hideYesOrNo()
+     */
     private void setArrangedOrder(GameModelView gameModelView,int [] order){
         if(chosenTilesButtons.isEmpty()){
             disableChosenTilesButtons();
@@ -651,13 +861,19 @@ public class ControllerMainScene implements Initializable {
             });
         }
     }
-
+    /**
+     * Disables the button to order the tiles.
+     */
     private void disableChosenTilesButtons() {
         chosenTilesButton1.setDisable(true);
         chosenTilesButton2.setDisable(true);
         chosenTilesButton3.setDisable(true);
     }
-
+    /**
+     * Gets the order tile and returns a string of ordered tiles.
+     * @param intArr
+     * @return
+     */
     private String getTileOrder(int [] intArr) {
         String input = "";
         int i = 0;
@@ -668,7 +884,14 @@ public class ControllerMainScene implements Initializable {
         input = input + intArr[i];
         return input;
     }
-
+    /**
+     * Set personal goal card button  in players tab.
+     * @param gameModelView
+     * @see #clearBookShelf(GridPane)
+     * @see #setGlow(int, String)
+     * @see #getString(ItemTileType)
+     * @see #setDetailesPlayer(Tab, GridPane, Label, int, String, ItemTileType[][], int[][])
+     */
     public void showPersonalGoal(GameModelView gameModelView) {
         ItemTileType[][] personalGoalCard = gameModelView.getPersonalGoalCardList().get(viewGUI.getThisUsername());
        // int [][] playerCardId = gameModelView.getPersonalGoalCardListId().get(viewGUI.getThisUsername());
@@ -701,13 +924,19 @@ public class ControllerMainScene implements Initializable {
             }
         });
     }
-
+    /**
+     *Removes all the children from the bookshelf grid pane.
+     */
     public void clearBookShelf(GridPane g) {
         if(!g.getChildren().isEmpty())
             g.getChildren().clear();
     }
 
-
+    /**
+     *Returns the inner shadow that gives the glowing effect of the color chosen.
+     * @param depth
+     * @param tileColor
+     */
     public InnerShadow setGlow(int depth,String tileColor) {
         Color c = Color.valueOf(tileColor);
         InnerShadow innerGlow = new InnerShadow();
@@ -718,7 +947,11 @@ public class ControllerMainScene implements Initializable {
         innerGlow.setHeight(depth);
         return innerGlow;
     }
-
+    /**
+     *Returns the string color correspondent to the item tyle type
+     * @param type
+     * @return
+     */
     private static String getString(ItemTileType type) {
         return switch (type) {
             case FRAME -> "MIDNIGHTBLUE";//"purple";
@@ -730,7 +963,11 @@ public class ControllerMainScene implements Initializable {
             case EMPTY -> "black";
         };
     }
-
+    /**
+     * Sets to fill the common goal cards grid pane in the Common Goal Card tab
+     * @param gameModelView
+     * @see #initCommonGoalCard(Map.Entry, ImageView, ImageView, Label)
+     */
     public void showCommonGoalCard(GameModelView gameModelView) {
         HashMap<Integer, Integer[]> commonGoalCardDeck = gameModelView.getCommonGoalCardDeck();
         int i = 0;
@@ -743,7 +980,14 @@ public class ControllerMainScene implements Initializable {
             i++;
         }
     }
-
+    /**
+     * Fill's grid pane common goal card
+     * @param imageComGoalSquare
+     * @param set
+     * @param imageComGoalSquarePoint
+     * @param labelComGoal
+     *
+     */
     public void initCommonGoalCard(Map.Entry<Integer, Integer[]> set, ImageView imageComGoalSquarePoint, ImageView imageComGoalSquare, Label labelComGoal) {
         String description;
         int score = set.getValue().length == 0 ? 0 : set.getValue()[0];
@@ -755,7 +999,12 @@ public class ControllerMainScene implements Initializable {
         labelComGoal.setText(description);
     }
 
-
+    /**
+     * This method prints the messages in the scroll pane ,specifying by whom the message was sent and to whom is meant
+     * @param gameModelView
+     * @see #showGameMessage(String)
+     * @see #returnColor(String[], String)
+     */
     public void addToChat(GameModelView gameModelView) {
         String[] chat = gameModelView.getChat().toArray(new String[10]);
         int index = 0;
@@ -768,7 +1017,11 @@ public class ControllerMainScene implements Initializable {
         String[] message = chat[index].split(":");
         showMessage("From " + message[0]+ " to All :" + message[1],returnColor(gameModelView.getPlayerList(),message[0]));
     }
-
+    /**
+     * This method prints the private messages in the scroll pane ,specifying by whom the message was sent and to whom is meant
+     * @see #showMessage(String, String)
+     * @see #returnColor(String[], String)
+     */
     public void addToChatPrivateMessage(GameModelView gameModelView) {
         String message = gameModelView.getPrivateMessage().get(viewGUI.getThisUsername());
         if (message != null) {
@@ -784,6 +1037,12 @@ public class ControllerMainScene implements Initializable {
             }
         }
     }
+    /**
+     * This method associate each player a color for the chat
+     * @param players
+     * @param player
+
+     */
     public String returnColor(String[] players, String player ) {
         String c = null;
         for (int i = 0; i < players.length;i++) {
