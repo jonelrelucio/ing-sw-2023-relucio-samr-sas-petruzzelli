@@ -2,19 +2,56 @@ package it.polimi.ingsw.server.model;
 
 import it.polimi.ingsw.server.model.ItemTile.ItemTile;
 
+/**
+ * The class that represents the personal goal card
+ */
 public class PersonalGoalCard {
 
+    /**
+     * Personal goal card matrix
+     */
     private ItemTile[][] personalGoalCardMatrix;
+
+    /**
+     * personal goal card id
+     */
     private int personalGoalCardId;
 
+    /**
+     * Constructor
+     * @param personalGoalMatrix    personal goal matrix
+     */
     public PersonalGoalCard(ItemTile[][] personalGoalMatrix){
         this.personalGoalCardMatrix = personalGoalMatrix;
     }
+
+    /**
+     * Gets the personal goal card matrix
+     * @return the personal goal card matrix
+     */
     public ItemTile[][] getPersonalGoalCardMatrix() { return personalGoalCardMatrix; }
+
+    /**
+     * Gets the personal goal card id
+     * @return the personal goal card id
+     */
     public int getPersonalGoalCardId() { return personalGoalCardId; }
 
+    /**
+     * Sets the personal goal card matrix
+     * @param personalGoalCardMatrix    the personal goal card matrix
+     */
     public void setPersonalGoalCardMatrix(ItemTile[][] personalGoalCardMatrix) { this.personalGoalCardMatrix = personalGoalCardMatrix; }
+
+    /**
+     * Sets the personal goal card id
+     * @param id    the id used to set the personal goal card
+     */
     public void setPersonalGoalCardId(int id) { this.personalGoalCardId = id; };
+
+    /**
+     * List of points
+     */
     private static final int[] pointsMapping = {0, 1, 2, 3, 4, 6, 9, 12};
 
     /**

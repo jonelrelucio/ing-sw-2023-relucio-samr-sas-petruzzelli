@@ -41,8 +41,11 @@ Initial UML Diagrams of the application: [UML Diagram](deliverables/final/uml/Di
 ##### Legend
 🔴 Not Implemented | 🟢 Implemented |🟡 Being Implemented...
 
+### Test coverages
+These are the test coverages
+<img src="deliverables/final/testCoverage/TestCoverage.jpg">
 
-## How to run the jar files
+### How to run the jar files
 Before running either server-softeng-gc25.jar or client-softeng-gc25.jar be sure to have disabled the firewall for both of them.
 
 ##### Server

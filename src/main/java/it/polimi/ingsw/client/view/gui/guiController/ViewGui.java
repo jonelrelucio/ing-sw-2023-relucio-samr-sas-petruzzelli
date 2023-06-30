@@ -84,7 +84,7 @@ public class ViewGui  extends Observable<MessageEvent> implements View, Runnable
      * changes to Main scene
      */
     private void changeSceneMainScene() {
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gui/fxml/MainSceneDalila.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("/view/gui/fxml/MainScene.fxml"));
         try {
             Parent boardPaneParent = loader.load();
             mainScene = new Scene(boardPaneParent);
