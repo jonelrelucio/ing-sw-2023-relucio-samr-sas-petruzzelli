@@ -10,13 +10,29 @@ import java.util.Map;
 
 public class Bookshelf {
 
-    // Attributes
+    /**
+     * The row size of the bookshelf
+     */
     private static final int ROW = 6;
+
+    /**
+     * The column size of the bookshelf
+     */
     private static final int COL = 5;
+
+    /**
+     * The bookshelf matrix which is a matrix of Item Tile
+     */
     private ItemTile[][] bookshelfMatrix;
+
+    /**
+     * the selected column
+     */
     private int selectedColumn;
 
-    // Constructor
+    /**
+     * Constructor
+     */
     public Bookshelf() {
         initBookshelfMatrix();
     }
@@ -89,17 +105,18 @@ public class Bookshelf {
         return Math.min(max, 3);
     }
 
-
+    /**
+     * Builds the adjacency map
+     * @param adjacencyMap  the adjacency map
+     */
     private void buildAdjacencyMap( HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap){
         ItemTile[][] itemTileMatrix = bookshelfMatrix;
         int numOfRows = itemTileMatrix.length;
         int numOfCols = itemTileMatrix[0].length;
         for(int r=0;r<numOfRows;r++) {
             for(int c=0;c<numOfCols;c++) {
-                //String cellValue = board[r][c];
                 ItemTileType cellValue = bookshelfMatrix[r][c].getItemTileType();
                 if(!cellValue.equals(ItemTileType.EMPTY)) {
-                    //fai un nuovo gruppo di adiacenza e una nuova chiave
                     if(!adjacencyMap.containsKey(cellValue)) {
                         ArrayList<ArrayList<int[]>> adjacencyLists = new ArrayList<>();
                         ArrayList<int[]> adjacencyGroup = new ArrayList<>();
@@ -115,10 +132,16 @@ public class Bookshelf {
         }
     }
 
+    /**
+     * Adds to the adjacency group
+     * @param cellValue the cell value
+     * @param r         the first value of the coordinates
+     * @param c         the second value of the coordinates
+     * @param adjacencyMap  the adjacency map
+     */
     private void addToAdjacencyGroup(ItemTileType cellValue, int r, int c,
                                             HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap) {
 
-        //int lastCol = board[0].length-1;
         int lastCol = bookshelfMatrix[0].length-1;
         ArrayList<ArrayList<int[]>> adjacencyLists = adjacencyMap.get(cellValue);
         ArrayList<int[]> cellAboveRightAdjacencyGroup = new ArrayList<>();
@@ -131,24 +154,19 @@ public class Bookshelf {
                 if(r!=0 && c!= lastCol) {
                     int cellAboveRightRow = r-1;
                     int cellAboveRightCol = c+1;
-                    //String cellAboveRightValue = board[cellAboveRightRow][cellAboveRightCol];
                     ItemTileType cellAboveRightValue = bookshelfMatrix[cellAboveRightRow][cellAboveRightCol].getItemTileType();
-                    //String cellRightValue = board[r][c+1];
                     ItemTileType cellRightValue = bookshelfMatrix[r][c+1].getItemTileType();
                     if(cellValue.equals(cellAboveRightValue) && cellValue.equals(cellRightValue)) {
                         backwardsLShapeFound = true;
                         adjacentToNothing = false;
-                        //get the adjacencyGroup of the cellAboveRightValue and add this cell
                         cellAboveRightAdjacencyGroup =
                                 getCellAdjacencyGroup(cellAboveRightRow, cellAboveRightCol, cellAboveRightValue, adjacencyMap);
                     }
                 }
-                //forse al posto dell'if mettere un elseif
                 if((r-adjacentCellRow==1 && c==adjacentCellCol) ^
                         (c-adjacentCellCol==1 && r==adjacentCellRow)) {
                     adjacentToNothing = false;
                     adjacencyGroup.add(new int[] {r,c});
-                    //trovare un altro punto per mettere il return
                     return;
                 }
             }
@@ -160,7 +178,6 @@ public class Bookshelf {
             cellAboveRightAdjacencyGroup.add(new int[] {r,c});
         }
         if(adjacentToNothing) {
-            //crea un nuovo gruppo di adiacenza
             ArrayList<int[]> adjacencyGroup = new ArrayList<>();
             adjacencyGroup.add(new int[] {r,c});
             adjacencyMap.get(cellValue).add(adjacencyGroup);
@@ -168,6 +185,14 @@ public class Bookshelf {
 
     }
 
+    /**
+     * Gets the cell adjacency group
+     * @param r first value of the coordinates
+     * @param c second value of the coordinates
+     * @param cellValue the value of the cell
+     * @param adjacencyMap  the adjacency map
+     * @return  the cell adjacency group
+     */
     private ArrayList<int[]> getCellAdjacencyGroup(int r, int c, ItemTileType cellValue,
                                                           HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap){
 
@@ -187,6 +212,10 @@ public class Bookshelf {
 
     }
 
+    /**
+     * Gets the score
+     * @return  the score
+     */
     public int getScore(){
         HashMap<ItemTileType, ArrayList<ArrayList<int[]>>> adjacencyMap = new HashMap<>();
         buildAdjacencyMap( adjacencyMap);
@@ -209,14 +238,43 @@ public class Bookshelf {
     }
 
 
-
-    // Getters
+    /**
+     * Gets the matrix tile
+     * @param x the first coordinate of the tile
+     * @param y the second coordinate of the tile
+     * @return  the matrix tile
+     */
     public ItemTile getMatrixTile(int x, int y) { return bookshelfMatrix[x][y]; }
+
+    /**
+     * Gets the bookshelf matrix
+     * @return  the bookshelf matrix
+     */
     public ItemTile[][] getBookshelfMatrix() { return bookshelfMatrix;}
+
+    /**
+     * Gets the selected column
+     * @return  the selected column
+     */
     public int getSelectedColumn() { return selectedColumn; }
 
-    // Setters
+    /**
+     * Sets the matrix tile
+     * @param x the first coordinate of the tile
+     * @param y the second coordinate of the tile
+     * @param itemTile the Item Tile to be set
+     */
     public void setMatrixTile(int x, int y, ItemTile itemTile) { bookshelfMatrix[x][y] = itemTile; }
+
+    /**
+     * Sets the bookshelf matrix of the bookshelf
+     * @param bookshelfMatrix   a matrix of ItemTile
+     */
     public void setBookshelfMatrix(ItemTile[][] bookshelfMatrix) { this.bookshelfMatrix = bookshelfMatrix;}
+
+    /**
+     * sets the selected colum
+     * @param selectedColumn    the selected column
+     */
     public void setSelectedColumn(int selectedColumn) {this.selectedColumn = selectedColumn; }
 }
