@@ -27,25 +27,33 @@ public class GameServerMain {
             Enumeration<NetworkInterface> nets = NetworkInterface.getNetworkInterfaces();
             int count = 0;
             for (NetworkInterface netint : Collections.list(nets)) {
-
-                out.println("id: " + count);
-                displayInterfaceInformation(netint);
                 Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
                 for (InetAddress inetAddress : Collections.list(inetAddresses)) {
-
                     if(inetAddress instanceof Inet4Address){
                         ipAddresses.add(inetAddress.getHostAddress());
                         ips.add(inetAddress);
+                        out.println("id: " + count);
+                        out.printf("Display name: %s\n", netint.getDisplayName());
+                        out.printf("Name: %s\n", netint.getName());
+                        out.printf("InetAddress: %s\n", inetAddress);
+                        out.printf("\n");
+                        count++;
                     }
-
                 }
-                count++;
             }
 
             out.println("Choose server ip:");
-            Scanner s = new Scanner(System.in);
-            int id = Integer.parseInt(s.nextLine());
-            InetAddress ip = ips.get(id);
+            int id = -1;
+            do {
+                boolean valid = true;
+                Scanner s = new Scanner(System.in);
+                try {
+                    id = Integer.parseInt(s.nextLine());
+                } catch (NumberFormatException e) {
+                  valid = false;
+                }
+                if (id < 0 || id > ipAddresses.size() || !valid) out.println("Choose a valid ip address.");
+            } while (id < 0 || id > ipAddresses.size());
             String ipAddress = ipAddresses.get(id);
             out.println("Server Ip Address: " + ipAddress);
 
@@ -70,19 +78,4 @@ public class GameServerMain {
 
     }
 
-    /**
-     * Utility method to display the available ip address of the client
-     * @param netint            NetWorkInterface
-     * @throws SocketException  throws exception when cant display
-     */
-    static void displayInterfaceInformation(NetworkInterface netint) throws SocketException {
-        out.printf("Display name: %s\n", netint.getDisplayName());
-        out.printf("Name: %s\n", netint.getName());
-        Enumeration<InetAddress> inetAddresses = netint.getInetAddresses();
-        for (InetAddress inetAddress : Collections.list(inetAddresses)) {
-            if(inetAddress instanceof Inet4Address)
-                out.printf("InetAddress: %s\n", inetAddress);
-        }
-        out.printf("\n");
-    }
 }
